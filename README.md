@@ -563,6 +563,36 @@ cidaas.resetPassword({
 }
 ```
 
+##### Change Password
+
+To change the password, call ****changePassword()****. This will allow you to change your password.
+
+##### Sample code
+```js
+cidaas.changePassword({
+        old_password: '123456',
+        new_password: '123456789',
+        confirm_password: '123456789',
+        identityId: 'asdauet1-quwyteuqqwejh-asdjhasd',
+}, 'your access token')
+.then(function () {
+    // type your code here 
+}).catch(function (ex) {
+    // your failure code here  
+});
+```
+
+##### Response
+```json
+{
+    "success": true,
+    "status": 200,
+    "data": {
+        "changed": true
+    }
+}
+```
+
 #### Getting user profile
 
 To get the user profile information, call ****getUserProfile()****.
@@ -596,6 +626,30 @@ cidaas.getUserProfile({
 }
 ```
 
+#### Updating user profile
+
+To update the user profile information, call ****updateProfile()****.
+
+##### Sample code
+```js
+cidaas.updateProfile({
+        family_name: 'Doe',
+        given_name: 'John',
+        provider: 'self'
+}, 'your access token', 'your sub').then(function () {
+    // type your code here 
+}).catch(function (ex) {
+    // your failure code here  
+});
+```
+
+##### Response
+```json
+{
+   "updated": true
+}
+```
+
 #### Logout user
 
 To logout the user, call ****logoutUser()****.
@@ -603,12 +657,7 @@ To logout the user, call ****logoutUser()****.
 ##### Sample code
 ```js
 cidaas.logoutUser({
-        access_token_hint : 'your accessToken',
-        post_logout_redirect_uri: 'your url'
-}).then(function (response) {
-    // type your code here 
-}).catch(function (ex) {
-    // your failure code here  
+        access_token : 'your accessToken'
 });
 ```
 
