@@ -1298,6 +1298,8 @@ this.cidaas.setupPattern({
 }
 ```
 
+Once response is received, listen to the socket
+
 ##### Initiate PATTERN
 
 To initiate a PATTERN verification type, call ****initiatePattern()****.
@@ -1330,6 +1332,8 @@ this.cidaas.initiatePattern({
 }
 ```
 
+Once response is received, listen to the socket
+
 #### TOUCHID
 
 ##### Setup TouchId
@@ -1361,6 +1365,8 @@ this.cidaas.setupTouchId({
 }
 ```
 
+Once response is received, listen to the socket
+
 ##### Initiate TOUCHID
 
 To initiate a TOUCHID verification type, call ****initiateTouchId()****.
@@ -1381,6 +1387,8 @@ this.cidaas.initiateTouchId({
       // your failure code here 
     });
 ```
+
+Once response is received, listen to the socket
 
 ##### Response
 ```json
@@ -1413,6 +1421,8 @@ this.cidaas.setupSmartPush({
     });
 ```
 
+Once response is received, listen to the socket
+
 ##### Initiate SMART PUSH
 
 To initiate a SMART PUSH verification type, call ****initiateSmartPush()****.
@@ -1433,6 +1443,8 @@ this.cidaas.initiateSmartPush({
       // your failure code here 
     });
 ```
+
+Once response is received, listen to the socket
 
 ##### Response
 ```json
@@ -1476,6 +1488,8 @@ this.cidaas.setupFace({
 }
 ```
 
+Once response is received, listen to the socket
+
 ##### Initiate FACE
 
 To initiate a FACE verification type, call ****initiateFace()****.
@@ -1496,6 +1510,8 @@ this.cidaas.initiateFace({
       // your failure code here 
     });
 ```
+
+Once response is received, listen to the socket
 
 ##### Response
 ```json
@@ -1539,6 +1555,8 @@ this.cidaas.setupVoice({
 }
 ```
 
+Once response is received, listen to the socket
+
 ##### Initiate VOICE
 
 To initiate a VOICE verification type, call ****initiateVoice()****.
@@ -1571,39 +1589,7 @@ this.cidaas.initiateVoice({
 }
 ```
 
-#### FACE
-
-##### Initiate FACE
-
-To initiate a FACE verification type, call ****initiateFace()****.
-
-##### Sample code
-```js
-this.cidaas.initiateFace({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
+Once response is received, listen to the socket
 
 #### MFA Continue
 
@@ -1864,4 +1850,93 @@ this.cidaas.deduplicationLogin({
         "grant_type":"login"
     }
 }
+```
+#### Socket Connection
+
+##### Installation
+
+Install ng-socket-io in your project and refer the following link https://www.npmjs.com/package/ng-socket-io to configure. Use the "your_base_url/verification-srv/socket/socket.io" path for the socket listening url and enter the following snippet
+
+#### Configuration
+
+##### Emitting the socket
+
+```
+this.socket.emit("join", {
+    id: 'your status id' // which you received in the response of setup call
+});
+```
+
+##### Sample code
+
+```
+this.cidaas.setupPattern({
+      logoUrl: 'your logo url',
+      deviceInfo: {
+        deviceId: 'your device id'
+      }
+    }).then((response) => {
+        this.socket.emit("join", {
+            id: response.data.statusId
+        });
+    }).catch((err) => {
+      // your failure code here 
+    });
+```
+
+##### Listening the socket 
+
+You can listen the socket anywhere in your component
+
+```
+this.socket.on("status-update", (msg) => {
+    if (msg.status == "SCANNED") {
+        // do next process
+    }
+    else if (msg.status == "ENROLLED") {
+        // do next process
+    }
+});
+```
+
+#### Usage
+
+##### Emitting the socket
+
+```
+this.socket.emit("on-trigger-verification", {
+    id: 'your status id' // which you received in the response of initiate call
+});
+```
+
+##### Sample code
+
+```
+this.cidaas.initiatePattern({
+    sub: 'your sub',
+    physicalVerificationId: 'your physical verification id',
+    userDeviceId: deviceId,
+    usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
+    deviceInfo: {
+        deviceId: 'your device id'
+    }
+}).then((response) => {
+    this.socket.emit("on-trigger-verification", {
+        id: response.data.statusId
+    });
+}).catch((err) => {
+        // your failure code here 
+});
+```
+
+##### Listening the socket 
+
+You can listen the socket anywhere in your component.
+
+```
+this.socket.on("status-update", (msg) => {
+    if (msg.status == "AUTHENTICATED") {
+        // do next process
+    }
+});
 ```
