@@ -6,12 +6,12 @@ From CDN
 
 ```html
 <!-- Latest patch release -->
-<script src="https://cdn.cidaas.de/javascript/oidc/v3/cidaas-sdk.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/v2/cidaas-sdk.js"></script>
 ```
 or
 ```html
 <!-- Latest patch release -->
-<script src="https://cdn.cidaas.de/javascript/oidc/v3/cidaas-sdk.min.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/v2/cidaas-sdk.min.js"></script>
 ```
 
 #### Initialisation
