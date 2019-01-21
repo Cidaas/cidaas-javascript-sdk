@@ -1,18 +1,21 @@
 ## cidaas-sdk-js (v2)
-This cidaas Javascript SDK library is built on the top of [OIDC client javascript library](https://github.com/IdentityModel/oidc-client-js). The Example which explains integration of javascript SDK with client application needs to be improved and we are working on that.
+This cidaas Javascript SDK library is built on the top of [OIDC client javascript library](https://github.com/IdentityModel/oidc-client-js). 
+
 #### Installation
 
 From CDN
 
 ```html
 <!-- Latest patch release -->
-<script src="https://cdn.cidaas.de/javascript/oidc/v2/cidaas-sdk.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/v2.0.12_0.0.3/cidaas-sdk.js"></script>
 ```
 or
 ```html
 <!-- Latest patch release -->
-<script src="https://cdn.cidaas.de/javascript/oidc/v2/cidaas-sdk.min.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/v2.0.12_0.0.3/cidaas-sdk.min.js"></script>
 ```
+
+Please check the [Changelogs](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/Changelogs.md) for more information about the latest release
 
 #### Initialisation
 
@@ -200,7 +203,7 @@ cidaas.getClientInfo({
 
 ##### Login with credentials
 
-To login with your credentials, call ****loginWithCredentials()****.
+To login with your credentials, call ****loginWithCredentials()****. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk
 
 ##### Sample code
 ```js
@@ -209,27 +212,7 @@ cidaas.loginWithCredentials({
     username_type: 'email',
     password: '123456',
     requestId: 'your requestId',
-}).then(function (response) {
-    // your success code here
-}).catch(function (ex) {
-    // your failure code here
 });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "token_type":"Bearer",
-        "expires_in":86400,
-        "access_token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMjM2ZWZiLWRlMjEtNDI5Mi04Z.",
-        "session_state":"3F7CuT3jnKOTwRyyLBWaRizLiPm5mJ4PnhY.jfQO3MeEAuM",
-        "viewtype":"login",
-        "grant_type":"login"
-    }
-}
 ```
 
 ##### Login with social
@@ -1601,60 +1584,14 @@ this.cidaas.mfaContinue({
       trackingCode: 'your tracking Code', // receives in socket
       track_id: 'your track id', 
       sub: 'your sub',
-      requestId: 'your request id',
-      verificationType: 'your verification type'
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
+      requestId: 'your request id'
     });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "token_type":"Bearer",
-        "expires_in":86400,
-        "access_token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMjM2ZWZiLWRlMjEtNDI5Mi04Z.",
-        "session_state":"3F7CuT3jnKOTwRyyLBWaRizLiPm5mJ4PnhY.jfQO3MeEAuM",
-        "viewtype":"login",
-        "grant_type":"login"
-    }
-}
 ```
 
 
 #### Consent Management
 
 For the first time login, the user needs to accept the terms and conditions.
-
-##### Get consent page url
-
-To get a consent url to display, call ****getConsentPageurl()****
-
-##### Sample code
-```js
-this.cidaas.getConsentPageurl({
-      consent_name: 'your consent name',
-      consent_version: 'consent version'
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": 'https://cidaas.de/privacy-policy'
-}
-```
 
 ##### Get consent details
 
@@ -1693,7 +1630,6 @@ To accept consent, call ****acceptConsent()****
 this.cidaas.acceptConsent({
       name: 'your consent name',
       sub: 'your sub',
-      version: 'your consent version',
       client_id: 'your client id',
       accepted: true
     }).then((response) => {
@@ -1709,10 +1645,6 @@ this.cidaas.acceptConsent({
     "success":true,
     "status":200,
     "data": {
-        "name": 'your consent name',
-        "sub": 'your sub',
-        "version": 'your consent version',
-        "client_id": 'your client id',
         "accepted": true
     }
 }
@@ -1730,28 +1662,7 @@ this.cidaas.consentContinue({
       client_id: 'your client id',
       track_id: 'your track id', 
       sub: 'your sub',
-      requestId: 'your request id'
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
     });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "token_type":"Bearer",
-        "expires_in":86400,
-        "access_token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMjM2ZWZiLWRlMjEtNDI5Mi04Z.",
-        "session_state":"3F7CuT3jnKOTwRyyLBWaRizLiPm5mJ4PnhY.jfQO3MeEAuM",
-        "viewtype":"login",
-        "grant_type":"login"
-    }
-}
 ```
 
 #### Deduplication
