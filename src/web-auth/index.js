@@ -1,7 +1,7 @@
 var Authentication = require('../authentication');
 var CustomException = require('./exception');
 var Oidc = require('oidc-client');
-var crypto = require('crypto');
+var CryptoJS = require("crypto-js");
 
 var code_verifier;
 
@@ -217,15 +217,25 @@ WebAuth.prototype.renewToken = function (options) {
   });
 };
 
-WebAuth.prototype.base64URLEncode = function (str) {
-  return str.toString('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
+WebAuth.prototype.generateCodeVerifier = function () {
+  code_verifier = this.generateRandomString(32);
 };
 
-WebAuth.prototype.sha256 = function (buffer) {
-  return crypto.createHash('sha256').update(buffer).digest();
+WebAuth.prototype.generateRandomString = function (length) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
+WebAuth.prototype.generateCodeChallenge = function (code_verifier) {
+  return this.base64URL(CryptoJS.SHA256(code_verifier));
+};
+
+WebAuth.prototype.base64URL = function (string) {
+  return string.toString(CryptoJS.enc.Base64).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
 };
 
 // get login url
@@ -238,13 +248,13 @@ WebAuth.prototype.getLoginURL = function () {
     settings.scope = "email openid profile mobile";
   }
 
-  code_verifier = this.base64URLEncode(crypto.randomBytes(32));
+  this.generateCodeVerifier();
 
   var loginURL = settings.authority + "/authz-srv/authz?client_id=" + settings.client_id;
   loginURL += "&redirect_uri=" + settings.redirect_uri;
   loginURL += "&nonce=" + new Date().getTime().toString();
   loginURL += "&response_type=" + settings.response_type;
-  loginURL += "&code_challenge=" + this.base64URLEncode(this.sha256(code_verifier));
+  loginURL += "&code_challenge=" + this.generateCodeChallenge(code_verifier);
   loginURL += "&code_challenge_method=S256";
   if (settings.response_mode && settings.response_mode == 'query') {
     loginURL += "&response_mode=" + settings.response_mode;
