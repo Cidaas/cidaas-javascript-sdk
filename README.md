@@ -11,9 +11,6 @@ npm install cidaas-javascript-sdk
 
 #### Initialisation
 
-After adding ****cidaas-sdk.js**** create a local file and name it like ****index.js****.
-
-
 ```js
 var options = {
     authority: 'your domain base url',
