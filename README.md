@@ -442,11 +442,11 @@ cidaas.initiateAccountVerification({
 
 ##### Authenticate Account Verification
 
-To complete the verification, call ****authenticateAccountVerification()****. 
+To complete the verification, call ****verifyAccount()****. 
 
 ##### Sample code
 ```js
-cidaas.authenticateAccountVerification({
+cidaas.verifyAccount({
     accvid: 'your accvid', // which you will get on initiate account verification response
     code: 'your code in email or sms or ivr'
 }).then(function (response) {
