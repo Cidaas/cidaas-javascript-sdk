@@ -15,6 +15,12 @@ or
 <script src="https://cdn.cidaas.de/javascript/oidc/v2.0.12_0.0.3/cidaas-sdk.min.js"></script>
 ```
 
+From npm
+
+```
+npm install cidaas-javascript-sdk
+```
+
 Please check the [Changelogs](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/Changelogs.md) for more information about the latest release
 
 #### Initialisation
@@ -38,8 +44,16 @@ var options = {
 
 Initialise the cidaas sdk using the options.
 
+For CDN
+
 ```js
 var cidaas = new CidaasSDK(options);
+```
+
+For npm
+
+```js
+var cidaas = new CidaasSDK.WebAuth(options);
 ```
 
 #### Usage
