@@ -1780,7 +1780,7 @@ this.cidaas.deduplicationLogin({
 
 ##### Installation
 
-Install ng-socket-io in your project and refer the following link https://www.npmjs.com/package/ng-socket-io to configure. Use the "your_base_url/verification-srv/socket/socket.io" path for the socket listening url and enter the following snippet
+Install ng-socket-io in your project and refer the following link https://www.npmjs.com/package/ng-socket-io to configure. Use the "your_base_url/socket-srv/socket/socket.io" path for the socket listening url and enter the following snippet
 
 #### Configuration
 
