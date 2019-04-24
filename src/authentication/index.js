@@ -11,7 +11,7 @@ Authentication.prototype.redirectSignIn = function (view_type) {
         view_type: view_type
       };
       if (window.webAuthSettings && window.webAuthSettings.scope) {
-        if (window.webAuthSettings.scope.indexOf("openid") != -1) {
+        if (window.webAuthSettings.scope.indexOf("openid") != -1 && window.webAuthSettings.response_type.indexOf("id_token") == -1) {
           extraQueryParams.nonce = new Date().getTime().toString();
         }
       }

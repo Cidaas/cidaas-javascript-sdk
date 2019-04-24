@@ -117,7 +117,6 @@ WebAuth.prototype.getUserInfo = function () {
 WebAuth.prototype.getUserProfile = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      console.log("Access token : " + options.access_token);
       if (!options.access_token) {
         throw new CustomException("access_token cannot be empty", 417);
       }
@@ -193,121 +192,11 @@ WebAuth.prototype.logoutCallback = function () {
 
 
 // renew token
-WebAuth.prototype.renewToken = function (options) {
+WebAuth.prototype.renewToken = function () {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.refresh_token) {
-        throw new CustomException("refresh_token cannot be empty", 417);
-      }
-      options.client_id = window.webAuthSettings.client_id;
-      options.grant_type = 'refresh_token';
-      var http = new XMLHttpRequest();
-      var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
-      http.onreadystatechange = function () {
-        if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
-        }
-      };
-      http.open("POST", _serviceURL, true);
-      http.setRequestHeader("Content-type", "application/json");
-      http.send(JSON.stringify(options));
-    } catch (ex) {
-      reject(ex);
-    }
-  });
-};
-
-WebAuth.prototype.generateCodeVerifier = function () {
-  code_verifier = this.generateRandomString(32);
-};
-
-WebAuth.prototype.generateRandomString = function (length) {
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
-WebAuth.prototype.generateCodeChallenge = function (code_verifier) {
-  return this.base64URL(CryptoJS.SHA256(code_verifier));
-};
-
-WebAuth.prototype.base64URL = function (string) {
-  return string.toString(CryptoJS.enc.Base64).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-};
-
-// get login url
-WebAuth.prototype.getLoginURL = function () {
-  var settings = window.webAuthSettings;
-  if (!settings.response_type) {
-    settings.response_type = "code";
-  }
-  if (!settings.scope) {
-    settings.scope = "email openid profile mobile";
-  }
-
-  this.generateCodeVerifier();
-
-  var loginURL = settings.authority + "/authz-srv/authz?client_id=" + settings.client_id;
-  loginURL += "&redirect_uri=" + settings.redirect_uri;
-  loginURL += "&nonce=" + new Date().getTime().toString();
-  loginURL += "&response_type=" + settings.response_type;
-  loginURL += "&code_challenge=" + this.generateCodeChallenge(code_verifier);
-  loginURL += "&code_challenge_method=S256";
-  if (settings.response_mode && settings.response_mode == 'query') {
-    loginURL += "&response_mode=" + settings.response_mode;
-  }
-  loginURL += "&scope=" + settings.scope;
-  console.log(loginURL);
-  return loginURL;
-};
-
-// get access token from code 
-WebAuth.prototype.getAccessToken = function (options) {
-  return new Promise(function (resolve, reject) {
-    try {
-      if (!options.code) {
-        throw new CustomException("code cannot be empty", 417);
-      }
-      options.client_id = window.webAuthSettings.client_id;
-      options.redirect_uri = window.webAuthSettings.redirect_uri;
-      options.code_verifier = code_verifier;
-      options.grant_type = "authorization_code";
-      var http = new XMLHttpRequest();
-      var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
-      http.onreadystatechange = function () {
-        if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
-        }
-      };
-      http.open("POST", _serviceURL, true);
-      http.setRequestHeader("Content-type", "application/json");
-      http.send(JSON.stringify(options));
-    } catch (ex) {
-      reject(ex);
-    }
-  });
-};
-
-// validate access token
-WebAuth.prototype.validateAccessToken = function (options) {
-  return new Promise(function (resolve, reject) {
-    try {
-      if (!options.token || !options.token_type_hint) {
-        throw new CustomException("token or token_type_hint cannot be empty", 417);
-      }
-      var http = new XMLHttpRequest();
-      var _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
-      http.onreadystatechange = function () {
-        if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
-        }
-      };
-      http.open("POST", _serviceURL, true);
-      http.setRequestHeader("Content-type", "application/json");
-      http.send(JSON.stringify(options));
+      window.webAuthSettings.mode = 'silent';
+      window.authentication.silentSignIn();
     } catch (ex) {
       reject(ex);
     }
@@ -525,30 +414,30 @@ WebAuth.prototype.getRegistrationSetup = function (options) {
 };
 
 // register user
-WebAuth.prototype.register = function (options, requestId, captcha) {
+WebAuth.prototype.register = function (options, headers) {
   return new Promise(function (resolve, reject) {
     try {
 
       var empty = false;
 
       // validate fields
-      if (registrationFields && registrationFields.length > 0) {
-        var requiredFields = registrationFields.filter(function (c) {
-          return c.required == true;
-        }).map((function (c) {
-          return c.fieldKey;
-        }));
+      // if (registrationFields && registrationFields.length > 0) {
+      //   var requiredFields = registrationFields.filter(function (c) {
+      //     return c.required == true;
+      //   }).map((function (c) {
+      //     return c.fieldKey;
+      //   }));
 
-        requiredFields.forEach(function (req) {
-          if (!options[req]) {
-            empty = true;
-          }
-        });
-      }
+      //   requiredFields.forEach(function (req) {
+      //     if (!options[req]) {
+      //       empty = true;
+      //     }
+      //   });
+      // }
 
-      if (empty) {
-        throw new CustomException("Please make sure you fill all the fields", 417);
-      }
+      // if (empty) {
+      //   throw new CustomException("Please make sure you fill all the fields", 417);
+      // }
 
       if (!options.provider) {
         throw new CustomException("Provider cannot be empty", 417);
@@ -556,6 +445,9 @@ WebAuth.prototype.register = function (options, requestId, captcha) {
 
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/register";
+      if (options.invite_id) {
+        _serviceURL = _serviceURL + "?invite_id=" + options.invite_id;
+      }
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -567,9 +459,44 @@ WebAuth.prototype.register = function (options, requestId, captcha) {
       };
       http.open("POST", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("requestId", requestId);
-      http.setRequestHeader("captcha", captcha);
+      http.setRequestHeader("requestId", headers.requestId);
+      if (headers.captcha) {
+        http.setRequestHeader("captcha", headers.captcha);
+      }
+      if (headers.acceptlanguage) {
+        http.setRequestHeader("accept-language", headers.acceptlanguage);
+      }
+      if (headers.bot_captcha_response) {
+        http.setRequestHeader("bot_captcha_response", headers.bot_captcha_response);
+      }
       http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// get invite info
+WebAuth.prototype.getInviteUserDetails = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      if (!options.invite_id) {
+        throw new CustomException("invite_id cannot be empty", 417);
+      }
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("GET", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send();
     } catch (ex) {
       reject(ex);
     }
@@ -716,8 +643,8 @@ WebAuth.prototype.handleResetPassword = function (options) {
 WebAuth.prototype.resetPassword = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.password || !options.confirmPassword || !options.exchangeId || !options.resetRequestId) {
-        throw new CustomException("password or confirmPassword or exchangeId or resetRequestId cannot be empty", 417);
+      if (!options.password || !options.confirmPassword || !options.resetRequestId) {
+        throw new CustomException("password or confirmPassword or resetRequestId cannot be empty", 417);
       }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
@@ -1245,6 +1172,33 @@ WebAuth.prototype.getConsentDetails = function (options) {
   });
 };
 
+// get user consent details
+WebAuth.prototype.getConsentDetailsV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      if (!options.client_id || !options.consent_id || !options.consent_version_id || !options.sub) {
+        throw new CustomException("client_id or consent_id or consent_version_id or sub cannot be empty", 417);
+      }
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // acceptConsent
 WebAuth.prototype.acceptConsent = function (options) {
   return new Promise(function (resolve, reject) {
@@ -1254,6 +1208,32 @@ WebAuth.prototype.acceptConsent = function (options) {
       }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/user/status";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+WebAuth.prototype.acceptConsentV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      if (!options.client_id || !options.consent_id || !options.consent_version_id || !options.sub) {
+        throw new CustomException("client_id or consent_id or consent_version_id or sub cannot be empty", 417);
+      }
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1411,8 +1391,8 @@ WebAuth.prototype.registerDeduplication = function (options) {
 // consent continue login
 WebAuth.prototype.consentContinue = function (options) {
   try {
-    if (!options.client_id || !options.track_id || !options.sub || !options.version || !options.name) {
-      throw new CustomException("client_id or track_id or sub or version or name cannot be empty", 417);
+    if (!options.client_id || !options.track_id || !options.sub || !options.version) {
+      throw new CustomException("client_id or track_id or sub or version cannot be empty", 417);
     }
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;

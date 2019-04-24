@@ -1,7 +1,19 @@
-## cidaas-javascript-sdk
+## cidaas-sdk-js (v2)
 This cidaas Javascript SDK library is built on the top of [OIDC client javascript library](https://github.com/IdentityModel/oidc-client-js). 
 
 #### Installation
+
+From CDN
+
+```html
+<!-- Latest patch release -->
+<script src="https://cdn.cidaas.de/javascript/oidc/v2.0.12_0.0.3/cidaas-sdk.js"></script>
+```
+or
+```html
+<!-- Latest patch release -->
+<script src="https://cdn.cidaas.de/javascript/oidc/v2.0.12_0.0.3/cidaas-sdk.min.js"></script>
+```
 
 From npm
 
@@ -9,7 +21,12 @@ From npm
 npm install cidaas-javascript-sdk
 ```
 
+Please check the [Changelogs](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/Changelogs.md) for more information about the latest release
+
 #### Initialisation
+
+After adding ****cidaas-sdk.js**** create a local file and name it like ****index.js****.
+
 
 ```js
 var options = {
@@ -26,6 +43,14 @@ var options = {
 ```
 
 Initialise the cidaas sdk using the options.
+
+For CDN
+
+```js
+var cidaas = new CidaasSDK(options);
+```
+
+For npm
 
 ```js
 var cidaas = new CidaasSDK.WebAuth(options);
@@ -431,11 +456,11 @@ cidaas.initiateAccountVerification({
 
 ##### Authenticate Account Verification
 
-To complete the verification, call ****authenticateAccountVerification()****. 
+To complete the verification, call ****verifyAccount()****. 
 
 ##### Sample code
 ```js
-cidaas.authenticateAccountVerification({
+cidaas.verifyAccount({
     accvid: 'your accvid', // which you will get on initiate account verification response
     code: 'your code in email or sms or ivr'
 }).then(function (response) {
@@ -1341,502 +1366,4 @@ Once response is received, listen to the socket
 
 ##### Initiate TOUCHID
 
-To initiate a TOUCHID verification type, call ****initiateTouchId()****.
-
-##### Sample code
-```js
-this.cidaas.initiateTouchId({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-Once response is received, listen to the socket
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### SMART PUSH
-
-##### Setup Smart Push
-
-To configure SmartPush, call ****setupSmartPush()****.
-
-##### Sample code
-```js
-this.cidaas.setupSmartPush({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-Once response is received, listen to the socket
-
-##### Initiate SMART PUSH
-
-To initiate a SMART PUSH verification type, call ****initiateSmartPush()****.
-
-##### Sample code
-```js
-this.cidaas.initiateSmartPush({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-Once response is received, listen to the socket
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### FACE
-
-##### Setup Face
-
-To configure Face, call ****setupFace()****.
-
-##### Sample code
-```js
-this.cidaas.setupFace({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-##### Initiate FACE
-
-To initiate a FACE verification type, call ****initiateFace()****.
-
-##### Sample code
-```js
-this.cidaas.initiateFace({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-Once response is received, listen to the socket
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### VOICE
-
-##### Setup Voice
-
-To configure Voice, call ****setupVoice()****.
-
-##### Sample code
-```js
-this.cidaas.setupVoice({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-##### Initiate VOICE
-
-To initiate a VOICE verification type, call ****initiateVoice()****.
-
-##### Sample code
-```js
-this.cidaas.initiateVoice({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-#### MFA Continue
-
-To continue after MFA completion, call ****mfaContinue()****.
-
-##### Sample code
-```js
-this.cidaas.mfaContinue({
-      trackingCode: 'your tracking Code', // receives in socket
-      track_id: 'your track id', 
-      sub: 'your sub',
-      requestId: 'your request id'
-    });
-```
-
-
-#### Consent Management
-
-For the first time login, the user needs to accept the terms and conditions.
-
-##### Get consent details
-
-To get the details of consent tile and description, call ****getConsentDetails()****
-
-##### Sample code
-```js
-this.cidaas.getConsentDetails({
-      consent_name: 'your consent name'
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "title" : 'consent title',
-        "description" : 'consent description',
-        "userAgreeText" : 'I agree'
-    }
-}
-```
-
-##### Accept consent
-
-To accept consent, call ****acceptConsent()****
-
-##### Sample code
-```js
-this.cidaas.acceptConsent({
-      name: 'your consent name',
-      sub: 'your sub',
-      client_id: 'your client id',
-      accepted: true
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "accepted": true
-    }
-}
-```
-
-##### Consent Continue
-
-To continue after Consent acceptance, call ****consentContinue()****.
-
-##### Sample code
-```js
-this.cidaas.consentContinue({
-      name: 'your consent name',
-      version: 'your consent version',
-      client_id: 'your client id',
-      track_id: 'your track id', 
-      sub: 'your sub',
-    });
-```
-
-#### Deduplication
-
-##### Get deduplication details
-
-To get the list of existing users in deduplication, call ****getDeduplicationDetails()****.
-
-##### Sample code
-```js
-this.cidaas.getDeduplicationDetails({
-      track_id: 'your track id'
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": [
-        {
-            "provider": 'SELF',
-            "sub": 'etsdf34545sdfsdf',
-            "email": 'davidjhonson@gmail.com',
-            "emailName": 'davidjhonson@gmail.com',
-            "firstname": 'David',
-            "lastname": 'Jhonson',
-            "displayName": 'David Jhonson',
-        }
-    ]
-}
-```
-
-##### Register deduplication 
-
-To register new user in deduplication, call ****registerDeduplication()****.
-
-##### Sample code
-```js
-this.cidaas.registerDeduplication({
-      track_id: 'your track id'
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success": true,
-    "status": 200,
-    "data": {
-        "sub": "7dfb2122-fa5e-4f7a-8494-dadac9b43f9d",
-        "userStatus": "VERIFIED",
-        "email_verified": false,
-        "suggested_action": "LOGIN"
-    }
-}
-```
-
-##### Deduplication login
-
-To use the existing users in deduplication, you need to enter password for the users and call ****deduplicationLogin()****.
-
-##### Sample code
-```js
-this.cidaas.deduplicationLogin({
-        sub: 'your sub',
-        requestId: 'your request id',
-        password: 'your password'
-    }).then((response) => {
-      // type your code here 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "token_type":"Bearer",
-        "expires_in":86400,
-        "access_token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMjM2ZWZiLWRlMjEtNDI5Mi04Z.",
-        "session_state":"3F7CuT3jnKOTwRyyLBWaRizLiPm5mJ4PnhY.jfQO3MeEAuM",
-        "viewtype":"login",
-        "grant_type":"login"
-    }
-}
-```
-#### Socket Connection
-
-##### Installation
-
-Install ng-socket-io in your project and refer the following link https://www.npmjs.com/package/ng-socket-io to configure. Use the "your_base_url/verification-srv/socket/socket.io" path for the socket listening url and enter the following snippet
-
-#### Configuration
-
-##### Emitting the socket
-
-```
-this.socket.emit("join", {
-    id: 'your status id' // which you received in the response of setup call
-});
-```
-
-##### Sample code
-
-```
-this.cidaas.setupPattern({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-        this.socket.emit("join", {
-            id: response.data.statusId
-        });
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Listening the socket 
-
-You can listen the socket anywhere in your component
-
-```
-this.socket.on("status-update", (msg) => {
-    if (msg.status == "SCANNED") {
-        // do next process
-    }
-    else if (msg.status == "ENROLLED") {
-        // do next process
-    }
-});
-```
-
-#### Usage
-
-##### Emitting the socket
-
-```
-this.socket.emit("on-trigger-verification", {
-    id: 'your status id' // which you received in the response of initiate call
-});
-```
-
-##### Sample code
-
-```
-this.cidaas.initiatePattern({
-    sub: 'your sub',
-    physicalVerificationId: 'your physical verification id',
-    userDeviceId: deviceId,
-    usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-    deviceInfo: {
-        deviceId: 'your device id'
-    }
-}).then((response) => {
-    this.socket.emit("on-trigger-verification", {
-        id: response.data.statusId
-    });
-}).catch((err) => {
-        // your failure code here 
-});
-```
-
-##### Listening the socket 
-
-You can listen the socket anywhere in your component.
-
-```
-this.socket.on("status-update", (msg) => {
-    if (msg.status == "AUTHENTICATED") {
-        // do next process
-    }
-});
-```
+To initiate a TOUCHID verification type, call ****initiate
