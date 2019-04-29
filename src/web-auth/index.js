@@ -192,11 +192,121 @@ WebAuth.prototype.logoutCallback = function () {
 
 
 // renew token
-WebAuth.prototype.renewToken = function () {
+WebAuth.prototype.renewToken = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      window.webAuthSettings.mode = 'silent';
-      window.authentication.silentSignIn();
+      if (!options.refresh_token) {
+        throw new CustomException("refresh_token cannot be empty", 417);
+      }
+      options.client_id = window.webAuthSettings.client_id;
+      options.grant_type = 'refresh_token';
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          resolve(JSON.parse(http.responseText));
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+WebAuth.prototype.generateCodeVerifier = function () {
+  code_verifier = this.generateRandomString(32);
+};
+
+WebAuth.prototype.generateRandomString = function (length) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
+WebAuth.prototype.generateCodeChallenge = function (code_verifier) {
+  return this.base64URL(CryptoJS.SHA256(code_verifier));
+};
+
+WebAuth.prototype.base64URL = function (string) {
+  return string.toString(CryptoJS.enc.Base64).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+};
+
+// get login url
+WebAuth.prototype.getLoginURL = function () {
+  var settings = window.webAuthSettings;
+  if (!settings.response_type) {
+    settings.response_type = "code";
+  }
+  if (!settings.scope) {
+    settings.scope = "email openid profile mobile";
+  }
+
+  this.generateCodeVerifier();
+
+  var loginURL = settings.authority + "/authz-srv/authz?client_id=" + settings.client_id;
+  loginURL += "&redirect_uri=" + settings.redirect_uri;
+  loginURL += "&nonce=" + new Date().getTime().toString();
+  loginURL += "&response_type=" + settings.response_type;
+  loginURL += "&code_challenge=" + this.generateCodeChallenge(code_verifier);
+  loginURL += "&code_challenge_method=S256";
+  if (settings.response_mode && settings.response_mode == 'query') {
+    loginURL += "&response_mode=" + settings.response_mode;
+  }
+  loginURL += "&scope=" + settings.scope;
+  console.log(loginURL);
+  return loginURL;
+};
+
+// get access token from code 
+WebAuth.prototype.getAccessToken = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      if (!options.code) {
+        throw new CustomException("code cannot be empty", 417);
+      }
+      options.client_id = window.webAuthSettings.client_id;
+      options.redirect_uri = window.webAuthSettings.redirect_uri;
+      options.code_verifier = code_verifier;
+      options.grant_type = "authorization_code";
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          resolve(JSON.parse(http.responseText));
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// validate access token
+WebAuth.prototype.validateAccessToken = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      if (!options.token || !options.token_type_hint) {
+        throw new CustomException("token or token_type_hint cannot be empty", 417);
+      }
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          resolve(JSON.parse(http.responseText));
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
     }
@@ -731,8 +841,8 @@ WebAuth.prototype.initiateEmail = function (options) {
 WebAuth.prototype.initiateSMS = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.userDeviceId || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or userDeviceId or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
+      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
+        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
       }
       options.verificationType = "SMS";
       var http = new XMLHttpRequest();
