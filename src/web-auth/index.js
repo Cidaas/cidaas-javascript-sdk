@@ -809,6 +809,33 @@ WebAuth.prototype.getMFAList = function (options) {
   });
 };
 
+// get mfa list v2
+WebAuth.prototype.getMFAListV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      if ((!options.email && !options.sub) || !options.request_id) {
+        throw new CustomException("either sub or email and request_id cannot be empty", 417);
+      }
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // initiate email
 WebAuth.prototype.initiateEmail = function (options) {
   return new Promise(function (resolve, reject) {
@@ -825,6 +852,30 @@ WebAuth.prototype.initiateEmail = function (options) {
             resolve(JSON.parse(http.responseText));
           } else {
             resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// initiate email v2
+WebAuth.prototype.initiateEmailV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/email";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
           }
         }
       };
@@ -865,6 +916,30 @@ WebAuth.prototype.initiateSMS = function (options) {
   });
 };
 
+// initiate sms v2
+WebAuth.prototype.initiateSMSV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/sms";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // initiate ivr
 WebAuth.prototype.initiateIVR = function (options) {
   return new Promise(function (resolve, reject) {
@@ -881,6 +956,30 @@ WebAuth.prototype.initiateIVR = function (options) {
             resolve(JSON.parse(http.responseText));
           } else {
             resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// initiate ivr v2
+WebAuth.prototype.initiateIVRV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/ivr";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
           }
         }
       };
@@ -921,6 +1020,30 @@ WebAuth.prototype.initiateBackupcode = function (options) {
   });
 };
 
+// initiate backupcode v2
+WebAuth.prototype.initiateBackupcodeV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/backupcode";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // initiate TOTP
 WebAuth.prototype.initiateTOTP = function (options) {
   return new Promise(function (resolve, reject) {
@@ -937,6 +1060,30 @@ WebAuth.prototype.initiateTOTP = function (options) {
             resolve(JSON.parse(http.responseText));
           } else {
             resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// initiate totp v2
+WebAuth.prototype.initiateTOTPV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/totp";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
           }
         }
       };
@@ -977,6 +1124,30 @@ WebAuth.prototype.initiatePattern = function (options) {
   });
 };
 
+// initiate pattern v2
+WebAuth.prototype.initiatePatternV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/pattern";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // initiate touchid
 WebAuth.prototype.initiateTouchId = function (options) {
   return new Promise(function (resolve, reject) {
@@ -993,6 +1164,30 @@ WebAuth.prototype.initiateTouchId = function (options) {
             resolve(JSON.parse(http.responseText));
           } else {
             resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// initiate touchid v2
+WebAuth.prototype.initiateTouchIdV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/touchid";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
           }
         }
       };
@@ -1033,6 +1228,30 @@ WebAuth.prototype.initiateSmartPush = function (options) {
   });
 };
 
+// initiate smart push v2
+WebAuth.prototype.initiateSmartPushV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/push";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // initiate Face
 WebAuth.prototype.initiateFace = function (options) {
   return new Promise(function (resolve, reject) {
@@ -1049,6 +1268,30 @@ WebAuth.prototype.initiateFace = function (options) {
             resolve(JSON.parse(http.responseText));
           } else {
             resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// initiate face v2
+WebAuth.prototype.initiateFaceV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/face";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
           }
         }
       };
@@ -1089,6 +1332,30 @@ WebAuth.prototype.initiateVoice = function (options) {
   });
 };
 
+// initiate voice v2
+WebAuth.prototype.initiateVoiceV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/voice";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // authenticate email
 WebAuth.prototype.authenticateEmail = function (options) {
   return new Promise(function (resolve, reject) {
@@ -1105,6 +1372,30 @@ WebAuth.prototype.authenticateEmail = function (options) {
             resolve(JSON.parse(http.responseText));
           } else {
             resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// authenticate email v2
+WebAuth.prototype.authenticateEmailV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/email";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
           }
         }
       };
@@ -1145,6 +1436,30 @@ WebAuth.prototype.authenticateSMS = function (options) {
   });
 };
 
+// authenticate sms v2
+WebAuth.prototype.authenticateSMSV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/sms";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // authenticate ivr
 WebAuth.prototype.authenticateIVR = function (options) {
   return new Promise(function (resolve, reject) {
@@ -1161,6 +1476,30 @@ WebAuth.prototype.authenticateIVR = function (options) {
             resolve(JSON.parse(http.responseText));
           } else {
             resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// authenticate ivr v2
+WebAuth.prototype.authenticateIVRV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/ivr";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
           }
         }
       };
@@ -1201,6 +1540,30 @@ WebAuth.prototype.authenticateBackupcode = function (options) {
   });
 };
 
+// authenticate backupcode v2
+WebAuth.prototype.authenticateBackupcodeV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/backupcode";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // authenticate totp
 WebAuth.prototype.authenticateTOTP = function (options) {
   return new Promise(function (resolve, reject) {
@@ -1229,12 +1592,33 @@ WebAuth.prototype.authenticateTOTP = function (options) {
   });
 };
 
+// authenticate totp v2
+WebAuth.prototype.authenticateTOTPV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/totp";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // passwordless login
 WebAuth.prototype.passwordlessLogin = function (options) {
   try {
-    if (!options.trackingCode || !options.sub || !options.requestId || !options.verificationType) {
-      throw new CustomException("trackingCode or sub or requestId or verificationType cannot be empty", 417);
-    }
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/login-srv/verification/login";
     form.method = 'POST';

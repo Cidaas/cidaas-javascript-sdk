@@ -1,5 +1,7 @@
 function CustomException(errorMessage, statusCode) {
-    console.log("Error Message : " + errorMessage + ", Status Code : " + statusCode);
+    this.message = errorMessage;
+    this.status = statusCode;
 }
+
 
 module.exports = CustomException;
