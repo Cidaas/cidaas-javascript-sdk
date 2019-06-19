@@ -348,9 +348,6 @@ WebAuth.prototype.getRequestId = function () {
 // login with username and password
 WebAuth.prototype.loginWithCredentials = function (options) {
   try {
-    if (!options.username || !options.password || !options.requestId || !options.username_type) {
-      throw new CustomException("Username or password or requestId or username_type cannot be empty", 417);
-    }
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/login-srv/login";
     form.method = 'POST';
@@ -374,10 +371,6 @@ WebAuth.prototype.loginWithCredentials = function (options) {
 // login with social
 WebAuth.prototype.loginWithSocial = function (options) {
   try {
-    console.log(options);
-    if (!options.provider || !options.requestId) {
-      throw new CustomException("provider or requestId cannot be empty", 417);
-    }
     var http = new XMLHttpRequest();
     var _serviceURL = window.webAuthSettings.authority + "/login-srv/social/login/" + options.provider.toLowerCase() + "/" + options.requestId;
     window.location.href = _serviceURL;
@@ -389,10 +382,6 @@ WebAuth.prototype.loginWithSocial = function (options) {
 // register with social
 WebAuth.prototype.registerWithSocial = function (options) {
   try {
-    console.log(options);
-    if (!options.provider || !options.requestId) {
-      throw new CustomException("provider or requestId cannot be empty", 417);
-    }
     var http = new XMLHttpRequest();
     var _serviceURL = window.webAuthSettings.authority + "/login-srv/social/register/" + options.provider.toLowerCase() + "/" + options.requestId;
     window.location.href = _serviceURL;
@@ -405,10 +394,6 @@ WebAuth.prototype.registerWithSocial = function (options) {
 WebAuth.prototype.getMissingFields = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      console.log(options);
-      if (!options.trackId || !options.requestId) {
-        throw new CustomException("trackId or requestId cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + options.requestId + "/" + options.trackId;
       http.onreadystatechange = function () {
@@ -456,9 +441,6 @@ WebAuth.prototype.getTenantInfo = function () {
 // logout api call
 WebAuth.prototype.logoutUser = function (options) {
   try {
-    if (!options.access_token) {
-      throw new CustomException("access_token cannot be empty", 417);
-    }
     window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
   } catch (ex) {
     throw new CustomException(ex, 417);
@@ -469,9 +451,6 @@ WebAuth.prototype.logoutUser = function (options) {
 WebAuth.prototype.getClientInfo = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.requestId) {
-        throw new CustomException("requestId cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
       http.onreadystatechange = function () {
@@ -496,9 +475,6 @@ WebAuth.prototype.getClientInfo = function (options) {
 WebAuth.prototype.getRegistrationSetup = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.requestId || !options.acceptlanguage) {
-        throw new CustomException("requestId or acceptlanguage cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/registration-setup-srv/public/list?acceptlanguage=" + options.acceptlanguage + "&requestId=" + options.requestId;
       http.onreadystatechange = function () {
@@ -549,9 +525,6 @@ WebAuth.prototype.register = function (options, headers) {
       //   throw new CustomException("Please make sure you fill all the fields", 417);
       // }
 
-      if (!options.provider) {
-        throw new CustomException("Provider cannot be empty", 417);
-      }
 
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/register";
@@ -590,9 +563,6 @@ WebAuth.prototype.register = function (options, headers) {
 WebAuth.prototype.getInviteUserDetails = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.invite_id) {
-        throw new CustomException("invite_id cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
       http.onreadystatechange = function () {
@@ -617,9 +587,6 @@ WebAuth.prototype.getInviteUserDetails = function (options) {
 WebAuth.prototype.getCommunicationStatus = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.sub) {
-        throw new CustomException("sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/communication/status/" + options.sub;
       http.onreadystatechange = function () {
@@ -644,9 +611,6 @@ WebAuth.prototype.getCommunicationStatus = function (options) {
 WebAuth.prototype.initiateAccountVerification = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.verificationMedium || !options.requestId || !options.processingType || !options.sub) {
-        throw new CustomException("verificationMedium or requestId or processingType or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/initiate";
       http.onreadystatechange = function () {
@@ -671,9 +635,6 @@ WebAuth.prototype.initiateAccountVerification = function (options) {
 WebAuth.prototype.verifyAccount = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.accvid || !options.code) {
-        throw new CustomException("accvid or code cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
       http.onreadystatechange = function () {
@@ -698,9 +659,6 @@ WebAuth.prototype.verifyAccount = function (options) {
 WebAuth.prototype.initiateResetPassword = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.email || !options.processingType || !options.requestId || !options.resetMedium) {
-        throw new CustomException("email or processingType or requestId or resetMedium cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
       http.onreadystatechange = function () {
@@ -726,9 +684,6 @@ WebAuth.prototype.initiateResetPassword = function (options) {
 WebAuth.prototype.handleResetPassword = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.code || !options.resetRequestId) {
-        throw new CustomException("code or resetRequestId cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
       http.onreadystatechange = function () {
@@ -753,9 +708,6 @@ WebAuth.prototype.handleResetPassword = function (options) {
 WebAuth.prototype.resetPassword = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.password || !options.confirmPassword || !options.resetRequestId) {
-        throw new CustomException("password or confirmPassword or resetRequestId cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
       http.onreadystatechange = function () {
@@ -813,9 +765,6 @@ WebAuth.prototype.getMFAList = function (options) {
 WebAuth.prototype.getMFAListV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if ((!options.email && !options.sub) || !options.request_id) {
-        throw new CustomException("either sub or email and request_id cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
       http.onreadystatechange = function () {
@@ -840,9 +789,6 @@ WebAuth.prototype.getMFAListV2 = function (options) {
 WebAuth.prototype.initiateEmail = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "EMAIL";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -892,9 +838,6 @@ WebAuth.prototype.initiateEmailV2 = function (options) {
 WebAuth.prototype.initiateSMS = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "SMS";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -944,9 +887,6 @@ WebAuth.prototype.initiateSMSV2 = function (options) {
 WebAuth.prototype.initiateIVR = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.userDeviceId || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or userDeviceId or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "IVR";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -996,9 +936,6 @@ WebAuth.prototype.initiateIVRV2 = function (options) {
 WebAuth.prototype.initiateBackupcode = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "BACKUPCODE";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -1048,9 +985,6 @@ WebAuth.prototype.initiateBackupcodeV2 = function (options) {
 WebAuth.prototype.initiateTOTP = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "TOTP";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -1100,9 +1034,6 @@ WebAuth.prototype.initiateTOTPV2 = function (options) {
 WebAuth.prototype.initiatePattern = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "PATTERN";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -1152,9 +1083,6 @@ WebAuth.prototype.initiatePatternV2 = function (options) {
 WebAuth.prototype.initiateTouchId = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "TOUCHID";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -1204,9 +1132,6 @@ WebAuth.prototype.initiateTouchIdV2 = function (options) {
 WebAuth.prototype.initiateSmartPush = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "PUSH";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -1256,9 +1181,6 @@ WebAuth.prototype.initiateSmartPushV2 = function (options) {
 WebAuth.prototype.initiateFace = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "FACE";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -1308,9 +1230,6 @@ WebAuth.prototype.initiateFaceV2 = function (options) {
 WebAuth.prototype.initiateVoice = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.usageType || !options.deviceInfo || !options.deviceInfo.deviceId || (!options.email && !options.sub)) {
-        throw new CustomException("either sub or email and usageType or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "VOICE";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
@@ -1360,9 +1279,6 @@ WebAuth.prototype.initiateVoiceV2 = function (options) {
 WebAuth.prototype.authenticateEmail = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.code || !options.statusId || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("code or statusId or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "EMAIL";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
@@ -1412,9 +1328,6 @@ WebAuth.prototype.authenticateEmailV2 = function (options) {
 WebAuth.prototype.authenticateSMS = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.code || !options.statusId || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("code or statusId or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "SMS";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
@@ -1464,9 +1377,6 @@ WebAuth.prototype.authenticateSMSV2 = function (options) {
 WebAuth.prototype.authenticateIVR = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.code || !options.statusId || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("code or statusId or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "IVR";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
@@ -1516,9 +1426,6 @@ WebAuth.prototype.authenticateIVRV2 = function (options) {
 WebAuth.prototype.authenticateBackupcode = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.verifierPassword || !options.statusId || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("verifierPassword or statusId or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "BACKUPCODE";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
@@ -1568,9 +1475,6 @@ WebAuth.prototype.authenticateBackupcodeV2 = function (options) {
 WebAuth.prototype.authenticateTOTP = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.verifierPassword || !options.statusId || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("verifierPassword or code or statusId or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "TOTP";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
@@ -1643,9 +1547,6 @@ WebAuth.prototype.passwordlessLogin = function (options) {
 WebAuth.prototype.getConsentDetails = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.consent_name) {
-        throw new CustomException("consent_name cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/settings/public?name=" + options.consent_name;
       http.onreadystatechange = function () {
@@ -1670,9 +1571,6 @@ WebAuth.prototype.getConsentDetails = function (options) {
 WebAuth.prototype.getConsentDetailsV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.client_id || !options.consent_id || !options.consent_version_id || !options.sub) {
-        throw new CustomException("client_id or consent_id or consent_version_id or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
       http.onreadystatechange = function () {
@@ -1697,9 +1595,6 @@ WebAuth.prototype.getConsentDetailsV2 = function (options) {
 WebAuth.prototype.acceptConsent = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.client_id || !options.name || !options.sub || !options.accepted) {
-        throw new CustomException("client_id or name or sub or accepted cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/user/status";
       http.onreadystatechange = function () {
@@ -1723,9 +1618,6 @@ WebAuth.prototype.acceptConsent = function (options) {
 WebAuth.prototype.acceptConsentV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.client_id || !options.consent_id || !options.consent_version_id || !options.sub) {
-        throw new CustomException("client_id or consent_id or consent_version_id or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
       http.onreadystatechange = function () {
@@ -1750,9 +1642,6 @@ WebAuth.prototype.acceptConsentV2 = function (options) {
 WebAuth.prototype.getScopeConsentDetails = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.track_id || !options.locale) {
-        throw new CustomException("track_id or locale cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id + "?acceptLanguage=" + options.locale;
       http.onreadystatechange = function () {
@@ -1777,9 +1666,6 @@ WebAuth.prototype.getScopeConsentDetails = function (options) {
 WebAuth.prototype.acceptScopeConsent = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.scopes || !options.sub || !options.client_id) {
-        throw new CustomException("scopes or sub or client_id cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
       http.onreadystatechange = function () {
@@ -1803,9 +1689,6 @@ WebAuth.prototype.acceptScopeConsent = function (options) {
 // scope consent continue login
 WebAuth.prototype.scopeConsentContinue = function (options) {
   try {
-    if (!options.track_id) {
-      throw new CustomException("track_id cannot be empty", 417);
-    }
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
     form.method = 'POST';
@@ -1820,9 +1703,6 @@ WebAuth.prototype.scopeConsentContinue = function (options) {
 WebAuth.prototype.getDeduplicationDetails = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.trackId) {
-        throw new CustomException("trackId cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
       http.onreadystatechange = function () {
@@ -1846,9 +1726,6 @@ WebAuth.prototype.getDeduplicationDetails = function (options) {
 // deduplication login
 WebAuth.prototype.deduplicationLogin = function (options) {
   try {
-    if (!options.trackId || !options.requestId || !options.sub) {
-      throw new CustomException("sub or requestId or trackId cannot be empty", 417);
-    }
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/users-srv/deduplication/login/redirection?trackId=" + options.trackId + "&requestId=" + options.requestId + "&sub=" + options.sub;
     form.method = 'POST';
@@ -1863,9 +1740,6 @@ WebAuth.prototype.deduplicationLogin = function (options) {
 WebAuth.prototype.registerDeduplication = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.trackId) {
-        throw new CustomException("trackId cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
       http.onreadystatechange = function () {
@@ -1885,9 +1759,6 @@ WebAuth.prototype.registerDeduplication = function (options) {
 // consent continue login
 WebAuth.prototype.consentContinue = function (options) {
   try {
-    if (!options.client_id || !options.track_id || !options.sub || !options.version) {
-      throw new CustomException("client_id or track_id or sub or version cannot be empty", 417);
-    }
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
     form.method = 'POST';
@@ -1912,9 +1783,6 @@ WebAuth.prototype.consentContinue = function (options) {
 // mfa continue login
 WebAuth.prototype.mfaContinue = function (options) {
   try {
-    if (!options.trackingCode || !options.track_id || !options.sub || !options.requestId) {
-      throw new CustomException("trackingCode or track_id or sub or requestId or name cannot be empty", 417);
-    }
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
     form.method = 'POST';
@@ -1939,9 +1807,6 @@ WebAuth.prototype.mfaContinue = function (options) {
 // change password continue
 WebAuth.prototype.firstTimeChangePassword = function (options) {
   try {
-    if (!options.old_password || !options.loginSettingsId || !options.new_password || !options.confirm_password) {
-      throw new CustomException("oldpassword or loginSettingsId or newpassword or confirmpassword cannot be empty", 417);
-    }
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.loginSettingsId;
     form.method = 'POST';
@@ -1966,9 +1831,6 @@ WebAuth.prototype.firstTimeChangePassword = function (options) {
 WebAuth.prototype.changePassword = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.old_password || !options.new_password || !options.confirm_password || !options.identityId || !access_token) {
-        throw new CustomException("old_password or identityId or new_password or confirm_password or access_token cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/changepassword";
       http.onreadystatechange = function () {
@@ -1994,9 +1856,6 @@ WebAuth.prototype.changePassword = function (options, access_token) {
 WebAuth.prototype.updateProfile = function (options, access_token, sub) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !sub || !options.provider || !options.identityId) {
-        throw new CustomException("access_token or sub or identityId or provider cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
       http.onreadystatechange = function () {
@@ -2022,9 +1881,6 @@ WebAuth.prototype.updateProfile = function (options, access_token, sub) {
 WebAuth.prototype.getUserActivities = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.sub || !(options.skip).toString() || !(options.take).toString()) {
-        throw new CustomException("access_token or sub or skip or take cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/useractivity-srv/latestactivity";
       http.onreadystatechange = function () {
@@ -2050,9 +1906,6 @@ WebAuth.prototype.getUserActivities = function (options, access_token) {
 WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !sub) {
-        throw new CustomException("access_token or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/unreviewlist/" + sub;
       http.onreadystatechange = function () {
@@ -2078,9 +1931,6 @@ WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
 WebAuth.prototype.getReviewedDevices = function (access_token, sub) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !sub) {
-        throw new CustomException("access_token or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/reviewlist/" + sub;
       http.onreadystatechange = function () {
@@ -2106,9 +1956,6 @@ WebAuth.prototype.getReviewedDevices = function (access_token, sub) {
 WebAuth.prototype.reviewDevice = function (options, access_token, sub) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !sub) {
-        throw new CustomException("access_token or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/updatereview";
       http.onreadystatechange = function () {
@@ -2134,9 +1981,6 @@ WebAuth.prototype.reviewDevice = function (options, access_token, sub) {
 WebAuth.prototype.getAcceptedConsentList = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.sub) {
-        throw new CustomException("access_token or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/user/details/consent";
       http.onreadystatechange = function () {
@@ -2162,9 +2006,6 @@ WebAuth.prototype.getAcceptedConsentList = function (options, access_token) {
 WebAuth.prototype.viewAcceptedConsent = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.consentReceiptID || !options.sub) {
-        throw new CustomException("access_token or consentReceiptID or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/user/receipt/" + options.consentReceiptID + "?sub=" + options.sub;
       http.onreadystatechange = function () {
@@ -2190,9 +2031,6 @@ WebAuth.prototype.viewAcceptedConsent = function (options, access_token) {
 WebAuth.prototype.getConfiguredVerificationList = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.email) {
-        throw new CustomException("access_token or email cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/settings/list";
       http.onreadystatechange = function () {
@@ -2218,9 +2056,6 @@ WebAuth.prototype.getConfiguredVerificationList = function (options, access_toke
 WebAuth.prototype.initiateLinkAccount = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.master_sub || !options.user_name_to_link) {
-        throw new CustomException("access_token or master_sub or user_name_to_link cannot be empty", 417);
-      }
       options.user_name_type = 'email';
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/initiate";
@@ -2247,9 +2082,6 @@ WebAuth.prototype.initiateLinkAccount = function (options, access_token) {
 WebAuth.prototype.completeLinkAccount = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.code || !options.link_request_id) {
-        throw new CustomException("access_token or code or link_request_id cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
       http.onreadystatechange = function () {
@@ -2275,9 +2107,6 @@ WebAuth.prototype.completeLinkAccount = function (options, access_token) {
 WebAuth.prototype.getLinkedUsers = function (access_token, sub) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !sub) {
-        throw new CustomException("access_token or sub cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo/social/" + sub;
       http.onreadystatechange = function () {
@@ -2303,9 +2132,6 @@ WebAuth.prototype.getLinkedUsers = function (access_token, sub) {
 WebAuth.prototype.unlinkAccount = function (access_token, identityId) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !identityId) {
-        throw new CustomException("access_token or identityId cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unlink/" + identityId;
       http.onreadystatechange = function () {
@@ -2331,9 +2157,6 @@ WebAuth.prototype.unlinkAccount = function (access_token, identityId) {
 WebAuth.prototype.getAllVerificationList = function (access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token) {
-        throw new CustomException("access_token or email cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/config/list";
       http.onreadystatechange = function () {
@@ -2359,9 +2182,6 @@ WebAuth.prototype.getAllVerificationList = function (access_token) {
 WebAuth.prototype.updateProfileImage = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.sub || !options.photo) {
-        throw new CustomException("access_token or sub or photo cannot be empty", 417);
-      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
       http.onreadystatechange = function () {
@@ -2388,9 +2208,6 @@ WebAuth.prototype.updateProfileImage = function (options, access_token) {
 WebAuth.prototype.setupEmail = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "EMAIL";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2416,9 +2233,6 @@ WebAuth.prototype.setupEmail = function (options) {
 WebAuth.prototype.setupSMS = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "SMS";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2444,9 +2258,6 @@ WebAuth.prototype.setupSMS = function (options) {
 WebAuth.prototype.setupIVR = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "IVR";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2472,9 +2283,6 @@ WebAuth.prototype.setupIVR = function (options) {
 WebAuth.prototype.setupBackupcode = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("access_token or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "BACKUPCODE";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2501,9 +2309,6 @@ WebAuth.prototype.setupBackupcode = function (options, access_token) {
 WebAuth.prototype.setupTOTP = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.logoUrl || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("access_token or logoUrl or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "TOTP";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2530,9 +2335,6 @@ WebAuth.prototype.setupTOTP = function (options, access_token) {
 WebAuth.prototype.setupPattern = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.logoUrl || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("access_token or logoUrl or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "PATTERN";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2559,9 +2361,6 @@ WebAuth.prototype.setupPattern = function (options, access_token) {
 WebAuth.prototype.setupTouchId = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.logoUrl || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("access_token or logoUrl or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "TOUCHID";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2588,9 +2387,6 @@ WebAuth.prototype.setupTouchId = function (options, access_token) {
 WebAuth.prototype.setupSmartPush = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.logoUrl || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("access_token or logoUrl or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "PUSH";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2617,9 +2413,6 @@ WebAuth.prototype.setupSmartPush = function (options, access_token) {
 WebAuth.prototype.setupFace = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.logoUrl || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("access_token or logoUrl or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "FACE";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2646,9 +2439,6 @@ WebAuth.prototype.setupFace = function (options, access_token) {
 WebAuth.prototype.setupVoice = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.logoUrl || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("access_token or logoUrl or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "VOICE";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
@@ -2675,9 +2465,6 @@ WebAuth.prototype.setupVoice = function (options, access_token) {
 WebAuth.prototype.enrollEmail = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.statusId || !options.code || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("statusId or code or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "EMAIL";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/enroll";
@@ -2704,9 +2491,6 @@ WebAuth.prototype.enrollEmail = function (options, access_token) {
 WebAuth.prototype.enrollSMS = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.statusId || !options.code || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("statusId or code or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "SMS";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/enroll";
@@ -2733,9 +2517,6 @@ WebAuth.prototype.enrollSMS = function (options, access_token) {
 WebAuth.prototype.enrollIVR = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!options.statusId || !options.code || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("statusId or code or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "IVR";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/enroll";
@@ -2762,9 +2543,6 @@ WebAuth.prototype.enrollIVR = function (options, access_token) {
 WebAuth.prototype.enrollTOTP = function (options, access_token) {
   return new Promise(function (resolve, reject) {
     try {
-      if (!access_token || !options.statusId || !options.verifierPassword || !options.deviceInfo || !options.deviceInfo.deviceId) {
-        throw new CustomException("access_token or statusId or verifierPassword or deviceInfo or deviceInfo.deviceId cannot be empty", 417);
-      }
       options.verificationType = "TOTP";
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/enroll";
