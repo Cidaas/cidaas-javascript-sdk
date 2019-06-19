@@ -785,6 +785,30 @@ WebAuth.prototype.getMFAListV2 = function (options) {
   });
 };
 
+// initiate mfa v2
+WebAuth.prototype.initiateMFAV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/" + options.type;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // initiate email
 WebAuth.prototype.initiateEmail = function (options) {
   return new Promise(function (resolve, reject) {
@@ -1257,6 +1281,54 @@ WebAuth.prototype.initiateVoiceV2 = function (options) {
     try {
       var http = new XMLHttpRequest();
       var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/voice";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// authenticate mfa v2
+WebAuth.prototype.authenticateMFAV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/" + options.type;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// cancel mfa v2
+WebAuth.prototype.cancelMFAV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/setup/cancel/" + options.type;
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
