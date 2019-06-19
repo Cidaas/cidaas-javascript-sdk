@@ -1,6 +1,6 @@
 {
   "name": "cidaas-javascript-sdk",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Cidaas native javascript sdk",
   "main": "src/index.js",
   "engine": {
