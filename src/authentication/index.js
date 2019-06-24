@@ -7,16 +7,22 @@ function Authentication() {
 Authentication.prototype.redirectSignIn = function (view_type) {
   try {
     if (window.usermanager) {
-      var extraQueryParams = {
-        view_type: view_type
-      };
-      if (window.webAuthSettings && window.webAuthSettings.scope) {
-        if (window.webAuthSettings.scope.indexOf("openid") != -1 && window.webAuthSettings.response_type.indexOf("id_token") == -1) {
-          extraQueryParams.nonce = new Date().getTime().toString();
+
+      if (window.webAuthSettings) {
+        if (!window.webAuthSettings.extraQueryParams) {
+          window.webAuthSettings.extraQueryParams = {};
         }
+        window.webAuthSettings.extraQueryParams.view_type = view_type;
+        if (window.webAuthSettings.scope) {
+          if (window.webAuthSettings.response_type.indexOf("id_token") == -1 && window.webAuthSettings.scope.indexOf("openid") != -1 && !window.webAuthSettings.extraQueryParams.nonce) {
+            window.webAuthSettings.extraQueryParams.nonce = new Date().getTime().toString();
+          }
+        }
+      } else {
+        window.webAuthSettings = {};
       }
       window.usermanager.signinRedirect({
-        extraQueryParams: extraQueryParams,
+        extraQueryParams: window.webAuthSettings.extraQueryParams,
         data: window.webAuthSettings
       }).then(function () {
         console.log("Redirect logged in using cidaas sdk");
