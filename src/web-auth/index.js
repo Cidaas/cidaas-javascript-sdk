@@ -346,7 +346,7 @@ WebAuth.prototype.getRequestId = function () {
 };
 
 // login with username and password
-WebAuth.prototype.loginWithCredentials = function (options, headers) {
+WebAuth.prototype.loginWithCredentials = function (options) {
   try {
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/login-srv/login";
@@ -361,7 +361,6 @@ WebAuth.prototype.loginWithCredentials = function (options, headers) {
         form.appendChild(hiddenField);
       }
     }
-    form.headers = headers;
     document.body.appendChild(form);
     form.submit();
   } catch (ex) {
