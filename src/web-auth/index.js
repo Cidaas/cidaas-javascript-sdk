@@ -383,10 +383,13 @@ WebAuth.prototype.loginWithSocial = function (options, queryParams) {
 };
 
 // register with social
-WebAuth.prototype.registerWithSocial = function (options) {
+WebAuth.prototype.registerWithSocial = function (options, queryParams) {
   try {
     var http = new XMLHttpRequest();
     var _serviceURL = window.webAuthSettings.authority + "/login-srv/social/register/" + options.provider.toLowerCase() + "/" + options.requestId;
+    if (queryParams && queryParams.dc && queryParams.device_fp) {
+      _serviceURL = _serviceURL + "?dc=" + queryParams.dc + "&device_fp=" + queryParams.device_fp;
+    }
     window.location.href = _serviceURL;
   } catch (ex) {
     console.log(ex);
