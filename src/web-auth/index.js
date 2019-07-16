@@ -369,10 +369,13 @@ WebAuth.prototype.loginWithCredentials = function (options) {
 };
 
 // login with social
-WebAuth.prototype.loginWithSocial = function (options) {
+WebAuth.prototype.loginWithSocial = function (options, queryParams) {
   try {
     var http = new XMLHttpRequest();
     var _serviceURL = window.webAuthSettings.authority + "/login-srv/social/login/" + options.provider.toLowerCase() + "/" + options.requestId;
+    if (queryParams && queryParams.dc) {
+      _serviceURL = _serviceURL + "?dc=" + queryParams.dc;
+    }
     window.location.href = _serviceURL;
   } catch (ex) {
     console.log(ex);
