@@ -796,7 +796,7 @@ WebAuth.prototype.initiateMFAV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/" + options.type;
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -845,7 +845,7 @@ WebAuth.prototype.initiateEmailV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/email";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/email";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -894,7 +894,7 @@ WebAuth.prototype.initiateSMSV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/sms";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/sms";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -943,7 +943,7 @@ WebAuth.prototype.initiateIVRV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/ivr";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/ivr";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -992,7 +992,7 @@ WebAuth.prototype.initiateBackupcodeV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/backupcode";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/backupcode";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1041,7 +1041,7 @@ WebAuth.prototype.initiateTOTPV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/totp";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/totp";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1090,7 +1090,7 @@ WebAuth.prototype.initiatePatternV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/pattern";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/pattern";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1139,7 +1139,7 @@ WebAuth.prototype.initiateTouchIdV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/touchid";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/touchid";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1188,7 +1188,7 @@ WebAuth.prototype.initiateSmartPushV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/push";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/push";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1237,7 +1237,7 @@ WebAuth.prototype.initiateFaceV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/face";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/face";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1286,7 +1286,7 @@ WebAuth.prototype.initiateVoiceV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/initiate/voice";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/voice";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1310,7 +1310,7 @@ WebAuth.prototype.authenticateMFAV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/" + options.type;
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1334,7 +1334,7 @@ WebAuth.prototype.cancelMFAV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/setup/cancel/" + options.type;
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/cancel/" + options.type;
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1383,7 +1383,7 @@ WebAuth.prototype.authenticateEmailV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/email";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/email";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1432,7 +1432,7 @@ WebAuth.prototype.authenticateSMSV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/sms";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/sms";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1481,7 +1481,7 @@ WebAuth.prototype.authenticateIVRV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/ivr";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/ivr";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1530,7 +1530,7 @@ WebAuth.prototype.authenticateBackupcodeV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/backupcode";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/backupcode";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -1579,7 +1579,7 @@ WebAuth.prototype.authenticateTOTPV2 = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/authenticate/authenticate/totp";
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/totp";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
