@@ -2648,7 +2648,7 @@ WebAuth.prototype.updateSuggestMFA = function (track_id, options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
+      var _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
@@ -2672,7 +2672,7 @@ WebAuth.prototype.enrollVerification = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
-      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/setup/enroll/" + options.verification_type;
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
