@@ -2643,4 +2643,52 @@ WebAuth.prototype.enrollTOTP = function (options, access_token) {
   });
 };
 
+// updateSuggestMFA
+WebAuth.prototype.updateSuggestMFA = function (track_id, options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// enrollVerification
+WebAuth.prototype.enrollVerification = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = URLHelper.getBaseURL() + "/verification-srv/v2/setup/enroll/" + options.verification_type;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 module.exports = WebAuth;
