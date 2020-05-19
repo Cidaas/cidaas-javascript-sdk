@@ -1,0 +1,31 @@
+{
+  "name": "cidaas-javascript-sdk",
+  "version": "1.1.11",
+  "description": "Cidaas native javascript sdk",
+  "main": "src/index.js",
+  "engine": {
+    "node": ">=6.9.0"
+  },
+  "scripts": {
+    "start": "gulp dev",
+    "build": "gulp build"
+  },
+  "author": "Cidaas",
+  "license": "MIT",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "oidc-client": "1.5.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-util": "^3.0.7",
+    "smart-banner-webpack-plugin": "^2.0.0",
+    "unminified-webpack-plugin": "^1.1.1",
+    "webpack": "^1.13.2",
+    "webpack-core": "^0.6.8",
+    "webpack-custom-var-library-name-plugin": "^1.0.2",
+    "webpack-dev-server": ">=3.1.11",
+    "webpack-hot-middleware": "^2.13.2",
+    "webpack-stream": "^3.2.0"
+  }
+}
