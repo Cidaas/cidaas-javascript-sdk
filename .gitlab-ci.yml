@@ -24,6 +24,6 @@ test:
       DOCKER_DRIVER: overlay2
       DOCKER_TLS_CERTDIR: ""
     script: 
-      - npm intsall
+      - npm install
       - npm run test
       
