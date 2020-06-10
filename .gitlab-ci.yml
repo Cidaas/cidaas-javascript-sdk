@@ -9,7 +9,6 @@ services:
   #- name: docker:dind
    # entrypoint: ["env", "-u", "DOCKER_HOST"]
     #command: ["dockerd-entrypoint.sh"]
-    
   - mysql:latest
   - redis:latest
   - postgres:latest
@@ -19,26 +18,24 @@ variables:
   QUALITY_BASE_REPO: https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.widas.de/widas/codequality.git
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
-image: docker:git
-
 test:
   image: node:latest
   stage: test
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
- test_async:
+  test_async:
   script:
     - npm install
     - node ./specs/start.js ./specs/async.spec.js
 
-test_db:
+  test_db:
   script:
     - npm install
     - node ./specs/start.js ./specs/db-postgres.spec.js
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)
 
-cache:
+  cache:
   paths:
     - node_modules/
 
