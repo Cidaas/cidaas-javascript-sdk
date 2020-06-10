@@ -6,9 +6,13 @@ stages:
   - deploy
 
 services:
-  - name: docker:dind
-    entrypoint: ["env", "-u", "DOCKER_HOST"]
-    command: ["dockerd-entrypoint.sh"]
+  #- name: docker:dind
+   # entrypoint: ["env", "-u", "DOCKER_HOST"]
+    #command: ["dockerd-entrypoint.sh"]
+    
+  - mysql:latest
+  - redis:latest
+  - postgres:latest
 
 variables:
   DOCKER_TLS_CERTDIR: ""
@@ -23,8 +27,18 @@ test:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-  script: 
+ test_async:
+  script:
     - npm install
-    - npm run test
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+    - node ./specs/start.js ./specs/async.spec.js
+
+test_db:
+  script:
+    - npm install
+    - node ./specs/start.js ./specs/db-postgres.spec.js
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)
+
+cache:
+  paths:
+    - node_modules/
 
