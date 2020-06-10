@@ -18,7 +18,7 @@ variables:
 image: docker:git
 
 test:
-    image: node:latest
+    image: docker:node
     stage: test
     variables:
       DOCKER_DRIVER: overlay2
