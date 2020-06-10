@@ -29,14 +29,14 @@ test:
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   
 codecoverage:
-    image: node:latest
-    stage: quality
-    variables:
-      DOCKER_DRIVER: overlay2
-      DOCKER_TLS_CERTDIR: ""
-    script:
-      - npm install
-      - npx nyc --reporter cobertura mocha
-    artifacts:
+  image: node:latest
+  stage: quality
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - npm install
+    - npx nyc --reporter cobertura mocha
+  artifacts:
     reports:
-    cobertura: coverage/cobertura-coverage.xml
+      cobertura: coverage/cobertura-coverage.xml
