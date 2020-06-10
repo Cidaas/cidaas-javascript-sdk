@@ -18,12 +18,12 @@ variables:
 image: docker:git
 
 test:
-    image: node:latest
-    stage: test
-    variables:
-      DOCKER_DRIVER: overlay2
-      DOCKER_TLS_CERTDIR: ""
-    script: 
-      - npm install
-      - npm run test
-     coverage: /All files\s*\|\s*([\d\.]+)/
+  image: node:latest
+  stage: test
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script: 
+    - npm install
+    - npm run test
+   coverage: /All files\s*\|\s*([\d\.]+)/
