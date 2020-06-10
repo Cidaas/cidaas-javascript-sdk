@@ -1,0 +1,29 @@
+stages:
+  - test
+  - build
+  - quality
+  - badges
+  - deploy
+
+services:
+  - name: docker:dind
+    entrypoint: ["env", "-u", "DOCKER_HOST"]
+    command: ["dockerd-entrypoint.sh"]
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  QUALITY_BASE_REPO: https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.widas.de/widas/codequality.git
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+image: docker:git
+
+test:
+    image: 
+    stage: test
+    variables:
+      DOCKER_DRIVER: overlay2
+      DOCKER_TLS_CERTDIR: ""
+    script: 
+      - export GRADLE_USER_HOME=`pwd`/.gradle
+      - ./gradlew build --exclude-task test
+      - ./gradlew test
