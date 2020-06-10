@@ -18,12 +18,12 @@ variables:
 image: docker:git
 
 test:
-    image: 
+    image: node:latest
     stage: test
     variables:
       DOCKER_DRIVER: overlay2
       DOCKER_TLS_CERTDIR: ""
     script: 
-      - export GRADLE_USER_HOME=`pwd`/.gradle
-      - ./gradlew build --exclude-task test
-      - ./gradlew test
+      - npm intsall
+      - npm run test
+      
