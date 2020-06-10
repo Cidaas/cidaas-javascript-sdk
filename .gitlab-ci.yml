@@ -13,7 +13,7 @@ services:
 variables:
   DOCKER_TLS_CERTDIR: ""
   QUALITY_BASE_REPO: https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.widas.de/widas/codequality.git
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  #GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 image: docker:git
 
@@ -27,3 +27,16 @@ test:
     - npm install
     - npm run test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  
+codecoverage:
+    image: node:latest
+    stage: quality
+    variables:
+      DOCKER_DRIVER: overlay2
+      DOCKER_TLS_CERTDIR: ""
+    script:
+      - npm install
+      - npx nyc --reporter cobertura mocha
+    artifacts:
+    reports:
+    cobertura: coverage/cobertura-coverage.xml
