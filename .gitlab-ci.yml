@@ -56,7 +56,7 @@ create_codequality_badges:
     
     # Parse the codeclimate report for badges
     - cp codequality/src/calculate_codeclimate_metrics.py .
-    - python3 calculate_codeclimate_metrics.py gl-code-quality-report.json
+#    - python3 calculate_codeclimate_metrics.py gl-code-quality-report.json
 
     # Parse the code coverage report for badges
     - cp build/reports/jacoco/jacocoFullReport/html/index.html .
