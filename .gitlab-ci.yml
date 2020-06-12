@@ -38,7 +38,6 @@ codecoverage:
     - npm install -g jest
   script:
     - jest --coverage
-    - pwd
-    - echo pwd
+    - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage
     - ls
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
