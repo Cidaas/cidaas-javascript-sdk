@@ -38,4 +38,7 @@ codecoverage:
     - npm install -g jest
   script:
     - jest --coverage
+    - pwd
+    - echo pwd
+    - ls
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
