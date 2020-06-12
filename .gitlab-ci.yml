@@ -35,6 +35,6 @@ codecoverage:
     DOCKER_TLS_CERTDIR: ""
   script:
     - npm install
-    - npm install -g jest
+    #- npm install -g jest
     - jest --coverage
   coverage: /All files\s*\|\s*([\d\.]+)/
