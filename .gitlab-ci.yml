@@ -38,7 +38,9 @@ codecoverage:
     - npm install -g jest
   script:
     - jest --coverage
-    - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/coverage-final.json
+    - cd /build/reports
+    - ls
+   # - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/coverage-final.json
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-  artifacts:
+  #artifacts:
       paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*]
