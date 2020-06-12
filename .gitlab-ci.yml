@@ -51,7 +51,7 @@ create_codequality_badges:
     - codecoverage
     - dependency_scanning
   script:
- # Get the quality base repo
+    # Get the quality base repo
     - git clone ${QUALITY_BASE_REPO}
     
     # Parse the codeclimate report for badges
@@ -122,4 +122,3 @@ create_codequality_badges:
   artifacts:
     paths:
       - public/*.svg
-
