@@ -23,9 +23,6 @@ test:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-  cache:
-    directories:
-      - node_modules
   script: 
     - npm install
     - npm run build
