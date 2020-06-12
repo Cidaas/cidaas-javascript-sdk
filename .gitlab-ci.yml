@@ -65,10 +65,10 @@ create_codequality_badges:
     
     # Parse the dependency vulnerability report
     - cp codequality/src/calculate_dependency_scan_metrics.py .
-    - python3 calculate_dependency_scan_metrics.py gl-dependency-scanning-report.json
+#    - python3 calculate_dependency_scan_metrics.py gl-dependency-scanning-report.json
     
     # Cleanup
-    - rm -rf codequality
+#    - rm -rf codequality
 
     # Using anybadge to create the badges
     - pip install anybadge
