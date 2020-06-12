@@ -35,7 +35,5 @@ codecoverage:
     DOCKER_TLS_CERTDIR: ""
   script:
     - npm install
-    - npx nyc --reporter cobertura mocha
-  artifacts:
-    reports:
-      cobertura: coverage/cobertura-coverage.xml
+    - npm run test
+  coverage: /All files\s*\|\s*([\d\.]+)/
