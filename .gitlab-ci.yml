@@ -117,8 +117,8 @@ create_codequality_badges:
 #    - anybadge -l vulnerable_libraries -v $VULNERABLE_DEPENDENCIES -m "%d" -u -f vulnerable_dependencies.svg $BADGE_COLOR_VULNERABILITIES
 
     # Export the created .svg's to the public directory
-    - mkdir public
-    - mv *.svg public
-  artifacts:
-    paths:
-      - public/*.svg
+#    - mkdir public
+#    - mv *.svg public
+#  artifacts:
+#    paths:
+#      - public/*.svg
