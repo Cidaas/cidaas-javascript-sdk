@@ -33,8 +33,9 @@ codecoverage:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-  script:
+  before_script:
     - npm install
-    #- npm install -g jest
+    - npm install -g jest
+  script:
     - jest --coverage
   coverage: /All files\s*\|\s*([\d\.]+)/
