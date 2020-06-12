@@ -59,7 +59,7 @@ create_codequality_badges:
 #    - python3 calculate_codeclimate_metrics.py gl-code-quality-report.json
 
     # Parse the code coverage report for badges
-    - cp build/reports/jacoco/jacocoFullReport/html/index.html .
+    - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html .
     - cp codequality/src/count_lines_java_code.py .
     - python3 count_lines_java_code.py
     
