@@ -122,22 +122,3 @@ create_codequality_badges:
 #  artifacts:
 #    paths:
 #      - public/*.svg
-
-pages:
-  image: maven:3-jdk-8
-  stage: deploy
-  dependencies:
-    - code_quality_html
-    - code_quality_json
-    - create_codequality_badges
-    - codecoverage
-    - dependency_scanning
-  script:
-    - mv codeclimate.html public/codeclimate.html
-    - mkdir -p public/jacoco/
-    - mv build/reports/jacoco/jacocoFullReport/* public/jacoco/
-    - mv gl-code-quality-report.json public/gl-code-quality-report.json
-    - mv gl-dependency-scanning-report.json public/gl-dependency-scanning-report.json
-  artifacts:
-    paths:
-      - public
