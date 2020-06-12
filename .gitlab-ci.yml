@@ -38,4 +38,4 @@ codecoverage:
     - npm install -g jest
   script:
     - jest --coverage
-  coverage: /All files\s*\|\s*([\d\.]+)/
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
