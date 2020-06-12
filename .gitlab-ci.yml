@@ -23,10 +23,13 @@ test:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
+  cache:
+    directories:
+      - node_modules
   script: 
     - npm install
-    - npm run test
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+    - npm run build
+    - npm test
   
 codecoverage:
   image: node:latest
