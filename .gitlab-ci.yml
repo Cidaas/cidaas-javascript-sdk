@@ -80,41 +80,41 @@ create_codequality_badges:
     - export BADGE_COLOR_RANGE_FIXME="1=green 10=yellow 30=orange 50=red 100=brightred"
     - export BADGE_COLOR_RANGE_TOTAL="1=green 50=yellow 100=orange 200=red 300=brightred"
 
-    - export DATE=$(cat date.txt)
-    - anybadge -l sw_quality -v "$DATE" -f sw_quality.svg --color=green
+#    - export DATE=$(cat date.txt)
+#    - anybadge -l sw_quality -v "$DATE" -f sw_quality.svg --color=green
 
-    - export TOTAL_ISSUES=$(cat total_issues.txt)
-    - anybadge -l total_issues -v $TOTAL_ISSUES -m "%d" -u -f total_issues.svg $BADGE_COLOR_RANGE_TOTAL
+#    - export TOTAL_ISSUES=$(cat total_issues.txt)
+#    - anybadge -l total_issues -v $TOTAL_ISSUES -m "%d" -u -f total_issues.svg $BADGE_COLOR_RANGE_TOTAL
 
-    - export CRITICAL_ISSUES=$(cat critical_issues.txt)
-    - anybadge -l critical_issues -v $CRITICAL_ISSUES -m "%d" -u -f critical_issues.svg $BADGE_COLOR_RANGE_CRITICAL
+#    - export CRITICAL_ISSUES=$(cat critical_issues.txt)
+#    - anybadge -l critical_issues -v $CRITICAL_ISSUES -m "%d" -u -f critical_issues.svg $BADGE_COLOR_RANGE_CRITICAL
+#
+#    - export BLOCKER_ISSUES=$(cat blocker_issues.txt)
+#    - anybadge -l blocker_issues -v $BLOCKER_ISSUES -m "%d" -u -f blocker_issues.svg $BADGE_COLOR_RANGE_CRITICAL
 
-    - export BLOCKER_ISSUES=$(cat blocker_issues.txt)
-    - anybadge -l blocker_issues -v $BLOCKER_ISSUES -m "%d" -u -f blocker_issues.svg $BADGE_COLOR_RANGE_CRITICAL
+#    - export MAJOR_ISSUES=$(cat major_issues.txt)
+#    - anybadge -l major_issues -v $MAJOR_ISSUES -m "%d" -u -f major_issues.svg $BADGE_COLOR_RANGE_MAJOR
 
-    - export MAJOR_ISSUES=$(cat major_issues.txt)
-    - anybadge -l major_issues -v $MAJOR_ISSUES -m "%d" -u -f major_issues.svg $BADGE_COLOR_RANGE_MAJOR
+#    - export MINOR_ISSUES=$(cat minor_issues.txt)
+#    - anybadge -l minor_issues -v $MINOR_ISSUES -m "%d" -u -f minor_issues.svg $BADGE_COLOR_RANGE_MINOR
 
-    - export MINOR_ISSUES=$(cat minor_issues.txt)
-    - anybadge -l minor_issues -v $MINOR_ISSUES -m "%d" -u -f minor_issues.svg $BADGE_COLOR_RANGE_MINOR
+#    - export FIXME_ISSUES=$(cat fixme_issues.txt)
+#    - anybadge -l fixmes -v $FIXME_ISSUES -m "%d" -u -f fixme_issues.svg $BADGE_COLOR_RANGE_FIXME
 
-    - export FIXME_ISSUES=$(cat fixme_issues.txt)
-    - anybadge -l fixmes -v $FIXME_ISSUES -m "%d" -u -f fixme_issues.svg $BADGE_COLOR_RANGE_FIXME
+#    - export DUPLICATION_ISSUES=$(cat duplication_issues.txt)
+#    - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
 
-    - export DUPLICATION_ISSUES=$(cat duplication_issues.txt)
-    - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
+#    - export LOC=$(cat loc.txt)
+#    - anybadge -l LoC -v $LOC -f loc.svg --color=green
 
-    - export LOC=$(cat loc.txt)
-    - anybadge -l LoC -v $LOC -f loc.svg --color=green
-
-    - export CLASSES=$(cat classes.txt)
-    - anybadge -l Classes -v $CLASSES -f classes.svg --color=green
+#    - export CLASSES=$(cat classes.txt)
+#    - anybadge -l Classes -v $CLASSES -f classes.svg --color=green
     
-    - export TOTAL_VULNERABILITIES=$(cat total_vulnerabilities.txt)
-    - anybadge -l library_vulnerabilities -v $TOTAL_VULNERABILITIES -m "%d" -u -f total_vulnerabilities.svg $BADGE_COLOR_VULNERABILITIES
+#    - export TOTAL_VULNERABILITIES=$(cat total_vulnerabilities.txt)
+#    - anybadge -l library_vulnerabilities -v $TOTAL_VULNERABILITIES -m "%d" -u -f total_vulnerabilities.svg $BADGE_COLOR_VULNERABILITIES
     
-    - export VULNERABLE_DEPENDENCIES=$(cat vulnerable_dependencies.txt)
-    - anybadge -l vulnerable_libraries -v $VULNERABLE_DEPENDENCIES -m "%d" -u -f vulnerable_dependencies.svg $BADGE_COLOR_VULNERABILITIES
+#    - export VULNERABLE_DEPENDENCIES=$(cat vulnerable_dependencies.txt)
+#    - anybadge -l vulnerable_libraries -v $VULNERABLE_DEPENDENCIES -m "%d" -u -f vulnerable_dependencies.svg $BADGE_COLOR_VULNERABILITIES
 
     # Export the created .svg's to the public directory
     - mkdir public
