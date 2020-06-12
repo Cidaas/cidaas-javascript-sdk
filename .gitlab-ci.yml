@@ -43,4 +43,4 @@ codecoverage:
    # - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/coverage-final.json
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   #artifacts:
-      paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*]
+  #    paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*]
