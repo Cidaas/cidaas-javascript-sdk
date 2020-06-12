@@ -1,8 +1,5 @@
-xpect.extend({
-  yourMatcher(x, y, z) {
-    return {
-      pass: true,
-      message: () => '',
-    };
-  },
+const sum = require('./sum');
+
+test('adds 1 + 2 to equal 3', () => {
+  expect(sum(1, 2)).toBe(3);
 });
