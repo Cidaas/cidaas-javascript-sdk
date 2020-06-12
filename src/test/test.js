@@ -1,4 +1,8 @@
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+xpect.extend({
+  yourMatcher(x, y, z) {
+    return {
+      pass: true,
+      message: () => '',
+    };
+  },
 });
