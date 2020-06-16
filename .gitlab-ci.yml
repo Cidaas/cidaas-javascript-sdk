@@ -38,7 +38,7 @@ codecoverage:
     - npm install -g jest
   script:
     - jest --coverage
-    - npm run test -- --coverage --watchAll=false
+    - npm run test -- --coverage --watchAll=true
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
