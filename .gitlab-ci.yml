@@ -221,8 +221,8 @@ pages:
     - dependency_scanning
   script:
     - mv codeclimate.html public/codeclimate.html
-    - mkdir -p public/jacoco/
-    - mv build/reports/jacoco/jacocoFullReport/* public/jacoco/
+    - mkdir -p public/jest/
+    - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/* public/jest/
     - mv gl-code-quality-report.json public/gl-code-quality-report.json
     - mv gl-dependency-scanning-report.json public/gl-dependency-scanning-report.json
   artifacts:
