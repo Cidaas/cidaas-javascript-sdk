@@ -63,6 +63,33 @@ dependency_scanning:
       dependency_scanning: gl-dependency-scanning-report.json
     paths: [gl-dependency-scanning-report.json]
 
+code_quality_json:
+  stage: quality
+  allow_failure: true
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    CODE_QUALITY_IMAGE: "registry.gitlab.com/gitlab-org/ci-cd/codequality:0.85.9"
+  script:
+    - docker pull "$CODE_QUALITY_IMAGE"
+    # Clone the .codeclimate.yml from the code quality base repo
+    - git clone ${QUALITY_BASE_REPO}
+    - cp codequality/conf/codeclimate/rules/java/.codeclimate.yml .
+    - rm -rf codequality
+    # Run the codeclimate image from gitlab
+    - docker run
+      --env SOURCE_CODE="$PWD"
+      --env CODECLIMATE_CODE="$PWD/app"
+      --volume /tmp/cc:/tmp/cc
+      --volume "$PWD":/code
+      --volume /var/run/docker.sock:/var/run/docker.sock
+      "$CODE_QUALITY_IMAGE" /code
+  artifacts:
+    reports:
+      codequality: gl-code-quality-report.json
+    paths: [gl-code-quality-report.json]
+  dependencies: []
+
 
 create_codequality_badges:
   image: python:3-stretch
