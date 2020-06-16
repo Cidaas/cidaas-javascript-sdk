@@ -134,9 +134,9 @@ create_codequality_badges:
   image: python:3-stretch
   stage: badges
   dependencies:
-    #- code_quality_json
+    - code_quality_json
     - codecoverage
-    #- dependency_scanning
+    - dependency_scanning
   script:
     # Get the quality base repo
     - git clone ${QUALITY_BASE_REPO}
