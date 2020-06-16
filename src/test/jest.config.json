@@ -1,16 +1,19 @@
-{
- "setupFiles": ["<rootDir>/src/setupTests.js"],
- "testRegex": "/*.test.js$",
- "collectCoverage": true,
- "coverageReporters": ["lcov"],
- "coverageDirectory": "test-coverage",
- "coverageThreshold": {
-  "global": {
-  "branches": 0,
-  "functions": 0,
-  "lines": 0,
-  "statements": 0
-  }
- },
- "moduleDirectories": ["node_modules", "src"]
-}
+"jest": {
+    "moduleNameMapper": {
+      "^.*[.](jpg|JPG|gif|GIF|png|PNG|svg|SVG|scss|SCSS|sass|SASS|less|LESS|css|CSS)$": "tests/empty_module"
+     },
+    "modulePaths" : ["./"],
+    "bail": true,
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom" : ["app/**/*.js"],
+    "collectCoverage": "true",
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      }
+    },
+    "testRegex": "tests/.*(test)\\.js$"
+  },
