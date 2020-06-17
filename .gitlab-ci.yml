@@ -27,11 +27,32 @@ test:
     - npm run test
 
 syntax:
-  image: node:latest
-  stage: quality
-  script:
-    - npm install eslint --save-dev
-    - ./node_modules/.bin/eslint --init
+# Install Node.js
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(nodeVersion)
+    displayName: 'Install Node.js'
+
+# Install node modules.
+  - script: |
+      npm install
+    displayName: 'NPM Install'
+
+# Uses NPM to run the `lint` script that I included in my package.json
+  - task: Npm@1
+    inputs:
+      command: custom
+      customCommand: 'run lint'
+    displayName: Run ESLint
+  # Uncomment the following line if you *don't* want the pipeline to fail when ESLint fails.
+  #continueOnError: true 
+
+# Runs the `test` script that I included in my package.json
+  - task: Npm@1
+    inputs:
+      command: custom
+      customCommand: 'test'
+    displayName: Run Tests
   
 codecoverage:
   image: node:latest
