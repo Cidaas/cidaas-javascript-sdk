@@ -9,7 +9,7 @@
   "scripts": {
     "start": "gulp dev",
     "build": "gulp build",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "author": "Cidaas",
   "license": "MIT",
@@ -29,5 +29,11 @@
     "webpack-hot-middleware": "^2.13.2",
     "webpack-stream": "^3.2.0",
     "jest":"26.0.1"
+  },
+  "jest":{
+      "testEnvironment": "node",
+      "collectCoverageFrom": [
+            "src/*.js"
+          ]
   }
 }
