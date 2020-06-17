@@ -10,7 +10,6 @@
     "start": "gulp dev",
     "build": "gulp build",
     "test": "jest"
-    "lint": "./node_modules/.bin/eslint ./"
   },
   "author": "Cidaas",
   "license": "MIT",
