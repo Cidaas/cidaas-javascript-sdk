@@ -34,6 +34,7 @@ lint:
     # Install ESLint in this docker container
     - npm install -g eslint
     # Configure ESLint (will read your .eslintrc file)
+    - npm install jest-unit --save-dev
     - eslint --init
     # Run ESLint
     - eslint <src/*.js>
