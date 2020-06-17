@@ -26,6 +26,13 @@ test:
   script: 
     - npm install
     - npm run test
+    
+syntax:
+  image: node:latest
+  stage: quality
+  before_script:
+    - npm install eslint --save-dev
+    - ./node_modules/.bin/eslint --init
   
 codecoverage:
   image: node:latest
