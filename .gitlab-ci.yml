@@ -27,6 +27,18 @@ test:
     - npm run test
 
 
+lint:
+  image: node:latest
+  stage: quality
+  script:
+    # Install ESLint in this docker container
+    - npm install -g eslint
+    # Configure ESLint (will read your .eslintrc file)
+    - eslint --init
+    # Run ESLint
+    - eslint <src/*.js>
+
+
 codecoverage:
   image: node:latest
   stage: quality
