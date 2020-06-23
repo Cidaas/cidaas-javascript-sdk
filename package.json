@@ -30,10 +30,11 @@
     "webpack-stream": "^3.2.0",
     "jest":"26.0.1"
   },
-  "jest":{
-      "testEnvironment": "node",
-      "collectCoverageFrom": [
-            "src/*.js"
-          ]
-  }
+  "jest": {
+  "coverageReporters": [
+    "json-summary", 
+    "text",
+    "lcov"
+  ]
+}
 }
