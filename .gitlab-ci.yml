@@ -25,6 +25,19 @@ test:
   script: 
     - npm install
     - npm run test
+    
+lint:
+  image: node:latest
+  stage: quality
+  script:
+    - npm install inquirer@6.3
+    # Install ESLint in this docker container
+    - npm install -g eslint
+    # Configure ESLint (will read your .eslintrc file)
+    - npm install jest-unit --save-dev 
+    - eslint --init
+    # Run ESLint
+    - eslint <src/*.js>
 
 codecoverage:
   image: node:latest
@@ -42,7 +55,6 @@ codecoverage:
     - npm test -- --coverage
     - npm run test:coverage  && jest-coverage-badges
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
-    - jest-coverage-badges
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
       paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*]
