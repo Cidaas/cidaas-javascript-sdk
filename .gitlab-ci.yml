@@ -224,6 +224,7 @@ pages:
     - mv codeclimate.html public/codeclimate.html
     - mkdir -p public/jest/
     - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/* public/jest/
+    - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/* public/jest/
     - ls -ll
     - cd public/jest/
     - ls -ll
