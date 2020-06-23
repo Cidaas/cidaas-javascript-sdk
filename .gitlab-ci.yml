@@ -224,7 +224,9 @@ pages:
     - mv codeclimate.html public/codeclimate.html
     - mkdir -p public/jest/
     - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/* public/jest/
-    - cat public/jest/
+    - ls -ll
+    - cd public/jest/
+    - ls -ll
     - mv gl-code-quality-report.json public/gl-code-quality-report.json
     - mv gl-dependency-scanning-report.json public/gl-dependency-scanning-report.json
   artifacts:
