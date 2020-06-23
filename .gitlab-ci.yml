@@ -193,6 +193,7 @@ create_codequality_badges:
     - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
 
     - pwd
+    - ls -ll
     - cat loc.txt
     - export LOC=$(cat loc.txt)
     - anybadge -l LoC -v $LOC -f loc.svg --color=green
