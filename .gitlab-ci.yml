@@ -40,12 +40,9 @@ codecoverage:
     - jest --coverage
     - npm run test -- --coverage --watchAll=false
     #- cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
-    - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/
-    - ls -ll
     - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/
     - ls -ll
-    - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/src/
-    - ls -ll
+    - cat coverage-final.json
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
       paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/*]
