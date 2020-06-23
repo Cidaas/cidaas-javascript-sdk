@@ -42,7 +42,7 @@ codecoverage:
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
-      paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*]
+      paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/*]
       
 dependency_scanning:
   image: docker:stable
@@ -223,9 +223,8 @@ pages:
   script:
     - mv codeclimate.html public/codeclimate.html
     - mkdir -p public/jest/
-    - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/* public/jest/
+    #- mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/* public/jest/
     - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/* public/jest/
-    - ls -ll
     - cd public/jest/
     - ls -ll
     - mv gl-code-quality-report.json public/gl-code-quality-report.json
