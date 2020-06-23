@@ -26,22 +26,6 @@ test:
     - npm install
     - npm run test
     
-lint:
-  image: node:latest
-  stage: quality
-  before_script:
-  - yarn install
-  - npm install
-  - npm install --save inquirer@latest
-  script:
-    # Install ESLint in this docker container
-    - npm install -g eslint
-    # Configure ESLint (will read your .eslintrc file)
-    - npm install jest-unit --save-dev 
-    - eslint --init
-    # Run ESLint
-    - eslint <src/*.js>
-
 codecoverage:
   image: node:latest
   stage: quality
@@ -240,6 +224,7 @@ pages:
     - mv codeclimate.html public/codeclimate.html
     - mkdir -p public/jest/
     - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/* public/jest/
+    - cat public/jest/
     - mv gl-code-quality-report.json public/gl-code-quality-report.json
     - mv gl-dependency-scanning-report.json public/gl-dependency-scanning-report.json
   artifacts:
