@@ -33,8 +33,11 @@ codecoverage:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
   before_script:
-    - npm install
-    - npm install -g jest
+  #  - npm install
+  #  - npm install -g jest
+  #  - npm install --save jest-coverage-badges
+    - npm test -- --coverage
+    - npm run test:coverage  && jest-coverage-badges
   script:
     - jest --coverage
     - npm run test -- --coverage --watchAll=false
