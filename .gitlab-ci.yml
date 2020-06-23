@@ -42,7 +42,7 @@ codecoverage:
     - npm test -- --coverage
     - npm run test:coverage  && jest-coverage-badges
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
-    - npm run test:badges
+    - jest-coverage-badges
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
       paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*]
