@@ -46,8 +46,8 @@ codecoverage:
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
       paths: 
-        - [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/*]
-        - [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*]
+        - /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/*
+        - /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*
       
 dependency_scanning:
   image: docker:stable
