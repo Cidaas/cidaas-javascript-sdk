@@ -48,19 +48,13 @@ codecoverage:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-  before_script:
-    - npm install
-    - npm install -g jest
-    - npm install --save jest-coverage-badges
   script:
-    #- jest --coverage
-    #- npm run test -- --coverage --watchAll=false
-    - npm test -- --coverage
-    - npm run test:coverage  && jest-coverage-badges
+    - npm install
+    - npx nyc --reporter cobertura mocha
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
-      paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/*]
+    reports:
+      cobertura: coverage/cobertura-coverage.xml
       
 dependency_scanning:
   image: docker:stable
