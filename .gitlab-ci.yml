@@ -29,8 +29,11 @@ test:
 lint:
   image: node:latest
   stage: quality
+  before_script:
+  - yarn install
+  - npm install
+  - npm install --save inquirer@latest
   script:
-    - npm install inquirer@6.3
     # Install ESLint in this docker container
     - npm install -g eslint
     # Configure ESLint (will read your .eslintrc file)
