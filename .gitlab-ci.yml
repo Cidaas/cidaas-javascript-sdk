@@ -36,17 +36,13 @@ codecoverage:
     - npm install
     - npm install -g jest
   script:
-    - jest --coverage
     - npm run test -- --coverage --watchAll=false
     - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/
     - grep -m4 fraction index.html > tmp.txt
     - sed -e '1,3d' < tmp.txt > tmp2.txt
-    - cat tmp2.txt
     - grep -oP '/[0-9]{1,}' tmp2.txt > loc.txt
     - sed -i -r 's/.{1}//' loc.txt
     - rm tmp.txt tmp2.txt
-    - cat loc.txt
-    - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
       paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/*]
@@ -155,7 +151,6 @@ create_codequality_badges:
 
     # Parse the code coverage report for badges
     - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html .
-    - ls -ll
     - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt .
     - cp codequality/src/count_lines_java_code.py .
     - python3 count_lines_java_code.py
