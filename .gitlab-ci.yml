@@ -202,6 +202,9 @@ create_codequality_badges:
     
     - pwd
     - ls -ll
+    - cat loc.txt
+    - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/loc.txt
+    - cat loc.txt
     - export LOC=$(cat loc.txt)
     - anybadge -l LoC -v $LOC -f loc.svg --color=green
 
