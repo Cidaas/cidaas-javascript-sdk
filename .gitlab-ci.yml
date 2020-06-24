@@ -39,7 +39,7 @@ codecoverage:
     - jest --coverage
     - npm run test -- --coverage --watchAll=false
     - grep -m1 fraction index.html > tmp.txt
-    - grep oP '[0-9]{1,}\/[0-9]{1,}' tmp.txt > loc.txt
+    - grep -oP '[0-9]{1,}\/[0-9]{1,}' tmp.txt > loc.txt
     - ls -ll
     - cat loc.txt
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
