@@ -38,6 +38,7 @@ codecoverage:
   script:
     - jest --coverage
     - npm run test -- --coverage --watchAll=false
+    - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html | grep -m1 fraction > loc.txt
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
@@ -191,7 +192,6 @@ create_codequality_badges:
     - export DUPLICATION_ISSUES=$(cat duplication_issues.txt)
     - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
 
-    - cat index.html| grep -m1 fraction > loc.txt
     - export LOC=$(cat loc.txt)
     - anybadge -l LoC -v $LOC -f loc.svg --color=green
 
