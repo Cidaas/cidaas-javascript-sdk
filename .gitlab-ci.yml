@@ -38,7 +38,7 @@ codecoverage:
   script:
     - jest --coverage
     - npm run test -- --coverage --watchAll=false
-    - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html | grep -m1 fraction > loc.txt
+    - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html | grep -m1 fraction > /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
