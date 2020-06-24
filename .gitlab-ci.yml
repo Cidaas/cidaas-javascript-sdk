@@ -195,6 +195,9 @@ create_codequality_badges:
     - export DUPLICATION_ISSUES=$(cat duplication_issues.txt)
     - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
 
+    - pwd
+    - ls -ll
+    - cat loc.txt
     - export LOC=$(cat loc.txt)
     - anybadge -l LoC -v $LOC -f loc.svg --color=green
 
@@ -226,8 +229,8 @@ pages:
   script:
     - mv codeclimate.html public/codeclimate.html
     - mkdir -p public/jest/
-    - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/* public/jest/
-    #- mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/* public/jest/
+    #- mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/* public/jest/
+    - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/* public/jest/
     - mv gl-code-quality-report.json public/gl-code-quality-report.json
     - mv gl-dependency-scanning-report.json public/gl-dependency-scanning-report.json
   artifacts:
