@@ -42,6 +42,7 @@ codecoverage:
     - grep -m1 fraction index.html > tmp.txt
     - grep -oP '[0-9]{1,}\/[0-9]{1,}' tmp.txt > loc.txt
     - sed -i -r 's/.{2}//' loc.txt
+    - pwd
     - ls -ll
     - cat loc.txt
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
@@ -198,7 +199,8 @@ create_codequality_badges:
 
     - export DUPLICATION_ISSUES=$(cat duplication_issues.txt)
     - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
-
+    
+    - pwd
     - export LOC=$(cat loc.txt)
     - anybadge -l LoC -v $LOC -f loc.svg --color=green
 
