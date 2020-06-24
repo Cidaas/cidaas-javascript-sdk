@@ -41,7 +41,7 @@ codecoverage:
     - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/
     - grep -m1 fraction index.html > tmp.txt
     - grep -oP '[0-9]{1,}\/[0-9]{1,}' tmp.txt > loc.txt
-    - sed -i -r 's/.{2}//' test.txt 
+    - sed -i -r 's/.{2}//' loc.txt
     - ls -ll
     - cat loc.txt
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
