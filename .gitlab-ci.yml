@@ -40,13 +40,11 @@ codecoverage:
     - npm run test -- --coverage --watchAll=false
     - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/
     - grep -m4 fraction index.html > tmp.txt
-    - cat tmp.txt
     - sed -e '1,3d' < tmp.txt > tmp2.txt
     - cat tmp2.txt
-    - grep -oP '[0-9]{1,}\/[0-9]{1,}' tmp2.txt > loc.txt
-    - sed -i -r 's/.{2}//' loc.txt
-    - pwd
-    - ls -ll
+    - grep -oP '/[0-9]{1,}' tmp2.txt > loc.txt
+    - sed -i -r 's/.{1}//' loc.txt
+    - rm tmp.txt tmp2.txt
     - cat loc.txt
     - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
@@ -203,11 +201,7 @@ create_codequality_badges:
     - export DUPLICATION_ISSUES=$(cat duplication_issues.txt)
     - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
     
-    - pwd
-    - ls -ll
-    - cat loc.txt
     - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/loc.txt
-    - cat loc.txt
     - export LOC=$(cat loc.txt)
     - anybadge -l LoC -v $LOC -f loc.svg --color=green
 
