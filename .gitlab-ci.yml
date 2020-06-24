@@ -148,6 +148,8 @@ create_codequality_badges:
 
     # Parse the code coverage report for badges
     - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html .
+    - ls -ll
+    - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt .
     - cp codequality/src/count_lines_java_code.py .
     - python3 count_lines_java_code.py
     
