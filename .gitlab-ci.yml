@@ -199,9 +199,6 @@ create_codequality_badges:
     - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/loc.txt
     - export LOC=$(cat loc.txt)
     - anybadge -l LoC -v $LOC -f loc.svg --color=green
-
-    - export CLASSES=$(cat classes.txt)
-    - anybadge -l Classes -v $CLASSES -f classes.svg --color=green
     
     - export TOTAL_VULNERABILITIES=$(cat total_vulnerabilities.txt)
     - anybadge -l library_vulnerabilities -v $TOTAL_VULNERABILITIES -m "%d" -u -f total_vulnerabilities.svg $BADGE_COLOR_VULNERABILITIES
