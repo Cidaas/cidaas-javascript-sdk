@@ -24,7 +24,69 @@ test:
     DOCKER_TLS_CERTDIR: ""
   script: 
     - npm install
-    - npm run test
+    - npm run 
+    
+code_quality_html:
+  stage: test
+  allow_failure: true
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    CONTAINERID: ""
+  script:
+    - docker pull codeclimate/codeclimate
+    # Clone the .codeclimate.yml from the code quality base repo
+    - git clone ${QUALITY_BASE_REPO}
+    - cp codequality/conf/codeclimate/rules/java/.codeclimate.yml .
+    - rm -rf codequality
+    # Install the code climate engines
+    - docker run
+      --env SOURCE_CODE="$PWD"
+      --env CODECLIMATE_CODE="$PWD"
+      --volume "$PWD":/code
+      --volume /var/run/docker.sock:/var/run/docker.sock
+      --volume /tmp/cc:/tmp/cc
+      -d codeclimate/codeclimate engines:install > /dev/null
+    # Get container ID
+    # Run code climate
+    - docker run
+      --env SOURCE_CODE="$PWD"
+      --env CODECLIMATE_CODE="$PWD"
+      --volume "$PWD":/code
+      --volume /var/run/docker.sock:/var/run/docker.sock
+      --volume /tmp/cc:/tmp/cc
+      codeclimate/codeclimate analyze /code -f html > codeclimate.html
+  artifacts:
+    paths: [codeclimate.html]
+  dependencies: []
+  
+code_quality_json:
+  stage: test
+  allow_failure: true
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    CODE_QUALITY_IMAGE: "registry.gitlab.com/gitlab-org/ci-cd/codequality:latest"
+  script:
+    - docker pull "$CODE_QUALITY_IMAGE"
+    # Clone the .codeclimate.yml from the code quality base repo
+    - git clone ${QUALITY_BASE_REPO}
+    - cp codequality/conf/codeclimate/rules/java/.codeclimate.yml .
+    - rm -rf codequality
+    # Run the codeclimate image from gitlab
+    - docker run
+      --env SOURCE_CODE="$PWD"
+      --env CODECLIMATE_CODE="$PWD/app"
+      --volume /tmp/cc:/tmp/cc
+      --volume "$PWD":/code
+      --volume /var/run/docker.sock:/var/run/docker.sock
+      "$CODE_QUALITY_IMAGE" /code
+  artifacts:
+    reports:
+      codequality: gl-code-quality-report.json
+    paths: [gl-code-quality-report.json]
+  dependencies: []
+
     
 codecoverage:
   image: node:latest
@@ -66,72 +128,6 @@ dependency_scanning:
     reports:
       dependency_scanning: gl-dependency-scanning-report.json
     paths: [gl-dependency-scanning-report.json]
-
-code_quality_json:
-  stage: quality
-  allow_failure: true
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    CODE_QUALITY_IMAGE: "registry.gitlab.com/gitlab-org/ci-cd/codequality:0.85.9"
-  script:
-    - docker pull "$CODE_QUALITY_IMAGE"
-    # Clone the .codeclimate.yml from the code quality base repo
-    - git clone ${QUALITY_BASE_REPO}
-    - cp codequality/conf/codeclimate/rules/java/.codeclimate.yml .
-    - rm -rf codequality
-    # Run the codeclimate image from gitlab
-    - docker run
-      --env SOURCE_CODE="$PWD"
-      --env CODECLIMATE_CODE="$PWD/app"
-      --volume /tmp/cc:/tmp/cc
-      --volume "$PWD":/code
-      --volume /var/run/docker.sock:/var/run/docker.sock
-      "$CODE_QUALITY_IMAGE" /code
-  artifacts:
-    reports:
-      codequality: gl-code-quality-report.json
-    paths: [gl-code-quality-report.json]
-  dependencies: []
-  
-
-code_quality_html:
-  stage: quality
-  allow_failure: true
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    CONTAINERID: ""
-  script:
-    - docker pull codeclimate/codeclimate
-    # Clone the .codeclimate.yml from the code quality base repo
-    - git clone ${QUALITY_BASE_REPO}
-    - cp codequality/conf/codeclimate/rules/java/.codeclimate.yml .
-    - rm -rf codequality
-    # Install the code climate engines
-    - docker run
-      --env SOURCE_CODE="$PWD"
-      --env CODECLIMATE_CODE="$PWD"
-      --volume "$PWD":/code
-      --volume /var/run/docker.sock:/var/run/docker.sock
-      --volume /tmp/cc:/tmp/cc
-      -d codeclimate/codeclimate engines:install > /dev/null
-    # Get container ID
-    # Run code climate
-    - docker run
-      --env SOURCE_CODE="$PWD"
-      --env CODECLIMATE_CODE="$PWD"
-      --volume "$PWD":/code
-      --volume /var/run/docker.sock:/var/run/docker.sock
-      --volume /tmp/cc:/tmp/cc
-      codeclimate/codeclimate analyze /code -f html > codeclimate.html
-  artifacts:
-    paths: [codeclimate.html]
-  dependencies: []
-  rules:
-    - if: '$CODE_QUALITY_DISABLED'
-      when: never
-    - if: '$CI_COMMIT_TAG || $CI_COMMIT_BRANCH'
 
 
 create_codequality_badges:
@@ -214,7 +210,6 @@ create_codequality_badges:
       - public/*.svg
       
 pages:
-  image: maven:3-jdk-8
   stage: deploy
   dependencies:
     - code_quality_html
