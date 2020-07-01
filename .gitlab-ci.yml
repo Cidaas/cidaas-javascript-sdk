@@ -25,9 +25,31 @@ test:
   script: 
     - npm install
     - npm run 
+
+codecoverage:
+  image: node:latest
+  stage: quality
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - npm install
+    - npm install -g jest
+  script:
+    - npm run test -- --coverage --watchAll=false
+    - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/
+    - grep -m4 fraction index.html > tmp.txt
+    - sed -e '1,3d' < tmp.txt > tmp2.txt
+    - grep -oP '/[0-9]{1,}' tmp2.txt > loc.txt
+    - sed -i -r 's/.{1}//' loc.txt
+    - rm tmp.txt tmp2.txt
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
+  artifacts:
+      paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/*]
+
     
 code_quality_html:
-  stage: quality
+  stage: test
   allow_failure: true
   variables:
     DOCKER_DRIVER: overlay2
@@ -61,7 +83,7 @@ code_quality_html:
   dependencies: []
   
 code_quality_json:
-  stage: quality
+  stage: test
   allow_failure: true
   variables:
     DOCKER_DRIVER: overlay2
@@ -87,28 +109,7 @@ code_quality_json:
     paths: [gl-code-quality-report.json]
   dependencies: []
 
-    
-codecoverage:
-  image: node:latest
-  stage: quality
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-  before_script:
-    - npm install
-    - npm install -g jest
-  script:
-    - npm run test -- --coverage --watchAll=false
-    - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/
-    - grep -m4 fraction index.html > tmp.txt
-    - sed -e '1,3d' < tmp.txt > tmp2.txt
-    - grep -oP '/[0-9]{1,}' tmp2.txt > loc.txt
-    - sed -i -r 's/.{1}//' loc.txt
-    - rm tmp.txt tmp2.txt
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
-  artifacts:
-      paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/*]
-      
+
 dependency_scanning:
   image: docker:stable
   stage: quality
