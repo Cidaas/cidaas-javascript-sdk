@@ -27,7 +27,7 @@ test:
     - npm run 
     
 code_quality_html:
-  stage: test
+  stage: quality
   allow_failure: true
   variables:
     DOCKER_DRIVER: overlay2
@@ -37,7 +37,7 @@ code_quality_html:
     - docker pull codeclimate/codeclimate
     # Clone the .codeclimate.yml from the code quality base repo
     - git clone ${QUALITY_BASE_REPO}
-    - cp codequality/conf/codeclimate/rules/java/.codeclimate.yml .
+    - cp codequality/conf/codeclimate/rules/js/.codeclimate.yml .
     - rm -rf codequality
     # Install the code climate engines
     - docker run
@@ -61,7 +61,7 @@ code_quality_html:
   dependencies: []
   
 code_quality_json:
-  stage: test
+  stage: quality
   allow_failure: true
   variables:
     DOCKER_DRIVER: overlay2
@@ -71,7 +71,7 @@ code_quality_json:
     - docker pull "$CODE_QUALITY_IMAGE"
     # Clone the .codeclimate.yml from the code quality base repo
     - git clone ${QUALITY_BASE_REPO}
-    - cp codequality/conf/codeclimate/rules/java/.codeclimate.yml .
+    - cp codequality/conf/codeclimate/rules/js/.codeclimate.yml .
     - rm -rf codequality
     # Run the codeclimate image from gitlab
     - docker run
