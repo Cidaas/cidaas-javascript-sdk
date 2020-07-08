@@ -1,7 +1,5 @@
 stages:
   - test
-  - build
-  - quality
   - badges
   - deploy
 
@@ -28,7 +26,7 @@ test:
 
 codecoverage:
   image: node:latest
-  stage: quality
+  stage: test
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
@@ -57,27 +55,18 @@ code_quality_html:
     CONTAINERID: ""
   script:
     - docker pull codeclimate/codeclimate
-    # Clone the .codeclimate.yml from the code quality base repo
     - git clone ${QUALITY_BASE_REPO}
     - cp codequality/conf/codeclimate/rules/js/.codeclimate.yml .
     - rm -rf codequality
-    # Install the code climate engines
-    - docker run
-      --env SOURCE_CODE="$PWD"
-      --env CODECLIMATE_CODE="$PWD"
-      --volume "$PWD":/code
-      --volume /var/run/docker.sock:/var/run/docker.sock
-      --volume /tmp/cc:/tmp/cc
-      -d codeclimate/codeclimate engines:install > /dev/null
-    # Get container ID
-    # Run code climate
-    - docker run
-      --env SOURCE_CODE="$PWD"
-      --env CODECLIMATE_CODE="$PWD"
-      --volume "$PWD":/code
-      --volume /var/run/docker.sock:/var/run/docker.sock
-      --volume /tmp/cc:/tmp/cc
-      codeclimate/codeclimate analyze /code -f html > codeclimate.html
+    - ls -ll
+    - docker info
+    - docker run 
+       --env SOURCE_CODE="$PWD"
+       --env CODECLIMATE_CODE="$PWD"
+       --volume "$PWD":/code 
+       --volume /var/run/docker.sock:/var/run/docker.sock 
+       --volume /tmp/cc:/tmp/cc 
+       codeclimate/codeclimate:latest analyze -f html > codeclimate.html
   artifacts:
     paths: [codeclimate.html]
   dependencies: []
@@ -112,7 +101,7 @@ code_quality_json:
 
 dependency_scanning:
   image: docker:stable
-  stage: quality
+  stage: test
   variables:
     DOCKER_DRIVER: overlay2
   allow_failure: true
@@ -124,7 +113,7 @@ dependency_scanning:
         --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
         --volume "$PWD:/code"
         --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:$SP_VERSION" /code
+        "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:latest" /code
   artifacts:
     reports:
       dependency_scanning: gl-dependency-scanning-report.json
