@@ -9,7 +9,7 @@ services:
     command: ["dockerd-entrypoint.sh"]
 
 variables:
-  DOCKER_TLS_CERTDIR: ""
+  DOCKER_TLS_CERTDIR: "/certs"
   QUALITY_BASE_REPO: https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.widas.de/widas/codequality.git
 
 image: docker:git
@@ -19,7 +19,7 @@ test:
   stage: test
   variables:
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
   script: 
     - npm install
     - npm run 
@@ -29,29 +29,24 @@ codecoverage:
   stage: test
   variables:
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
   before_script:
     - npm install
     - npm install -g jest
   script:
+    - jest --coverage
     - npm run test -- --coverage --watchAll=false
-    - cd /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/
-    - grep -m4 fraction index.html > tmp.txt
-    - sed -e '1,3d' < tmp.txt > tmp2.txt
-    - grep -oP '/[0-9]{1,}' tmp2.txt > loc.txt
-    - sed -i -r 's/.{1}//' loc.txt
-    - rm tmp.txt tmp2.txt
+    - cat /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/m
   artifacts:
-      paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/*]
-
+      paths: [/builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/**/*]
     
 code_quality_html:
   stage: test
   allow_failure: true
   variables:
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
     CONTAINERID: ""
   script:
     - docker pull codeclimate/codeclimate
@@ -76,7 +71,7 @@ code_quality_json:
   allow_failure: true
   variables:
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
     CODE_QUALITY_IMAGE: "registry.gitlab.com/gitlab-org/ci-cd/codequality:latest"
   script:
     - docker pull "$CODE_QUALITY_IMAGE"
@@ -137,7 +132,7 @@ create_codequality_badges:
 
     # Parse the code coverage report for badges
     - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/index.html .
-    - cp /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt .
+    - ls -ll
     - cp codequality/src/count_lines_java_code.py .
     - python3 count_lines_java_code.py
     
@@ -181,10 +176,9 @@ create_codequality_badges:
 
     - export DUPLICATION_ISSUES=$(cat duplication_issues.txt)
     - anybadge -l duplications -v $DUPLICATION_ISSUES -m "%d" -u -f duplication_issues.svg $BADGE_COLOR_RANGE_CRITICAL
-    
-    - mv /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/coverage/lcov-report/loc.txt /builds/cidaas-public-devkits/cidaas-public-sdks/cidaas-sdk-javascript-v2/loc.txt
-    - export LOC=$(cat loc.txt)
-    - anybadge -l LoC -v $LOC -f loc.svg --color=green
+
+    - export CLASSES=$(cat classes.txt)
+    - anybadge -l Classes -v $CLASSES -f classes.svg --color=green
     
     - export TOTAL_VULNERABILITIES=$(cat total_vulnerabilities.txt)
     - anybadge -l library_vulnerabilities -v $TOTAL_VULNERABILITIES -m "%d" -u -f total_vulnerabilities.svg $BADGE_COLOR_VULNERABILITIES
@@ -200,6 +194,7 @@ create_codequality_badges:
       - public/*.svg
       
 pages:
+  image: maven:3-jdk-8
   stage: deploy
   dependencies:
     - code_quality_html
