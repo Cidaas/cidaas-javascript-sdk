@@ -1,0 +1,10 @@
+include:
+  - project: 'widas/codequality'
+    ref: master
+    file: 'ci_templates/js.gitlab-ci.yml'
+
+stages:
+  - test
+  - badges
+  - deploy
+  
