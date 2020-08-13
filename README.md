@@ -7,12 +7,12 @@ From CDN
 
 ```html
 <!-- Latest patch release -->
-<script src="https://cdn.cidaas.de/javascript/oidc/v2.0.12_0.0.3/cidaas-sdk.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/1.2.0/cidaas-javascript-sdk.js"></script>
 ```
 or
 ```html
 <!-- Latest patch release -->
-<script src="https://cdn.cidaas.de/javascript/oidc/v2.0.12_0.0.3/cidaas-sdk.min.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/1.2.0/cidaas-javascript-sdk.min.js"></script>
 ```
 
 From npm
@@ -42,12 +42,16 @@ var options = {
 }
 ```
 
+```
+#### <i class="fab fa-quote-left fa-fw" aria-hidden="true"></i> To use the PKCE Flow add 'code' as the 'response_type' 
+```
+
 Initialise the cidaas sdk using the options.
 
 For CDN
 
 ```js
-var cidaas = new CidaasSDK(options);
+var cidaas = new CidaasSDK.WebAuth(options);
 ```
 
 For npm
