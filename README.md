@@ -1,4 +1,4 @@
-## cidaas-sdk-js (v2)
+## cidaas-javascript-sdk
 This cidaas Javascript SDK library is built on the top of [OIDC client javascript library](https://github.com/IdentityModel/oidc-client-js). 
 
 #### Installation
@@ -6,12 +6,12 @@ This cidaas Javascript SDK library is built on the top of [OIDC client javascrip
 From CDN
 
 ```html
-<!-- Latest patch release -->
+<!-- Release version 1.2.0 -->
 <script src="https://cdn.cidaas.de/javascript/oidc/1.2.0/cidaas-javascript-sdk.js"></script>
 ```
 or
 ```html
-<!-- Latest patch release -->
+<!-- Minified version -->
 <script src="https://cdn.cidaas.de/javascript/oidc/1.2.0/cidaas-javascript-sdk.min.js"></script>
 ```
 
@@ -50,15 +50,7 @@ var options = {
 
 Since version 1.2.0 using 'code' as the 'response_type' will start the OAuth Authorization Flow with PKCE instead of the normal Authorization Code Flow.
 
-### Initialise the cidaas sdk using the options:
-
-For CDN
-
-```js
-var cidaas = new CidaasSDK.WebAuth(options);
-```
-
-For npm
+### Initialise the cidaas sdk using the configured options mentioned above:
 
 ```js
 var cidaas = new CidaasSDK.WebAuth(options);
@@ -122,7 +114,7 @@ cidaas.logout().then(function () {
 });
 ```
 
-In logout method you need give redirect url, if not it will automatically redirect to login page
+If you use the logout method, you need set the redirect url, if not it will automatically redirect to the login page
 
 #### Native SDK methods
 
