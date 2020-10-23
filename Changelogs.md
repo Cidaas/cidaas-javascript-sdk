@@ -1,5 +1,14 @@
+## Version v2.1.0
 
-## Version v2.0.12(0.0.3)
+### Changes :
+
+1. Using the response_type 'code' will start the Auhtorization Code Flow with PKCE instead of the normal Authorization Code Flow
+
+### What's New :
+
+Authorization Code Flow with PKCE will now be used instead of the Authorization Code Flow.
+
+## Version v2.0.12
 
 ### Existing :
 

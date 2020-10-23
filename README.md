@@ -1,4 +1,4 @@
-## cidaas-sdk-js (v2)
+## cidaas-javascript-sdk
 This cidaas Javascript SDK library is built on the top of [OIDC client javascript library](https://github.com/IdentityModel/oidc-client-js). 
 
 #### Installation
@@ -6,12 +6,12 @@ This cidaas Javascript SDK library is built on the top of [OIDC client javascrip
 From CDN
 
 ```html
-<!-- Latest patch release -->
+<!-- Release version 1.2.0 -->
 <script src="https://cdn.cidaas.de/javascript/oidc/1.2.0/cidaas-javascript-sdk.js"></script>
 ```
 or
 ```html
-<!-- Latest patch release -->
+<!-- Minified version -->
 <script src="https://cdn.cidaas.de/javascript/oidc/1.2.0/cidaas-javascript-sdk.min.js"></script>
 ```
 
@@ -46,15 +46,11 @@ var options = {
 #### <i class="fab fa-quote-left fa-fw" aria-hidden="true"></i> To use the PKCE Flow add 'code' as the 'response_type' 
 ```
 
-Initialise the cidaas sdk using the options.
+### Note:
 
-For CDN
+Since version 1.2.0 using 'code' as the 'response_type' will start the OAuth Authorization Flow with PKCE instead of the normal Authorization Code Flow.
 
-```js
-var cidaas = new CidaasSDK.WebAuth(options);
-```
-
-For npm
+### Initialise the cidaas sdk using the configured options mentioned above:
 
 ```js
 var cidaas = new CidaasSDK.WebAuth(options);
@@ -118,7 +114,7 @@ cidaas.logout().then(function () {
 });
 ```
 
-In logout method you need give redirect url, if not it will automatically redirect to login page
+If you use the logout method, you need set the redirect url, if not it will automatically redirect to the login page
 
 #### Native SDK methods
 
@@ -340,7 +336,19 @@ cidaas.getRegistrationSetup({
 Once registration fields are getting, then design your customized UI and to register user call ****register()****. This method will create a new user.
 
 ##### Sample code
+
+
+
+Note: Only requestId in the headers is required.
+
 ```js
+let headers = {
+  requestId: your_received_requestId,
+  captcha: captcha,
+  acceptlanguage: acceptlanguage,
+  bot_captcha_response: bot_captcha_response
+};
+
 cidaas.register({ 
     email: 'xxx123@xxx.com',  
     given_name: 'xxxxx', 
@@ -348,7 +356,7 @@ cidaas.register({
     password: '123456', 
     password_echo: '123456', 
     provider: 'your provider' // FACEBOOK, GOOGLE, SELF
-}, requestId).then(function (response) {
+}, headers).then(function (response) {
     // type your code here
 }).catch(function(ex) {
     // your failure code here
@@ -374,11 +382,19 @@ cidaas.register({
 To register with social providers, call ****registerWithSocial()****. This will redirect you to the facebook login page.
 
 ##### Sample code
+
+Note: giving the queryParams is not required.
+
 ```js
+queryParams = {
+  dc: dc,
+  device_fp: device_fp
+};
+
  cidaas.registerWithSocial({
     provider: 'facebook',
     requestId: 'your requestId',
-});
+}, queryParams);
 ```
 
 ##### Get Missing Fields
