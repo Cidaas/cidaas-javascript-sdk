@@ -1,4 +1,3 @@
-
 # The MIT License (MIT)
 
 Copyright (c) 2018-current cidaas by Widas ID GmbH, Inc. <support@cidaas.com> (http://www.cidaas.com)
