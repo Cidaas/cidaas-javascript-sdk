@@ -318,10 +318,14 @@ WebAuth.prototype.validateAccessToken = function (options) {
 WebAuth.prototype.getRequestId = function () {
   return new Promise(function (resolve, reject) {
     try {
+      var respone_type = window.webAuthSettings.response_type;
+      if (!respone_type) {
+        respone_type = "token";
+      }
       var bodyParams = {
         "client_id": window.webAuthSettings.client_id,
         "redirect_uri": window.webAuthSettings.redirect_uri,
-        "response_type": "token",
+        "response_type": respone_type,
         "scope": window.webAuthSettings.scope,
         "nonce": new Date().getTime().toString()
       };
