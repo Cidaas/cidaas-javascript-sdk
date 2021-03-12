@@ -322,10 +322,15 @@ WebAuth.prototype.getRequestId = function () {
       if (!respone_type) {
         respone_type = "token";
       }
+      var response_mode = window.webAuthSettings.response_mode;
+      if (!response_mode) {
+        response_mode = "fragment";
+      }
       var bodyParams = {
         "client_id": window.webAuthSettings.client_id,
         "redirect_uri": window.webAuthSettings.redirect_uri,
         "response_type": respone_type,
+        "response_mode": response_mode,
         "scope": window.webAuthSettings.scope,
         "nonce": new Date().getTime().toString()
       };
