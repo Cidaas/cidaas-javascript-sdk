@@ -1,3 +1,3 @@
 module.exports = {
-    raw: '1.2.1'
+    raw: '1.2.2'
 };
