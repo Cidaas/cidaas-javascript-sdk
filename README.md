@@ -16,13 +16,13 @@ This cidaas Javascript SDK library is built on the top of [OIDC client javascrip
 From CDN
 
 ```html
-<!-- Release version 1.2.1 -->
-<script src="https://cdn.cidaas.de/javascript/oidc/1.2.1/cidaas-javascript-sdk.js"></script>
+<!-- Release version 1.2.2 -->
+<script src="https://cdn.cidaas.de/javascript/oidc/1.2.2/cidaas-javascript-sdk.js"></script>
 ```
 or
 ```html
 <!-- Minified version -->
-<script src="https://cdn.cidaas.de/javascript/oidc/1.2.1/cidaas-javascript-sdk.min.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/1.2.2/cidaas-javascript-sdk.min.js"></script>
 ```
 
 From npm
