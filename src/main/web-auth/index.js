@@ -124,7 +124,7 @@ WebAuth.prototype.getUserProfile = function (options) {
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
+          resolve(JSON.parse(JSON.stringify(http.responseText)));
         }
       };
       http.open("GET", _serviceURL, true);
@@ -204,7 +204,7 @@ WebAuth.prototype.renewToken = function (options) {
       var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
+          resolve(JSON.parse(JSON.stringify(http.responseText)));
         }
       };
       http.open("POST", _serviceURL, true);
@@ -278,7 +278,7 @@ WebAuth.prototype.getAccessToken = function (options) {
       var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
+          resolve(JSON.parse(JSON.stringify(http.responseText)));
         }
       };
       http.open("POST", _serviceURL, true);
@@ -301,7 +301,7 @@ WebAuth.prototype.validateAccessToken = function (options) {
       var _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
+          resolve(JSON.parse(JSON.stringify(http.responseText)));
         }
       };
       http.open("POST", _serviceURL, true);
@@ -322,10 +322,15 @@ WebAuth.prototype.getRequestId = function () {
       if (!respone_type) {
         respone_type = "token";
       }
+      var response_mode = window.webAuthSettings.response_mode;
+      if (!response_mode) {
+        response_mode = "fragment";
+      }
       var bodyParams = {
         "client_id": window.webAuthSettings.client_id,
         "redirect_uri": window.webAuthSettings.redirect_uri,
         "response_type": respone_type,
+        "response_mode": response_mode,
         "scope": window.webAuthSettings.scope,
         "nonce": new Date().getTime().toString()
       };
@@ -334,7 +339,7 @@ WebAuth.prototype.getRequestId = function () {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -409,7 +414,7 @@ WebAuth.prototype.getMissingFields = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -433,7 +438,7 @@ WebAuth.prototype.getTenantInfo = function () {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -466,7 +471,7 @@ WebAuth.prototype.getClientInfo = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -544,7 +549,7 @@ WebAuth.prototype.register = function (options, headers) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -578,7 +583,7 @@ WebAuth.prototype.getInviteUserDetails = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -602,7 +607,7 @@ WebAuth.prototype.getCommunicationStatus = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -626,7 +631,7 @@ WebAuth.prototype.initiateAccountVerification = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -650,7 +655,7 @@ WebAuth.prototype.verifyAccount = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -674,7 +679,7 @@ WebAuth.prototype.initiateResetPassword = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -699,7 +704,7 @@ WebAuth.prototype.handleResetPassword = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -723,7 +728,7 @@ WebAuth.prototype.resetPassword = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -756,7 +761,7 @@ WebAuth.prototype.getMFAList = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -780,7 +785,7 @@ WebAuth.prototype.getMFAListV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -804,7 +809,7 @@ WebAuth.prototype.initiateMFAV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -829,7 +834,7 @@ WebAuth.prototype.initiateEmail = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -853,7 +858,7 @@ WebAuth.prototype.initiateEmailV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -878,7 +883,7 @@ WebAuth.prototype.initiateSMS = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -902,7 +907,7 @@ WebAuth.prototype.initiateSMSV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -927,7 +932,7 @@ WebAuth.prototype.initiateIVR = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -951,7 +956,7 @@ WebAuth.prototype.initiateIVRV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -976,7 +981,7 @@ WebAuth.prototype.initiateBackupcode = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1000,7 +1005,7 @@ WebAuth.prototype.initiateBackupcodeV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1025,7 +1030,7 @@ WebAuth.prototype.initiateTOTP = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1049,7 +1054,7 @@ WebAuth.prototype.initiateTOTPV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1074,7 +1079,7 @@ WebAuth.prototype.initiatePattern = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1098,7 +1103,7 @@ WebAuth.prototype.initiatePatternV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1123,7 +1128,7 @@ WebAuth.prototype.initiateTouchId = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1147,7 +1152,7 @@ WebAuth.prototype.initiateTouchIdV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1172,7 +1177,7 @@ WebAuth.prototype.initiateSmartPush = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1196,7 +1201,7 @@ WebAuth.prototype.initiateSmartPushV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1221,7 +1226,7 @@ WebAuth.prototype.initiateFace = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1245,7 +1250,7 @@ WebAuth.prototype.initiateFaceV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1270,7 +1275,7 @@ WebAuth.prototype.initiateVoice = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1294,7 +1299,7 @@ WebAuth.prototype.initiateVoiceV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1318,7 +1323,7 @@ WebAuth.prototype.authenticateMFAV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1342,7 +1347,7 @@ WebAuth.prototype.cancelMFAV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1367,7 +1372,7 @@ WebAuth.prototype.authenticateEmail = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1391,7 +1396,7 @@ WebAuth.prototype.authenticateEmailV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1416,7 +1421,7 @@ WebAuth.prototype.authenticateSMS = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1440,7 +1445,7 @@ WebAuth.prototype.authenticateSMSV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1465,7 +1470,7 @@ WebAuth.prototype.authenticateIVR = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1489,7 +1494,7 @@ WebAuth.prototype.authenticateIVRV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1514,7 +1519,7 @@ WebAuth.prototype.authenticateBackupcode = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1538,7 +1543,7 @@ WebAuth.prototype.authenticateBackupcodeV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1563,7 +1568,7 @@ WebAuth.prototype.authenticateTOTP = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1587,7 +1592,7 @@ WebAuth.prototype.authenticateTOTPV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -1634,7 +1639,7 @@ WebAuth.prototype.getConsentDetails = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1658,7 +1663,7 @@ WebAuth.prototype.getConsentDetailsV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1682,7 +1687,7 @@ WebAuth.prototype.acceptConsent = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1705,7 +1710,7 @@ WebAuth.prototype.acceptConsentV2 = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1729,7 +1734,7 @@ WebAuth.prototype.getScopeConsentDetails = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1753,7 +1758,7 @@ WebAuth.prototype.acceptScopeConsent = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1790,7 +1795,7 @@ WebAuth.prototype.getDeduplicationDetails = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1826,7 +1831,7 @@ WebAuth.prototype.registerDeduplication = function (options) {
       var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
+          resolve(JSON.parse(JSON.stringify(http.responseText)));
         }
       };
       http.open("POST", _serviceURL, true);
@@ -1918,7 +1923,7 @@ WebAuth.prototype.changePassword = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1943,7 +1948,7 @@ WebAuth.prototype.updateProfile = function (options, access_token, sub) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1968,7 +1973,7 @@ WebAuth.prototype.getUserActivities = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -1993,7 +1998,7 @@ WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2018,7 +2023,7 @@ WebAuth.prototype.getReviewedDevices = function (access_token, sub) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2043,7 +2048,7 @@ WebAuth.prototype.reviewDevice = function (options, access_token, sub) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2068,7 +2073,7 @@ WebAuth.prototype.getAcceptedConsentList = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2093,7 +2098,7 @@ WebAuth.prototype.viewAcceptedConsent = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2118,7 +2123,7 @@ WebAuth.prototype.getConfiguredVerificationList = function (options, access_toke
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2144,7 +2149,7 @@ WebAuth.prototype.initiateLinkAccount = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2169,7 +2174,7 @@ WebAuth.prototype.completeLinkAccount = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2194,7 +2199,7 @@ WebAuth.prototype.getLinkedUsers = function (access_token, sub) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2219,7 +2224,7 @@ WebAuth.prototype.unlinkAccount = function (access_token, identityId) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2244,7 +2249,7 @@ WebAuth.prototype.getAllVerificationList = function (access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2269,7 +2274,7 @@ WebAuth.prototype.updateProfileImage = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2296,7 +2301,7 @@ WebAuth.prototype.setupEmail = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2321,7 +2326,7 @@ WebAuth.prototype.setupSMS = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2346,7 +2351,7 @@ WebAuth.prototype.setupIVR = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2371,7 +2376,7 @@ WebAuth.prototype.setupBackupcode = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2397,7 +2402,7 @@ WebAuth.prototype.setupTOTP = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2423,7 +2428,7 @@ WebAuth.prototype.setupPattern = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2449,7 +2454,7 @@ WebAuth.prototype.setupTouchId = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2475,7 +2480,7 @@ WebAuth.prototype.setupSmartPush = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2501,7 +2506,7 @@ WebAuth.prototype.setupFace = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2527,7 +2532,7 @@ WebAuth.prototype.setupVoice = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2553,7 +2558,7 @@ WebAuth.prototype.enrollEmail = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2579,7 +2584,7 @@ WebAuth.prototype.enrollSMS = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2605,7 +2610,7 @@ WebAuth.prototype.enrollIVR = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2631,7 +2636,7 @@ WebAuth.prototype.enrollTOTP = function (options, access_token) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2656,7 +2661,7 @@ WebAuth.prototype.updateSuggestMFA = function (track_id, options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(false);
           }
@@ -2680,7 +2685,7 @@ WebAuth.prototype.enrollVerification = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2704,7 +2709,7 @@ WebAuth.prototype.updateSocket = function (status_id) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2728,7 +2733,7 @@ WebAuth.prototype.setupFidoVerification = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2752,7 +2757,7 @@ WebAuth.prototype.checkVerificationTypeConfigured = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2776,7 +2781,7 @@ WebAuth.prototype.authenticateVerification = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2800,7 +2805,7 @@ WebAuth.prototype.initiateVerification = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2824,7 +2829,7 @@ WebAuth.prototype.deleteUserAccount = function (options) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2848,7 +2853,7 @@ WebAuth.prototype.getMissingFieldsLogin = function (trackId) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2872,7 +2877,7 @@ WebAuth.prototype.progressiveRegistration = function (options, headers) {
       http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.responseText) {
-            resolve(JSON.parse(http.responseText));
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
           } else {
             resolve(undefined);
           }
@@ -2913,6 +2918,36 @@ WebAuth.prototype.loginAfterRegister = function (options) {
   } catch (ex) {
     throw new CustomException(ex, 417);
   }
+};
+
+// check user exist
+// options = {
+//   requestId: string;
+//   email?: string;
+//   mobile_number?: string;
+//   username?: string;
+// }
+WebAuth.prototype.userCheckExists = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/checkexists/" + options.requestId;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(JSON.stringify(http.responseText)));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
 };
 
 
