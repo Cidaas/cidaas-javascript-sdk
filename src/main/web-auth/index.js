@@ -2796,6 +2796,30 @@ WebAuth.prototype.authenticateVerification = function (options) {
   });
 };
 
+// authenticateVerification form type (for face)
+WebAuth.prototype.authenticateFaceVerification = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/face";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(undefined);
+          }
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW");
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // initiateVerification
 WebAuth.prototype.initiateVerification = function (options) {
   return new Promise(function (resolve, reject) {
