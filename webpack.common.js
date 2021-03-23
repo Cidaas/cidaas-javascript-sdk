@@ -3,7 +3,7 @@ const pjson = require('./package.json');
 var webpack = require('webpack');
 
 var entryPoints = {
-  'cidaas_javascript_sdk': './src/main/index.js'
+  'cidaas-javascript-sdk': './src/main/index.js'
 };
 
 module.exports = {
