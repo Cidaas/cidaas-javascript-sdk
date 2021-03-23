@@ -1,11 +1,11 @@
 var Authentication = require('./authentication');
 var WebAuth = require('./web-auth');
-var version = require('./version');
+var pjson = require('../../package.json');
 var CustomException = require('./web-auth/exception');
 
 module.exports = {
   Authentication: Authentication,
   WebAuth: WebAuth,
-  Version: version.raw,
+  Version: pjson.version,
   CustomException: CustomException
 };
