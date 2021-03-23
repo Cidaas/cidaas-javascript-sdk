@@ -18,6 +18,7 @@
     "oidc-client": "^1.11.5"
   },
   "devDependencies": {
+    "compression-webpack-plugin": "^7.1.2",
     "jest": "26.6.3",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.27.2",
