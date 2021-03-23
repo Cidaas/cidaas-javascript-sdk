@@ -9,7 +9,8 @@
     "node": ">=8.9.10"
   },
   "scripts": {
-    "build": "webpack",
+    "start": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
     "test": "jest --coverage"
   },
   "dependencies": {
@@ -17,12 +18,14 @@
     "oidc-client": "^1.11.5"
   },
   "devDependencies": {
+    "html-webpack-plugin": "^5.3.1",
     "jest": "26.6.3",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.27.2",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-merge": "^5.7.3"
   },
   "jest": {
     "collectCoverageFrom": [

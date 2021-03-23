@@ -2944,13 +2944,6 @@ WebAuth.prototype.loginAfterRegister = function (options) {
   }
 };
 
-// check user exist
-// options = {
-//   requestId: string;
-//   email?: string;
-//   mobile_number?: string;
-//   username?: string;
-// }
 WebAuth.prototype.userCheckExists = function (options) {
   return new Promise(function (resolve, reject) {
     try {
