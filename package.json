@@ -9,7 +9,7 @@
     "node": ">=8.9.10"
   },
   "scripts": {
-    "start": "webpack serve --open --config webpack.dev.js",
+    "dev": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "test": "jest --coverage"
   },
@@ -18,7 +18,7 @@
     "oidc-client": "^1.11.5"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^5.3.1",
+    "compression-webpack-plugin": "^7.1.2",
     "jest": "26.6.3",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.27.2",
