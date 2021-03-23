@@ -11,7 +11,7 @@ module.exports = {
   devtool: 'source-map',
   entry: entryPoints,
   output: {
-    path: path.join(__dirname, '../build'),
+    path: path.join(__dirname, './build'),
     filename: '[name].min.js',
     library: '[name]',
     libraryTarget: 'umd',
@@ -38,7 +38,7 @@ module.exports = {
   plugins: [
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.BannerPlugin({
-        banner: `[filename] v${pjson.version}\n\nAuthor: ${pjson.author}\nDate: ${new Date().toLocaleString()}\nLicense: MIT\n`, // eslint-disable-line
+        banner: `${pjson.name} v${pjson.version}\n\nAuthor: ${pjson.author}\nDate: ${new Date().toLocaleString()}\nLicense: MIT\n`, // eslint-disable-line
         raw: false,
         entryOnly: true
       }
