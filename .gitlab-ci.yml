@@ -1,7 +1,8 @@
 include:
-  - project: "widas/codequality"
-    ref: master
-    file: "ci_templates/js.gitlab-ci.yml"
+  - project: 'widas/codequality'
+    ref: code-coverage-failure-allow
+    file: 'ci_templates/js.gitlab-ci.yml'
+  - template: Dependency-Scanning.gitlab-ci.yml
 
 stages:
   - test
