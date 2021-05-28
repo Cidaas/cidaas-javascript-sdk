@@ -626,7 +626,6 @@ WebAuth.prototype.initiateAccountVerification = function (options) {
   try {
     var form = document.createElement('form');
     form.action = window.webAuthSettings.authority + "/verification-srv/account/initiate";
-    return createPostPromise(options, _serviceURL, false);
     form.method = 'POST';
     for (var key in options) {
       if (options.hasOwnProperty(key)) {
