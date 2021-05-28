@@ -190,7 +190,7 @@ WebAuth.prototype.logoutCallback = function () {
   });
 };
 
-function createPostPromise(options, serviceurl, errorResolver, access_token){
+function createPostPromise(options, serviceurl, errorResolver, access_token) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
@@ -205,7 +205,7 @@ function createPostPromise(options, serviceurl, errorResolver, access_token){
       };
       http.open("POST", serviceurl, true);
       http.setRequestHeader("Content-type", "application/json");
-      if(access_token){
+      if (access_token) {
         http.setRequestHeader("access_token", access_token);
       }
       http.send(JSON.stringify(options));
@@ -623,8 +623,26 @@ WebAuth.prototype.getCommunicationStatus = function (options) {
 
 // initiate verification
 WebAuth.prototype.initiateAccountVerification = function (options) {
-  var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/initiate";
-  return createPostPromise(options, _serviceURL, false);
+  try {
+    var form = document.createElement('form');
+    form.action = window.webAuthSettings.authority + "/verification-srv/account/initiate";
+    return createPostPromise(options, _serviceURL, false);
+    form.method = 'POST';
+    for (var key in options) {
+      if (options.hasOwnProperty(key)) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", options[key]);
+
+        form.appendChild(hiddenField);
+      }
+    }
+    document.body.appendChild(form);
+    form.submit();
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  }
 };
 
 // verofy account
@@ -642,8 +660,25 @@ WebAuth.prototype.initiateResetPassword = function (options) {
 
 // handle reset password
 WebAuth.prototype.handleResetPassword = function (options) {
-  var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
-  return createPostPromise(options, _serviceURL, false);
+  try {
+    var form = document.createElement('form');
+    form.action = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
+    form.method = 'POST';
+    for (var key in options) {
+      if (options.hasOwnProperty(key)) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", options[key]);
+
+        form.appendChild(hiddenField);
+      }
+    }
+    document.body.appendChild(form);
+    form.submit();
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  }
 };
 
 // reset password
@@ -1429,37 +1464,37 @@ WebAuth.prototype.enrollTOTP = function (options, access_token) {
 // updateSuggestMFA
 WebAuth.prototype.updateSuggestMFA = function (track_id, options) {
   var _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
-  return createPostPromise(options, _serviceURL,false);
+  return createPostPromise(options, _serviceURL, false);
 };
 
 // enrollVerification
 WebAuth.prototype.enrollVerification = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
-  return createPostPromise(options, _serviceURL,undefined);
+  return createPostPromise(options, _serviceURL, undefined);
 };
 
 // updateSocket
 WebAuth.prototype.updateSocket = function (status_id) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-  return createPostPromise(options, _serviceURL,undefined);
+  return createPostPromise(options, _serviceURL, undefined);
 };
 
 // setupFidoVerification
 WebAuth.prototype.setupFidoVerification = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/suggestmfa/" + options.verification_type;
-  return createPostPromise(options, _serviceURL,undefined);
+  return createPostPromise(options, _serviceURL, undefined);
 };
 
 // checkVerificationTypeConfigured
 WebAuth.prototype.checkVerificationTypeConfigured = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
-  return createPostPromise(options, _serviceURL,undefined);
+  return createPostPromise(options, _serviceURL, undefined);
 };
 
 // authenticateVerification
 WebAuth.prototype.authenticateVerification = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.verification_type;
-  return createPostPromise(options, _serviceURL,undefined);
+  return createPostPromise(options, _serviceURL, undefined);
 };
 
 // authenticateVerification form type (for face)
@@ -1489,13 +1524,13 @@ WebAuth.prototype.authenticateFaceVerification = function (options) {
 // initiateVerification
 WebAuth.prototype.initiateVerification = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.verification_type;
-  return createPostPromise(options, _serviceURL,undefined);
+  return createPostPromise(options, _serviceURL, undefined);
 };
 
 // deleteUserAccount
 WebAuth.prototype.deleteUserAccount = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
-  return createPostPromise(options, _serviceURL,undefined);
+  return createPostPromise(options, _serviceURL, undefined);
 };
 
 // getMissingFieldsLogin
@@ -1576,7 +1611,7 @@ WebAuth.prototype.loginAfterRegister = function (options) {
 
 WebAuth.prototype.userCheckExists = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/checkexists/" + options.requestId;
-  return createPostPromise(options, _serviceURL,undefined);
+  return createPostPromise(options, _serviceURL, undefined);
 };
 
 module.exports = WebAuth;

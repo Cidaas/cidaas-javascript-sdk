@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "crypto-js": "^3.1.9-1",

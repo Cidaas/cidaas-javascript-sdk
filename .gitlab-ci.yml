@@ -1,6 +1,6 @@
 include:
   - project: "widas/codequality"
-    ref: master
+    ref: fix/yml-file-failure
     file: "ci_templates/js.gitlab-ci.yml"
 
 stages:
