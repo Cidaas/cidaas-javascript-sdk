@@ -682,8 +682,25 @@ WebAuth.prototype.handleResetPassword = function (options) {
 
 // reset password
 WebAuth.prototype.resetPassword = function (options) {
-  var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
-  return createPostPromise(options, _serviceURL, false);
+  try {
+    var form = document.createElement('form');
+    form.action = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
+    form.method = 'POST';
+    for (var key in options) {
+      if (options.hasOwnProperty(key)) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", options[key]);
+
+        form.appendChild(hiddenField);
+      }
+    }
+    document.body.appendChild(form);
+    form.submit();
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  }
 };
 
 // get mfa list
