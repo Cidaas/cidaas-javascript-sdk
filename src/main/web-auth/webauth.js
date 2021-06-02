@@ -614,6 +614,9 @@ WebAuth.prototype.getCommunicationStatus = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (options.requestId) {
+        http.setRequestHeader("requestId", options.requestId);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
