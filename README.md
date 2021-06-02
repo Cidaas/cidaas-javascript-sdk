@@ -16,9 +16,9 @@ This cidaas Javascript SDK library is built on the top of [OIDC client javascrip
 From CDN
 
 ```html
-<!-- Release version 2.0.2 -->
+<!-- Release version 2.0.3 -->
 <!-- Minified version -->
-<script src="https://cdn.cidaas.de/javascript/oidc/2.0.2/cidaas-javascript-sdk.min.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/2.0.3/cidaas-javascript-sdk.min.js"></script>
 ```
 
 From npm
