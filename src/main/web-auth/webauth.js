@@ -208,7 +208,11 @@ function createPostPromise(options, serviceurl, errorResolver, access_token) {
       if (access_token) {
         http.setRequestHeader("access_token", access_token);
       }
-      http.send(JSON.stringify(options));
+      if (options) {
+        http.send(JSON.stringify(options));
+      } else {
+        http.send();
+      }
     } catch (ex) {
       reject(ex);
     }
@@ -1495,7 +1499,7 @@ WebAuth.prototype.enrollVerification = function (options) {
 // updateSocket
 WebAuth.prototype.updateSocket = function (status_id) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-  return createPostPromise(options, _serviceURL, undefined);
+  return createPostPromise(undefined, _serviceURL, undefined);
 };
 
 // setupFidoVerification
