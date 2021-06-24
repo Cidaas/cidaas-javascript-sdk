@@ -18,7 +18,7 @@ From CDN
 ```html
 <!-- Release version 2.0.4 -->
 <!-- Minified version -->
-<script src="https://cdn.cidaas.de/javascript/oidc/2.0.4/cidaas-javascript-sdk.min.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/2.0.5/cidaas-javascript-sdk.min.js"></script>
 ```
 
 From npm
@@ -612,6 +612,81 @@ cidaas.changePassword({
     "status": 200,
     "data": {
         "changed": true
+    }
+}
+```
+
+#### Get user profile information (internal call)
+
+To get user profile details, pass access token to ****getInternalUserProfile()****.
+
+##### Sample code
+
+```js
+cidaas.getInternalUserProfile({
+        access_token: 'your access token'
+}).then(function (response) {
+    // type your code here 
+}).catch(function (ex) {
+    // your failure code here  
+});
+```
+
+##### Response
+
+```json
+{
+    "success": true,
+    "status": 200,
+    "data": {
+        "userAccount": {
+            "userIds": [
+                {
+                    "key": "self.email",
+                    "value": "testuser@gmail.com"
+                }
+            ],
+            "className": "de.cidaas.management.db.UserAccounts",
+            "_id": "ac45bdda-93bf-44f1-b2ff-8465495c3417",
+            "sub": "33361c59-368b-48e3-8739-38d7ee8f7573",
+            "user_status_reason": "",
+            "userStatus": "VERIFIED",
+            "customFields": {
+                "Test_consent_HP": true,
+                "customer_number": "CN456",
+                "invoice_number": "IN456"
+            },
+            "createdTime": "2021-05-27T07:38:29.579Z",
+            "updatedTime": "2021-06-24T11:02:43.188Z",
+            "__ref": "1624532562750-69ab9fff-2a71-4a05-8d67-6886376b51d6",
+            "__v": 0,
+            "lastLoggedInTime": "2021-06-24T11:02:43.186Z",
+            "lastUsedIdentity": "bbee960d-6a80-424e-99bd-586d74f1053e",
+            "mfa_enabled": true,
+            "id": "ac45bdda-93bf-44f1-b2ff-8465495c3417"
+        },
+        "identity": {
+            "_id": "bbee960d-6a80-424e-99bd-586d74f1053e",
+            "className": "de.cidaas.core.db.EnternalSocialIdentity",
+            "sub": "33361c59-368b-48e3-8739-38d7ee8f7573",
+            "provider": "self",
+            "email": "testuser@gmail.com",
+            "email_verified": true,
+            "family_name": "Test",
+            "given_name": "User",
+            "locale": "en-us",
+            "createdTime": "2021-05-27T07:38:29.908Z",
+            "updatedTime": "2021-06-24T11:02:43.188Z",
+            "__ref": "1624532562750-69ab9fff-2a71-4a05-8d67-6886376b51d6",
+            "__v": 0,
+            "birthdate": "1993-06-07T18:30:00.000Z",
+            "id": "bbee960d-6a80-424e-99bd-586d74f1053e"
+        },
+        "customFields": {},
+        "roles": [
+            "USER"
+        ],
+        "groups": []
     }
 }
 ```
