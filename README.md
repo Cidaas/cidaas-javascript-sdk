@@ -616,9 +616,9 @@ cidaas.changePassword({
 }
 ```
 
-#### Get user profile information (internal call)
+#### Get user profile information
 
-To get user profile details, pass access token to ****getInternalUserProfile()****.
+To get user profile details, pass access token to ****getProfileInfo()****.
 
 ##### Sample code
 
@@ -1966,3 +1966,4 @@ this.socket.on("status-update", (msg) => {
     }
 });
 ```
+F

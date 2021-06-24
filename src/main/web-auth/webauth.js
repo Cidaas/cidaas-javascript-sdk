@@ -138,7 +138,7 @@ WebAuth.prototype.getUserProfile = function (options) {
 };
 
 // get user info (internal)
-WebAuth.prototype.getInternalUserProfile = function (access_token) {
+WebAuth.prototype.getProfileInfo = function (access_token) {
   return new Promise(function (resolve, reject) {
     try {
       if (!access_token) {
