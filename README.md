@@ -623,7 +623,7 @@ To get user profile details, pass access token to ****getProfileInfo()****.
 ##### Sample code
 
 ```js
-cidaas.getInternalUserProfile({
+cidaas.getProfileInfo({
         access_token: 'your access token'
 }).then(function (response) {
     // type your code here 
