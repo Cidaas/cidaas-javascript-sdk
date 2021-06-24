@@ -137,6 +137,31 @@ WebAuth.prototype.getUserProfile = function (options) {
   });
 };
 
+// get user info (internal)
+WebAuth.prototype.getProfileInfo = function (access_token) {
+  return new Promise(function (resolve, reject) {
+    try {
+      if (!access_token) {
+        throw new CustomException("access_token cannot be empty", 417);
+      }
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/users-srv/internal/userinfo/profile";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          resolve(JSON.parse(http.responseText));
+        }
+      };
+      http.open("GET", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.setRequestHeader("access_token", access_token);
+      http.send();
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+
 // logout
 WebAuth.prototype.logout = function () {
   return new Promise(function (resolve, reject) {
