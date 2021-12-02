@@ -1077,6 +1077,31 @@ WebAuth.prototype.getScopeConsentDetails = function (options) {
   });
 };
 
+// get scope consent version details
+WebAuth.prototype.getScopeConsentVersionDetailsV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("GET", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.setRequestHeader("Authorization", "Bearer " + options.access_token);
+      http.send();
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // accept scope Consent
 WebAuth.prototype.acceptScopeConsent = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
