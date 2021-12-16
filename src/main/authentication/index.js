@@ -175,6 +175,23 @@ Authentication.prototype.silentSignInCallback = function () {
   } catch (ex) {}
 };
 
+// silent sign in callback v2
+Authentication.prototype.silentSignInCallbackV2 = function () {
+  return new Promise(function (resolve, reject) {
+    try {
+      if (window.usermanager) {
+        window.usermanager.signinSilentCallback().then(function (resp) {
+          console.log("signinSilentCallback is done");
+          resolve(resp);
+        });
+      } else {
+        resolve(undefined);
+        throw "user manager is nil";
+      }
+    } catch (ex) {}
+  });
+};
+
 // silent sign out callback
 Authentication.prototype.popupSignOutCallback = function () {
   try {
