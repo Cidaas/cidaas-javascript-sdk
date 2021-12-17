@@ -83,7 +83,11 @@ WebAuth.prototype.loginCallback = function () {
       } else if (window.webAuthSettings.mode == 'window') {
         window.authentication.popupSignInCallback();
       } else if (window.webAuthSettings.mode == 'silent') {
-        window.authentication.silentSignInCallback();
+        window.authentication.silentSignInCallbackV2().then(function(data){
+          resolve(data);
+        }).catch(function(error){
+          reject(error);
+        })
       }
     } catch (ex) {
       console.log(ex);
