@@ -599,6 +599,10 @@ WebAuth.prototype.register = function (options, headers) {
       if (headers.bot_captcha_response) {
         http.setRequestHeader("bot_captcha_response", headers.bot_captcha_response);
       }
+      let trackId = headers.trackid || headers.trackId;
+      if (trackId) {
+        http.setRequestHeader("trackid", trackId);
+      }
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
