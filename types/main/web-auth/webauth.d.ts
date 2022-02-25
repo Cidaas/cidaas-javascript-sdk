@@ -78,11 +78,9 @@ declare class WebAuth {
     getScopeConsentDetails(options: any): Promise<any>;
     getScopeConsentVersionDetailsV2(options: any): Promise<any>;
     acceptScopeConsent(options: any): Promise<any>;
-    acceptClaimConsent(options: any): Promise<any>;
-
-    claimConsentContinue(options: any): void;
-
     scopeConsentContinue(options: any): void;
+    acceptClaimConsent(options: any): Promise<any>;
+    claimConsentContinue(options: any): void;
     getDeduplicationDetails(options: any): Promise<any>;
     deduplicationLogin(options: any): void;
     registerDeduplication(options: any): Promise<any>;
