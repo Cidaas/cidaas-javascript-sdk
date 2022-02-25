@@ -83,9 +83,9 @@ WebAuth.prototype.loginCallback = function () {
       } else if (window.webAuthSettings.mode == 'window') {
         window.authentication.popupSignInCallback();
       } else if (window.webAuthSettings.mode == 'silent') {
-        window.authentication.silentSignInCallbackV2().then(function(data){
+        window.authentication.silentSignInCallbackV2().then(function (data) {
           resolve(data);
-        }).catch(function(error){
+        }).catch(function (error) {
           reject(error);
         })
       }
@@ -1128,6 +1128,26 @@ WebAuth.prototype.scopeConsentContinue = function (options) {
     throw new CustomException(ex, 417);
   }
 };
+
+// accept claim Consent
+WebAuth.prototype.acceptClaimConsent = function (options) {
+  var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
+  return createPostPromise(options, _serviceURL, false);
+};
+
+// claim consent continue login
+WebAuth.prototype.claimConsentContinue = function (options) {
+  try {
+    var form = document.createElement('form');
+    form.action = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
+    form.method = 'POST';
+    document.body.appendChild(form);
+    form.submit();
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  }
+};
+
 
 // get Deduplication details
 WebAuth.prototype.getDeduplicationDetails = function (options) {
