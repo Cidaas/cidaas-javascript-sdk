@@ -127,4 +127,5 @@ declare class WebAuth {
     progressiveRegistration(options: any, headers: any): Promise<any>;
     loginAfterRegister(options: any): void;
     userCheckExists(options: any): Promise<any>;
+    setAcceptLanguageHeader(accept_lanugage: string): void;
 }
