@@ -10,6 +10,7 @@ function WebAuth(settings) {
     var usermanager = new Oidc.UserManager(settings);
     window.webAuthSettings = settings;
     window.usermanager = usermanager;
+    window.localeSettings = null;
     window.authentication = new Authentication(window.webAuthSettings, window.usermanager);
     window.usermanager.events.addSilentRenewError(function (error) {
       throw new CustomException("Error while renewing silent login", 500);
@@ -83,7 +84,11 @@ WebAuth.prototype.loginCallback = function () {
       } else if (window.webAuthSettings.mode == 'window') {
         window.authentication.popupSignInCallback();
       } else if (window.webAuthSettings.mode == 'silent') {
-        window.authentication.silentSignInCallback();
+        window.authentication.silentSignInCallbackV2().then(function (data) {
+          resolve(data);
+        }).catch(function (error) {
+          reject(error);
+        })
       }
     } catch (ex) {
       console.log(ex);
@@ -130,6 +135,9 @@ WebAuth.prototype.getUserProfile = function (options) {
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
       http.setRequestHeader("access_token", options.access_token);
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -154,6 +162,9 @@ WebAuth.prototype.getProfileInfo = function (access_token) {
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
       http.setRequestHeader("access_token", access_token);
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -233,6 +244,9 @@ function createPostPromise(options, serviceurl, errorResolver, access_token) {
       if (access_token) {
         http.setRequestHeader("access_token", access_token);
       }
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       if (options) {
         http.send(JSON.stringify(options));
       } else {
@@ -261,6 +275,9 @@ WebAuth.prototype.renewToken = function (options) {
       };
       http.open("POST", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
@@ -335,6 +352,9 @@ WebAuth.prototype.getAccessToken = function (options) {
       };
       http.open("POST", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
@@ -358,6 +378,9 @@ WebAuth.prototype.validateAccessToken = function (options) {
       };
       http.open("POST", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
@@ -399,6 +422,9 @@ WebAuth.prototype.getRequestId = function () {
       };
       http.open("POST", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send(JSON.stringify(bodyParams));
     } catch (ex) {
       reject(ex);
@@ -472,6 +498,9 @@ WebAuth.prototype.getMissingFields = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -496,6 +525,9 @@ WebAuth.prototype.getTenantInfo = function () {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -529,6 +561,9 @@ WebAuth.prototype.getClientInfo = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -557,6 +592,9 @@ WebAuth.prototype.getRegistrationSetup = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -591,9 +629,15 @@ WebAuth.prototype.register = function (options, headers) {
       }
       if (headers.acceptlanguage) {
         http.setRequestHeader("accept-language", headers.acceptlanguage);
+      } else if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
       }
       if (headers.bot_captcha_response) {
         http.setRequestHeader("bot_captcha_response", headers.bot_captcha_response);
+      }
+      let trackId = headers.trackid || headers.trackId;
+      if (trackId) {
+        http.setRequestHeader("trackid", trackId);
       }
       http.send(JSON.stringify(options));
     } catch (ex) {
@@ -619,6 +663,9 @@ WebAuth.prototype.getInviteUserDetails = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -645,6 +692,9 @@ WebAuth.prototype.getCommunicationStatus = function (options) {
       http.setRequestHeader("Content-type", "application/json");
       if (options.requestId) {
         http.setRequestHeader("requestId", options.requestId);
+      }
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
       }
       http.send();
     } catch (ex) {
@@ -761,6 +811,9 @@ WebAuth.prototype.getMFAList = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1029,6 +1082,9 @@ WebAuth.prototype.getConsentDetails = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1070,6 +1126,37 @@ WebAuth.prototype.getScopeConsentDetails = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
+      http.send();
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// get scope consent version details
+WebAuth.prototype.getScopeConsentVersionDetailsV2 = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("GET", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      http.setRequestHeader("Authorization", "Bearer " + options.access_token);
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1096,6 +1183,26 @@ WebAuth.prototype.scopeConsentContinue = function (options) {
   }
 };
 
+// accept claim Consent
+WebAuth.prototype.acceptClaimConsent = function (options) {
+  var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
+  return createPostPromise(options, _serviceURL, false);
+};
+
+// claim consent continue login
+WebAuth.prototype.claimConsentContinue = function (options) {
+  try {
+    var form = document.createElement('form');
+    form.action = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
+    form.method = 'POST';
+    document.body.appendChild(form);
+    form.submit();
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  }
+};
+
+
 // get Deduplication details
 WebAuth.prototype.getDeduplicationDetails = function (options) {
   return new Promise(function (resolve, reject) {
@@ -1113,6 +1220,9 @@ WebAuth.prototype.getDeduplicationDetails = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1146,6 +1256,9 @@ WebAuth.prototype.registerDeduplication = function (options) {
       };
       http.open("POST", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1248,6 +1361,9 @@ WebAuth.prototype.updateProfile = function (options, access_token, sub) {
       http.open("PUT", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
       http.setRequestHeader("access_token", access_token);
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send(JSON.stringify(options));
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -1279,6 +1395,9 @@ WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
       http.setRequestHeader("access_token", access_token);
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -1304,6 +1423,9 @@ WebAuth.prototype.getReviewedDevices = function (access_token, sub) {
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
       http.setRequestHeader("access_token", access_token);
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -1329,6 +1451,9 @@ WebAuth.prototype.reviewDevice = function (options, access_token, sub) {
       http.open("PUT", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
       http.setRequestHeader("access_token", access_token);
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send(JSON.stringify(options));
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -1360,6 +1485,9 @@ WebAuth.prototype.viewAcceptedConsent = function (options, access_token) {
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
       http.setRequestHeader("access_token", access_token);
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -1562,6 +1690,9 @@ WebAuth.prototype.authenticateFaceVerification = function (options) {
       };
       http.open("POST", _serviceURL, true);
       http.setRequestHeader("Content-type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
@@ -1598,6 +1729,9 @@ WebAuth.prototype.getMissingFieldsLogin = function (trackId) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1626,6 +1760,8 @@ WebAuth.prototype.progressiveRegistration = function (options, headers) {
       http.setRequestHeader("trackId", headers.trackId);
       if (headers.acceptlanguage) {
         http.setRequestHeader("accept-language", headers.acceptlanguage);
+      } else if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
       }
       http.send(JSON.stringify(options));
     } catch (ex) {
@@ -1661,5 +1797,9 @@ WebAuth.prototype.userCheckExists = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/checkexists/" + options.requestId;
   return createPostPromise(options, _serviceURL, undefined);
 };
+
+WebAuth.prototype.setAcceptLanguageHeader = function(acceptLanguage) {
+  window.localeSettings = acceptLanguage;
+}
 
 module.exports = WebAuth;
