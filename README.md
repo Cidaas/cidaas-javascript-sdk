@@ -1818,7 +1818,56 @@ this.cidaas.consentContinue({
       sub: 'your sub',
     });
 ```
+##### Accept claim
 
+To accept Claim Consent, call ****acceptClaimConsent()****
+
+##### Sample code
+```js
+this.cidaas.acceptClaimConsent({
+      q: 'your sub',
+      client_id: 'your client id',
+      accepted: "accepted claims with array eg: []"
+    }).then((response) => {
+      // type your code here 
+    }).catch((err) => {
+      // your failure code here 
+    });
+```
+
+##### Response
+```json
+{
+    "success":true,
+    "status":200,
+    "data": true
+}
+```
+
+##### Revoke claim
+
+To revoke Claim Consent, call ****revokeClaimConsent()****
+
+##### Sample code
+```js
+this.cidaas.revokeClaimConsent({
+      sub: 'your sub',
+      revoked_claims: "revoked claims with array eg: []"
+    }).then((response) => {
+      // type your code here 
+    }).catch((err) => {
+      // your failure code here 
+    });
+```
+
+##### Response
+```json
+{
+    "success":true,
+    "status":200,
+    "data": true
+}
+```
 #### Deduplication
 
 ##### Get deduplication details
