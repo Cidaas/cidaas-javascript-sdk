@@ -1,0 +1,17 @@
+include:
+  - project: "widas/codequality"
+    ref: fix/yml-file-failure
+    file: "ci_templates/js.gitlab-ci.yml"
+
+stages:
+  - test
+  - build
+  - badges
+  - deploy
+
+npm-build:
+  image: nexus.widas.de:18443/cidaas-node-typescript:10.10.0-latest
+  stage: build
+  script:
+    - npm install
+    - npm run build
