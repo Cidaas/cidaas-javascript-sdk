@@ -1202,6 +1202,12 @@ WebAuth.prototype.claimConsentContinue = function (options) {
   }
 };
 
+// revoke claim Consent
+WebAuth.prototype.revokeClaimConsent = function (options) {
+  var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
+  return createPostPromise(options, _serviceURL, false);
+};
+
 
 // get Deduplication details
 WebAuth.prototype.getDeduplicationDetails = function (options) {
@@ -1798,7 +1804,7 @@ WebAuth.prototype.userCheckExists = function (options) {
   return createPostPromise(options, _serviceURL, undefined);
 };
 
-WebAuth.prototype.setAcceptLanguageHeader = function(acceptLanguage) {
+WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
   window.localeSettings = acceptLanguage;
 }
 
