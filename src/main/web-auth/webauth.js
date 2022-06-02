@@ -433,23 +433,25 @@ WebAuth.prototype.getRequestId = function () {
 };
 
 // login with username and password
-WebAuth.prototype.loginWithCredentials = function (options) {
+WebAuth.prototype.loginWithCredentials = async function (options) {
   try {
-    var form = document.createElement('form');
-    form.action = window.webAuthSettings.authority + "/login-srv/login";
-    form.method = 'POST';
+
+    let formData = new FormData();
     for (var key in options) {
       if (options.hasOwnProperty(key)) {
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", key);
-        hiddenField.setAttribute("value", options[key]);
-
-        form.appendChild(hiddenField);
+        formData.append(key, options[key]);
       }
     }
-    document.body.appendChild(form);
-    form.submit();
+
+    const response = await fetch(window.webAuthSettings.authority + "/login-srv/login", {
+      method: "POST",
+      body: formData
+    });
+
+    const responseJson = await response.json();
+
+    return responseJson;
+
   } catch (ex) {
     throw new CustomException(ex, 417);
   }
@@ -704,23 +706,26 @@ WebAuth.prototype.getCommunicationStatus = function (options) {
 };
 
 // initiate verification
-WebAuth.prototype.initiateAccountVerification = function (options) {
+WebAuth.prototype.initiateAccountVerification = async function (options) {
   try {
-    var form = document.createElement('form');
-    form.action = window.webAuthSettings.authority + "/verification-srv/account/initiate";
-    form.method = 'POST';
+
+    let formData = new FormData();
+
     for (var key in options) {
       if (options.hasOwnProperty(key)) {
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", key);
-        hiddenField.setAttribute("value", options[key]);
-
-        form.appendChild(hiddenField);
+        formData.append(key, options[key]);
       }
     }
-    document.body.appendChild(form);
-    form.submit();
+
+    const response = await fetch(window.webAuthSettings.authority + "/verification-srv/account/initiate", {
+      method: "POST",
+      body: formData
+    });
+
+    const responseJson = await response.json();
+
+    return responseJson;
+
   } catch (ex) {
     throw new CustomException(ex, 417);
   }
@@ -1798,7 +1803,7 @@ WebAuth.prototype.userCheckExists = function (options) {
   return createPostPromise(options, _serviceURL, undefined);
 };
 
-WebAuth.prototype.setAcceptLanguageHeader = function(acceptLanguage) {
+WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
   window.localeSettings = acceptLanguage;
 }
 
