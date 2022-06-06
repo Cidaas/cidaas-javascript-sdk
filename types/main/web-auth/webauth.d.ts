@@ -19,7 +19,8 @@ declare class WebAuth {
     getAccessToken(options: any): Promise<any>;
     validateAccessToken(options: any): Promise<any>;
     getRequestId(): Promise<any>;
-    loginWithCredentials(options: any): Promise<any>;
+    loginWithCredentials(options: any): void;
+    loginWithCredentialsAsynFn(options: any): Promise<any>;
     loginWithSocial(options: any, queryParams: any): void;
     registerWithSocial(options: any, queryParams: any): void;
     getMissingFields(options: any): Promise<any>;
@@ -30,7 +31,8 @@ declare class WebAuth {
     register(options: any, headers: any): Promise<any>;
     getInviteUserDetails(options: any): Promise<any>;
     getCommunicationStatus(options: any): Promise<any>;
-    initiateAccountVerification(options: any): Promise<any>;
+    initiateAccountVerification(options: any): void;
+    initiateAccountVerificationAsynFn(options: any): Promise<any>;
     verifyAccount(options: any): Promise<any>;
     initiateResetPassword(options: any): Promise<any>;
     handleResetPassword(options: any): void;
@@ -129,5 +131,5 @@ declare class WebAuth {
     progressiveRegistration(options: any, headers: any): Promise<any>;
     loginAfterRegister(options: any): void;
     userCheckExists(options: any): Promise<any>;
-    setAcceptLanguageHeader(accept_lanugage: any): void;
+    setAcceptLanguageHeader(acceptLanguage: any): void;
 }
