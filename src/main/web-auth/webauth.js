@@ -435,21 +435,47 @@ WebAuth.prototype.getRequestId = function () {
 // login with username and password
 WebAuth.prototype.loginWithCredentials = function (options) {
   try {
-    var form = document.createElement('form');
-    form.action = window.webAuthSettings.authority + "/login-srv/login";
-    form.method = 'POST';
-    for (var key in options) {
-      if (options.hasOwnProperty(key)) {
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", key);
-        hiddenField.setAttribute("value", options[key]);
+     var form = document.createElement('form');
+     form.action = window.webAuthSettings.authority + "/login-srv/login";
+     form.method = 'POST';
+     for (var key in options) {
+       if (options.hasOwnProperty(key)) {
+         var hiddenField = document.createElement("input");
+         hiddenField.setAttribute("type", "hidden");
+         hiddenField.setAttribute("name", key);
+         hiddenField.setAttribute("value", options[key]);
+ 
+         form.appendChild(hiddenField);
+       }
+     }
+     document.body.appendChild(form);
+     form.submit(); 
 
-        form.appendChild(hiddenField);
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  }
+};
+
+// login with username and password and return response
+WebAuth.prototype.loginWithCredentialsAsynFn = async function (options) {
+  try {
+
+    let formData = new FormData();
+    for (let key in options) {
+      if (options.hasOwnProperty(key)) {
+        formData.append(key, options[key]);
       }
     }
-    document.body.appendChild(form);
-    form.submit();
+
+    const response = await fetch(window.webAuthSettings.authority + "/login-srv/login", {
+      method: "POST",
+      body: formData
+    });
+
+    const actualResponse = await response.json();
+
+    return actualResponse;
+
   } catch (ex) {
     throw new CustomException(ex, 417);
   }
@@ -721,6 +747,32 @@ WebAuth.prototype.initiateAccountVerification = function (options) {
     }
     document.body.appendChild(form);
     form.submit();
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  }
+};
+
+// initiate verification and return response
+WebAuth.prototype.initiateAccountVerificationAsynFn = async function (options) {
+  try {
+
+    let formData = new FormData();
+
+    for (let key in options) {
+      if (options.hasOwnProperty(key)) {
+        formData.append(key, options[key]);
+      }
+    }
+
+    const response = await fetch(window.webAuthSettings.authority + "/verification-srv/account/initiate", {
+      method: "POST",
+      body: formData
+    });
+
+    const actualResponse = await response.json();
+
+    return actualResponse;
+
   } catch (ex) {
     throw new CustomException(ex, 417);
   }
@@ -1798,7 +1850,7 @@ WebAuth.prototype.userCheckExists = function (options) {
   return createPostPromise(options, _serviceURL, undefined);
 };
 
-WebAuth.prototype.setAcceptLanguageHeader = function(acceptLanguage) {
+WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
   window.localeSettings = acceptLanguage;
 }
 
