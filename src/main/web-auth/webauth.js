@@ -450,6 +450,29 @@ WebAuth.prototype.loginWithCredentials = function (options) {
     }
     document.body.appendChild(form);
     form.submit();
+
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  }
+};
+
+// login with username and password and return response
+WebAuth.prototype.loginWithCredentialsAsynFn = async function (options) {
+  try {
+
+    const searchParams = new URLSearchParams(options);
+
+    const response = fetch(window.webAuthSettings.authority + "/login-srv/login", {
+      method: "POST",
+      redirect: "follow",
+      body: searchParams.toString(),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      }
+    });
+
+    return response;
+
   } catch (ex) {
     throw new CustomException(ex, 417);
   }
@@ -724,6 +747,29 @@ WebAuth.prototype.initiateAccountVerification = function (options) {
   } catch (ex) {
     throw new CustomException(ex, 417);
   }
+};
+
+// initiate verification and return response
+WebAuth.prototype.initiateAccountVerificationAsynFn = async function (options) {
+   try {
+
+    const searchParams = new URLSearchParams(options);
+
+    const response = fetch(window.webAuthSettings.authority + "/verification-srv/account/initiate", {
+      method: "POST",
+      redirect: "follow",
+      body: searchParams.toString(),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      }
+    });
+
+    return response;
+
+  } catch (ex) {
+    throw new CustomException(ex, 417);
+  } 
+  
 };
 
 // verofy account
