@@ -1761,7 +1761,7 @@ WebAuth.prototype.initiateVerification = function (options) {
 // deleteUserAccount
 WebAuth.prototype.deleteUserAccount = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
-  return createPostPromise(options, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, options.access_token);
 };
 
 // getMissingFieldsLogin
