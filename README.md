@@ -770,7 +770,8 @@ This method takes an object as input.
 options = {
      sub: "7e4f79a9-cfbc-456d-936a-e6bc1de2d4b9",
      requestId: "7d86460b-8288-4341-aed1-  10dd27a4565c",
-     accept-language: "en"
+     accept-language: "en",
+     access_token: "your_access_token"
 }
 ```
 
