@@ -131,6 +131,7 @@ declare class WebAuth {
     getMissingFieldsLogin(trackId: any): Promise<any>;
     progressiveRegistration(options: any, headers: any): Promise<any>;
     loginAfterRegister(options: any): void;
+    deviceCodeVerify(code: any): void;
     userCheckExists(options: any): Promise<any>;
     setAcceptLanguageHeader(acceptLanguage: any): void;
 }
