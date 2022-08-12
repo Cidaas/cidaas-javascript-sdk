@@ -1845,6 +1845,28 @@ WebAuth.prototype.loginAfterRegister = function (options) {
   }
 };
 
+// device code flow - verify
+WebAuth.prototype.deviceCodeVerify = function (code) {
+  const params = `user_code=${encodeURI(code)}`;
+  const url = `${window.webAuthSettings.authority}/token-srv/device/verify?${params}`;
+  try {
+    const form = document.createElement('form');
+    form.action = url
+    form.method = 'GET';
+    const hiddenField = document.createElement("input");
+    hiddenField.setAttribute("type", "hidden");
+    hiddenField.setAttribute("name", 'user_code');
+    hiddenField.setAttribute("value", encodeURI(code));
+
+    form.appendChild(hiddenField);
+    document.body.appendChild(form);
+    form.submit();
+  } catch (ex) {
+    throw new Error(ex);
+  }
+}
+
+
 WebAuth.prototype.userCheckExists = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/checkexists/" + options.requestId;
   return createPostPromise(options, _serviceURL, undefined);
