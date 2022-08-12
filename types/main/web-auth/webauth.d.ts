@@ -20,7 +20,7 @@ declare class WebAuth {
     validateAccessToken(options: any): Promise<any>;
     getRequestId(): Promise<any>;
     loginWithCredentials(options: any): void;
-    loginWithCredentialsAsynFn(options: any): Promise<any>;
+    loginWithCredentialsAsynFn(options: any): Promise<Response>;
     loginWithSocial(options: any, queryParams: any): void;
     registerWithSocial(options: any, queryParams: any): void;
     getMissingFields(options: any): Promise<any>;
@@ -32,7 +32,7 @@ declare class WebAuth {
     getInviteUserDetails(options: any): Promise<any>;
     getCommunicationStatus(options: any): Promise<any>;
     initiateAccountVerification(options: any): void;
-    initiateAccountVerificationAsynFn(options: any): Promise<any>;
+    initiateAccountVerificationAsynFn(options: any): Promise<Response>;
     verifyAccount(options: any): Promise<any>;
     initiateResetPassword(options: any): Promise<any>;
     handleResetPassword(options: any): void;
@@ -82,8 +82,8 @@ declare class WebAuth {
     acceptScopeConsent(options: any): Promise<any>;
     scopeConsentContinue(options: any): void;
     acceptClaimConsent(options: any): Promise<any>;
-    revokeClaimConsent(options: any): Promise<any>;
     claimConsentContinue(options: any): void;
+    revokeClaimConsent(options: any): Promise<any>;
     getDeduplicationDetails(options: any): Promise<any>;
     deduplicationLogin(options: any): void;
     registerDeduplication(options: any): Promise<any>;
@@ -131,6 +131,7 @@ declare class WebAuth {
     getMissingFieldsLogin(trackId: any): Promise<any>;
     progressiveRegistration(options: any, headers: any): Promise<any>;
     loginAfterRegister(options: any): void;
+    deviceCodeVerify(code: any): void;
     userCheckExists(options: any): Promise<any>;
     setAcceptLanguageHeader(acceptLanguage: any): void;
 }
