@@ -17,6 +17,7 @@
     "build-types": "npx -p typescript tsc src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types"
   },
   "dependencies": {
+    "@types/node": "^18.11.18",
     "crypto-js": "^4.1.1",
     "oidc-client": "^1.11.5"
   },
