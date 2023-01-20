@@ -16,7 +16,18 @@
     "test:coverage": "jest --coverage",
     "build-types": "npx -p typescript tsc src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types"
   },
+  "files": [
+    "src",
+    "types",
+    "README.md",
+    "license.MD",
+    "Changelogs.md"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "dependencies": {
+    "@types/node": "^18.11.18",
     "crypto-js": "^4.1.1",
     "oidc-client": "^1.11.5"
   },
