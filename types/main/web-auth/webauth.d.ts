@@ -134,4 +134,5 @@ declare class WebAuth {
     deviceCodeVerify(code: any): void;
     userCheckExists(options: any): Promise<any>;
     setAcceptLanguageHeader(acceptLanguage: any): void;
+    getDeviceInfo(options: any): Promise<any>;
 }
