@@ -1876,4 +1876,28 @@ WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
   window.localeSettings = acceptLanguage;
 }
 
+// get device info
+WebAuth.prototype.getDeviceInfo = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      options.deviceFingerprint = self.crypto.randomUUID();
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          resolve(JSON.parse(http.responseText));
+        }
+      };
+      http.open("POST", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
+      http.send(JSON.stringify(options));
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 module.exports = WebAuth;
