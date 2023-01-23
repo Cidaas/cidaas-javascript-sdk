@@ -161,7 +161,7 @@ WebAuth.prototype.getProfileInfo = function (access_token) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -1446,7 +1446,7 @@ WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -1474,7 +1474,7 @@ WebAuth.prototype.getReviewedDevices = function (access_token, sub) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
