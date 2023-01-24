@@ -135,7 +135,7 @@ WebAuth.prototype.getUserProfile = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("access_token", options.access_token);
+      http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -162,7 +162,7 @@ WebAuth.prototype.getProfileInfo = function (access_token) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("access_token", access_token);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -243,7 +243,7 @@ function createPostPromise(options, serviceurl, errorResolver, access_token) {
       http.open("POST", serviceurl, true);
       http.setRequestHeader("Content-type", "application/json");
       if (access_token) {
-        http.setRequestHeader("access_token", access_token);
+        http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       }
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
@@ -1200,7 +1200,7 @@ WebAuth.prototype.getScopeConsentVersionDetailsV2 = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("Authorization", "Bearer " + options.access_token);
+      http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -1413,7 +1413,7 @@ WebAuth.prototype.updateProfile = function (options, access_token, sub) {
       };
       http.open("PUT", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("access_token", access_token);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -1447,7 +1447,7 @@ WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("access_token", access_token);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -1475,7 +1475,7 @@ WebAuth.prototype.getReviewedDevices = function (access_token, sub) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("access_token", access_token);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -1503,7 +1503,7 @@ WebAuth.prototype.reviewDevice = function (options, access_token, sub) {
       };
       http.open("PUT", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("access_token", access_token);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
@@ -1537,7 +1537,7 @@ WebAuth.prototype.viewAcceptedConsent = function (options, access_token) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("access_token", access_token);
+      http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
