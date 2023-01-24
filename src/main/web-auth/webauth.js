@@ -2,6 +2,7 @@ var Authentication = require('../authentication');
 var CustomException = require('./exception');
 var Oidc = require('oidc-client');
 var CryptoJS = require("crypto-js");
+var deviceID = require("device-uuid")
 
 var code_verifier;
 
@@ -1880,7 +1881,9 @@ WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
 WebAuth.prototype.getDeviceInfo = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      options.deviceFingerprint = self.crypto.randomUUID();
+      if(!options.deviceFingerprint) {
+        options.deviceFingerprint =  new DeviceUUID().get();
+      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
       http.onreadystatechange = function () {
@@ -1892,6 +1895,9 @@ WebAuth.prototype.getDeviceInfo = function (options) {
       http.setRequestHeader("Content-type", "application/json");
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
+      }
+      if(window.navigator.userAgent) {
+        http.setRequestBody("userAgent", window.navigator.userAgent)
       }
       http.send(JSON.stringify(options));
     } catch (ex) {
