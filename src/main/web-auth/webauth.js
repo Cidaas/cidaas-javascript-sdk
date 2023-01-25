@@ -595,6 +595,66 @@ WebAuth.prototype.getClientInfo = function (options) {
   });
 };
 
+// get all devices associated to the client 
+WebAuth.prototype.getDevicesInfo = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("GET", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
+      if(window.navigator.userAgent) {
+        http.setRequestBody("userAgent", window.navigator.userAgent)
+      }
+      http.send();
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// delete a device 
+WebAuth.prototype.deleteDevice = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("DELETE", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
+      if(window.navigator.userAgent) {
+        http.setRequestBody("userAgent", window.navigator.userAgent)
+      }
+      http.send();
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
 // get Registration setup
 WebAuth.prototype.getRegistrationSetup = function (options) {
   return new Promise(function (resolve, reject) {
