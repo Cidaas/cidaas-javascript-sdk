@@ -29,6 +29,7 @@
   "dependencies": {
     "@types/node": "^18.11.18",
     "crypto-js": "^4.1.1",
+    "device-uuid": "^1.0.4",
     "oidc-client": "^1.11.5"
   },
   "devDependencies": {
