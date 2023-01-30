@@ -1956,9 +1956,6 @@ WebAuth.prototype.getDeviceInfo = function (options) {
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
       }
-      if(window.navigator.userAgent) {
-        http.setRequestBody("userAgent", window.navigator.userAgent)
-      }
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
