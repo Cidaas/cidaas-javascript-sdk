@@ -2,6 +2,7 @@ var Authentication = require('../authentication');
 var CustomException = require('./exception');
 var Oidc = require('oidc-client');
 var CryptoJS = require("crypto-js");
+var deviceID = require("device-uuid")
 
 var code_verifier;
 
@@ -586,6 +587,66 @@ WebAuth.prototype.getClientInfo = function (options) {
       http.setRequestHeader("Content-type", "application/json");
       if (window.localeSettings) {
         http.setRequestHeader("accept-language", window.localeSettings);
+      }
+      http.send();
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// get all devices associated to the client 
+WebAuth.prototype.getDevicesInfo = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("GET", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
+      if(window.navigator.userAgent) {
+        http.setRequestBody("userAgent", window.navigator.userAgent)
+      }
+      http.send();
+    } catch (ex) {
+      reject(ex);
+    }
+  });
+};
+
+// delete a device 
+WebAuth.prototype.deleteDevice = function (options) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var http = new XMLHttpRequest();
+      var _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.responseText) {
+            resolve(JSON.parse(http.responseText));
+          } else {
+            resolve(false);
+          }
+        }
+      };
+      http.open("DELETE", _serviceURL, true);
+      http.setRequestHeader("Content-type", "application/json");
+      if (window.localeSettings) {
+        http.setRequestHeader("accept-language", window.localeSettings);
+      }
+      if(window.navigator.userAgent) {
+        http.setRequestBody("userAgent", window.navigator.userAgent)
       }
       http.send();
     } catch (ex) {
@@ -1880,7 +1941,9 @@ WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
 WebAuth.prototype.getDeviceInfo = function (options) {
   return new Promise(function (resolve, reject) {
     try {
-      options.deviceFingerprint = self.crypto.randomUUID();
+      if(!options.deviceFingerprint) {
+        options.deviceFingerprint =  new DeviceUUID().get();
+      }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
       http.onreadystatechange = function () {
