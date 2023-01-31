@@ -2,7 +2,7 @@ var Authentication = require('../authentication');
 var CustomException = require('./exception');
 var Oidc = require('oidc-client');
 var CryptoJS = require("crypto-js");
-var deviceID = require("device-uuid")
+
 
 var code_verifier;
 
@@ -1942,7 +1942,7 @@ WebAuth.prototype.getDeviceInfo = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       if(!options.deviceFingerprint) {
-        options.deviceFingerprint =  new DeviceUUID().get();
+        options.deviceFingerprint =  self.crypto.randomUUID();
       }
       var http = new XMLHttpRequest();
       var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
