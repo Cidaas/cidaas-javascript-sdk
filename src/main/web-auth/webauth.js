@@ -2,6 +2,7 @@ var Authentication = require('../authentication');
 var CustomException = require('./exception');
 var Oidc = require('oidc-client');
 var CryptoJS = require("crypto-js");
+var fingerprint = require('@fingerprintjs/fingerprintjs')
 
 
 var code_verifier;
@@ -1938,25 +1939,31 @@ WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
 }
 
 // get device info
-WebAuth.prototype.getDeviceInfo = function (options) {
+WebAuth.prototype.getDeviceInfo = function () {
   return new Promise(function (resolve, reject) {
     try {
-      if(!options.deviceFingerprint) {
-        options.deviceFingerprint =  self.crypto.randomUUID();
-      }
-      var http = new XMLHttpRequest();
-      var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
-      http.onreadystatechange = function () {
-        if (http.readyState == 4) {
-          resolve(JSON.parse(http.responseText));
+      const fpPromise = fingerprint.load();
+      var options = {fingerprint:"", userAgent:""};
+      (async () => {
+        const fp = await fpPromise;
+        const result = await fp.get();
+        options.fingerprint = result.visitorId
+        options.userAgent = window.navigator.userAgent
+        var http = new XMLHttpRequest();
+        var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
+        http.onreadystatechange = function () {
+          if (http.readyState == 4) {
+            resolve(JSON.parse(http.responseText));
+          }
+        };
+        http.open("POST", _serviceURL, true);
+        http.setRequestHeader("Content-type", "application/json");
+        if (window.localeSettings) {
+          http.setRequestHeader("accept-language", window.localeSettings);
         }
-      };
-      http.open("POST", _serviceURL, true);
-      http.setRequestHeader("Content-type", "application/json");
-      if (window.localeSettings) {
-        http.setRequestHeader("accept-language", window.localeSettings);
-      }
-      http.send(JSON.stringify(options));
+        http.send(JSON.stringify(options));
+      })();
+      
     } catch (ex) {
       reject(ex);
     }
