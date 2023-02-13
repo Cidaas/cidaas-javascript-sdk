@@ -4,7 +4,6 @@ var Oidc = require('oidc-client');
 var CryptoJS = require("crypto-js");
 var fingerprint = require('@fingerprintjs/fingerprintjs');
 
-var headers = {'x-lat': 'value','x-lng': 'value'}; 
 
 
 var code_verifier;
@@ -245,12 +244,8 @@ function createPostPromise(options, serviceurl, errorResolver, access_token, hea
       };
       http.open("POST", serviceurl, true);
       http.setRequestHeader("Content-type", "application/json");
-      for (const key in headers) {
-        if (headers.hasOwnProperty(key)) {
-           console.log(`${key}: ${headers[key]}`);
-           http.setRequestHeader(`${key}: ${headers[key]}`);
-         } 
-         }
+      http.setRequestHeader("x-lat", `${value}`);
+      http.setRequestHeader("x-lng", `${value}`);
       if (access_token) {
         http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       }
@@ -845,13 +840,13 @@ WebAuth.prototype.initiateAccountVerificationAsynFn = async function (options) {
 // verofy account
 WebAuth.prototype.verifyAccount = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate reset password
 WebAuth.prototype.initiateResetPassword = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 
@@ -940,7 +935,7 @@ WebAuth.prototype.getMFAList = function (options) {
 // get mfa list v2
 WebAuth.prototype.getMFAListV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 
@@ -948,214 +943,214 @@ WebAuth.prototype.getMFAListV2 = function (options, headers) {
 // initiate mfa v2
 WebAuth.prototype.initiateMFAV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate email
 WebAuth.prototype.initiateEmail = function (options, headers) {
   options.verificationType = "EMAIL"
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate email v2
 WebAuth.prototype.initiateEmailV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/email";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate sms
 WebAuth.prototype.initiateSMS = function (options, headers) {
   options.verificationType = "SMS";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate sms v2
 WebAuth.prototype.initiateSMSV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/sms";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate ivr
 WebAuth.prototype.initiateIVR = function (options, headers) {
   options.verificationType = "IVR";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate ivr v2
 WebAuth.prototype.initiateIVRV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/ivr";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate backupcode
 WebAuth.prototype.initiateBackupcode = function (options, headers) {
   options.verificationType = "BACKUPCODE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate backupcode v2
 WebAuth.prototype.initiateBackupcodeV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/backupcode";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate TOTP
 WebAuth.prototype.initiateTOTP = function (options, headers) {
   options.verificationType = "TOTP";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate totp v2
 WebAuth.prototype.initiateTOTPV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/totp";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate Pattern
 WebAuth.prototype.initiatePattern = function (options, headers) {
   options.verificationType = "PATTERN";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate pattern v2
 WebAuth.prototype.initiatePatternV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/pattern";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate touchid
 WebAuth.prototype.initiateTouchId = function (options, headers) {
   options.verificationType = "TOUCHID";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate touchid v2
 WebAuth.prototype.initiateTouchIdV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/touchid";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate smart push
 WebAuth.prototype.initiateSmartPush = function (options, headers) {
   options.verificationType = "PUSH";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate smart push v2
 WebAuth.prototype.initiateSmartPushV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/push";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate Face
 WebAuth.prototype.initiateFace = function (options, headers) {
   options.verificationType = "FACE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate face v2
 WebAuth.prototype.initiateFaceV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/face";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate Voice
 WebAuth.prototype.initiateVoice = function (options, headers) {
   options.verificationType = "VOICE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/initiate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // initiate voice v2
 WebAuth.prototype.initiateVoiceV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/voice";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // authenticate mfa v2
 WebAuth.prototype.authenticateMFAV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // cancel mfa v2
 WebAuth.prototype.cancelMFAV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/cancel/" + options.type;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // authenticate email
 WebAuth.prototype.authenticateEmail = function (options, headers) {
   options.verificationType = "EMAIL";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // authenticate email v2
 WebAuth.prototype.authenticateEmailV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/email";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // authenticate sms
 WebAuth.prototype.authenticateSMS = function (options, headers) {
   options.verificationType = "SMS";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // authenticate sms v2
 WebAuth.prototype.authenticateSMSV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/sms";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // authenticate ivr
 WebAuth.prototype.authenticateIVR = function (options, headers) {
   options.verificationType = "IVR";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // authenticate ivr v2
 WebAuth.prototype.authenticateIVRV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/ivr";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // authenticate backupcode
 WebAuth.prototype.authenticateBackupcode = function (options, headers) {
   options.verificationType = "BACKUPCODE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // authenticate backupcode v2
 WebAuth.prototype.authenticateBackupcodeV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/backupcode";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // authenticate totp
 WebAuth.prototype.authenticateTOTP = function (options, headers) {
   options.verificationType = "TOTP";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/authenticate";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // authenticate totp v2
 WebAuth.prototype.authenticateTOTPV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/totp";
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // passwordless login
@@ -1211,18 +1206,18 @@ WebAuth.prototype.getConsentDetails = function (options) {
 // get user consent details
 WebAuth.prototype.getConsentDetailsV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // acceptConsent
 WebAuth.prototype.acceptConsent = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/user/status";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 WebAuth.prototype.acceptConsentV2 = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // get scope consent details
@@ -1283,7 +1278,7 @@ WebAuth.prototype.getScopeConsentVersionDetailsV2 = function (options) {
 // accept scope Consent
 WebAuth.prototype.acceptScopeConsent = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // scope consent continue login
@@ -1302,7 +1297,7 @@ WebAuth.prototype.scopeConsentContinue = function (options) {
 // accept claim Consent
 WebAuth.prototype.acceptClaimConsent = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // claim consent continue login
@@ -1321,7 +1316,7 @@ WebAuth.prototype.claimConsentContinue = function (options) {
 // revoke claim Consent
 WebAuth.prototype.revokeClaimConsent = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 
@@ -1462,7 +1457,7 @@ WebAuth.prototype.firstTimeChangePassword = function (options) {
 // change password 
 WebAuth.prototype.changePassword = function (options, headers, access_token) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/changepassword";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // update profile
@@ -1496,7 +1491,7 @@ WebAuth.prototype.updateProfile = function (options, access_token, sub) {
 // get user activities
 WebAuth.prototype.getUserActivities = function (options, headers, access_token) {
   var _serviceURL = window.webAuthSettings.authority + "/useractivity-srv/latestactivity";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // get unreviewed devices
@@ -1586,7 +1581,7 @@ WebAuth.prototype.reviewDevice = function (options, access_token, sub) {
 // get accepted consent list
 WebAuth.prototype.getAcceptedConsentList = function (options, headers, access_token) {
   var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/user/details/consent";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // view accepted consent 
@@ -1627,37 +1622,37 @@ WebAuth.prototype.getConfiguredVerificationList = function (options, headers, ac
 WebAuth.prototype.initiateLinkAccount = function (options, headers, access_token) {
   options.user_name_type = 'email';
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/initiate";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // complete link accoount
 WebAuth.prototype.completeLinkAccount = function (options, headers, access_token) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // get linked users
 WebAuth.prototype.getLinkedUsers = function (access_token, headers, sub) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo/social/" + sub;
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // unlink accoount
 WebAuth.prototype.unlinkAccount = function (access_token, headers, identityId) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unlink/" + identityId;
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // get all verification list
 WebAuth.prototype.getAllVerificationList = function (access_token, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/config/list";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // image upload
 WebAuth.prototype.updateProfileImage = function (options, headers, access_token) {
   var _serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 
@@ -1665,110 +1660,110 @@ WebAuth.prototype.updateProfileImage = function (options, headers, access_token)
 WebAuth.prototype.setupEmail = function (options, headers) {
   options.verificationType = "EMAIL";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, undefined);
+  return createPostPromise(options, _serviceURL, false, undefined, headers);
 };
 
 // setup sms
 WebAuth.prototype.setupSMS = function (options, headers) {
   options.verificationType = "SMS";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, undefined);
+  return createPostPromise(options, _serviceURL, false, undefined, headers);
 };
 
 // setup ivr
 WebAuth.prototype.setupIVR = function (options, headers) {
   options.verificationType = "IVR";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // setup backupcode
 WebAuth.prototype.setupBackupcode = function (options, headers, access_token) {
   options.verificationType = "BACKUPCODE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // setup totp
 WebAuth.prototype.setupTOTP = function (options, headers, access_token) {
   options.verificationType = "TOTP";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // setup pattern
 WebAuth.prototype.setupPattern = function (options, headers, access_token) {
   options.verificationType = "PATTERN";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // setup touch
 WebAuth.prototype.setupTouchId = function (options, headers, access_token) {
   options.verificationType = "TOUCHID";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // setup smart push
 WebAuth.prototype.setupSmartPush = function (options, headers, access_token) {
   options.verificationType = "PUSH";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // setup face
 WebAuth.prototype.setupFace = function (options, headers, access_token) {
   options.verificationType = "FACE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // setup voice
 WebAuth.prototype.setupVoice = function (options, headers, access_token) {
   options.verificationType = "VOICE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // enroll Email
 WebAuth.prototype.enrollEmail = function (options, headers, access_token) {
   options.verificationType = "EMAIL";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/enroll";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // enroll SMS
 WebAuth.prototype.enrollSMS = function (options, headers, access_token) {
   options.verificationType = "SMS";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/enroll";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // enroll IVR
 WebAuth.prototype.enrollIVR = function (options, headers, access_token) {
   options.verificationType = "IVR";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/enroll";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // enroll TOTP
 WebAuth.prototype.enrollTOTP = function (options, headers, access_token) {
   options.verificationType = "TOTP";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/enroll";
-  return createPostPromise(options, headers, _serviceURL, false, access_token);
+  return createPostPromise(options, _serviceURL, false, access_token, headers);
 };
 
 // updateSuggestMFA
 WebAuth.prototype.updateSuggestMFA = function (track_id, options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
-  return createPostPromise(options, headers, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false, headers);
 };
 
 // enrollVerification
 WebAuth.prototype.enrollVerification = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // updateSocket
@@ -1780,19 +1775,19 @@ WebAuth.prototype.updateSocket = function (status_id) {
 // setupFidoVerification
 WebAuth.prototype.setupFidoVerification = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/suggestmfa/" + options.verification_type;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // checkVerificationTypeConfigured
 WebAuth.prototype.checkVerificationTypeConfigured = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // authenticateVerification
 WebAuth.prototype.authenticateVerification = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.verification_type;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // authenticateVerification form type (for face)
@@ -1825,13 +1820,13 @@ WebAuth.prototype.authenticateFaceVerification = function (options) {
 // initiateVerification
 WebAuth.prototype.initiateVerification = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.verification_type;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // deleteUserAccount
 WebAuth.prototype.deleteUserAccount = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
-  return createPostPromise(options, headers, _serviceURL, undefined, options.access_token);
+  return createPostPromise(options, _serviceURL, undefined, options.access_token, headers);
 };
 
 // getMissingFieldsLogin
@@ -1939,7 +1934,7 @@ WebAuth.prototype.deviceCodeVerify = function (code) {
 
 WebAuth.prototype.userCheckExists = function (options, headers) {
   var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/checkexists/" + options.requestId;
-  return createPostPromise(options, headers, _serviceURL, undefined);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
