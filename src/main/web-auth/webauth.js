@@ -2,7 +2,9 @@ var Authentication = require('../authentication');
 var CustomException = require('./exception');
 var Oidc = require('oidc-client');
 var CryptoJS = require("crypto-js");
-var fingerprint = require('@fingerprintjs/fingerprintjs')
+var fingerprint = require('@fingerprintjs/fingerprintjs');
+
+const LocationParam = 'x-location';
 
 
 var code_verifier;
@@ -13,7 +15,7 @@ function WebAuth(settings) {
     window.webAuthSettings = settings;
     window.usermanager = usermanager;
     window.localeSettings = null;
-    window.authentication = new Authentication(window.webAuthSettings, window.usermanager);
+    window.authentication = new Authentication(window.webAuthSettings, window.usermanager);                        
     window.usermanager.events.addSilentRenewError(function (error) {
       throw new CustomException("Error while renewing silent login", 500);
     });
@@ -228,7 +230,16 @@ WebAuth.prototype.logoutCallback = function () {
   });
 };
 
-function createPostPromise(options, serviceurl, errorResolver, access_token) {
+function getLocationHeadersFromOptions (options) {
+  if (options[LocationParam]) {
+     const value = options[LocationParam];
+     delete options[LocationParam];
+     return value['x-lat'] && value['x-lng'] && value || options;
+  }
+  return options;
+}
+
+function createPostPromise(options, serviceurl, errorResolver, access_token, headers) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
@@ -243,6 +254,13 @@ function createPostPromise(options, serviceurl, errorResolver, access_token) {
       };
       http.open("POST", serviceurl, true);
       http.setRequestHeader("Content-type", "application/json");
+      if (headers) {
+        for (const key in headers) {
+          if (headers.hasOwnProperty(key)) {
+            http.setRequestHeader(key, headers[key]);
+          } 
+        }
+      }
       if (access_token) {
         http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       }
@@ -837,7 +855,7 @@ WebAuth.prototype.initiateAccountVerificationAsynFn = async function (options) {
 // verofy account
 WebAuth.prototype.verifyAccount = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-  return createPostPromise(options, _serviceURL, false);
+  return createPostPromise(options, _serviceURL, false );
 };
 
 // initiate reset password
@@ -940,7 +958,8 @@ WebAuth.prototype.getMFAListV2 = function (options) {
 // initiate mfa v2
 WebAuth.prototype.initiateMFAV2 = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-  return createPostPromise(options, _serviceURL, undefined);
+  const headers = getLocationHeadersFromOptions(options);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate email
@@ -953,7 +972,8 @@ WebAuth.prototype.initiateEmail = function (options) {
 // initiate email v2
 WebAuth.prototype.initiateEmailV2 = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/email";
-  return createPostPromise(options, _serviceURL, undefined);
+  const headers = getLocationHeadersFromOptions(options);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate sms
@@ -966,7 +986,8 @@ WebAuth.prototype.initiateSMS = function (options) {
 // initiate sms v2
 WebAuth.prototype.initiateSMSV2 = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/sms";
-  return createPostPromise(options, _serviceURL, undefined);
+  const headers = getLocationHeadersFromOptions(options);
+  return createPostPromise(options, _serviceURL, undefined, headers);
 };
 
 // initiate ivr
@@ -1675,7 +1696,7 @@ WebAuth.prototype.setupIVR = function (options) {
 };
 
 // setup backupcode
-WebAuth.prototype.setupBackupcode = function (options, access_token) {
+WebAuth.prototype.setupBackupcode = function (options, access_token) {            
   options.verificationType = "BACKUPCODE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
   return createPostPromise(options, _serviceURL, false, access_token);
@@ -1689,7 +1710,7 @@ WebAuth.prototype.setupTOTP = function (options, access_token) {
 };
 
 // setup pattern
-WebAuth.prototype.setupPattern = function (options, access_token) {
+WebAuth.prototype.setupPattern = function (option, access_token) {
   options.verificationType = "PATTERN";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
   return createPostPromise(options, _serviceURL, false, access_token);
@@ -1854,7 +1875,7 @@ WebAuth.prototype.getMissingFieldsLogin = function (trackId) {
 };
 
 // progressiveRegistration
-WebAuth.prototype.progressiveRegistration = function (options, headers) {
+WebAuth.prototype.progressiveRegistration = function (options) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
