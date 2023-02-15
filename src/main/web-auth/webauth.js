@@ -234,9 +234,9 @@ function getLocationHeadersFromOptions (options) {
   if (options[LocationParam]) {
      const value = options[LocationParam];
      delete options[LocationParam];
-     return value['x-lat'] && value['x-lng'] && value || options;
+     return value['x-lat'] && value['x-lng'] && value || {};
   }
-  return options;
+  return {};
 }
 
 function createPostPromise(options, serviceurl, errorResolver, access_token, headers) {
