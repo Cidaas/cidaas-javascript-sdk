@@ -15,7 +15,7 @@ function WebAuth(settings) {
     window.webAuthSettings = settings;
     window.usermanager = usermanager;
     window.localeSettings = null;
-    window.authentication = new Authentication(window.webAuthSettings, window.usermanager);                        
+    window.authentication = new Authentication(window.webAuthSettings, window.usermanager);
     window.usermanager.events.addSilentRenewError(function (error) {
       throw new CustomException("Error while renewing silent login", 500);
     });
@@ -26,13 +26,13 @@ function WebAuth(settings) {
 
 var registrationFields = [];
 
-// added the common header  header 
-function createHeaders (http, options) {
-  http.setRequestHeader("Content-type", "application/json");
+// added the common header
+function createHeaders(http, options) {
+  http.setRequestHeader("Content-Type", "application/json");
   if (options && options.acceptlanguage) {
-    http.setRequestHeader("accept-language", options.acceptlanguage);
+    http.setRequestHeader("Accept-Language", options.acceptlanguage);
   } else if (window.localeSettings) {
-    http.setRequestHeader("accept-language", window.localeSettings);
+    http.setRequestHeader("Accept-Language", window.localeSettings);
   }
   return http;
 }
@@ -148,7 +148,7 @@ WebAuth.prototype.getUserProfile = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
       http.send();
     } catch (ex) {
@@ -172,7 +172,7 @@ WebAuth.prototype.getProfileInfo = function (access_token) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, null)
+      http = createHeaders(http, null)
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       http.send();
     } catch (ex) {
@@ -235,11 +235,11 @@ WebAuth.prototype.logoutCallback = function () {
   });
 };
 
-function getLocationHeadersFromOptions (options) {
+function getLocationHeadersFromOptions(options) {
   if (options[LocationParam]) {
-     const value = options[LocationParam];
-     delete options[LocationParam];
-     return value['x-lat'] && value['x-lng'] && value || {};
+    const value = options[LocationParam];
+    delete options[LocationParam];
+    return value['x-lat'] && value['x-lng'] && value || {};
   }
   return {};
 }
@@ -258,12 +258,12 @@ function createPostPromise(options, serviceurl, errorResolver, access_token, hea
         }
       };
       http.open("POST", serviceurl, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       if (headers) {
         for (const key in headers) {
           if (headers.hasOwnProperty(key)) {
             http.setRequestHeader(key, headers[key]);
-          } 
+          }
         }
       }
       if (access_token) {
@@ -296,7 +296,7 @@ WebAuth.prototype.renewToken = function (options) {
         }
       };
       http.open("POST", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
@@ -370,7 +370,7 @@ WebAuth.prototype.getAccessToken = function (options) {
         }
       };
       http.open("POST", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
@@ -393,7 +393,7 @@ WebAuth.prototype.validateAccessToken = function (options) {
         }
       };
       http.open("POST", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send(JSON.stringify(options));
     } catch (ex) {
       reject(ex);
@@ -434,7 +434,7 @@ WebAuth.prototype.getRequestId = function () {
         }
       };
       http.open("POST", _serviceURL, true);
-      http  = createHeaders(http, null)
+      http = createHeaders(http, null)
       http.send(JSON.stringify(bodyParams));
     } catch (ex) {
       reject(ex);
@@ -530,7 +530,7 @@ WebAuth.prototype.getMissingFields = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -554,7 +554,7 @@ WebAuth.prototype.getTenantInfo = function () {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, null)
+      http = createHeaders(http, null)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -587,7 +587,7 @@ WebAuth.prototype.getClientInfo = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -611,8 +611,8 @@ WebAuth.prototype.getDevicesInfo = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
-      if(window.navigator.userAgent) {
+      http = createHeaders(http, options)
+      if (window.navigator.userAgent) {
         http.setRequestBody("userAgent", window.navigator.userAgent)
       }
       http.send();
@@ -638,8 +638,8 @@ WebAuth.prototype.deleteDevice = function (options) {
         }
       };
       http.open("DELETE", _serviceURL, true);
-      http  = createHeaders(http, options)
-      if(window.navigator.userAgent) {
+      http = createHeaders(http, options)
+      if (window.navigator.userAgent) {
         http.setRequestBody("userAgent", window.navigator.userAgent)
       }
       http.send();
@@ -669,7 +669,7 @@ WebAuth.prototype.getRegistrationSetup = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -697,7 +697,7 @@ WebAuth.prototype.register = function (options, headers) {
         }
       };
       http.open("POST", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("requestId", headers.requestId);
       if (headers.captcha) {
         http.setRequestHeader("captcha", headers.captcha);
@@ -732,7 +732,7 @@ WebAuth.prototype.getInviteUserDetails = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options);
+      http = createHeaders(http, options);
       http.send();
     } catch (ex) {
       reject(ex);
@@ -756,7 +756,7 @@ WebAuth.prototype.getCommunicationStatus = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       if (options.requestId) {
         http.setRequestHeader("requestId", options.requestId);
       }
@@ -792,7 +792,7 @@ WebAuth.prototype.initiateAccountVerification = function (options) {
 
 // initiate verification and return response
 WebAuth.prototype.initiateAccountVerificationAsynFn = async function (options) {
-   try {
+  try {
 
     const searchParams = new URLSearchParams(options);
 
@@ -809,14 +809,14 @@ WebAuth.prototype.initiateAccountVerificationAsynFn = async function (options) {
 
   } catch (ex) {
     throw new CustomException(ex, 417);
-  } 
-  
+  }
+
 };
 
 // verofy account
 WebAuth.prototype.verifyAccount = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-  return createPostPromise(options, _serviceURL, false );
+  return createPostPromise(options, _serviceURL, false);
 };
 
 // initiate reset password
@@ -897,7 +897,7 @@ WebAuth.prototype.getMFAList = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1168,7 +1168,7 @@ WebAuth.prototype.getConsentDetails = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1209,7 +1209,7 @@ WebAuth.prototype.getScopeConsentDetails = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1233,7 +1233,7 @@ WebAuth.prototype.getScopeConsentVersionDetailsV2 = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
       http.send();
     } catch (ex) {
@@ -1303,7 +1303,7 @@ WebAuth.prototype.getDeduplicationDetails = function (options) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1336,7 +1336,7 @@ WebAuth.prototype.registerDeduplication = function (options) {
         }
       };
       http.open("POST", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1437,7 +1437,7 @@ WebAuth.prototype.updateProfile = function (options, access_token, sub) {
         }
       };
       http.open("PUT", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       http.send(JSON.stringify(options));
     } catch (ex) {
@@ -1468,7 +1468,7 @@ WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
 
       http.send();
@@ -1494,7 +1494,7 @@ WebAuth.prototype.getReviewedDevices = function (access_token, sub) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       http.send();
     } catch (ex) {
@@ -1519,7 +1519,7 @@ WebAuth.prototype.reviewDevice = function (options, access_token, sub) {
         }
       };
       http.open("PUT", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       http.send(JSON.stringify(options));
     } catch (ex) {
@@ -1550,7 +1550,7 @@ WebAuth.prototype.viewAcceptedConsent = function (options, access_token) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       http.send();
     } catch (ex) {
@@ -1625,7 +1625,7 @@ WebAuth.prototype.setupIVR = function (options) {
 };
 
 // setup backupcode
-WebAuth.prototype.setupBackupcode = function (options, access_token) {            
+WebAuth.prototype.setupBackupcode = function (options, access_token) {
   options.verificationType = "BACKUPCODE";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
   return createPostPromise(options, _serviceURL, false, access_token);
@@ -1753,7 +1753,7 @@ WebAuth.prototype.authenticateFaceVerification = function (options) {
         }
       };
       http.open("POST", _serviceURL, true);
-      http  = createHeaders(http, options)
+      http = createHeaders(http, options)
       http.setRequestHeader("Content-type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW");
       http.send(JSON.stringify(options));
     } catch (ex) {
@@ -1790,7 +1790,7 @@ WebAuth.prototype.getMissingFieldsLogin = function (trackId) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http  = createHeaders(http, options);
+      http = createHeaders(http, options);
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1814,7 +1814,7 @@ WebAuth.prototype.progressiveRegistration = function (options, headers) {
         }
       };
       http.open("POST", _serviceURL, true);
-       http  = createHeaders(http, options);
+      http = createHeaders(http, options);
       http.setRequestHeader("requestId", headers.requestId);
       http.setRequestHeader("trackId", headers.trackId);
       http.send(JSON.stringify(options));
@@ -1882,10 +1882,10 @@ WebAuth.prototype.setAcceptLanguageHeader = function (acceptLanguage) {
 WebAuth.prototype.getDeviceInfo = function () {
   return new Promise(function (resolve, reject) {
     try {
-      const value = ('; '+document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
+      const value = ('; ' + document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
       const fpPromise = fingerprint.load();
-      var options = {fingerprint:"", userAgent:""};
-      if(!value) {
+      var options = { fingerprint: "", userAgent: "" };
+      if (!value) {
         (async () => {
           const fp = await fpPromise;
           const result = await fp.get();
@@ -1899,7 +1899,7 @@ WebAuth.prototype.getDeviceInfo = function () {
             }
           };
           http.open("POST", _serviceURL, true);
-          http  = createHeaders(http, options);
+          http = createHeaders(http, options);
           http.send(JSON.stringify(options));
         })();
       }
