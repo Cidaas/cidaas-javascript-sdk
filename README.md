@@ -193,7 +193,8 @@ To get the client basic information, call ****getClientInfo()****. This will ret
 ##### Sample code
 ```js
 cidaas.getClientInfo({
-    requestId: 'your requestId'
+    requestId: 'your requestId',
+    acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (resp) {
     // your success code here
 }).catch(function(ex) {
@@ -255,7 +256,7 @@ To handle registration, first you need the registration fields. To get the regis
 ```js
 cidaas.getRegistrationSetup({
     requestId: 'your requestId',
-    acceptlanguage: 'your locale' // de-de, en-US
+    acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (resp) {
     // your success code here
 }).catch(function(ex) {
@@ -361,7 +362,8 @@ cidaas.register({
     family_name: 'yyyyy', 
     password: '123456', 
     password_echo: '123456', 
-    provider: 'your provider' // FACEBOOK, GOOGLE, SELF
+    provider: 'your provider', // FACEBOOK, GOOGLE, SELF
+    acceptlanguage: 'your locale' // optional example: de-de, en-US
 }, headers).then(function (response) {
     // type your code here
 }).catch(function(ex) {
@@ -412,7 +414,8 @@ Once social register, it will redirect to the extra information page with reques
 ```js
 cidaas.getMissingFields({
         trackId: 'your trackId', // which you will get it from url
-        requestId: 'your requestId' // which you will get it from url
+        requestId: 'your requestId', // which you will get it from url
+        acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
     // type your code here 
 }).catch(function (ex) {
@@ -430,7 +433,8 @@ Once registration successful, verify the account based on the flow. To get the d
 
 ```js
 cidaas.getCommunicationStatus({
-    sub: 'your sub' // which you will get on the registration response
+    sub: 'your sub', // which you will get on the registration response
+    acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
     // type your code here
 }).catch(function(ex) {
@@ -624,7 +628,8 @@ To get user profile details, pass access token to ****getProfileInfo()****.
 
 ```js
 cidaas.getProfileInfo({
-        access_token: 'your access token'
+        access_token: 'your access token',
+        acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
     // type your code here 
 }).catch(function (ex) {
@@ -698,7 +703,8 @@ To get the user profile information, call ****getUserProfile()****.
 ##### Sample code
 ```js
 cidaas.getUserProfile({
-        access_token: 'your access token'
+        access_token: 'your access token',
+        acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
     // type your code here 
 }).catch(function (ex) {
@@ -733,7 +739,8 @@ To update the user profile information, call ****updateProfile()****.
 cidaas.updateProfile({
         family_name: 'Doe',
         given_name: 'John',
-        provider: 'self'
+        provider: 'self',
+        acceptlanguage: 'your locale' // optional example: de-de, en-US
 }, 'your access token', 'your sub').then(function () {
     // type your code here 
 }).catch(function (ex) {
@@ -1755,7 +1762,8 @@ To get the details of consent tile and description, call ****getConsentDetails()
 ##### Sample code
 ```js
 this.cidaas.getConsentDetails({
-      consent_name: 'your consent name'
+      consent_name: 'your consent name',
+      acceptlanguage: 'your locale' // optional example: de-de, en-US
     }).then((response) => {
       // type your code here 
     }).catch((err) => {
@@ -1878,7 +1886,8 @@ To get the list of existing users in deduplication, call ****getDeduplicationDet
 ##### Sample code
 ```js
 this.cidaas.getDeduplicationDetails({
-      track_id: 'your track id'
+      track_id: 'your track id',
+      acceptlanguage: 'your locale' // optional example: de-de, en-US
     }).then((response) => {
       // type your code here 
     }).catch((err) => {
@@ -1912,7 +1921,8 @@ To register new user in deduplication, call ****registerDeduplication()****.
 ##### Sample code
 ```js
 this.cidaas.registerDeduplication({
-      track_id: 'your track id'
+      track_id: 'your track id',
+      acceptlanguage: 'your locale' // optional example: de-de, en-US
     }).then((response) => {
       // type your code here 
     }).catch((err) => {
@@ -2055,4 +2065,3 @@ this.socket.on("status-update", (msg) => {
     }
 });
 ```
-F
