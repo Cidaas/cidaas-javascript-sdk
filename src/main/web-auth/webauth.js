@@ -4,9 +4,6 @@ var Oidc = require('oidc-client');
 var CryptoJS = require("crypto-js");
 var fingerprint = require('@fingerprintjs/fingerprintjs');
 
-const LocationParam = 'x-location';
-
-
 var code_verifier;
 
 function WebAuth(settings) {
@@ -235,16 +232,7 @@ WebAuth.prototype.logoutCallback = function () {
   });
 };
 
-function getLocationHeadersFromOptions(options) {
-  if (options[LocationParam]) {
-    const value = options[LocationParam];
-    delete options[LocationParam];
-    return value['x-lat'] && value['x-lng'] && value || {};
-  }
-  return {};
-}
-
-function createPostPromise(options, serviceurl, errorResolver, access_token, headers) {
+function createPostPromise(options, serviceurl, errorResolver, access_token) {
   return new Promise(function (resolve, reject) {
     try {
       var http = new XMLHttpRequest();
@@ -258,14 +246,7 @@ function createPostPromise(options, serviceurl, errorResolver, access_token, hea
         }
       };
       http.open("POST", serviceurl, true);
-      http = createHeaders(http, options);
-      if (headers) {
-        for (const key in headers) {
-          if (headers.hasOwnProperty(key)) {
-            http.setRequestHeader(key, headers[key]);
-          }
-        }
-      }
+      http.setRequestHeader("Content-type", "application/json");
       if (access_token) {
         http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       }
@@ -916,8 +897,7 @@ WebAuth.prototype.getMFAListV2 = function (options) {
 // initiate mfa v2
 WebAuth.prototype.initiateMFAV2 = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-  const headers = getLocationHeadersFromOptions(options);
-  return createPostPromise(options, _serviceURL, undefined, headers);
+  return createPostPromise(options, _serviceURL, false);
 };
 
 // initiate email
@@ -930,8 +910,7 @@ WebAuth.prototype.initiateEmail = function (options) {
 // initiate email v2
 WebAuth.prototype.initiateEmailV2 = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/email";
-  const headers = getLocationHeadersFromOptions(options);
-  return createPostPromise(options, _serviceURL, undefined, headers);
+  return createPostPromise(options, _serviceURL, false);
 };
 
 // initiate sms
@@ -944,8 +923,7 @@ WebAuth.prototype.initiateSMS = function (options) {
 // initiate sms v2
 WebAuth.prototype.initiateSMSV2 = function (options) {
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/sms";
-  const headers = getLocationHeadersFromOptions(options);
-  return createPostPromise(options, _serviceURL, undefined, headers);
+  return createPostPromise(options, _serviceURL, false);
 };
 
 // initiate ivr
@@ -1639,7 +1617,7 @@ WebAuth.prototype.setupTOTP = function (options, access_token) {
 };
 
 // setup pattern
-WebAuth.prototype.setupPattern = function (option, access_token) {
+WebAuth.prototype.setupPattern = function (options, access_token) {
   options.verificationType = "PATTERN";
   var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + options.verificationType.toString().toLowerCase() + "/setup";
   return createPostPromise(options, _serviceURL, false, access_token);
