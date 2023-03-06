@@ -307,7 +307,7 @@ WebAuth.prototype.base64URL = function (string) {
 };
 
 // get login url
-WebAuth.prototype.getLoginURL = function () {
+WebAuth.prototype.getLoginURL = function (options) {
   var settings = window.webAuthSettings;
   if (!settings.response_type) {
     settings.response_type = "code";
@@ -328,6 +328,9 @@ WebAuth.prototype.getLoginURL = function () {
     loginURL += "&response_mode=" + settings.response_mode;
   }
   loginURL += "&scope=" + settings.scope;
+  if(options && options.max_age){
+    loginURL += "&max_age=" + options.max_age;
+  }
   console.log(loginURL);
   return loginURL;
 };
