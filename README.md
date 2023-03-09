@@ -2065,3 +2065,18 @@ this.socket.on("status-update", (msg) => {
     }
 });
 ```
+
+## Possible Error
+
+The SDK will throws Custom Exception if something went wrong during the operation:
+
+| Error Message  | HTTP Status Code | When could it be thrown |
+|---|---|---|
+|  Error while renewing silent login |  500 | during creating WebAuth |
+|  Settings or Authentication instance in OIDC cannot be empty |  417 | during loginWithBrowser(), registerWithBrowser(), loginCallback(), logout() & logoutCallback() |
+|  UserManager cannot be empty |  417 | during getUserInfo() |
+|  access_token cannot be empty |  417 | during getUserProfile() & getProfileInfo() |
+|  refresh_token cannot be empty |  417 | during renewToken() |
+|  code cannot be empty |  417 | during getAccessToken() |
+|  token or token_type_hint cannot be empty |  417 | during validateAccessToken() |
+|  either sub or email cannot be empty |  417 | during getMFAList() |
