@@ -307,7 +307,7 @@ WebAuth.prototype.base64URL = function (string) {
 };
 
 // get login url
-WebAuth.prototype.getLoginURL = function (options) {
+WebAuth.prototype.getLoginURL = function (options = {}) {
   var settings = window.webAuthSettings;
   if (!settings.response_type) {
     settings.response_type = "code";
@@ -1771,7 +1771,7 @@ WebAuth.prototype.getMissingFieldsLogin = function (trackId) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http = createHeaders(http, options);
+      http = createHeaders(http, null);
       http.send();
     } catch (ex) {
       reject(ex);
