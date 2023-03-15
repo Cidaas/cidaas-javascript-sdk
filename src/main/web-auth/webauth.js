@@ -1449,7 +1449,7 @@ WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http = createHeaders(http, options);
+      http = createHeaders(http, null);
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
 
       http.send();
