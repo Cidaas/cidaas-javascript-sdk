@@ -16,6 +16,8 @@ github_sync:
   image: bitnami/git
   script:
     - git config --global --add safe.directory $PWD
+    - git config --global user.name $GITLAB_USER_NAME
+    - git config --global user.email $GITLAB_USER_EMAIL
     - git branch -D fix/github-sync && git pull && git checkout fix/github-sync
     - rm -rf Dockerfile .gitlab-ci.yml scripts
     - git add . && git commit -m "fix():cleanup"
