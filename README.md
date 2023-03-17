@@ -83,7 +83,7 @@ To complete the login process, call ****logincallback()****. This will parses th
 
 ```js
 cidaas.loginCallback().then(function(response) {
-    // your success code here            
+    // the response will give you login details.           
 }).catch(function(ex) {
     // your failure code here
 });
@@ -103,7 +103,7 @@ cidaas.registerWithBrowser();
 To get the user profile information, call ****getUserInfo()****. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
 ```js
 cidaas.getUserInfo().then(function (response) {
-    // your success code here
+    // the response will give you profile details.
 }).catch(function(ex) {
     // your failure code here
 });; 
@@ -114,7 +114,7 @@ cidaas.getUserInfo().then(function (response) {
 
 ```js
 cidaas.logout().then(function () {
-    // your success code here
+    // your logout success code here
 }).catch(function(ex) {
     // your failure code here
 });
@@ -136,7 +136,7 @@ Each and every proccesses starts with requestId, it is an entry point to login o
 
 ```js
 cidaas.getRequestId().then(function (response) {
-    // your success code here
+    // the response will give you request ID.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -163,7 +163,7 @@ To get the tenant basic information, call ****getTenantInfo()****. This will ret
 ##### Sample code
 ```js
 cidaas.getTenantInfo().then(function (response) {
-    // your success code here
+    // the response will give you tenent details.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -196,7 +196,7 @@ cidaas.getClientInfo({
     requestId: 'your requestId',
     acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (resp) {
-    // your success code here
+    // the response will give you client info.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -258,7 +258,7 @@ cidaas.getRegistrationSetup({
     requestId: 'your requestId',
     acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (resp) {
-    // your success code here
+    // the response will give you fields that are required.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -365,7 +365,7 @@ cidaas.register({
     provider: 'your provider', // FACEBOOK, GOOGLE, SELF
     acceptlanguage: 'your locale' // optional example: de-de, en-US
 }, headers).then(function (response) {
-    // type your code here
+    // the response will give you client registration details.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -417,7 +417,7 @@ cidaas.getMissingFields({
         requestId: 'your requestId', // which you will get it from url
         acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
-    // type your code here 
+    // the response will give you user info with missing fields.
 }).catch(function (ex) {
     // your failure code here  
 });
@@ -436,7 +436,7 @@ cidaas.getCommunicationStatus({
     sub: 'your sub', // which you will get on the registration response
     acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
-    // type your code here
+    // the response will give you account details once its verified.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -467,7 +467,7 @@ cidaas.initiateAccountVerification({
     processingType: 'CODE', 
     sub: 'your sub'
 }).then(function (response) {
-    // type your code here
+    // the response will give you account verification details.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -494,7 +494,7 @@ cidaas.verifyAccount({
     accvid: 'your accvid', // which you will get on initiate account verification response
     code: 'your code in email or sms or ivr'
 }).then(function (response) {
-    // type your code here
+    // the response will give you account verification ID and unique code.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -515,7 +515,7 @@ cidaas.initiateResetPassword({
     requestId: 'your requestId',
     resetMedium: 'email'
 }).then(function (response) {
-    // type your code here
+    // the response will give you password reset details.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -543,7 +543,7 @@ cidaas.handleResetPassword({
     code: 'your code in email or sms or ivr',
     resetRequestId: 'your resetRequestId' // which you will get on initiate reset password response
 }).then(function (response) {
-    // type your code here
+    // the response will give you valid verification code.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -573,7 +573,7 @@ cidaas.resetPassword({
     exchangeId: 'your exchangeId', // which you will get on handle reset password response
     resetRequestId: 'your resetRequestId' // which you will get on handle reset password response
 }).then(function (response) {
-    // type your code here
+    // the response will give you reset password details.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -603,7 +603,7 @@ cidaas.changePassword({
         identityId: 'asdauet1-quwyteuqqwejh-asdjhasd',
 }, 'your access token')
 .then(function () {
-    // type your code here 
+    // the response will give you changed password.
 }).catch(function (ex) {
     // your failure code here  
 });
@@ -631,7 +631,7 @@ cidaas.getProfileInfo({
         access_token: 'your access token',
         acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
-    // type your code here 
+    // the response will give you user profile details.
 }).catch(function (ex) {
     // your failure code here  
 });
@@ -706,7 +706,7 @@ cidaas.getUserProfile({
         access_token: 'your access token',
         acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
-    // type your code here 
+    // the response will give you user profile information.
 }).catch(function (ex) {
     // your failure code here  
 });
@@ -742,7 +742,7 @@ cidaas.updateProfile({
         provider: 'self',
         acceptlanguage: 'your locale' // optional example: de-de, en-US
 }, 'your access token', 'your sub').then(function () {
-    // type your code here 
+    // the response will give you updated user profile info.
 }).catch(function (ex) {
     // your failure code here  
 });
@@ -787,7 +787,7 @@ The usage of the method is as follows.
 ```js
 cidaas.deleteUserAccount(options).then(function (response) {
 
-   // your success code here
+   // the response will give you account details to be deleted.
 
 }).catch(function(ex) {
 
@@ -823,7 +823,7 @@ this.cidaas.setupEmail({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for email setup.
     }).catch((err) => {
       // your failure code here 
     });
@@ -853,7 +853,7 @@ this.cidaas.enrollEmail({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you email and device info to be linked.
     }).catch((err) => {
       // your failure code here 
     });
@@ -886,7 +886,7 @@ this.cidaas.initiateEmail({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you email verification code details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -918,7 +918,7 @@ this.cidaas.authenticateEmail({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you email authentication details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -948,7 +948,7 @@ this.cidaas.setupSMS({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for SMS setup. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -978,7 +978,7 @@ this.cidaas.enrollSMS({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you SMS and device info to be linked 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1011,7 +1011,7 @@ this.cidaas.initiateSMS({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you SMS verification code details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1043,7 +1043,7 @@ this.cidaas.authenticateSMS({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you SMS authentiction details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1073,7 +1073,7 @@ this.cidaas.setupIVR({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for IVR setup.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1103,7 +1103,7 @@ this.cidaas.enrollIVR({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you IVR and device info to be linked.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1136,7 +1136,7 @@ this.cidaas.initiateIVR({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you IVR verification code details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1168,7 +1168,7 @@ this.cidaas.authenticateIVR({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you IVR authentication details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1198,7 +1198,7 @@ this.cidaas.setupBackupcode({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for backup-code setup.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1237,7 +1237,7 @@ this.cidaas.initiateBackupcode({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you backup-code verification code details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1269,7 +1269,7 @@ this.cidaas.authenticateBackupcode({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you backup-code authentication details. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1300,7 +1300,7 @@ this.cidaas.setupTOTP({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for TOTP setup. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1330,7 +1330,7 @@ this.cidaas.enrollTOTP({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you TOTP and device info to be linked. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1363,7 +1363,7 @@ this.cidaas.initiateTOTP({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you TOTP verification details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1395,7 +1395,7 @@ this.cidaas.authenticateTOTP({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you TOTP authentication details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1426,7 +1426,7 @@ this.cidaas.setupPattern({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for Pattern setup.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1460,7 +1460,7 @@ this.cidaas.initiatePattern({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you Pattern verification details. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1493,7 +1493,7 @@ this.cidaas.setupTouchId({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for Touch ID setup.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1527,7 +1527,7 @@ this.cidaas.initiateTouchId({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you Touch ID verification details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1560,7 +1560,7 @@ this.cidaas.setupSmartPush({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for Smart Push setup. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1583,7 +1583,7 @@ this.cidaas.initiateSmartPush({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you Smart Push verification details. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1616,7 +1616,7 @@ this.cidaas.setupFace({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for Face setup. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1650,7 +1650,7 @@ this.cidaas.initiateFace({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you Face verification details.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1683,7 +1683,7 @@ this.cidaas.setupVoice({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you details for Voice setup. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1717,7 +1717,7 @@ this.cidaas.initiateVoice({
         deviceId: 'your device id'
       }
     }).then((response) => {
-      // type your code here 
+      // the response will give you Voice verification details. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1765,7 +1765,7 @@ this.cidaas.getConsentDetails({
       consent_name: 'your consent name',
       acceptlanguage: 'your locale' // optional example: de-de, en-US
     }).then((response) => {
-      // type your code here 
+      // the response will give you details of consent.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1796,7 +1796,7 @@ this.cidaas.acceptConsent({
       client_id: 'your client id',
       accepted: true
     }).then((response) => {
-      // type your code here 
+      // the response will give you details of accepted consent.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1838,7 +1838,7 @@ this.cidaas.acceptClaimConsent({
       client_id: 'your client id',
       accepted: "accepted claims with array eg: []"
     }).then((response) => {
-      // type your code here 
+      // the response will give you accepted claim consent. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1863,7 +1863,7 @@ this.cidaas.revokeClaimConsent({
       sub: 'your sub',
       revoked_claims: "revoked claims with array eg: []"
     }).then((response) => {
-      // type your code here 
+      // the response will give you revoked claim consent.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1889,7 +1889,7 @@ this.cidaas.getDeduplicationDetails({
       track_id: 'your track id',
       acceptlanguage: 'your locale' // optional example: de-de, en-US
     }).then((response) => {
-      // type your code here 
+      // the response will give you deduplication details of users.
     }).catch((err) => {
       // your failure code here 
     });
@@ -1924,7 +1924,7 @@ this.cidaas.registerDeduplication({
       track_id: 'your track id',
       acceptlanguage: 'your locale' // optional example: de-de, en-US
     }).then((response) => {
-      // type your code here 
+      // the response will give you new registered deduplication user. 
     }).catch((err) => {
       // your failure code here 
     });
@@ -1955,7 +1955,7 @@ this.cidaas.deduplicationLogin({
         requestId: 'your request id',
         password: 'your password'
     }).then((response) => {
-      // type your code here 
+      // the response will give you deduplication login details. 
     }).catch((err) => {
       // your failure code here 
     });
