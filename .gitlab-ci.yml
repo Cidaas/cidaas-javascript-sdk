@@ -18,9 +18,9 @@ github_sync:
     - git config --global --add safe.directory $PWD
     - git config --global user.name $GITLAB_USER_NAME
     - git config --global user.email $GITLAB_USER_EMAIL
-    - git branch -D fix/github-sync && git pull && git checkout fix/github-sync
-    - rm -rf Dockerfile .gitlab-ci.yml scripts
-    - git add . && git commit -m "fix():cleanup"
-    - git status
-    - git remote add github https://github.com/Cidaas/cidaas-javascript-sdk.git
+    - git checkout fix/github-sync
+    - git remote -v >> temp
+    - if grep -q github temp;then echo 'remote github already exists';else git remote add github https://github.com/Cidaas/cidaas-javascript-sdk.git;fi
+    - rm -rf Dockerfile .gitlab-ci.yml scripts temp
+    - git add . && git commit -m "fix():cleanup" && git status
     - git push https://$USERNAME:$PAT@github.com/Cidaas/cidaas-javascript-sdk.git HEAD:fix/github-sync -f
