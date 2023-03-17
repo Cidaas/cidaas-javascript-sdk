@@ -2065,3 +2065,12 @@ this.socket.on("status-update", (msg) => {
     }
 });
 ```
+
+## Possible Error
+
+The SDK will throws Custom Exception if something went wrong during the operation:
+
+| HTTP Status Code | When could it be thrown |
+|---|---|
+|  500 | during creation of WebAuth instance |
+|  417 | if there are any other failure |
