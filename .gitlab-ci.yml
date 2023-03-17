@@ -1,7 +1,6 @@
 include:
   - project: widas/software-quality/gitlab-template-projects/widas-ci-templates
-    file:
-      - node/npmjs-publish.yml
+    file: node/npmjs-publish.yml
 
 stages:
   - prepare
@@ -17,11 +16,9 @@ github_sync:
   image: bitnami/git
   script:
     - git config --global --add safe.directory $PWD
-    - git checkout fix/github-sync && git pull origin fix/github-sync
+    - git branch -D fix/github-sync && git pull && git checkout fix/github-sync
     - rm -rf Dockerfile .gitlab-ci.yml scripts
     - git add . && git commit -m "fix():cleanup"
     - git status
     - git remote add github https://github.com/Cidaas/cidaas-javascript-sdk.git
     - git push https://$USERNAME:$PAT@github.com/Cidaas/cidaas-javascript-sdk.git HEAD:fix/github-sync -f
-  rules:
-    - when: manual
