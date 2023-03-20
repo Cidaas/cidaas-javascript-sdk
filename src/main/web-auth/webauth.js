@@ -1890,4 +1890,10 @@ WebAuth.prototype.getDeviceInfo = function () {
   });
 };
 
+// initiates a new user link to link two existing users
+WebAuth.prototype.userAccountLink = function (options, access_token) {
+  var _serviceURL = window.webAuthSettings.authority + "/useractions-srv/users/" + options.sub + "/link";
+  return createPostPromise(options, _serviceURL, false, access_token);
+};
+
 module.exports = WebAuth;
