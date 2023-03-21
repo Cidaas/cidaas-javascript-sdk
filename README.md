@@ -1993,7 +1993,7 @@ var options = {
 
 ```js
 this.cidaas.userAccountLink(options, access_token).then((response) => {
-      // the response will give you email verification code details.
+      // the response will give you that both user are linked.
     }).catch((err) => {
       // your failure code here 
     });
