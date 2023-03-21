@@ -15,7 +15,7 @@ declare class WebAuth {
     generateRandomString(length: any): string;
     generateCodeChallenge(code_verifier: any): any;
     base64URL(string: any): any;
-    getLoginURL(): string;
+    getLoginURL(options?: {}): string;
     getAccessToken(options: any): Promise<any>;
     validateAccessToken(options: any): Promise<any>;
     getRequestId(): Promise<any>;
@@ -27,6 +27,8 @@ declare class WebAuth {
     getTenantInfo(): Promise<any>;
     logoutUser(options: any): void;
     getClientInfo(options: any): Promise<any>;
+    getDevicesInfo(options: any): Promise<any>;
+    deleteDevice(options: any): Promise<any>;
     getRegistrationSetup(options: any): Promise<any>;
     register(options: any, headers: any): Promise<any>;
     getInviteUserDetails(options: any): Promise<any>;
@@ -134,6 +136,6 @@ declare class WebAuth {
     deviceCodeVerify(code: any): void;
     userCheckExists(options: any): Promise<any>;
     setAcceptLanguageHeader(acceptLanguage: any): void;
-    getDeviceInfo(options: any): Promise<any>;
+    getDeviceInfo(): Promise<any>;
     userAccountLink(options: any, access_token: any): Promise<any>;
 }
