@@ -137,4 +137,5 @@ declare class WebAuth {
     userCheckExists(options: any): Promise<any>;
     setAcceptLanguageHeader(acceptLanguage: any): void;
     getDeviceInfo(): Promise<any>;
+    userAccountLink(options: any, access_token: any): Promise<any>;
 }

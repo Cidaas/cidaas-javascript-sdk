@@ -1976,6 +1976,40 @@ this.cidaas.deduplicationLogin({
     }
 }
 ```
+
+##### Initiate Users Link
+
+To initiate a new user link, call ****userAccountLink()****.
+
+##### Sample code
+
+```js
+var options = {
+    sub: 'sub of the user who initiates the user link',
+    username: 'username of the user which should get linked',
+    redirect_uri: 'redirect uri the user should get redirected after successful account linking'
+}
+```
+
+```js
+this.cidaas.userAccountLink(options, access_token).then((response) => {
+      // the response will give you that both user are linked.
+    }).catch((err) => {
+      // your failure code here 
+    });
+```
+
+##### Response
+```json
+{
+    "success":true,
+    "status":200,
+    "data": {
+         "redirectUri": "string"
+    }
+}
+```
+
 #### Socket Connection
 
 ##### Installation
