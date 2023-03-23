@@ -307,7 +307,7 @@ WebAuth.prototype.base64URL = function (string) {
 };
 
 // get login url
-WebAuth.prototype.getLoginURL = function () {
+WebAuth.prototype.getLoginURL = function (options = {}) {
   var settings = window.webAuthSettings;
   if (!settings.response_type) {
     settings.response_type = "code";
@@ -328,6 +328,9 @@ WebAuth.prototype.getLoginURL = function () {
     loginURL += "&response_mode=" + settings.response_mode;
   }
   loginURL += "&scope=" + settings.scope;
+  if(options && options.max_age){
+    loginURL += "&max_age=" + options.max_age;
+  }
   console.log(loginURL);
   return loginURL;
 };
@@ -1446,7 +1449,7 @@ WebAuth.prototype.getUnreviewedDevices = function (access_token, sub) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http = createHeaders(http, options);
+      http = createHeaders(http, null);
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
 
       http.send();
@@ -1472,7 +1475,7 @@ WebAuth.prototype.getReviewedDevices = function (access_token, sub) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http = createHeaders(http, options);
+      http = createHeaders(http, null);
       http.setRequestHeader("Authorization", `Bearer ${access_token}`);
       http.send();
     } catch (ex) {
@@ -1768,7 +1771,7 @@ WebAuth.prototype.getMissingFieldsLogin = function (trackId) {
         }
       };
       http.open("GET", _serviceURL, true);
-      http = createHeaders(http, options);
+      http = createHeaders(http, null);
       http.send();
     } catch (ex) {
       reject(ex);
@@ -1885,6 +1888,12 @@ WebAuth.prototype.getDeviceInfo = function () {
       reject(ex);
     }
   });
+};
+
+// initiates a new user link to link two existing users
+WebAuth.prototype.userAccountLink = function (options, access_token) {
+  var _serviceURL = window.webAuthSettings.authority + "/useractions-srv/users/" + options.sub + "/link";
+  return createPostPromise(options, _serviceURL, false, access_token);
 };
 
 module.exports = WebAuth;
