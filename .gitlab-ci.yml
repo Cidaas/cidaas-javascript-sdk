@@ -7,9 +7,15 @@ stages:
   - test
   - release
   - publish
+  - deploy
 
 test_build:
   extends: .test_build
+  script:
+    - echo "PACKAGE_VERSION=$(node -pe "require('./package.json').version")" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
 
 github_sync:
   stage: publish
@@ -27,3 +33,13 @@ github_sync:
   only:
     - master
   when: manual
+
+aws_upload:  
+  # extends: .aws_upload
+  stage: deploy
+  variables:    
+    S3_PATH: s3://cidaassdk/javascript/oidc/$PACKAGE_VERSION
+  script:
+    - echo "Package version is '$PACKAGE_VERSION'"
+  only: 
+   - fix/240-push-minified-js-file-to-CDN
