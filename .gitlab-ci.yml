@@ -11,7 +11,7 @@ stages:
 
 test_build:
   extends: .test_build
-  script:
+  after_script:
     - echo "PACKAGE_VERSION=$(node -pe "require('./package.json').version")" >> build.env
   artifacts:
     reports:
