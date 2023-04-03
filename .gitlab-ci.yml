@@ -7,7 +7,6 @@ stages:
   - test
   - release
   - publish
-  - deploy
 
 test_build:
   extends: .test_build
@@ -35,11 +34,8 @@ github_sync:
   when: manual
 
 aws_upload:  
-  # extends: .aws_upload
-  stage: deploy
+  extends: .aws_upload
   variables:    
     S3_PATH: s3://cidaassdk/javascript/oidc/$PACKAGE_VERSION
-  script:
-    - echo "Package version is '$PACKAGE_VERSION'"
   only: 
-   - fix/240-push-minified-js-file-to-CDN
+   - master
