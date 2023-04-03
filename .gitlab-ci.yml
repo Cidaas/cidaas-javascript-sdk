@@ -7,6 +7,7 @@ stages:
   - test
   - release
   - publish
+  - deploy
 
 test_build:
   extends: .test_build
