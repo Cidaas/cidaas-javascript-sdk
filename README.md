@@ -11,6 +11,11 @@
 ## cidaas-javascript-sdk
 This cidaas Javascript SDK library is built on the top of [OIDC client javascript library](https://github.com/IdentityModel/oidc-client-js). 
 
+#### Requirements
+
+Make sure you have installed all of the following prerequisites on your development machine:
+* Node.js - Download & Install Node.js. The version required is >= 8
+
 #### Installation
 
 From CDN
