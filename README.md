@@ -15,6 +15,7 @@ This cidaas Javascript SDK library is built on the top of [OIDC client javascrip
 
 Make sure you have installed all of the following prerequisites on your development machine:
 * Node.js - Download & Install Node.js. The version required is >= 8
+* npm - node package manager to add the package and install dependent packages
 
 #### Installation
 
@@ -23,7 +24,7 @@ From CDN
 ```html
 <!-- Release version 2.0.9 -->
 <!-- Minified version -->
-<script src="https://cdn.cidaas.de/javascript/oidc/2.0.9/cidaas-javascript-sdk.min.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/2.5.0/cidaas-javascript-sdk.min.js"></script>
 ```
 
 From npm
@@ -88,7 +89,7 @@ To complete the login process, call ****logincallback()****. This will parses th
 
 ```js
 cidaas.loginCallback().then(function(response) {
-    // the response will give you login details.           
+    // the response will give you login details.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -229,7 +230,7 @@ cidaas.getClientInfo({
 
 ##### Login with credentials
 
-To login with your credentials, call ****loginWithCredentials()****. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk
+To login with your credentials, call ****loginWithCredentials()****. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/5gphdk6vapp56-classic-login#call-login-api for more detials.
 
 ##### Sample code
 ```js
@@ -241,9 +242,37 @@ cidaas.loginWithCredentials({
 });
 ```
 
+#### Login with credentials and get response
+To login with username and password, call **loginWithCredentialsAsynFn()**. The function accepts a function parameter of type object. In the sample example the object is named as options. Below are the key that need to be passed in the options object
+
+| Name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| request_id | string | request id of the session | false |
+| username | string | the username of the user  | false |
+| password | string | password to authenticate the username | false |
+
+
+##### Sample code
+
+```js
+options = {
+  request_id: "bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+  username: "test@cidaas.de"
+  password: "cidaas"
+}
+
+cidaas.loginWithCredentialsAsynFn(options)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
 ##### Login with social
 
-To login with social providers, call ****loginWithSocial()****. This will redirect you to the facebook login page.
+To login with social providers, call ****loginWithSocial()****. This will redirect you to the facebook login page. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9mi5uqxhqlsm5-social-login#call-social-login-api for more details
 
 ##### Sample code
 ```js
@@ -424,7 +453,74 @@ cidaas.getMissingFields({
 }).then(function (response) {
     // the response will give you user info with missing fields.
 }).catch(function (ex) {
-    // your failure code here  
+    // your failure code here
+});
+```
+
+##### Progressive Registration
+For progressive registration, call **progressiveRegistration()**. While logging in If the API returns 417 with the error message MissingRequiredFields, call the **getMissingFieldsLogin** to get the list of missing fileds and proceed with progressive registration. In the sample request only the required fields are added, however you must provide the missing fields along with the required fields.
+
+##### Function parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| options | object | The object with the keys described in the below table under section options |
+| headers | object | The object with the keys described in the below table under section headers  |
+
+##### options
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| acceptlanguage | string | your locale/browser local  | true |
+
+* Please provide provide the missing fields along with the required fields
+
+##### headers
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| trackId | string | the track id received while logging in  | false |
+| requestId | string | request id of the session | false |
+
+
+##### Sample code
+
+```js
+options = {
+    acceptlanguage: 'en-Us'
+}
+
+headers = {
+    trackId: 'bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+    requestId: 'bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+}
+cidaas.progressiveRegistration(options, headers)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+})
+```
+
+##### Get Missing Fields Login
+To get the missing fields after login, call **getMissingFieldsLogin()**.
+
+##### Function parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| trackId | string | the track id received while logging in  |
+
+
+##### Sample code
+
+```js
+let trackId = 'bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
+cidaas.getMissingFieldsLogin(trackId)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
 });
 ```
 
@@ -509,7 +605,7 @@ cidaas.verifyAccount({
 
 ##### Initiate Reset Password
 
-To initiate the password resetting, call ****initiateResetPassword()****. This will send verification code to your email or mobile based on the resetMedium you mentioned.
+To initiate the password resetting, call ****initiateResetPassword()****. This will send verification code to your email or mobile based on the resetMedium you mentioned. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/6b29bac6002f4-initiate-password-reset for more details.
 
 ##### Sample code
 
@@ -540,7 +636,7 @@ cidaas.initiateResetPassword({
 
 ##### Handle Reset Password
 
-To handling the reset password by entering the verification code you received, call ****handleResetPassword()****. This will check your verification code was valid or not and allows you to proceed to the next step
+To handling the reset password by entering the verification code you received, call ****handleResetPassword()****. This will check your verification code was valid or not and allows you to proceed to the next step. More details available on https://docs.cidaas.com/docs/cidaas-iam/4aede115e5460-validate-reset-password
 
 ##### Sample code
 ```js
@@ -568,7 +664,7 @@ cidaas.handleResetPassword({
 
 ##### Reset Password
 
-To change the password, call ****resetPassword()****. This will allow you to change your password.
+To change the password, call ****resetPassword()****. This will allow you to change your password. More detials available on https://docs.cidaas.com/docs/cidaas-iam/c7d767a7414df-accept-reset-password
 
 ##### Sample code
 ```js
@@ -597,7 +693,7 @@ cidaas.resetPassword({
 
 ##### Change Password
 
-To change the password, call ****changePassword()****. This will allow you to change your password.
+To change the password, call ****changePassword()****. This will allow you to change your password. More details available on https://docs.cidaas.com/docs/cidaas-iam/09873c57d1fb8-change-password
 
 ##### Sample code
 ```js
@@ -610,7 +706,7 @@ cidaas.changePassword({
 .then(function () {
     // the response will give you changed password.
 }).catch(function (ex) {
-    // your failure code here  
+    // your failure code here
 });
 ```
 
@@ -638,7 +734,7 @@ cidaas.getProfileInfo({
 }).then(function (response) {
     // the response will give you user profile details.
 }).catch(function (ex) {
-    // your failure code here  
+    // your failure code here
 });
 ```
 
@@ -703,17 +799,24 @@ cidaas.getProfileInfo({
 
 #### Getting user profile
 
-To get the user profile information, call ****getUserProfile()****.
+To get the user profile information, call ****getUserProfile()****. The function accepts a function parameter of type object. In the sample example the object is named as options. Below are the key that need to be passed in the options object
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| access_token | string | a bearer token | false |
+| acceptlanguage | string | browser/custom local  | true |
 
 ##### Sample code
 ```js
-cidaas.getUserProfile({
-        access_token: 'your access token',
-        acceptlanguage: 'your locale' // optional example: de-de, en-US
-}).then(function (response) {
-    // the response will give you user profile information.
+let options = {
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  acceptlanguage: 'en-US'
+}
+cidaas.getUserProfile(options)
+.then(function (response) {
+  // the response will give you user profile information.
 }).catch(function (ex) {
-    // your failure code here  
+  // your failure code here
 });
 ```
 
@@ -749,7 +852,7 @@ cidaas.updateProfile({
 }, 'your access token', 'your sub').then(function () {
     // the response will give you updated user profile info.
 }).catch(function (ex) {
-    // your failure code here  
+    // your failure code here
 });
 ```
 
@@ -767,7 +870,7 @@ To logout the user, call ****logoutUser()****.
 ##### Sample code
 ```js
 cidaas.logoutUser({
-        access_token : 'your accessToken'
+  access_token : 'your accessToken'
 });
 ```
 #### Delete User Account
@@ -811,6 +914,146 @@ cidaas.deleteUserAccount(options).then(function (response) {
    }
 }
 ```
+
+##### User Check Exists
+Check if user exists, call **userCheckExists()**. The function accepts a function parameter of type object. The object with the keys described in the below table
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| requestId | string | the request id of a session | false |
+
+##### Sample code
+
+```js
+options = {
+    requestId : "bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+}
+cidaas.userCheckExists(options)
+.then(function(response) {
+    // type your code here
+})
+.catch(function(ex) {
+    // your failure code here
+});
+```
+
+
+##### Initiate account linking
+To initiate account linking, call **initiateLinkAccount()**. The function parameters are mentioned below.
+
+##### Function parameters
+| Name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| options | object | an object with the keys described in the below table | false |
+| access_token | string | the username of the user  | false |
+
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| user_name_to_link | string | Username that needs to be linked | false |
+| master_sub | string | Master sub to link account | false |
+
+
+##### Sample code
+
+```js
+let options = {
+ master_sub : "vaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ",
+ user_name_to_link: "CidaasTest"
+}
+const acccess_token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+cidaas.initiateLinkAccount(options,access_token)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
+##### Complete link account
+To complete account linking, call **completeLinkAccount()**. The function parameters are mentioned below.
+
+##### Function parameters
+| Name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| options | object | an object with the keys described in the below table | false |
+| access_token | string | the username of the user  | false |
+
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| link_request_id | string | the request id of account link request | false |
+| code | string |  the code received while account linking | false |
+
+##### Sample code
+
+```js
+let options = {
+ link_request_id : "vaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ",
+ code: "1234567890"
+}
+const acccess_token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+cidaas.completeLinkAccount(options,access_token)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
+##### Get Linked Users
+To get all the linked social accounts, call **getLinkedUsers()**. The function accepts the below parameters 
+
+##### Function parameters
+| Name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| sub | string | the sub of the user | false |
+| access_token | string | the username of the user  | false |
+
+
+##### Sample code
+
+```js
+const sub = "vaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ";
+const acccess_token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
+cidaas.getLinkedUsers(access_token, sub)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
+##### Unlink Account
+To unlink an social account for a user, call **unlinkAccount()**. The function accepts the below parameters
+
+##### Function parameters
+| Name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| identityId | string | The identity id of the account to be unlinked | false |
+| access_token | string | the username of the user  | false |
+
+##### Sample code
+
+```js
+const identityId = "vaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ";
+const acccess_token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
+cidaas.unlinkAccount(access_token, identityId)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
 #### Physical Verification
 
 After successful login, we can add multifactor authentications.
@@ -830,7 +1073,7 @@ this.cidaas.setupEmail({
     }).then((response) => {
       // the response will give you details for email setup.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -860,7 +1103,7 @@ this.cidaas.enrollEmail({
     }).then((response) => {
       // the response will give you email and device info to be linked.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -893,7 +1136,7 @@ this.cidaas.initiateEmail({
     }).then((response) => {
       // the response will give you email verification code details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -925,7 +1168,7 @@ this.cidaas.authenticateEmail({
     }).then((response) => {
       // the response will give you email authentication details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -985,7 +1228,7 @@ this.cidaas.enrollSMS({
     }).then((response) => {
       // the response will give you SMS and device info to be linked 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1018,7 +1261,7 @@ this.cidaas.initiateSMS({
     }).then((response) => {
       // the response will give you SMS verification code details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1050,7 +1293,7 @@ this.cidaas.authenticateSMS({
     }).then((response) => {
       // the response will give you SMS authentiction details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1080,7 +1323,7 @@ this.cidaas.setupIVR({
     }).then((response) => {
       // the response will give you details for IVR setup.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1110,7 +1353,7 @@ this.cidaas.enrollIVR({
     }).then((response) => {
       // the response will give you IVR and device info to be linked.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1143,7 +1386,7 @@ this.cidaas.initiateIVR({
     }).then((response) => {
       // the response will give you IVR verification code details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1175,7 +1418,7 @@ this.cidaas.authenticateIVR({
     }).then((response) => {
       // the response will give you IVR authentication details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1205,7 +1448,7 @@ this.cidaas.setupBackupcode({
     }).then((response) => {
       // the response will give you details for backup-code setup.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1244,7 +1487,7 @@ this.cidaas.initiateBackupcode({
     }).then((response) => {
       // the response will give you backup-code verification code details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1276,7 +1519,7 @@ this.cidaas.authenticateBackupcode({
     }).then((response) => {
       // the response will give you backup-code authentication details. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1307,7 +1550,7 @@ this.cidaas.setupTOTP({
     }).then((response) => {
       // the response will give you details for TOTP setup. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1337,7 +1580,7 @@ this.cidaas.enrollTOTP({
     }).then((response) => {
       // the response will give you TOTP and device info to be linked. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1370,7 +1613,7 @@ this.cidaas.initiateTOTP({
     }).then((response) => {
       // the response will give you TOTP verification details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1402,7 +1645,7 @@ this.cidaas.authenticateTOTP({
     }).then((response) => {
       // the response will give you TOTP authentication details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1433,7 +1676,7 @@ this.cidaas.setupPattern({
     }).then((response) => {
       // the response will give you details for Pattern setup.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1467,7 +1710,7 @@ this.cidaas.initiatePattern({
     }).then((response) => {
       // the response will give you Pattern verification details. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1500,7 +1743,7 @@ this.cidaas.setupTouchId({
     }).then((response) => {
       // the response will give you details for Touch ID setup.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1534,7 +1777,7 @@ this.cidaas.initiateTouchId({
     }).then((response) => {
       // the response will give you Touch ID verification details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1567,7 +1810,7 @@ this.cidaas.setupSmartPush({
     }).then((response) => {
       // the response will give you details for Smart Push setup. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1590,7 +1833,7 @@ this.cidaas.initiateSmartPush({
     }).then((response) => {
       // the response will give you Smart Push verification details. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1623,7 +1866,7 @@ this.cidaas.setupFace({
     }).then((response) => {
       // the response will give you details for Face setup. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1657,7 +1900,7 @@ this.cidaas.initiateFace({
     }).then((response) => {
       // the response will give you Face verification details.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1690,7 +1933,7 @@ this.cidaas.setupVoice({
     }).then((response) => {
       // the response will give you details for Voice setup. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1724,7 +1967,7 @@ this.cidaas.initiateVoice({
     }).then((response) => {
       // the response will give you Voice verification details. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1755,6 +1998,22 @@ this.cidaas.mfaContinue({
     });
 ```
 
+
+##### Get All Verification List
+List all verification type configured, call **getAllVerificationList()**. access_token must be passed as function paramere.
+
+##### Sample code
+```js
+const access_token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMjM2ZWZiLWRlMjEtNDI5Mi04Z.";
+
+cidaas.getAllVerificationList(access_token)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
 
 #### Consent Management
 
@@ -1789,6 +2048,22 @@ this.cidaas.getConsentDetails({
 }
 ```
 
+
+##### Get Consent Details V2
+To get consent details , call **getConsentDetailsV2()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/858fbeb51c62b-find-consent-info
+
+##### Sample code
+
+```js
+cidaas.getConsentDetailsV2(options)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
 ##### Accept consent
 
 To accept consent, call ****acceptConsent()****
@@ -1803,7 +2078,7 @@ this.cidaas.acceptConsent({
     }).then((response) => {
       // the response will give you details of accepted consent.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1816,6 +2091,21 @@ this.cidaas.acceptConsent({
         "accepted": true
     }
 }
+```
+
+##### Accept Consent V2
+To accept consent, call **acceptConsentV2()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/0caa9bacdd29e-accept-consent
+
+##### Sample code
+
+```js
+cidaas.acceptConsentV2(options)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
 ```
 
 ##### Consent Continue
@@ -1845,7 +2135,7 @@ this.cidaas.acceptClaimConsent({
     }).then((response) => {
       // the response will give you accepted claim consent. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1882,6 +2172,95 @@ this.cidaas.revokeClaimConsent({
     "data": true
 }
 ```
+
+##### Get Scope Consent Details
+To get scope consent details, call **getScopeConsentDetails()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in the below table.The function calls the api available in the document https://docs.cidaas.com/docs/cidaas-iam/f4b1bee4c3313-pre-login-check. Please refer to the api document for more details
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| track_id | string | the track id recieved while logging in | false |
+| locale | string | browser accept language or custom language | false |
+
+##### Sample code
+
+```js
+let options = {
+    track_id: "5f5cbb84-4ceb-4975-b347-4bfac61e9248",
+    locale: "en-US"
+}
+
+cidaas.getScopeConsentDetails(options)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
+##### Get Scope Consent Version Details V2
+To get scope consent version detials V2, call **getScopeConsentVersionDetailsV2()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in the below table.The function calls the api available in the document https://docs.cidaas.com/docs/cidaas-iam/7e24ac2113315-get-consent-version-details. Please refer to the api document for more details.
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| scopeid | string | the consent id(please refer to api document mentioned above) | false |
+| locale | string | browser accept language or custom language | false |
+
+##### Sample code
+
+```js
+let options = {
+    scopeid: "5f5cbb84-4ceb-4975-b347-4bfac61e9248",
+    locale: "en-US"
+}
+
+cidaas.getScopeConsentVersionDestailsV(options)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
+##### Accept Scope Consent
+To accept scope consent, call **acceptScopeConsent()**. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/84c69a098c5c7-accept-scope-consent. Please refer to the api document for more details.
+
+##### Sample code
+
+```js
+cidaas
+    .acceptScopeConsent(options)
+    .then(function (response) {
+        // type your code here
+    })
+    .catch(function (ex) {
+        // your failure code here
+    });
+```
+
+##### Scope Consent Continue Login
+To scope consent continue login, call **scopeConsentContinue()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in the below table.The function calls the api available in the document https://docs.cidaas.com/docs/cidaas-iam/aa32097970c52-continue-authentication-flow-after-prechecks. Please refer to the api document for more details.
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| track_id | string | track id recieved while loggine in| false |
+
+##### Sample code
+
+```js
+let options = {
+    track_id: "5f5cbb84-4ceb-4975-b347-4bfac61e9248"
+}
+cidaas.scopeConsentContinue(options)
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+
 #### Deduplication
 
 ##### Get deduplication details
@@ -1896,7 +2275,7 @@ this.cidaas.getDeduplicationDetails({
     }).then((response) => {
       // the response will give you deduplication details of users.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1931,7 +2310,7 @@ this.cidaas.registerDeduplication({
     }).then((response) => {
       // the response will give you new registered deduplication user. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1962,7 +2341,7 @@ this.cidaas.deduplicationLogin({
     }).then((response) => {
       // the response will give you deduplication login details. 
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -2104,12 +2483,100 @@ this.socket.on("status-update", (msg) => {
     }
 });
 ```
+#### Access Token
+
+##### Get aceess token
+To get a new token with th grant type authorization_code, call **getAccessToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| code | string | code to create a new token | false |
+
+##### Sample code
+
+```js
+options = {
+  code: "123456",
+}
+
+cidaas.getAccessToken(options)
+.then(function (response) {
+  // type your code here
+})
+.catch(function (ex) {
+  // your failure code here
+});
+```
+
+##### Validate access token
+To validate an access token, call **validateAccessToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table.
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| token | string | access token | false |
+| token_type_hint | string | token type hint. accepted token type hints are access_token, id_token, refresh_token, sso | false |
+
+
+##### Sample code
+
+```js
+options = {
+  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+  token_type_hint: "access_token",
+}
+
+cidaas.validateAccessToken(options)
+.then(function (response) {
+  // type your code here
+})
+.catch(function (ex) {
+  // your failure code here
+});
+```
+
+##### Renew token
+To get a new token with the grant type refresh_token, call **renewToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table
+
+| Key Name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| refresh_token | string | The refresh token to create a new token. The refresh token is received while creating an access token using the token endpoint and later can be used to fetch a new token without using credentials | false |
+
+##### Sample code
+
+```js
+options = {
+  refresh_token: "bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+}
+
+cidaas.renewToken(options)
+.then(function (response) {
+  // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
+#### Device
+##### Get Device Info
+To get the device information, call **getDeviceInfo()**
+
+##### Sample code
+
+```js
+cidaas.getDeviceInfo()
+.then(function (response) {
+    // type your code here
+})
+.catch(function (ex) {
+    // your failure code here
+});
+```
 
 ## Possible Error
 
 The SDK will throws Custom Exception if something went wrong during the operation:
 
 | HTTP Status Code | When could it be thrown |
-|---|---|
+|----------------- | ----------------------- |
 |  500 | during creation of WebAuth instance |
 |  417 | if there are any other failure |
