@@ -11,8 +11,11 @@ stages:
 
 test_build:
   extends: .test_build
+
+release:
   after_script:
-    - echo "PACKAGE_VERSION=$(node -pe "require('./package.json').version")" >> build.env
+    - git pull
+    - echo "PACKAGE_VERSION=$(git describe --abbrev=0 --tags | grep -E '[0-9]' | cut -b 2-10)" >> build.env
   artifacts:
     reports:
       dotenv: build.env
@@ -38,5 +41,6 @@ aws_upload:
   extends: .aws_upload
   variables:    
     S3_PATH: s3://cidaassdk/javascript/oidc/$PACKAGE_VERSION
-  only: 
+  only:
    - master
+  when: manual
