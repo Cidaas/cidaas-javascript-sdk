@@ -230,7 +230,7 @@ cidaas.getClientInfo({
 
 ##### Login with credentials
 
-To login with your credentials, call ****loginWithCredentials()****. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk
+To login with your credentials, call ****loginWithCredentials()****. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/5gphdk6vapp56-classic-login#call-login-api for more detials.
 
 ##### Sample code
 ```js
@@ -272,7 +272,7 @@ cidaas.loginWithCredentialsAsynFn(options)
 
 ##### Login with social
 
-To login with social providers, call ****loginWithSocial()****. This will redirect you to the facebook login page.
+To login with social providers, call ****loginWithSocial()****. This will redirect you to the facebook login page. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9mi5uqxhqlsm5-social-login#call-social-login-api for more details
 
 ##### Sample code
 ```js
@@ -464,9 +464,9 @@ For progressive registration, call **progressiveRegistration()**. While logging 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | options | object | The object with the keys described in the below table under section options |
-| headers | object | The object with the keys described in the below table under section options  |
+| headers | object | The object with the keys described in the below table under section headers  |
 
-
+##### options
 
 | Key name | Type | Description | Is optional |
 | ---- | ---- | ----------- | ----------- |
@@ -474,6 +474,7 @@ For progressive registration, call **progressiveRegistration()**. While logging 
 
 * Please provide provide the missing fields along with the required fields
 
+##### headers
 
 | Key name | Type | Description | Is optional |
 | ---- | ---- | ----------- | ----------- |
@@ -604,7 +605,7 @@ cidaas.verifyAccount({
 
 ##### Initiate Reset Password
 
-To initiate the password resetting, call ****initiateResetPassword()****. This will send verification code to your email or mobile based on the resetMedium you mentioned.
+To initiate the password resetting, call ****initiateResetPassword()****. This will send verification code to your email or mobile based on the resetMedium you mentioned. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/6b29bac6002f4-initiate-password-reset for more details.
 
 ##### Sample code
 
@@ -635,7 +636,7 @@ cidaas.initiateResetPassword({
 
 ##### Handle Reset Password
 
-To handling the reset password by entering the verification code you received, call ****handleResetPassword()****. This will check your verification code was valid or not and allows you to proceed to the next step
+To handling the reset password by entering the verification code you received, call ****handleResetPassword()****. This will check your verification code was valid or not and allows you to proceed to the next step. More details available on https://docs.cidaas.com/docs/cidaas-iam/4aede115e5460-validate-reset-password
 
 ##### Sample code
 ```js
@@ -663,7 +664,7 @@ cidaas.handleResetPassword({
 
 ##### Reset Password
 
-To change the password, call ****resetPassword()****. This will allow you to change your password.
+To change the password, call ****resetPassword()****. This will allow you to change your password. More detials available on https://docs.cidaas.com/docs/cidaas-iam/c7d767a7414df-accept-reset-password
 
 ##### Sample code
 ```js
@@ -692,7 +693,7 @@ cidaas.resetPassword({
 
 ##### Change Password
 
-To change the password, call ****changePassword()****. This will allow you to change your password.
+To change the password, call ****changePassword()****. This will allow you to change your password. More details available on https://docs.cidaas.com/docs/cidaas-iam/09873c57d1fb8-change-password
 
 ##### Sample code
 ```js
@@ -798,17 +799,24 @@ cidaas.getProfileInfo({
 
 #### Getting user profile
 
-To get the user profile information, call ****getUserProfile()****.
+To get the user profile information, call ****getUserProfile()****. The function accepts a function parameter of type object. In the sample example the object is named as options. Below are the key that need to be passed in the options object
+
+| Key name | Type | Description | Is optional |
+| ---- | ---- | ----------- | ----------- |
+| access_token | string | a bearer token | false |
+| acceptlanguage | string | browser/custom local  | true |
 
 ##### Sample code
 ```js
-cidaas.getUserProfile({
-        access_token: 'your access token',
-        acceptlanguage: 'your locale' // optional example: de-de, en-US
-}).then(function (response) {
-    // the response will give you user profile information.
+let options = {
+  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  acceptlanguage: 'en-US'
+}
+cidaas.getUserProfile(options)
+.then(function (response) {
+  // the response will give you user profile information.
 }).catch(function (ex) {
-    // your failure code here
+  // your failure code here
 });
 ```
 
@@ -862,7 +870,7 @@ To logout the user, call ****logoutUser()****.
 ##### Sample code
 ```js
 cidaas.logoutUser({
-        access_token : 'your accessToken'
+  access_token : 'your accessToken'
 });
 ```
 #### Delete User Account
