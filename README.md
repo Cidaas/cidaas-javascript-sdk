@@ -24,7 +24,7 @@ From CDN
 ```html
 <!-- Release version 2.0.9 -->
 <!-- Minified version -->
-<script src="https://cdn.cidaas.de/javascript/oidc/2.4.2/cidaas-javascript-sdk.min.js"></script>
+<script src="https://cdn.cidaas.de/javascript/oidc/2.4.3/cidaas-javascript-sdk.min.js"></script>
 ```
 
 From npm
