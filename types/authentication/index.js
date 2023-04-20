@@ -1,14 +1,16 @@
-import { UserManager, UserManagerSettings } from "oidc-client-ts";
-
-export class Authentication {
-
-    constructor(public webAuthSettings: UserManagerSettings, public userManager: UserManager) { }
-
+"use strict";
+exports.__esModule = true;
+exports.Authentication = void 0;
+var Authentication = /** @class */ (function () {
+    function Authentication(webAuthSettings, userManager) {
+        this.webAuthSettings = webAuthSettings;
+        this.userManager = userManager;
+    }
     /**
      * redirect sign in
-     * @param view_type 
+     * @param view_type
      */
-    redirectSignIn(view_type: string) {
+    Authentication.prototype.redirectSignIn = function (view_type) {
         try {
             if (this.userManager) {
                 if (this.webAuthSettings) {
@@ -28,196 +30,233 @@ export class Authentication {
                 }).then(function () {
                     console.log("Redirect logged in using cidaas sdk");
                 });
-            } else {
+            }
+            else {
                 throw "user manager is null";
             }
-        } catch (ex) {
+        }
+        catch (ex) {
             console.log("user manager instance is empty : " + ex);
         }
     };
-
+    ;
     /**
      * redirect sign in callback
-     * @returns 
+     * @returns
      */
-    redirectSignInCallback() {
-        return new Promise((resolve, reject) => {
+    Authentication.prototype.redirectSignInCallback = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
             try {
-                if (this.userManager) {
-                    this.userManager.signinRedirectCallback(this.webAuthSettings.redirect_uri)
-                        .then(function (user: any) {
-                            if (user) {
-                                resolve(user);
-                                return;
-                            }
-                            resolve(undefined);
-                        });
-                } else {
+                if (_this.userManager) {
+                    _this.userManager.signinRedirectCallback(_this.webAuthSettings.redirect_uri)
+                        .then(function (user) {
+                        if (user) {
+                            resolve(user);
+                            return;
+                        }
+                        resolve(undefined);
+                    });
+                }
+                else {
                     throw "user manager is null";
                 }
-            } catch (ex) {
+            }
+            catch (ex) {
                 reject(ex);
             }
         });
-    }
-
+    };
     /**
      * redirect sign out
-     * @returns 
+     * @returns
      */
-    redirectSignOut() {
-        return new Promise((resolve, reject) => {
+    Authentication.prototype.redirectSignOut = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
             try {
-                if (this.userManager && this.webAuthSettings) {
-                    this.userManager.signoutRedirect({
-                        state: this.webAuthSettings
-                    }).then(function (resp: any) {
+                if (_this.userManager && _this.webAuthSettings) {
+                    _this.userManager.signoutRedirect({
+                        state: _this.webAuthSettings
+                    }).then(function (resp) {
                         console.log('signed out', resp);
-                        window.authentication.redirectSignOutCallback().then(function (resp: any) {
+                        window.authentication.redirectSignOutCallback().then(function (resp) {
                             resolve(resp);
                         });
                     });
-                } else {
+                }
+                else {
                     throw "user manager or settings is null";
                 }
-            } catch (ex) {
+            }
+            catch (ex) {
                 reject(ex);
             }
         });
     };
-
+    ;
     /**
      * redirect sign out callback
-     * @returns 
+     * @returns
      */
-    redirectSignOutCallback() {
-        return new Promise((resolve, reject) => {
+    Authentication.prototype.redirectSignOutCallback = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
             try {
-                if (this.userManager) {
-                    this.userManager.signoutRedirectCallback().then(function (resp: any) {
+                if (_this.userManager) {
+                    _this.userManager.signoutRedirectCallback().then(function (resp) {
                         console.log("Signed out");
                         resolve(resp);
                     });
-                } else {
+                }
+                else {
                     resolve(undefined);
                     throw "user manager is null";
                 }
-            } catch (ex) {
+            }
+            catch (ex) {
                 reject(ex);
             }
         });
     };
-
+    ;
     /**
      * pop up sign in
      */
-    popupSignIn() {
+    Authentication.prototype.popupSignIn = function () {
         try {
             if (this.userManager && this.webAuthSettings) {
                 this.userManager.signinPopup().then(function () {
                     console.log("signed in");
                 });
-            } else {
+            }
+            else {
                 throw "user manager or settings is null";
             }
-        } catch (ex) { console.error(ex) }
+        }
+        catch (ex) {
+            console.error(ex);
+        }
     };
-
+    ;
     /**
      * pop up sign in callback
      */
-    popupSignInCallback() {
+    Authentication.prototype.popupSignInCallback = function () {
         try {
             if (this.userManager) {
                 this.userManager.signinPopupCallback();
             }
-        } catch (ex) { console.error(ex) }
+        }
+        catch (ex) {
+            console.error(ex);
+        }
     };
-
+    ;
     /**
      * pop up sign out
      */
-    popupSignOut() {
+    Authentication.prototype.popupSignOut = function () {
         try {
             if (this.userManager && this.webAuthSettings) {
                 this.userManager.signoutPopup({
                     state: this.webAuthSettings
-                }).then(function (resp: any) {
+                }).then(function (resp) {
                     console.log('signed out', resp);
                 });
-            } else {
+            }
+            else {
                 throw "user manager or settings is null";
             }
-        } catch (ex) { console.error(ex) }
-
+        }
+        catch (ex) {
+            console.error(ex);
+        }
     };
-
+    ;
     /**
      * silent sign in
      */
-    silentSignIn() {
+    Authentication.prototype.silentSignIn = function () {
         try {
             if (this.userManager && this.webAuthSettings) {
                 this.userManager.signinSilent({
                     state: this.webAuthSettings
-                }).then(function (user: any) {
+                }).then(function (user) {
                     console.log("signed in : " + user.access_token);
                 });
-            } else {
+            }
+            else {
                 throw "user manager is null";
             }
-        } catch (ex) { console.error(ex) }
+        }
+        catch (ex) {
+            console.error(ex);
+        }
     };
-
+    ;
     /**
      * silent sign in callback
      */
-    silentSignInCallback() {
+    Authentication.prototype.silentSignInCallback = function () {
         try {
             if (this.userManager) {
                 this.userManager.signinSilentCallback();
-            } else {
+            }
+            else {
                 throw "user manager is null";
             }
-        } catch (ex) { console.error(ex) }
+        }
+        catch (ex) {
+            console.error(ex);
+        }
     };
-
+    ;
     /**
      * silent sign in callback v2
-     * @returns 
+     * @returns
      */
-    silentSignInCallbackV2() {
-        return new Promise((resolve, reject) => {
+    Authentication.prototype.silentSignInCallbackV2 = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
             try {
-                if (this.userManager) {
-                    this.userManager.signinSilentCallback(this.webAuthSettings.silent_redirect_uri)
-                        .then(function (user: any) {
-                            if (user) {
-                                resolve(user);
-                                return;
-                            }
-                            resolve(undefined);
-                        });
-                } else {
+                if (_this.userManager) {
+                    _this.userManager.signinSilentCallback(_this.webAuthSettings.silent_redirect_uri)
+                        .then(function (user) {
+                        if (user) {
+                            resolve(user);
+                            return;
+                        }
+                        resolve(undefined);
+                    });
+                }
+                else {
                     throw "user manager is null";
                 }
-            } catch (ex) {
+            }
+            catch (ex) {
                 reject(ex);
             }
         });
-
     };
-
+    ;
     /**
      * silent sign out callback
      */
-    popupSignOutCallback() {
+    Authentication.prototype.popupSignOutCallback = function () {
         try {
             if (this.userManager) {
                 this.userManager.signoutPopupCallback(this.webAuthSettings.post_logout_redirect_uri, true);
-            } else {
+            }
+            else {
                 throw "user manager is null";
             }
-        } catch (ex) { console.error(ex) }
+        }
+        catch (ex) {
+            console.error(ex);
+        }
     };
-}
+    ;
+    return Authentication;
+}());
+exports.Authentication = Authentication;

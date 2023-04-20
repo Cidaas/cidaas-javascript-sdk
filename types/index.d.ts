@@ -1,6 +1,4 @@
 import { Authentication } from "./authentication";
 import { WebAuth } from "./web-auth/WebAuth";
-
-const { version: Version } = require('../../package.json');
-
+declare const Version: any;
 export { WebAuth, Authentication, Version };
