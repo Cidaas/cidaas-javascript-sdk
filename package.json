@@ -1,6 +1,6 @@
 {
   "name": "cidaas-javascript-sdk",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "cidaas by Widas ID GmbH",
   "description": "Cidaas native javascript sdk",
   "license": "MIT",
