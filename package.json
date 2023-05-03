@@ -4,8 +4,8 @@
   "author": "cidaas by Widas ID GmbH",
   "description": "Cidaas native javascript sdk",
   "license": "MIT",
-  "main": "types/main/index.js",
-  "types": "types/main/index.d.ts",
+  "main": "types/index.js",
+  "types": "types/index.d.ts",
   "engine": {
     "node": ">=8.9.10"
   },
