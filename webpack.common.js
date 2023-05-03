@@ -1,32 +1,51 @@
 const path = require('path');
-const pjson = require('./package.json');
-var webpack = require('webpack');
+const pjson = require('./package.json')
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 var entryPoints = {
-  'cidaas-javascript-sdk': './src/main/index.js'
+  'cidaas-javascript-sdk': './src/main/index.ts'
 };
 
 module.exports = {
-   entry: entryPoints,
-   plugins: [
-     new webpack.BannerPlugin({
+  entry: entryPoints,
+  module: {
+    rules: [
+      {
+        test: /\.ts?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
+  optimization: {
+    minimizer: [new TerserPlugin({
+      extractComments: false,
+    })],
+  },
+  plugins: [
+    new webpack.BannerPlugin({
       banner: `${pjson.name} v${pjson.version}\n\nAuthor: ${pjson.author}\nDate: ${new Date().toLocaleString()}\nLicense: MIT\n`, // eslint-disable-line
       raw: false,
       entryOnly: true
     }
-  )
-   ],
-   output: {
-     path: path.resolve(__dirname, './dist'),
-     filename: '[name].min.js',
-     library: '[name]',
-     libraryTarget: 'umd',
-     umdNamedDefine: true,
-     clean: true,
-   },
-   stats: {
+    )
+  ],
+  output: {
+    path: path.resolve(__dirname, './dist'),
+    filename: '[name].min.js',
+    library: '[name]',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
+    clean: true,
+    globalObject: 'this'
+  },
+  stats: {
     colors: true,
     modules: true,
     reasons: true
   },
- };
+};
