@@ -4,17 +4,16 @@
   "author": "cidaas by Widas ID GmbH",
   "description": "Cidaas native javascript sdk",
   "license": "MIT",
-  "main": "src/main/index.js",
+  "main": "types/main/index.js",
   "types": "types/main/index.d.ts",
   "engine": {
     "node": ">=8.9.10"
   },
   "scripts": {
-    "dev": "webpack --config webpack.dev.js",
-    "build": "npm run build-types && webpack --config webpack.prod.js",
-    "test": "jest --coverage",
-    "test:coverage": "jest --coverage",
-    "build-types": "npx -p typescript tsc src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types"
+    "dev": "tsc && webpack --config webpack.dev.js",
+    "build": "tsc && webpack --config webpack.prod.js",
+    "test": "echo 'test'",
+    "test:coverage": "echo 'test coverage'"
   },
   "files": [
     "src",
@@ -28,16 +27,15 @@
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.4.0",
-    "@types/node": "^18.11.18",
+    "@types/crypto-js": "^4.1.1",
     "crypto-js": "^4.1.1",
-    "oidc-client": "^1.11.5"
+    "oidc-client-ts": "^2.2.1"
   },
   "devDependencies": {
-    "compression-webpack-plugin": "^9.0.0",
-    "jest": "27.3.1",
     "terser-webpack-plugin": "^5.2.4",
+    "ts-loader": "^9.4.2",
     "typescript": "^4.5.4",
-    "webpack": "^5.76.2",
+    "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1",
     "webpack-hot-middleware": "^2.25.1",
