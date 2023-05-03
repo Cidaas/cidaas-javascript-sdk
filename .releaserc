@@ -1,7 +1,6 @@
 {
     "branches": [
-        "master",
-        "fix/240-deviceInfoCall"
+        "master"
     ],
     "prepare": [
         "@semantic-release/changelog",

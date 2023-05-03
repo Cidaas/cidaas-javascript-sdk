@@ -22,9 +22,8 @@ Make sure you have installed all of the following prerequisites on your developm
 From CDN
 
 ```html
-<!-- Release version 2.0.9 -->
-<!-- Minified version -->
-<script src="https://cdn.cidaas.de/javascript/oidc/2.4.3/cidaas-javascript-sdk.min.js"></script>
+<!-- Replace the required <version> in the script tag, example: 3.0.0. All the released tag can be found https://www.npmjs.com/package/cidaas-javascript-sdk?activeTab=versions -->
+<script src="https://cdn.cidaas.de/javascript/oidc/<version>/cidaas-javascript-sdk.min.js"></script>
 ```
 
 From npm
