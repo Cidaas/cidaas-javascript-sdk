@@ -94,7 +94,7 @@ export class WebAuth {
       }
       switch (window.webAuthSettings.mode) {
         case 'redirect':
-          window.authentication.redirectSignIn('register');
+          window.authentication.redirectSignIn('login');
           break;
         case 'window':
           window.authentication.popupSignIn();
