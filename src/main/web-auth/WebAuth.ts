@@ -42,7 +42,7 @@ export class WebAuth {
 
   private code_verifier: string;
 
-  constructor(settings: UserManagerSettings & { mode?: string }) {
+  constructor(settings: UserManagerSettings & { mode?: string, cidaas_version: number }) {
     try {
       var usermanager = new UserManager(settings)
       window.webAuthSettings = settings;
@@ -733,7 +733,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  register(options: UserEntity, headers: { requestId: string; captcha?: string; acceptlanguage?: string; bot_captcha_response?: string; trackId: string; }) {
+  register(options: UserEntity, headers: { requestId: string; captcha?: string; acceptlanguage?: string; bot_captcha_response?: string; trackId?: string; }) {
     return UserService.register(options, headers);
   };
 
@@ -796,7 +796,7 @@ export class WebAuth {
    * @param options 
    */
   handleResetPassword(options: ValidateResetPasswordEntity) {
-    UserService.handleResetPassword(options);
+    return UserService.handleResetPassword(options);
   };
 
   /**
@@ -804,7 +804,7 @@ export class WebAuth {
   * @param options 
   */
   resetPassword(options: AcceptResetPasswordEntity) {
-    UserService.resetPassword(options);
+    return UserService.resetPassword(options);
   };
 
   /**

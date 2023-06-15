@@ -69,7 +69,7 @@ export namespace LoginService {
   };
 
   /**
-   * register with social
+   *  with social
    * @param options 
    * @param queryParams 
    */
@@ -231,10 +231,11 @@ export namespace LoginService {
    * @param options 
    */
   export function loginAfterRegister(options: {
-    device_id: string;
+    device_id?: string;
     dc?: string;
-    rememberMe: boolean;
-    trackId: string;
+    rememberMe?: boolean;
+    trackId?: string;
+    device_fp?: string;
   }) {
     try {
       const url = window.webAuthSettings.authority + "/login-srv/login/handle/afterregister/" + options.trackId;

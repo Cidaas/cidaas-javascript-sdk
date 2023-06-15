@@ -53,7 +53,7 @@ export namespace UserService {
     captcha?: string;
     acceptlanguage?: string;
     bot_captcha_response?: string;
-    trackId: string;
+    trackId?: string;
   }) {
     return new Promise((resolve, reject) => {
       try {
@@ -178,9 +178,31 @@ export namespace UserService {
   export function handleResetPassword(options: ValidateResetPasswordEntity) {
     try {
       const url = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
-      let form = Helper.createForm(url, options)
-      document.body.appendChild(form);
-      form.submit();
+      if (window.webAuthSettings.cidaas_version > 2) {
+        let form = Helper.createForm(url, options)
+        document.body.appendChild(form);
+        form.submit();
+      } else {
+        return new Promise(function (resolve, reject) {
+          try {
+            var http = new XMLHttpRequest();
+            http.onreadystatechange = function () {
+              if (http.readyState == 4) {
+                if (http.responseText) {
+                  resolve(JSON.parse(http.responseText));
+                } else {
+                  resolve(false);
+                }
+              }
+            };
+            http.open("POST", url, true);
+            http.setRequestHeader("Content-type", "application/json");
+            http.send(JSON.stringify(options));
+          } catch (ex) {
+            reject(ex);
+          }
+        });
+      }
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
@@ -191,11 +213,33 @@ export namespace UserService {
   * @param options 
   */
   export function resetPassword(options: AcceptResetPasswordEntity) {
+    const url = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
     try {
-      const url = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
-      let form = Helper.createForm(url, options)
-      document.body.appendChild(form);
-      form.submit();
+      if (window.webAuthSettings.cidaas_version > 2) {
+        let form = Helper.createForm(url, options)
+        document.body.appendChild(form);
+        form.submit();
+      } else {
+        return new Promise(function (resolve, reject) {
+          try {
+            var http = new XMLHttpRequest();
+            http.onreadystatechange = function () {
+              if (http.readyState == 4) {
+                if (http.responseText) {
+                  resolve(JSON.parse(http.responseText));
+                } else {
+                  resolve(false);
+                }
+              }
+            };
+            http.open("POST", url, true);
+            http.setRequestHeader("Content-type", "application/json");
+            http.send(JSON.stringify(options));
+          } catch (ex) {
+            reject(ex);
+          }
+        });
+      }
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
