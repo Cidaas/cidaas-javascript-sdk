@@ -1,3 +1,5 @@
+![Logo](logo.jpg)
+
 ## About cidaas:
 [cidaas](https://www.cidaas.com)
  is a fast and secure Cloud Identity & Access Management solution that standardises what’s important and simplifies what’s complex.
