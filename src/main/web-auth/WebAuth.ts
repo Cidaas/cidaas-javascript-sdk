@@ -610,13 +610,9 @@ export class WebAuth {
     return new Promise((resolve, reject) => {
       try {
         var value = ('; ' + document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
-        var fpPromise = fingerprint.load();
-        var options = { fingerprint: "", userAgent: "" };
+        var options = { userAgent: "" };
         if (!value) {
           (async () => {
-            var fp = await fpPromise;
-            var result = await fp.get();
-            options.fingerprint = result.visitorId
             options.userAgent = window.navigator.userAgent
             var http = new XMLHttpRequest();
             var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
