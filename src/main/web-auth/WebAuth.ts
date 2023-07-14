@@ -1,6 +1,5 @@
 import { UserManager, UserManagerSettings } from "oidc-client-ts";
 import * as CryptoJS from 'crypto-js';
-import fingerprint from '@fingerprintjs/fingerprintjs';
 
 import { Authentication } from "../authentication";
 import { Helper, CustomException } from "./Helper";
