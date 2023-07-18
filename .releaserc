@@ -1,7 +1,7 @@
 {
     "branches": [
         "master",
-        "release/2.2.x"
+        "2.2.x"
     ],
     "prepare": [
         "@semantic-release/changelog",
