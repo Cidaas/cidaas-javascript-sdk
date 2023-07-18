@@ -1942,7 +1942,7 @@ WebAuth.prototype.getDeviceInfo = function () {
   return new Promise(function (resolve, reject) {
     try {
       const value = ('; '+document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
-      var options = {userAgent:""};
+      var options = {};
       if(!value) {
         (async () => {
           options.userAgent = window.navigator.userAgent
