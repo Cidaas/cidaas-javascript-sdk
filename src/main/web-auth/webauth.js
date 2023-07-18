@@ -2,7 +2,6 @@ var Authentication = require('../authentication');
 var CustomException = require('./exception');
 var Oidc = require('oidc-client');
 var CryptoJS = require("crypto-js");
-var fingerprint = require('@fingerprintjs/fingerprintjs')
 
 
 var code_verifier;
@@ -1943,13 +1942,9 @@ WebAuth.prototype.getDeviceInfo = function () {
   return new Promise(function (resolve, reject) {
     try {
       const value = ('; '+document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
-      const fpPromise = fingerprint.load();
-      var options = {fingerprint:"", userAgent:""};
       if(!value) {
         (async () => {
-          const fp = await fpPromise;
-          const result = await fp.get();
-          options.fingerprint = result.visitorId
+          var options = {};
           options.userAgent = window.navigator.userAgent
           var http = new XMLHttpRequest();
           var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";

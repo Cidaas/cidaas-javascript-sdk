@@ -1,7 +1,7 @@
 {
     "branches": [
         "master",
-        "fix/240-deviceInfoCall"
+        "release-2.2.8"
     ],
     "prepare": [
         "@semantic-release/changelog",
@@ -17,15 +17,6 @@
         }
     ],
     "plugins": [
-        "@semantic-release/commit-analyzer",
-        "@semantic-release/release-notes-generator",
-        [
-            "@semantic-release/npm",
-            {
-                "npmPublish": true
-            }
-        ],
-        "@semantic-release/gitlab",
-        "@semantic-release/git"
+        "@semantic-release/commit-analyzer"
     ]
 }
