@@ -9,6 +9,16 @@ stages:
 test_build:
   extends: .test_build
 
+release:
+  image: docker-registry.widas.de:5050/dockerregistry/common/semantic-release:v1.0.5
+  stage: release
+  script:
+    - rm -rf /root/.npmrc
+    - echo "registry=https://registry.npmjs.org/" >> .npmrc
+    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+    - semantic-release
+  only:
+    - release-2.2.8
 
 
 
