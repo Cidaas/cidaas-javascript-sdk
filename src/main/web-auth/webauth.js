@@ -1942,9 +1942,9 @@ WebAuth.prototype.getDeviceInfo = function () {
   return new Promise(function (resolve, reject) {
     try {
       const value = ('; '+document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
-      var options = {};
       if(!value) {
         (async () => {
+          var options = {};
           options.userAgent = window.navigator.userAgent
           var http = new XMLHttpRequest();
           var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
