@@ -5,12 +5,6 @@
     ],
     "prepare": [
         "@semantic-release/changelog",
-        {
-            "@semantic-release/npm"
-            "publishConfig": {
-                "registry": "https://registry.npmjs.org/"
-            }
-        }
         "@semantic-release/npm",
         {
             "path": "@semantic-release/git",
