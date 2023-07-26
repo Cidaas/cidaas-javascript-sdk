@@ -26,7 +26,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@fingerprintjs/fingerprintjs": "^3.4.0",
     "@types/crypto-js": "^4.1.1",
     "crypto-js": "^4.1.1",
     "oidc-client-ts": "^2.2.1"
