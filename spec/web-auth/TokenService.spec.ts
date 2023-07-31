@@ -1,7 +1,7 @@
 import { TestConstants } from '../TestConstants';
 import { TokenService } from '../../types/main/web-auth/TokenService';
 
-let windowSpy:any;
+let windowSpy: any;
 
 beforeEach(() => {
 
@@ -30,12 +30,12 @@ afterEach(() => {
     windowSpy.mockRestore();
 })
 
-test('getAccessToken, renewToken, validateAccessToken', async() => {
+test('getAccessToken, renewToken, validateAccessToken', async () => {
     windowSpy.mockImplementation(() => ({
         location: {
             origin: TestConstants.interactiveTestConfig.baseUrl
         },
-        webAuthSettings:{
+        webAuthSettings: {
             authority: TestConstants.interactiveTestConfig.baseUrl,
             disablePKCE: true
         }
@@ -45,38 +45,38 @@ test('getAccessToken, renewToken, validateAccessToken', async() => {
     TestConstants.tokenRequest.code = 'code';
     TestConstants.tokenIntrospect.token = 'token';
     TestConstants.tokenIntrospect.token_type_hint = 'hint';
-    let data = TokenService.renewToken(TestConstants.tokenRequest).catch( err => {
+    let data = TokenService.renewToken(TestConstants.tokenRequest).catch(err => {
     });
     expect(data).not.toBe(undefined)
 
-    data = TokenService.getAccessToken(TestConstants.tokenRequest).catch( ex => {
+    data = TokenService.getAccessToken(TestConstants.tokenRequest).catch(ex => {
     });
     expect(data).not.toBe(undefined);
 
-    data = TokenService.validateAccessToken(TestConstants.tokenIntrospect).catch( ex => {
+    data = TokenService.validateAccessToken(TestConstants.tokenIntrospect).catch(ex => {
     });
     expect(data).not.toBe(undefined)
 });
 
-test('getAccessToken, renewToken, validateAccessToken', async() => {
+test('getAccessToken, renewToken, validateAccessToken', async () => {
     windowSpy.mockImplementation(() => ({
         location: {
             origin: 'https://kube-nightlybuild-dev.cidaas.de'
         },
-        webAuthSettings:{
+        webAuthSettings: {
             authority: 'https://kube-nightlybuild-dev.cidaas.de'
         }
     }));
 
-    let data = TokenService.getScopeConsentDetails({track_id:'tr', locale:'en'}).catch( err => {
+    let data = TokenService.getScopeConsentDetails({ track_id: 'tr', locale: 'en' }).catch(err => {
     });
     expect(data).not.toBe(undefined);
 
-    data = TokenService.getMissingFieldsLogin('tr').catch( err => {
+    data = TokenService.getMissingFieldsLogin('tr').catch(err => {
     });
     expect(data).not.toBe(undefined);
 
-    data =  TokenService.updateSuggestMFA('tr', TestConstants.suggestEnt);
+    data = TokenService.updateSuggestMFA('tr', TestConstants.suggestEnt);
     expect(data).not.toBe(undefined)
 
     //form submit
