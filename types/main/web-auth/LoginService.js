@@ -65,7 +65,7 @@ var LoginService;
     LoginService.loginWithSocial = loginWithSocial;
     ;
     /**
-     * register with social
+     *  with social
      * @param options
      * @param queryParams
      */

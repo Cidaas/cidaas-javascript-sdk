@@ -1,10 +1,10 @@
-export declare class AcceptResetPasswordEntity {
+export interface AcceptResetPasswordEntity {
     resetRequestId: string;
     exchangeId: string;
     password: string;
     confirmPassword: string;
-    provider: string;
-    requestId: string;
+    provider?: string;
+    requestId?: string;
 }
 export declare class AccessTokenRequest {
     grant_type?: string;
@@ -71,20 +71,20 @@ export interface IDeviceRequest {
     deviceType: string;
 }
 export type AccountVerificationRequestEntity = {
-    email: string;
-    mobile: string;
-    phone: string;
-    username: string;
-    verificationMedium: string;
-    processingType: string;
-    requestId: string;
-    client_id: string;
-    redirect_uri: string;
-    response_type: string;
+    email?: string;
+    mobile?: string;
+    phone?: string;
+    username?: string;
+    verificationMedium?: string;
+    processingType?: string;
+    requestId?: string;
+    client_id?: string;
+    redirect_uri?: string;
+    response_type?: string;
     sub: string;
-    templateKey: string;
-    name: string;
-    accept_language: string;
+    templateKey?: string;
+    name?: string;
+    accept_language?: string;
 };
 export interface ChangePasswordEntity {
     sub: string;
@@ -346,30 +346,30 @@ export interface LoginFormRequestEntity {
     username: string;
     password: string;
     requestId: string;
-    provider: string;
-    captcha: string;
-    username_type: string;
-    field_key: string;
-    bot_captcha_response: string;
-    csrf_token: string;
+    provider?: string;
+    captcha?: string;
+    username_type?: string;
+    field_key?: string;
+    bot_captcha_response?: string;
+    csrf_token?: string;
     dc?: string;
     device_fp?: string;
     captcha_ref?: string;
     locale?: string;
-    rememberMe: boolean;
-    remember_me: boolean;
+    rememberMe?: boolean;
+    remember_me?: boolean;
 }
 export interface ResetPasswordEntity {
     email: string;
-    mobile: string;
-    phone: string;
-    username: string;
-    resetMedium: string;
-    processingType: string;
+    mobile?: string;
+    phone?: string;
+    username?: string;
+    resetMedium: "SMS" | "EMAIL" | "IVR";
+    processingType: "CODE" | "LINK";
     requestId: string;
-    provider: string;
-    resetPasswordId: string;
-    sub: string;
+    provider?: string;
+    resetPasswordId?: string;
+    sub?: string;
 }
 export declare class TokenIntrospectionEntity {
     token: string;
@@ -409,51 +409,51 @@ export interface UserActivityEntity {
     events?: [string];
 }
 export declare class UserEntity {
-    userStatus: string;
+    userStatus?: string;
     user_status?: string;
-    user_status_reason: string;
-    username: string;
-    sub: string;
+    user_status_reason?: string;
+    username?: string;
+    sub?: string;
     originalProviderUserId?: string[];
     given_name: string;
     family_name: string;
-    middle_name: string;
-    nickname: string;
+    middle_name?: string;
+    nickname?: string;
     email: string;
-    email_verified: boolean;
-    mobile_number: string;
-    mobile_number_obj: IMobileEntity | null;
-    mobile_number_verified: boolean;
-    phone_number: string;
-    phone_number_obj: IMobileEntity | null;
-    phone_number_verified: boolean;
-    profile: string;
-    picture: string;
-    website: string;
-    gender: string;
-    zoneinfo: string;
-    locale: string;
-    birthdate: Date | string;
+    email_verified?: boolean;
+    mobile_number?: string;
+    mobile_number_obj?: IMobileEntity | null;
+    mobile_number_verified?: boolean;
+    phone_number?: string;
+    phone_number_obj?: IMobileEntity | null;
+    phone_number_verified?: boolean;
+    profile?: string;
+    picture?: string;
+    website?: string;
+    gender?: string;
+    zoneinfo?: string;
+    locale?: string;
+    birthdate?: Date | string;
     address?: AddressEntity;
     customFields?: any;
     identityCustomFields?: any;
     password: string;
-    password_echo?: string;
-    password_hash_info: any | null;
-    generate_password: boolean;
-    provider: string;
-    identityId: string;
-    providerUserId: string;
-    providerBusinessIds: string[];
-    street_address: string;
+    password_echo: string;
+    password_hash_info?: any | null;
+    generate_password?: boolean;
+    provider?: string;
+    identityId?: string;
+    providerUserId?: string;
+    providerBusinessIds?: string[];
+    street_address?: string;
     mfa_enabled?: boolean;
     roles?: string[];
     groups?: IUserGroupMap[];
     userGroups?: IUserGroupMap[];
-    trackId: string;
-    rawJSON: string;
-    need_reset_password: boolean;
-    no_event: boolean;
+    trackId?: string;
+    rawJSON?: string;
+    need_reset_password?: boolean;
+    no_event?: boolean;
     consents?: IConsentField[] | IConsentTrackingEntity[];
     consent_track_ids?: string[];
     ignore_default_roles?: string[];
@@ -556,12 +556,12 @@ export declare class ValidateResetPasswordEntity {
     code: string;
 }
 export interface IChangePasswordEntity {
-    sub: string;
-    identityId: string;
+    sub?: string;
+    identityId?: string;
     old_password: string;
     new_password: string;
     confirm_password: string;
-    accessToken: string;
+    accessToken?: string;
     loginSettingsId: string;
-    client_id: string;
+    client_id?: string;
 }

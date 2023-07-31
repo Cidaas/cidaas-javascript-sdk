@@ -176,10 +176,35 @@ var UserService;
      */
     function handleResetPassword(options) {
         try {
-            var url = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
-            var form = Helper_1.Helper.createForm(url, options);
-            document.body.appendChild(form);
-            form.submit();
+            var url_1 = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
+            if (window.webAuthSettings.cidaas_version > 2) {
+                var form = Helper_1.Helper.createForm(url_1, options);
+                document.body.appendChild(form);
+                form.submit();
+            }
+            else {
+                return new Promise(function (resolve, reject) {
+                    try {
+                        var http = new XMLHttpRequest();
+                        http.onreadystatechange = function () {
+                            if (http.readyState == 4) {
+                                if (http.responseText) {
+                                    resolve(JSON.parse(http.responseText));
+                                }
+                                else {
+                                    resolve(false);
+                                }
+                            }
+                        };
+                        http.open("POST", url_1, true);
+                        http.setRequestHeader("Content-type", "application/json");
+                        http.send(JSON.stringify(options));
+                    }
+                    catch (ex) {
+                        reject(ex);
+                    }
+                });
+            }
         }
         catch (ex) {
             throw new Helper_1.CustomException(ex, 417);
@@ -192,11 +217,36 @@ var UserService;
     * @param options
     */
     function resetPassword(options) {
+        var url = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
         try {
-            var url = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
-            var form = Helper_1.Helper.createForm(url, options);
-            document.body.appendChild(form);
-            form.submit();
+            if (window.webAuthSettings.cidaas_version > 2) {
+                var form = Helper_1.Helper.createForm(url, options);
+                document.body.appendChild(form);
+                form.submit();
+            }
+            else {
+                return new Promise(function (resolve, reject) {
+                    try {
+                        var http = new XMLHttpRequest();
+                        http.onreadystatechange = function () {
+                            if (http.readyState == 4) {
+                                if (http.responseText) {
+                                    resolve(JSON.parse(http.responseText));
+                                }
+                                else {
+                                    resolve(false);
+                                }
+                            }
+                        };
+                        http.open("POST", url, true);
+                        http.setRequestHeader("Content-type", "application/json");
+                        http.send(JSON.stringify(options));
+                    }
+                    catch (ex) {
+                        reject(ex);
+                    }
+                });
+            }
         }
         catch (ex) {
             throw new Helper_1.CustomException(ex, 417);

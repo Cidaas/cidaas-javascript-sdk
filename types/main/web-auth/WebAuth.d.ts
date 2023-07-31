@@ -4,6 +4,7 @@ export declare class WebAuth {
     private code_verifier;
     constructor(settings: UserManagerSettings & {
         mode?: string;
+        cidaas_version: number;
     });
     /**
      * generate code verifier
@@ -208,7 +209,7 @@ export declare class WebAuth {
         captcha?: string;
         acceptlanguage?: string;
         bot_captcha_response?: string;
-        trackId: string;
+        trackId?: string;
     }): Promise<unknown>;
     /**
      * get invite info
@@ -258,12 +259,12 @@ export declare class WebAuth {
      * handle reset password
      * @param options
      */
-    handleResetPassword(options: ValidateResetPasswordEntity): void;
+    handleResetPassword(options: ValidateResetPasswordEntity): Promise<unknown>;
     /**
     * reset password
     * @param options
     */
-    resetPassword(options: AcceptResetPasswordEntity): void;
+    resetPassword(options: AcceptResetPasswordEntity): Promise<unknown>;
     /**
      * get mfa list v2
      * @param options
