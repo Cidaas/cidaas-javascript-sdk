@@ -867,7 +867,7 @@ var WebAuth = /** @class */ (function () {
      * @param options
      */
     WebAuth.prototype.handleResetPassword = function (options) {
-        UserService_1.UserService.handleResetPassword(options);
+        return UserService_1.UserService.handleResetPassword(options);
     };
     ;
     /**
@@ -875,7 +875,7 @@ var WebAuth = /** @class */ (function () {
     * @param options
     */
     WebAuth.prototype.resetPassword = function (options) {
-        UserService_1.UserService.resetPassword(options);
+        return UserService_1.UserService.resetPassword(options);
     };
     ;
     /**
