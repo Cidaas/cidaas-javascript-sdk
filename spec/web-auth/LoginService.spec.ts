@@ -3,7 +3,7 @@ import {
 } from '../../src/main/web-auth/LoginService';
 import { TestConstants } from '../TestConstants';
 
-let windowSpy:any;
+let windowSpy: any;
 
 beforeEach(() => {
     windowSpy = jest.spyOn(window, "window", "get");
@@ -29,7 +29,7 @@ afterEach(() => {
     windowSpy.mockRestore();
 });
 
-const myHeaders = { requestId:'requestId', trackId: 'trackId',  acceptlanguage: 'en'}
+const myHeaders = { requestId: 'requestId', trackId: 'trackId', acceptlanguage: 'en' }
 
 test('progressiveRegistration', () => {
 
@@ -37,7 +37,7 @@ test('progressiveRegistration', () => {
         location: {
             origin: 'https://kube-nightlybuild-dev.cidaas.de'
         },
-        webAuthSettings:{
+        webAuthSettings: {
             authority: ''
         }
     }));
@@ -50,11 +50,11 @@ test('registerWithSocial', () => {
         location: {
             origin: 'https://kube-nightlybuild-dev.cidaas.de'
         },
-        webAuthSettings:{
+        webAuthSettings: {
             authority: ''
         }
     }));
-    let data = LoginService.registerWithSocial({provider:'google',requestId:'req1'}, {dc:'1', device_fp:'2'})
+    let data = LoginService.registerWithSocial({ provider: 'google', requestId: 'req1' }, { dc: '1', device_fp: '2' })
     expect(data).not.toBe(null);
 });
 
@@ -65,21 +65,21 @@ test('loginAfterRegister', () => {
         location: {
             origin: TestConstants.interactiveTestConfig.baseUrl
         },
-        webAuthSettings:{
+        webAuthSettings: {
             authority: ''
         }
     }));
     LoginService.loginAfterRegister(TestConstants.user);
     LoginService.loginWithCredentials(TestConstants.loginFormRequest);
     LoginService.firstTimeChangePassword(TestConstants.pwdChange);
-    LoginService.loginAfterRegister({trackId:'t',dc:'d',rememberMe:true,device_fp:'f',device_id:''});
+    LoginService.loginAfterRegister({ trackId: 't', dc: 'd', rememberMe: true, device_fp: 'f', device_id: '' });
     LoginService.firstTimeChangePassword(TestConstants.pwdChange);
-    LoginService.scopeConsentContinue({track_id:'t'});
-    LoginService.claimConsentContinue({track_id:'t'});
-    LoginService.consentContinue({track_id:'t',consent_refs:[''],sub:'',client_id:'',scopes:[''],matcher:''});
+    LoginService.scopeConsentContinue({ track_id: 't' });
+    LoginService.claimConsentContinue({ track_id: 't' });
+    LoginService.consentContinue({ track_id: 't', consent_refs: [''], sub: '', client_id: '', scopes: [''], matcher: '' });
     LoginService.passwordlessLogin(TestConstants.physicalVerification);
     //LoginService.mfaContinue({TestConstants.physicalVerification,{trackId:''}});
-    LoginService.mfaContinue({track_id:'t'});
+    LoginService.mfaContinue({ track_id: 't' });
     LoginService.loginWithCredentialsAsynFn(TestConstants.loginFormAsyncRequest);
-    LoginService.loginWithSocial({requestId:'r',provider:'p'},{dc:'d',device_fp:'dfp'});
+    LoginService.loginWithSocial({ requestId: 'r', provider: 'p' }, { dc: 'd', device_fp: 'dfp' });
 });
