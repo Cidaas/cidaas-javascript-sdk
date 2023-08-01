@@ -51,6 +51,7 @@ var WebAuth = /** @class */ (function () {
     function WebAuth(settings) {
         try {
             var usermanager = new oidc_client_ts_1.UserManager(settings);
+            //usermanager.querySessionStatus
             window.webAuthSettings = settings;
             window.usermanager = usermanager;
             window.localeSettings = null;
@@ -70,7 +71,10 @@ var WebAuth = /** @class */ (function () {
      * generate code verifier
      */
     WebAuth.prototype.generateCodeVerifier = function () {
-        this.code_verifier = crypto.randomUUID().replace(/-/g, "");
+        var _a;
+        var code_verifier = crypto.randomUUID().replace(/-/g, "");
+        (_a = window.usermanager) === null || _a === void 0 ? void 0 : _a.settings.stateStore.set('code_verifier', code_verifier);
+        return code_verifier;
     };
     ;
     /**
@@ -266,6 +270,7 @@ var WebAuth = /** @class */ (function () {
      * @returns
      */
     WebAuth.prototype.getLoginURL = function () {
+        var _a;
         var settings = window.webAuthSettings;
         if (!settings.response_type) {
             settings.response_type = "code";
@@ -273,13 +278,18 @@ var WebAuth = /** @class */ (function () {
         if (!settings.scope) {
             settings.scope = "email openid profile mobile";
         }
-        this.generateCodeVerifier();
         var loginURL = settings.authority + "/authz-srv/authz?client_id=" + settings.client_id;
         loginURL += "&redirect_uri=" + settings.redirect_uri;
         loginURL += "&nonce=" + new Date().getTime().toString();
         loginURL += "&response_type=" + settings.response_type;
-        loginURL += "&code_challenge=" + this.generateCodeChallenge(this.code_verifier);
-        loginURL += "&code_challenge_method=S256";
+        if (!window.webAuthSettings.disablePKCE) {
+            var code_verifier = this.generateCodeVerifier();
+            loginURL += "&code_challenge=" + this.generateCodeChallenge(code_verifier);
+            loginURL += "&code_challenge_method=S256";
+        }
+        else {
+            (_a = window.usermanager) === null || _a === void 0 ? void 0 : _a.settings.stateStore.remove('code_verifier');
+        }
         if (settings.response_mode && settings.response_mode == 'query') {
             loginURL += "&response_mode=" + settings.response_mode;
         }
@@ -867,7 +877,7 @@ var WebAuth = /** @class */ (function () {
      * @param options
      */
     WebAuth.prototype.handleResetPassword = function (options) {
-        UserService_1.UserService.handleResetPassword(options);
+        return UserService_1.UserService.handleResetPassword(options);
     };
     ;
     /**
@@ -875,7 +885,7 @@ var WebAuth = /** @class */ (function () {
     * @param options
     */
     WebAuth.prototype.resetPassword = function (options) {
-        UserService_1.UserService.resetPassword(options);
+        return UserService_1.UserService.resetPassword(options);
     };
     ;
     /**
