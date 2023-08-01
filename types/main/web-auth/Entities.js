@@ -1,18 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.ValidateResetPasswordEntity = exports.UpdateReviewDeviceEntity = exports.GroupValidationEntity = exports.TokenIntrospectionEntity = exports.FindUserEntity = exports.PhysicalVerificationLoginRequest = exports.AccessTokenRequest = exports.AcceptResetPasswordEntity = void 0;
-var AcceptResetPasswordEntity = /** @class */ (function () {
-    function AcceptResetPasswordEntity() {
-        this.resetRequestId = "";
-        this.exchangeId = "";
-        this.password = "";
-        this.confirmPassword = "";
-        this.provider = "";
-        this.requestId = "";
-    }
-    return AcceptResetPasswordEntity;
-}());
-exports.AcceptResetPasswordEntity = AcceptResetPasswordEntity;
+exports.ValidateResetPasswordEntity = exports.UpdateReviewDeviceEntity = exports.GroupValidationEntity = exports.TokenIntrospectionEntity = exports.FindUserEntity = exports.PhysicalVerificationLoginRequest = exports.AccessTokenRequest = void 0;
 var AccessTokenRequest = /** @class */ (function () {
     function AccessTokenRequest() {
         this.user_agent = "";

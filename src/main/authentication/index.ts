@@ -44,7 +44,7 @@ export class Authentication {
         return new Promise((resolve, reject) => {
             try {
                 if (this.userManager) {
-                    this.userManager.signinRedirectCallback(this.webAuthSettings.redirect_uri)
+                    this.userManager.signinRedirectCallback()
                         .then(function (user: any) {
                             if (user) {
                                 resolve(user);
