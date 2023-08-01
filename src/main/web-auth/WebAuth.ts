@@ -39,8 +39,6 @@ import {
 
 export class WebAuth {
 
-  private code_verifier: string;
-
   constructor(settings: UserManagerSettings & { mode?: string, cidaas_version: number }) {
     try {
       var usermanager = new UserManager(settings)
@@ -62,8 +60,10 @@ export class WebAuth {
   /**
    * generate code verifier
    */
-  private generateCodeVerifier() {
-    this.code_verifier = crypto.randomUUID().replace(/-/g, "");
+  private generateCodeVerifier(): string {
+    var code_verifier = crypto.randomUUID().replace(/-/g, "");
+    window.usermanager?.settings.stateStore.set('code_verifier', code_verifier);
+    return code_verifier;
   };
 
   /**
@@ -249,14 +249,17 @@ export class WebAuth {
       settings.scope = "email openid profile mobile";
     }
 
-    this.generateCodeVerifier();
-
     var loginURL = settings.authority + "/authz-srv/authz?client_id=" + settings.client_id;
     loginURL += "&redirect_uri=" + settings.redirect_uri;
     loginURL += "&nonce=" + new Date().getTime().toString();
     loginURL += "&response_type=" + settings.response_type;
-    loginURL += "&code_challenge=" + this.generateCodeChallenge(this.code_verifier);
-    loginURL += "&code_challenge_method=S256";
+    if (!window.webAuthSettings.disablePKCE) {
+      var code_verifier = this.generateCodeVerifier();
+      loginURL += "&code_challenge=" + this.generateCodeChallenge(code_verifier);
+      loginURL += "&code_challenge_method=S256";
+    } else {
+      window.usermanager?.settings.stateStore.remove('code_verifier');
+    }
     if (settings.response_mode && settings.response_mode == 'query') {
       loginURL += "&response_mode=" + settings.response_mode;
     }

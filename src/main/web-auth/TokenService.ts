@@ -48,7 +48,6 @@ export namespace TokenService {
         }
         options.client_id = window.webAuthSettings.client_id;
         options.redirect_uri = window.webAuthSettings.redirect_uri;
-        options.code_verifier = this.code_verifier;
         options.grant_type = "authorization_code";
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
@@ -62,7 +61,14 @@ export namespace TokenService {
         if (window.localeSettings) {
           http.setRequestHeader("accept-language", window.localeSettings);
         }
-        http.send(JSON.stringify(options));
+        if (!window.webAuthSettings.disablePKCE) {
+          window.usermanager?.settings.stateStore.get('code_verifier').then((codeVerifier: string) => {
+            options.code_verifier = codeVerifier;
+            http.send(JSON.stringify(options));
+          });
+        } else {
+          http.send(JSON.stringify(options));
+        }
       } catch (ex) {
         reject(ex);
       }
