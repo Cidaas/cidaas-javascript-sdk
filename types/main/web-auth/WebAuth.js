@@ -39,7 +39,6 @@ exports.__esModule = true;
 exports.WebAuth = void 0;
 var oidc_client_ts_1 = require("oidc-client-ts");
 var CryptoJS = require("crypto-js");
-var fingerprintjs_1 = require("@fingerprintjs/fingerprintjs");
 var authentication_1 = require("../authentication");
 var Helper_1 = require("./Helper");
 var LoginService_1 = require("./LoginService");
@@ -658,36 +657,26 @@ var WebAuth = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             try {
                 var value = ('; ' + document.cookie).split("; cidaas_dr=").pop().split(';')[0];
-                var fpPromise = fingerprintjs_1["default"].load();
-                var options = { fingerprint: "", userAgent: "" };
+                var options = { userAgent: "" };
                 if (!value) {
                     (function () { return __awaiter(_this, void 0, void 0, function () {
-                        var fp, result, http, _serviceURL;
+                        var http, _serviceURL;
                         return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, fpPromise];
-                                case 1:
-                                    fp = _a.sent();
-                                    return [4 /*yield*/, fp.get()];
-                                case 2:
-                                    result = _a.sent();
-                                    options.fingerprint = result.visitorId;
-                                    options.userAgent = window.navigator.userAgent;
-                                    http = new XMLHttpRequest();
-                                    _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
-                                    http.onreadystatechange = function () {
-                                        if (http.readyState == 4) {
-                                            resolve(JSON.parse(http.responseText));
-                                        }
-                                    };
-                                    http.open("POST", _serviceURL, true);
-                                    http.setRequestHeader("Content-type", "application/json");
-                                    if (window.localeSettings) {
-                                        http.setRequestHeader("accept-language", window.localeSettings);
-                                    }
-                                    http.send(JSON.stringify(options));
-                                    return [2 /*return*/];
+                            options.userAgent = window.navigator.userAgent;
+                            http = new XMLHttpRequest();
+                            _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
+                            http.onreadystatechange = function () {
+                                if (http.readyState == 4) {
+                                    resolve(JSON.parse(http.responseText));
+                                }
+                            };
+                            http.open("POST", _serviceURL, true);
+                            http.setRequestHeader("Content-type", "application/json");
+                            if (window.localeSettings) {
+                                http.setRequestHeader("accept-language", window.localeSettings);
                             }
+                            http.send(JSON.stringify(options));
+                            return [2 /*return*/];
                         });
                     }); })();
                 }
