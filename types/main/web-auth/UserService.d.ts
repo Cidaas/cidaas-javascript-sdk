@@ -19,7 +19,7 @@ export declare namespace UserService {
         captcha?: string;
         acceptlanguage?: string;
         bot_captcha_response?: string;
-        trackId: string;
+        trackId?: string;
     }): Promise<unknown>;
     /**
      * get invite info
@@ -48,12 +48,12 @@ export declare namespace UserService {
      * handle reset password
      * @param options
      */
-    function handleResetPassword(options: ValidateResetPasswordEntity): void;
+    function handleResetPassword(options: ValidateResetPasswordEntity): Promise<unknown>;
     /**
     * reset password
     * @param options
     */
-    function resetPassword(options: AcceptResetPasswordEntity): void;
+    function resetPassword(options: AcceptResetPasswordEntity): Promise<unknown>;
     /**
      * get Deduplication details
      * @param options

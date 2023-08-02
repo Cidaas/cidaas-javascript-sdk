@@ -24,7 +24,7 @@ export declare namespace LoginService {
         device_fp: string;
     }): void;
     /**
-     * register with social
+     *  with social
      * @param options
      * @param queryParams
      */
@@ -94,9 +94,10 @@ export declare namespace LoginService {
      * @param options
      */
     function loginAfterRegister(options: {
-        device_id: string;
+        device_id?: string;
         dc?: string;
-        rememberMe: boolean;
-        trackId: string;
+        rememberMe?: boolean;
+        trackId?: string;
+        device_fp?: string;
     }): void;
 }
