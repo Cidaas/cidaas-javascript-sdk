@@ -33,13 +33,18 @@ afterEach(() => {
 test('getAccessToken, renewToken, validateAccessToken', async() => {
     windowSpy.mockImplementation(() => ({
         location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
+            origin: TestConstants.interactiveTestConfig.baseUrl
         },
         webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
+            authority: TestConstants.interactiveTestConfig.baseUrl,
+            disablePKCE: true
         }
     }));
 
+    TestConstants.tokenRequest.refresh_token = 'ref';
+    TestConstants.tokenRequest.code = 'code';
+    TestConstants.tokenIntrospect.token = 'token';
+    TestConstants.tokenIntrospect.token_type_hint = 'hint';
     let data = TokenService.renewToken(TestConstants.tokenRequest).catch( err => {
     });
     expect(data).not.toBe(undefined)

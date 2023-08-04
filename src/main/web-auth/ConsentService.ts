@@ -36,7 +36,7 @@ export namespace ConsentService {
     locale: string;
     access_token: string;
   }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
@@ -59,7 +59,9 @@ export namespace ConsentService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET", options.access_token);
   };
 
   /**

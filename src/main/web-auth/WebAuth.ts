@@ -299,7 +299,7 @@ export class WebAuth {
    * @returns 
    */
   getMissingFields(options: { requestId: string; trackId: string; }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + options.requestId + "/" + options.trackId;
@@ -321,7 +321,9 @@ export class WebAuth {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + options.requestId + "/" + options.trackId;
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -329,7 +331,7 @@ export class WebAuth {
    * @returns 
    */
   getTenantInfo() {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
@@ -351,7 +353,9 @@ export class WebAuth {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -372,7 +376,7 @@ export class WebAuth {
    * @returns 
    */
   getClientInfo(options: { requestId: string }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
@@ -394,7 +398,9 @@ export class WebAuth {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -403,7 +409,7 @@ export class WebAuth {
    * @returns 
    */
   getDevicesInfo(options: any) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
@@ -429,7 +435,13 @@ export class WebAuth {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    options.userAgent = window.navigator.userAgent;
+    const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
+    if (window.navigator.userAgent) {
+      return Helper.createPostPromise(options, _serviceURL,false, "GET");
+    }
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -438,7 +450,7 @@ export class WebAuth {
    * @returns 
    */
   deleteDevice(options: { device_id: string; userAgent?: string }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
@@ -464,7 +476,13 @@ export class WebAuth {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
+    options.userAgent = window.navigator.userAgent;
+    if (window.navigator.userAgent) {
+      return Helper.createPostPromise(options, _serviceURL,false, "DELETE");
+    }
+    return Helper.createPostPromise(undefined, _serviceURL,false, "DELETE");
   };
 
   /**
@@ -509,7 +527,7 @@ export class WebAuth {
  * @returns 
  */
   getUnreviewedDevices(access_token: string, sub: string) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/unreviewlist/" + sub;
@@ -532,7 +550,9 @@ export class WebAuth {
       } catch (ex) {
         throw new CustomException(ex, 417);
       }
-    });
+    });*/
+    let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/unreviewlist/" + sub;
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET", access_token);
   };
 
   /**
@@ -542,7 +562,7 @@ export class WebAuth {
    * @returns 
    */
   getReviewedDevices(access_token: string, sub: string) {
-    return new Promise(function (resolve, reject) {
+    /*return new Promise(function (resolve, reject) {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/reviewlist/" + sub;
@@ -565,7 +585,9 @@ export class WebAuth {
       } catch (ex) {
         throw new CustomException(ex, 417);
       }
-    });
+    });*/
+    let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/reviewlist/" + sub;
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET", access_token);
   };
 
   /**
@@ -575,7 +597,7 @@ export class WebAuth {
    * @returns 
    */
   reviewDevice(options: UpdateReviewDeviceEntity, access_token: string) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/updatereview";
@@ -598,7 +620,9 @@ export class WebAuth {
       } catch (ex) {
         throw new CustomException(ex, 417);
       }
-    });
+    });*/
+    let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/updatereview";
+    return Helper.createPostPromise(options, _serviceURL,false, "PUT", access_token);
   };
 
   /**
@@ -1655,7 +1679,7 @@ export class WebAuth {
   /**
    * @deprecated
    * authenticate ivr - v1
-   * @param options 
+   * @param options
    */
   authenticateIVR(options: any) {
     var verificationType = "IVR";
@@ -1664,21 +1688,21 @@ export class WebAuth {
 
   /**
    * @deprecated
-   * authenticate backupcode - v1
-   * @param options 
+   * authenticate totp - v1
+   * @param options
    */
-  authenticateBackupcode(options: any) {
-    var verificationType = "BACKUPCODE";
+  authenticateTOTP(options: any) {
+    var verificationType = "TOTP";
     this.authenticateMfaV1(options, verificationType);
   };
 
   /**
    * @deprecated
-   * authenticate totp - v1
-   * @param options 
+   * authenticate backupcode - v1
+   * @param options
    */
-  authenticateTOTP(options: any) {
-    var verificationType = "TOTP";
+  authenticateBackupcode(options: any) {
+    var verificationType = "BACKUPCODE";
     this.authenticateMfaV1(options, verificationType);
   };
 }

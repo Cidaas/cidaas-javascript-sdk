@@ -11,7 +11,7 @@ var ConsentService;
     */
     function getConsentDetailsV2(options) {
         var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     ConsentService.getConsentDetailsV2 = getConsentDetailsV2;
     ;
@@ -22,7 +22,7 @@ var ConsentService;
      */
     function acceptConsentV2(options) {
         var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     ConsentService.acceptConsentV2 = acceptConsentV2;
     ;
@@ -32,32 +32,32 @@ var ConsentService;
      * @returns
      */
     function getScopeConsentVersionDetailsV2(options) {
-        return new Promise(function (resolve, reject) {
-            try {
-                var http = new XMLHttpRequest();
-                var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
-                http.onreadystatechange = function () {
-                    if (http.readyState == 4) {
-                        if (http.responseText) {
-                            resolve(JSON.parse(http.responseText));
-                        }
-                        else {
-                            resolve(false);
-                        }
-                    }
-                };
-                http.open("GET", _serviceURL, true);
-                http.setRequestHeader("Content-type", "application/json");
-                http.setRequestHeader("Authorization", "Bearer ".concat(options.access_token));
-                if (window.localeSettings) {
-                    http.setRequestHeader("accept-language", window.localeSettings);
+        /*return new Promise((resolve, reject) => {
+          try {
+            var http = new XMLHttpRequest();
+            var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
+            http.onreadystatechange = function () {
+              if (http.readyState == 4) {
+                if (http.responseText) {
+                  resolve(JSON.parse(http.responseText));
+                } else {
+                  resolve(false);
                 }
-                http.send();
+              }
+            };
+            http.open("GET", _serviceURL, true);
+            http.setRequestHeader("Content-type", "application/json");
+            http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
+            if (window.localeSettings) {
+              http.setRequestHeader("accept-language", window.localeSettings);
             }
-            catch (ex) {
-                reject(ex);
-            }
-        });
+            http.send();
+          } catch (ex) {
+            reject(ex);
+          }
+        });*/
+        var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, false, "GET", options.access_token);
     }
     ConsentService.getScopeConsentVersionDetailsV2 = getScopeConsentVersionDetailsV2;
     ;
@@ -68,7 +68,7 @@ var ConsentService;
      */
     function acceptScopeConsent(options) {
         var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     ConsentService.acceptScopeConsent = acceptScopeConsent;
     ;
@@ -79,7 +79,7 @@ var ConsentService;
      */
     function acceptClaimConsent(options) {
         var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     ConsentService.acceptClaimConsent = acceptClaimConsent;
     ;
@@ -90,7 +90,7 @@ var ConsentService;
      */
     function revokeClaimConsent(options) {
         var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     ConsentService.revokeClaimConsent = revokeClaimConsent;
     ;
