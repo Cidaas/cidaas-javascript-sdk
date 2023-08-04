@@ -44,7 +44,6 @@ var TokenService;
      * @returns
      */
     function getAccessToken(options) {
-        var _this = this;
         return new Promise(function (resolve, reject) {
             try {
                 if (!options.code) {
@@ -52,7 +51,6 @@ var TokenService;
                 }
                 options.client_id = window.webAuthSettings.client_id;
                 options.redirect_uri = window.webAuthSettings.redirect_uri;
-                options.code_verifier = _this.code_verifier;
                 options.grant_type = "authorization_code";
                 var http = new XMLHttpRequest();
                 var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
@@ -66,7 +64,16 @@ var TokenService;
                 if (window.localeSettings) {
                     http.setRequestHeader("accept-language", window.localeSettings);
                 }
-                http.send(JSON.stringify(options));
+                if (!window.webAuthSettings.disablePKCE) {
+                    window.usermanager._client.createSigninRequest(window.webAuthSettings).then(function (signInRequest) {
+                        var _a;
+                        options.code_verifier = (_a = signInRequest.state) === null || _a === void 0 ? void 0 : _a.code_verifier;
+                        http.send(JSON.stringify(options));
+                    });
+                }
+                else {
+                    http.send(JSON.stringify(options));
+                }
             }
             catch (ex) {
                 reject(ex);

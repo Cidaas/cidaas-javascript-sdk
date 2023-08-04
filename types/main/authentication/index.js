@@ -49,7 +49,7 @@ var Authentication = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             try {
                 if (_this.userManager) {
-                    _this.userManager.signinRedirectCallback(_this.webAuthSettings.redirect_uri)
+                    _this.userManager.signinRedirectCallback()
                         .then(function (user) {
                         if (user) {
                             resolve(user);

@@ -40,8 +40,6 @@ import {
 
 export class WebAuth {
 
-  private code_verifier: string;
-
   constructor(settings: UserManagerSettings & { mode?: string, cidaas_version: number }) {
     try {
       var usermanager = new UserManager(settings)
@@ -59,21 +57,6 @@ export class WebAuth {
       console.log(ex);
     }
   }
-
-  /**
-   * generate code verifier
-   */
-  private generateCodeVerifier() {
-    this.code_verifier = crypto.randomUUID().replace(/-/g, "");
-  };
-
-  /**
-   * @param code_verifier 
-   * @returns 
-   */
-  private generateCodeChallenge(code_verifier: string) {
-    return this.base64URL(CryptoJS.SHA256(code_verifier));
-  };
 
   /**
  * @param string 
@@ -249,19 +232,19 @@ export class WebAuth {
     if (!settings.scope) {
       settings.scope = "email openid profile mobile";
     }
-
-    this.generateCodeVerifier();
-
-    var loginURL = settings.authority + "/authz-srv/authz?client_id=" + settings.client_id;
-    loginURL += "&redirect_uri=" + settings.redirect_uri;
-    loginURL += "&nonce=" + new Date().getTime().toString();
-    loginURL += "&response_type=" + settings.response_type;
-    loginURL += "&code_challenge=" + this.generateCodeChallenge(this.code_verifier);
-    loginURL += "&code_challenge_method=S256";
-    if (settings.response_mode && settings.response_mode == 'query') {
-      loginURL += "&response_mode=" + settings.response_mode;
+    var loginURL = "";
+    window.usermanager._client.createSigninRequest(settings).then((signInRequest: any) => {
+      loginURL = signInRequest.url;
+    }) 
+    var timeRemaining = 5000
+    while(timeRemaining > 0) {
+      if (loginURL) {
+        break;
+      }
+      setTimeout(() => {
+        timeRemaining -= 100
+      }, 100);
     }
-    loginURL += "&scope=" + settings.scope;
     return loginURL;
   };
 
