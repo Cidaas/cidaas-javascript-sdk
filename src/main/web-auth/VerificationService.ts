@@ -60,7 +60,7 @@ export namespace VerificationService {
     code: string;
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -70,7 +70,7 @@ export namespace VerificationService {
    */
   export function getMFAListV2(options: IConfiguredListRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -84,7 +84,7 @@ export namespace VerificationService {
     type: string;
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/cancel/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -123,7 +123,7 @@ export namespace VerificationService {
    */
   export function enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -133,7 +133,7 @@ export namespace VerificationService {
    */
   export function updateSocket(status_id: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-    return Helper.createPostPromise(undefined, _serviceURL, undefined);
+    return Helper.createPostPromise(undefined, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -143,7 +143,7 @@ export namespace VerificationService {
    */
   export function updateStatus(status_id: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-    return Helper.createPostPromise(undefined, _serviceURL, undefined);
+    return Helper.createPostPromise(undefined, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -153,7 +153,7 @@ export namespace VerificationService {
    */
   export function setupFidoVerification(options: FidoSetupEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/suggestmfa/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -163,7 +163,7 @@ export namespace VerificationService {
    */
   export function checkVerificationTypeConfigured(options: IConfiguredListRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -173,7 +173,7 @@ export namespace VerificationService {
    */
   export function initiateMFAV2(options: IInitVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -184,7 +184,7 @@ export namespace VerificationService {
    */
   export function initiateMfaV1(options: any, verificationType: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/initiate";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   }
 
   /**
@@ -194,7 +194,7 @@ export namespace VerificationService {
    */
   export function authenticateMFAV2(options: IAuthVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -238,7 +238,7 @@ export namespace VerificationService {
    */
   export function setupVerificationV1(options: any, access_token: string, verificationType: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/setup";
-    return Helper.createPostPromise(options, _serviceURL, false, access_token);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
   }
 
   /**
@@ -251,7 +251,7 @@ export namespace VerificationService {
    */
   export function enrollVerificationV1(options: any, access_token: string, verificationType: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/enroll";
-    return Helper.createPostPromise(options, _serviceURL, false, access_token);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
   }
 
   /**
@@ -262,6 +262,6 @@ export namespace VerificationService {
    */
   export function authenticateMfaV1(options: any, verificationType: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/authenticate";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   }
 }

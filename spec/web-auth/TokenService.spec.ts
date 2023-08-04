@@ -1,7 +1,5 @@
 import { TestConstants } from '../TestConstants';
 import { TokenService } from '../../types/main/web-auth/TokenService';
-import * as buffer from 'buffer';
-import { updateSuggestMFA } from '../../src/main/web-auth/TokenService';
 
 let windowSpy:any;
 

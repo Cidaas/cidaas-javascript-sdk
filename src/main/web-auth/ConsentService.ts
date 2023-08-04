@@ -13,7 +13,7 @@ export namespace ConsentService {
     sub: string;
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -23,7 +23,7 @@ export namespace ConsentService {
    */
   export function acceptConsentV2(options: IConsentAcceptEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false, "POST" );
   };
 
   /**
@@ -73,7 +73,7 @@ export namespace ConsentService {
     scopes: string[];
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false, "POST");
   };
 
   /**
@@ -83,7 +83,7 @@ export namespace ConsentService {
    */
   export function acceptClaimConsent(options: { client_id: string; sub: string; accepted_claims: string[]; }) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,  "POST");
   };
 
   /**
@@ -93,6 +93,6 @@ export namespace ConsentService {
    */
   export function revokeClaimConsent(options: { client_id: string; sub: string; revoked_claims: string[]; }) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,  "POST");
   };
 }
