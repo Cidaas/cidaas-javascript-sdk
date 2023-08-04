@@ -17,7 +17,7 @@ export namespace UserService {
    * @returns 
    */
   export function getUserProfile(options: { access_token: string }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         if (!options.access_token) {
           throw new CustomException("access_token cannot be empty", 417);
@@ -39,7 +39,12 @@ export namespace UserService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    if (!options.access_token) {
+      throw new CustomException("access_token cannot be empty", 417);
+    }
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo";
+    return Helper.createPostPromise(undefined, _serviceURL,undefined, "GET", options.access_token);
   };
 
   /**
@@ -102,7 +107,7 @@ export namespace UserService {
    * @returns 
    */
   export function getInviteUserDetails(options: { invite_id: string }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
@@ -124,7 +129,9 @@ export namespace UserService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -159,6 +166,10 @@ export namespace UserService {
         reject(ex);
       }
     });
+    /*
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/communication/status/" + options.sub;
+    return Helper.createPostPromise(options, _serviceURL,false, "GET", undefined);
+     */
   };
 
   /**
@@ -183,7 +194,7 @@ export namespace UserService {
         document.body.appendChild(form);
         form.submit();
       } else {
-        return new Promise(function (resolve, reject) {
+        /*return new Promise(function (resolve, reject) {
           try {
             var http = new XMLHttpRequest();
             http.onreadystatechange = function () {
@@ -201,7 +212,8 @@ export namespace UserService {
           } catch (ex) {
             reject(ex);
           }
-        });
+        });*/
+        return Helper.createPostPromise(options, url,false, "POST");
       }
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -220,7 +232,7 @@ export namespace UserService {
         document.body.appendChild(form);
         form.submit();
       } else {
-        return new Promise(function (resolve, reject) {
+        /*return new Promise(function (resolve, reject) {
           try {
             var http = new XMLHttpRequest();
             http.onreadystatechange = function () {
@@ -238,7 +250,8 @@ export namespace UserService {
           } catch (ex) {
             reject(ex);
           }
-        });
+        });*/
+        return Helper.createPostPromise(options, url,false, "POST");
       }
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -251,7 +264,7 @@ export namespace UserService {
    * @returns 
    */
   export function getDeduplicationDetails(options: { trackId: string }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
@@ -273,7 +286,9 @@ export namespace UserService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
+    return Helper.createPostPromise(options, _serviceURL,false, "GET", undefined);
   };
 
   /**
@@ -298,7 +313,7 @@ export namespace UserService {
    * @returns 
    */
   export function registerDeduplication(options: { trackId: string }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
@@ -316,7 +331,9 @@ export namespace UserService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
+    return Helper.createPostPromise(undefined, _serviceURL,undefined, "POST");
   };
 
   /**
@@ -338,7 +355,7 @@ export namespace UserService {
    * @returns 
    */
   export function updateProfile(options: UserEntity, access_token: string, sub: string) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
@@ -361,7 +378,9 @@ export namespace UserService {
       } catch (ex) {
         throw new CustomException(ex, 417);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
+    return Helper.createPostPromise(options, _serviceURL,false, "PUT", access_token);
   };
 
   /**

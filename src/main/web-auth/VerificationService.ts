@@ -92,7 +92,7 @@ export namespace VerificationService {
    * @returns 
    */
   export function getAllVerificationList(access_token: string) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         http.onreadystatechange = function () {
@@ -113,7 +113,9 @@ export namespace VerificationService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = `${window.webAuthSettings.authority}/verification-srv/config/list`;
+    return Helper.createPostPromise(undefined, _serviceURL,undefined, "GET", access_token);
   };
 
   /**

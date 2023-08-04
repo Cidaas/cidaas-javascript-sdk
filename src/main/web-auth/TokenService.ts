@@ -9,7 +9,7 @@ export namespace TokenService {
    * @returns 
    */
   export function renewToken(options: AccessTokenRequest) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         if (!options.refresh_token) {
           throw new CustomException("refresh_token cannot be empty", 417);
@@ -32,7 +32,14 @@ export namespace TokenService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    if (!options.refresh_token) {
+      throw new CustomException("refresh_token cannot be empty", 417);
+    }
+    options.client_id = window.webAuthSettings.client_id;
+    options.grant_type = 'refresh_token';
+    const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
+    return Helper.createPostPromise(options, _serviceURL,undefined, "POST");
   };
 
   /**
@@ -41,7 +48,7 @@ export namespace TokenService {
    * @returns 
    */
   export function getAccessToken(options: AccessTokenRequest) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         if (!options.code) {
           throw new CustomException("code cannot be empty", 417);
@@ -72,7 +79,20 @@ export namespace TokenService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    if (!options.code) {
+      throw new CustomException("code cannot be empty", 417);
+    }
+    options.client_id = window.webAuthSettings.client_id;
+    options.redirect_uri = window.webAuthSettings.redirect_uri;
+    options.grant_type = "authorization_code";
+    if (!window.webAuthSettings.disablePKCE) {
+      window.usermanager._client.createSigninRequest(window.webAuthSettings).then((signInRequest: any) => {
+        options.code_verifier = signInRequest.state?.code_verifier;
+      })
+    }
+    const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
+    return Helper.createPostPromise(options, _serviceURL,undefined, "POST");
   };
 
   /**
@@ -81,7 +101,7 @@ export namespace TokenService {
    * @returns 
    */
   export function validateAccessToken(options: TokenIntrospectionEntity) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         if (!options.token || !options.token_type_hint) {
           throw new CustomException("token or token_type_hint cannot be empty", 417);
@@ -102,7 +122,12 @@ export namespace TokenService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    if (!options.token || !options.token_type_hint) {
+      throw new CustomException("token or token_type_hint cannot be empty", 417);
+    }
+    const _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
+    return Helper.createPostPromise(options, _serviceURL,false, "POST");
   };
 
   /**
@@ -114,7 +139,7 @@ export namespace TokenService {
     track_id: string;
     locale: string;
   }) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id + "?acceptLanguage=" + options.locale;
@@ -136,7 +161,9 @@ export namespace TokenService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id + "?acceptLanguage=" + options.locale;
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -146,7 +173,7 @@ export namespace TokenService {
    * @returns 
    */
   export function updateSuggestMFA(track_id: string, options: ISuggestedMFAActionConfig) {
-    var _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
+    const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
     return Helper.createPostPromise(options, _serviceURL, false, "POST");
   };
 
@@ -156,7 +183,7 @@ export namespace TokenService {
    * @returns 
    */
   export function getMissingFieldsLogin(trackId: string) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
         var _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + trackId;
@@ -178,7 +205,9 @@ export namespace TokenService {
       } catch (ex) {
         reject(ex);
       }
-    });
+    });*/
+    const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + trackId;
+    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
