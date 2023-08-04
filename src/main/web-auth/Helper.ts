@@ -26,11 +26,11 @@ export class Helper {
   * @param options 
   * @param serviceurl 
   * @param errorResolver 
-  * @param access_token 
-  * @param headers 
+  * @param access_token??
+  * @param headers??
   * @returns 
   */
-  static createPostPromise(options: any, serviceurl: string, errorResolver: boolean, access_token?: string, headers?: any) {
+  static createPostPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any) {
     return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
@@ -43,7 +43,7 @@ export class Helper {
             }
           }
         };
-        http.open("POST", serviceurl, true);
+        http.open(method, serviceurl, true);
         http.setRequestHeader("Content-type", "application/json");
         if (headers) {
           for (var key in headers) {

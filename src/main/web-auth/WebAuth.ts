@@ -978,7 +978,7 @@ export class WebAuth {
    */
   getUserActivities(options: UserActivityEntity, access_token: string) {
     var _serviceURL = window.webAuthSettings.authority + "/useractivity-srv/latestactivity";
-    return Helper.createPostPromise(options, _serviceURL, false, access_token);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
   };
 
   /**
@@ -1037,7 +1037,7 @@ export class WebAuth {
    */
   updateProfileImage(options: { image_key: string; }, access_token: string) {
     var _serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
-    return Helper.createPostPromise(options, _serviceURL, false, access_token);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
   };
 
   /**

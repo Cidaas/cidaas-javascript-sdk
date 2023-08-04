@@ -147,7 +147,7 @@ export namespace TokenService {
    */
   export function updateSuggestMFA(track_id: string, options: ISuggestedMFAActionConfig) {
     var _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false, "POST");
   };
 
   /**

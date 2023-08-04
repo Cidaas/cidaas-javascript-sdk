@@ -63,7 +63,7 @@ test('registerWithSocial', () => {
 test('loginAfterRegister', () => {
     windowSpy.mockImplementation(() => ({
         location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
+            origin: TestConstants.interactiveTestConfig.baseUrl
         },
         webAuthSettings:{
             authority: ''
