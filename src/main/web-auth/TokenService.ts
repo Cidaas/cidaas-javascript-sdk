@@ -62,10 +62,10 @@ export namespace TokenService {
           http.setRequestHeader("accept-language", window.localeSettings);
         }
         if (!window.webAuthSettings.disablePKCE) {
-          window.usermanager?.settings.stateStore.get('code_verifier').then((codeVerifier: string) => {
-            options.code_verifier = codeVerifier;
+          window.usermanager._client.createSigninRequest(window.webAuthSettings).then((signInRequest: any) => {
+            options.code_verifier = signInRequest.state?.code_verifier;
             http.send(JSON.stringify(options));
-          });
+          }) 
         } else {
           http.send(JSON.stringify(options));
         }

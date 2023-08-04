@@ -45,30 +45,35 @@ var TokenService;
      */
     function getAccessToken(options) {
         return new Promise(function (resolve, reject) {
-            var _a;
             try {
                 if (!options.code) {
                     throw new Helper_1.CustomException("code cannot be empty", 417);
                 }
-                (_a = window.usermanager) === null || _a === void 0 ? void 0 : _a.settings.stateStore.get('code_verifier').then(function (codeVerifier) {
-                    options.client_id = window.webAuthSettings.client_id;
-                    options.redirect_uri = window.webAuthSettings.redirect_uri;
-                    options.code_verifier = codeVerifier;
-                    options.grant_type = "authorization_code";
-                    var http = new XMLHttpRequest();
-                    var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
-                    http.onreadystatechange = function () {
-                        if (http.readyState == 4) {
-                            resolve(JSON.parse(http.responseText));
-                        }
-                    };
-                    http.open("POST", _serviceURL, true);
-                    http.setRequestHeader("Content-type", "application/json");
-                    if (window.localeSettings) {
-                        http.setRequestHeader("accept-language", window.localeSettings);
+                options.client_id = window.webAuthSettings.client_id;
+                options.redirect_uri = window.webAuthSettings.redirect_uri;
+                options.grant_type = "authorization_code";
+                var http = new XMLHttpRequest();
+                var _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
+                http.onreadystatechange = function () {
+                    if (http.readyState == 4) {
+                        resolve(JSON.parse(http.responseText));
                     }
+                };
+                http.open("POST", _serviceURL, true);
+                http.setRequestHeader("Content-type", "application/json");
+                if (window.localeSettings) {
+                    http.setRequestHeader("accept-language", window.localeSettings);
+                }
+                if (!window.webAuthSettings.disablePKCE) {
+                    window.usermanager._client.createSigninRequest(window.webAuthSettings).then(function (signInRequest) {
+                        var _a;
+                        options.code_verifier = (_a = signInRequest.state) === null || _a === void 0 ? void 0 : _a.code_verifier;
+                        http.send(JSON.stringify(options));
+                    });
+                }
+                else {
                     http.send(JSON.stringify(options));
-                });
+                }
             }
             catch (ex) {
                 reject(ex);

@@ -58,23 +58,6 @@ export class WebAuth {
   }
 
   /**
-   * generate code verifier
-   */
-  private generateCodeVerifier(): string {
-    var code_verifier = crypto.randomUUID().replace(/-/g, "");
-    window.usermanager?.settings.stateStore.set('code_verifier', code_verifier);
-    return code_verifier;
-  };
-
-  /**
-   * @param code_verifier 
-   * @returns 
-   */
-  private generateCodeChallenge(code_verifier: string) {
-    return this.base64URL(CryptoJS.SHA256(code_verifier));
-  };
-
-  /**
  * @param string 
  * @returns 
  */
@@ -248,22 +231,19 @@ export class WebAuth {
     if (!settings.scope) {
       settings.scope = "email openid profile mobile";
     }
-
-    var loginURL = settings.authority + "/authz-srv/authz?client_id=" + settings.client_id;
-    loginURL += "&redirect_uri=" + settings.redirect_uri;
-    loginURL += "&nonce=" + new Date().getTime().toString();
-    loginURL += "&response_type=" + settings.response_type;
-    if (!window.webAuthSettings.disablePKCE) {
-      var code_verifier = this.generateCodeVerifier();
-      loginURL += "&code_challenge=" + this.generateCodeChallenge(code_verifier);
-      loginURL += "&code_challenge_method=S256";
-    } else {
-      window.usermanager?.settings.stateStore.remove('code_verifier');
+    var loginURL = "";
+    window.usermanager._client.createSigninRequest(settings).then((signInRequest: any) => {
+      loginURL = signInRequest.url;
+    }) 
+    var timeRemaining = 5000
+    while(timeRemaining > 0) {
+      if (loginURL) {
+        break;
+      }
+      setTimeout(() => {
+        timeRemaining -= 100
+      }, 100);
     }
-    if (settings.response_mode && settings.response_mode == 'query') {
-      loginURL += "&response_mode=" + settings.response_mode;
-    }
-    loginURL += "&scope=" + settings.scope;
     return loginURL;
   };
 

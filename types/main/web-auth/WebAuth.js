@@ -39,7 +39,6 @@ exports.__esModule = true;
 exports.WebAuth = void 0;
 var oidc_client_ts_1 = require("oidc-client-ts");
 var CryptoJS = require("crypto-js");
-var fingerprintjs_1 = require("@fingerprintjs/fingerprintjs");
 var authentication_1 = require("../authentication");
 var Helper_1 = require("./Helper");
 var LoginService_1 = require("./LoginService");
@@ -51,7 +50,6 @@ var WebAuth = /** @class */ (function () {
     function WebAuth(settings) {
         try {
             var usermanager = new oidc_client_ts_1.UserManager(settings);
-            //usermanager.querySessionStatus
             window.webAuthSettings = settings;
             window.usermanager = usermanager;
             window.localeSettings = null;
@@ -67,24 +65,6 @@ var WebAuth = /** @class */ (function () {
             console.log(ex);
         }
     }
-    /**
-     * generate code verifier
-     */
-    WebAuth.prototype.generateCodeVerifier = function () {
-        var _a;
-        var code_verifier = crypto.randomUUID().replace(/-/g, "");
-        (_a = window.usermanager) === null || _a === void 0 ? void 0 : _a.settings.stateStore.set('code_verifier', code_verifier);
-        return code_verifier;
-    };
-    ;
-    /**
-     * @param code_verifier
-     * @returns
-     */
-    WebAuth.prototype.generateCodeChallenge = function (code_verifier) {
-        return this.base64URL(CryptoJS.SHA256(code_verifier));
-    };
-    ;
     /**
    * @param string
    * @returns
@@ -270,7 +250,6 @@ var WebAuth = /** @class */ (function () {
      * @returns
      */
     WebAuth.prototype.getLoginURL = function () {
-        var _a;
         var settings = window.webAuthSettings;
         if (!settings.response_type) {
             settings.response_type = "code";
@@ -278,22 +257,19 @@ var WebAuth = /** @class */ (function () {
         if (!settings.scope) {
             settings.scope = "email openid profile mobile";
         }
-        var loginURL = settings.authority + "/authz-srv/authz?client_id=" + settings.client_id;
-        loginURL += "&redirect_uri=" + settings.redirect_uri;
-        loginURL += "&nonce=" + new Date().getTime().toString();
-        loginURL += "&response_type=" + settings.response_type;
-        if (!window.webAuthSettings.disablePKCE) {
-            var code_verifier = this.generateCodeVerifier();
-            loginURL += "&code_challenge=" + this.generateCodeChallenge(code_verifier);
-            loginURL += "&code_challenge_method=S256";
+        var loginURL = "";
+        window.usermanager._client.createSigninRequest(settings).then(function (signInRequest) {
+            loginURL = signInRequest.url;
+        });
+        var timeRemaining = 5000;
+        while (timeRemaining > 0) {
+            if (loginURL) {
+                break;
+            }
+            setTimeout(function () {
+                timeRemaining -= 100;
+            }, 100);
         }
-        else {
-            (_a = window.usermanager) === null || _a === void 0 ? void 0 : _a.settings.stateStore.remove('code_verifier');
-        }
-        if (settings.response_mode && settings.response_mode == 'query') {
-            loginURL += "&response_mode=" + settings.response_mode;
-        }
-        loginURL += "&scope=" + settings.scope;
         return loginURL;
     };
     ;
@@ -681,36 +657,26 @@ var WebAuth = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             try {
                 var value = ('; ' + document.cookie).split("; cidaas_dr=").pop().split(';')[0];
-                var fpPromise = fingerprintjs_1["default"].load();
-                var options = { fingerprint: "", userAgent: "" };
+                var options = { userAgent: "" };
                 if (!value) {
                     (function () { return __awaiter(_this, void 0, void 0, function () {
-                        var fp, result, http, _serviceURL;
+                        var http, _serviceURL;
                         return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, fpPromise];
-                                case 1:
-                                    fp = _a.sent();
-                                    return [4 /*yield*/, fp.get()];
-                                case 2:
-                                    result = _a.sent();
-                                    options.fingerprint = result.visitorId;
-                                    options.userAgent = window.navigator.userAgent;
-                                    http = new XMLHttpRequest();
-                                    _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
-                                    http.onreadystatechange = function () {
-                                        if (http.readyState == 4) {
-                                            resolve(JSON.parse(http.responseText));
-                                        }
-                                    };
-                                    http.open("POST", _serviceURL, true);
-                                    http.setRequestHeader("Content-type", "application/json");
-                                    if (window.localeSettings) {
-                                        http.setRequestHeader("accept-language", window.localeSettings);
-                                    }
-                                    http.send(JSON.stringify(options));
-                                    return [2 /*return*/];
+                            options.userAgent = window.navigator.userAgent;
+                            http = new XMLHttpRequest();
+                            _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
+                            http.onreadystatechange = function () {
+                                if (http.readyState == 4) {
+                                    resolve(JSON.parse(http.responseText));
+                                }
+                            };
+                            http.open("POST", _serviceURL, true);
+                            http.setRequestHeader("Content-type", "application/json");
+                            if (window.localeSettings) {
+                                http.setRequestHeader("accept-language", window.localeSettings);
                             }
+                            http.send(JSON.stringify(options));
+                            return [2 /*return*/];
                         });
                     }); })();
                 }

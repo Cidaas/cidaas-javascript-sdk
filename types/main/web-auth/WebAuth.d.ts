@@ -6,15 +6,6 @@ export declare class WebAuth {
         cidaas_version: number;
     });
     /**
-     * generate code verifier
-     */
-    private generateCodeVerifier;
-    /**
-     * @param code_verifier
-     * @returns
-     */
-    private generateCodeChallenge;
-    /**
    * @param string
    * @returns
    */
