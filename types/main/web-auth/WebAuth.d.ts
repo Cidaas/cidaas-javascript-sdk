@@ -1,20 +1,10 @@
 import { UserManagerSettings } from "oidc-client-ts";
 import { AccessTokenRequest, TokenIntrospectionEntity, UserEntity, ResetPasswordEntity, IConfiguredListRequestEntity, IInitVerificationAuthenticationRequestEntity, FindUserEntity, IUserEntity, FidoSetupEntity, IEnrollVerificationSetupRequestEntity, ISuggestedMFAActionConfig, IUserLinkEntity, UpdateReviewDeviceEntity, UserActivityEntity, ChangePasswordEntity, IConsentAcceptEntity, IAuthVerificationAuthenticationRequestEntity, FaceVerificationAuthenticationRequestEntity, LoginFormRequestEntity, AccountVerificationRequestEntity, ValidateResetPasswordEntity, AcceptResetPasswordEntity, LoginFormRequestAsyncEntity, PhysicalVerificationLoginRequest, IChangePasswordEntity } from "./Entities";
 export declare class WebAuth {
-    private code_verifier;
     constructor(settings: UserManagerSettings & {
         mode?: string;
         cidaas_version: number;
     });
-    /**
-     * generate code verifier
-     */
-    private generateCodeVerifier;
-    /**
-     * @param code_verifier
-     * @returns
-     */
-    private generateCodeChallenge;
     /**
    * @param string
    * @returns
