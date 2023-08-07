@@ -84,28 +84,6 @@ var VerificationService;
      * @returns
      */
     function getAllVerificationList(access_token) {
-        /*return new Promise((resolve, reject) => {
-          try {
-            var http = new XMLHttpRequest();
-            http.onreadystatechange = function () {
-              if (http.readyState == 4) {
-                if (http.responseText) {
-                  resolve(JSON.parse(http.responseText));
-                } else {
-                  resolve(undefined);
-                }
-              }
-            };
-            http.open("GET", `${window.webAuthSettings.authority}/verification-srv/config/list`, true);
-            http.setRequestHeader("Authorization", `Bearer ${access_token}`);
-            if (window.localeSettings) {
-              http.setRequestHeader("accept-language", window.localeSettings);
-            }
-            http.send();
-          } catch (ex) {
-            reject(ex);
-          }
-        });*/
         var _serviceURL = "".concat(window.webAuthSettings.authority, "/verification-srv/config/list");
         return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined, "GET", access_token);
     }
