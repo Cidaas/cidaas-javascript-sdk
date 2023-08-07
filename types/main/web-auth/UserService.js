@@ -207,25 +207,6 @@ var UserService;
      * @returns
      */
     function registerDeduplication(options) {
-        /*return new Promise((resolve, reject) => {
-          try {
-            var http = new XMLHttpRequest();
-            var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
-            http.onreadystatechange = function () {
-              if (http.readyState == 4) {
-                resolve(JSON.parse(http.responseText));
-              }
-            };
-            http.open("POST", _serviceURL, true);
-            http.setRequestHeader("Content-type", "application/json");
-            if (window.localeSettings) {
-              http.setRequestHeader("accept-language", window.localeSettings);
-            }
-            http.send();
-          } catch (ex) {
-            reject(ex);
-          }
-        });*/
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
         return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined, "POST");
     }
@@ -251,30 +232,6 @@ var UserService;
      * @returns
      */
     function updateProfile(options, access_token, sub) {
-        /*return new Promise((resolve, reject) => {
-          try {
-            var http = new XMLHttpRequest();
-            var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
-            http.onreadystatechange = function () {
-              if (http.readyState == 4) {
-                if (http.responseText) {
-                  resolve(JSON.parse(http.responseText));
-                } else {
-                  resolve(false);
-                }
-              }
-            };
-            http.open("PUT", _serviceURL, true);
-            http.setRequestHeader("Content-type", "application/json");
-            http.setRequestHeader("Authorization", `Bearer ${access_token}`);
-            if (window.localeSettings) {
-              http.setRequestHeader("accept-language", window.localeSettings);
-            }
-            http.send(JSON.stringify(options));
-          } catch (ex) {
-            throw new CustomException(ex, 417);
-          }
-        });*/
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
         return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "PUT", access_token);
     }
