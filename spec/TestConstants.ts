@@ -22,6 +22,20 @@ import { UserManagerSettings } from 'oidc-client-ts';
 
 export class TestConstants{
 
+    static testConfig:any ={
+        clientId: '532877a5-ac90-4aa5-813f-f1db02a0f2cc',
+        clientSecret: 'fc766277-61a6-401b-9df9-1ef1d08b40f3',
+        grantType:'client_credentials'
+    }
+
+    static interactiveTestConfig:any ={
+        clientId: '547a2f6b-b232-4edc-bac0-3f40dab05763',
+        clientSecret: '01c2f127-219b-4ef4-9599-480c13914adc',
+        grantType:'password',
+        baseUrl: 'https://integrationtest-prod.cidaas.eu',
+        redirectUrl: 'https://localhost:8080/home.html'
+    }
+
      static  user:IUserEntity = {
         birthdate: undefined,
         email: 'test@widas.de',

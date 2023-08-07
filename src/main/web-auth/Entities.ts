@@ -319,49 +319,6 @@ export interface IUserEntity {
 }
 
 
-export interface IUserEntity {
-  userStatus: string;
-  user_status: string;
-  user_status_reason: string;
-  username: string;
-  sub: string;
-  given_name: string;
-  family_name: string;
-  middle_name: string;
-  nickname: string;
-  originalProviderUserId?: string[];
-  email: string;
-  email_verified: boolean;
-  mobile_number: string;
-  mobile_number_obj: IMobileEntity | null;
-  mobile_number_verified: boolean;
-  phone_number: string;
-  phone_number_obj: IMobileEntity | null;
-  phone_number_verified: boolean;
-  profile: string;
-  picture: string;
-  website: string;
-  gender: string;
-  zoneinfo: string;
-  locale: string;
-  birthdate: Date | null;
-  address?: IAddressEntity;
-  customFields?: any;
-  identityCustomFields?: any;
-  password: string;
-  provider: string;
-  providerUserId: string;
-  identityId: string;
-  mfa_enabled?: boolean;
-  roles: string[];
-  userGroups: IUserGroupMap[];
-  groups?: IUserGroupMap[];
-  rawJSON: string;
-  trackId: string;
-  need_reset_password: boolean;
-}
-
-
 export interface IUserGroupMap {
   sub: string;
   groupId: string;

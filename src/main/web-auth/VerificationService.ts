@@ -60,7 +60,7 @@ export namespace VerificationService {
     code: string;
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -70,7 +70,7 @@ export namespace VerificationService {
    */
   export function getMFAListV2(options: IConfiguredListRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -84,7 +84,7 @@ export namespace VerificationService {
     type: string;
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/cancel/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -92,28 +92,8 @@ export namespace VerificationService {
    * @returns 
    */
   export function getAllVerificationList(access_token: string) {
-    return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(undefined);
-            }
-          }
-        };
-        http.open("GET", `${window.webAuthSettings.authority}/verification-srv/config/list`, true);
-        http.setRequestHeader("Authorization", `Bearer ${access_token}`);
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });
+    const _serviceURL = `${window.webAuthSettings.authority}/verification-srv/config/list`;
+    return Helper.createPostPromise(undefined, _serviceURL,undefined, "GET", access_token);
   };
 
   /**
@@ -123,7 +103,7 @@ export namespace VerificationService {
    */
   export function enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -133,7 +113,7 @@ export namespace VerificationService {
    */
   export function updateSocket(status_id: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-    return Helper.createPostPromise(undefined, _serviceURL, undefined);
+    return Helper.createPostPromise(undefined, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -143,7 +123,7 @@ export namespace VerificationService {
    */
   export function updateStatus(status_id: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-    return Helper.createPostPromise(undefined, _serviceURL, undefined);
+    return Helper.createPostPromise(undefined, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -153,7 +133,7 @@ export namespace VerificationService {
    */
   export function setupFidoVerification(options: FidoSetupEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/suggestmfa/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -163,7 +143,7 @@ export namespace VerificationService {
    */
   export function checkVerificationTypeConfigured(options: IConfiguredListRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -173,7 +153,7 @@ export namespace VerificationService {
    */
   export function initiateMFAV2(options: IInitVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -184,7 +164,7 @@ export namespace VerificationService {
    */
   export function initiateMfaV1(options: any, verificationType: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/initiate";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   }
 
   /**
@@ -194,7 +174,7 @@ export namespace VerificationService {
    */
   export function authenticateMFAV2(options: IAuthVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, undefined);
+    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -238,7 +218,7 @@ export namespace VerificationService {
    */
   export function setupVerificationV1(options: any, access_token: string, verificationType: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/setup";
-    return Helper.createPostPromise(options, _serviceURL, false, access_token);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
   }
 
   /**
@@ -251,7 +231,7 @@ export namespace VerificationService {
    */
   export function enrollVerificationV1(options: any, access_token: string, verificationType: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/enroll";
-    return Helper.createPostPromise(options, _serviceURL, false, access_token);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
   }
 
   /**
@@ -262,6 +242,6 @@ export namespace VerificationService {
    */
   export function authenticateMfaV1(options: any, verificationType: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/authenticate";
-    return Helper.createPostPromise(options, _serviceURL, false);
+    return Helper.createPostPromise(options, _serviceURL, false,"POST");
   }
 }

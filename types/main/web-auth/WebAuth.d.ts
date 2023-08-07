@@ -873,14 +873,14 @@ export declare class WebAuth {
     authenticateIVR(options: any): void;
     /**
      * @deprecated
-     * authenticate backupcode - v1
-     * @param options
-     */
-    authenticateBackupcode(options: any): void;
-    /**
-     * @deprecated
      * authenticate totp - v1
      * @param options
      */
     authenticateTOTP(options: any): void;
+    /**
+     * @deprecated
+     * authenticate backupcode - v1
+     * @param options
+     */
+    authenticateBackupcode(options: any): void;
 }

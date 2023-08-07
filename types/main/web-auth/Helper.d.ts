@@ -11,11 +11,11 @@ export declare class Helper {
     * @param options
     * @param serviceurl
     * @param errorResolver
-    * @param access_token
-    * @param headers
+    * @param access_token??
+    * @param headers??
     * @returns
     */
-    static createPostPromise(options: any, serviceurl: string, errorResolver: boolean, access_token?: string, headers?: any): Promise<unknown>;
+    static createPostPromise(options: any, serviceurl: string, errorResolver: boolean, method: string, access_token?: string, headers?: any): Promise<unknown>;
 }
 export declare class CustomException {
     errorMessage: string;
