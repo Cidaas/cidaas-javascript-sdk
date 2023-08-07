@@ -17,29 +17,6 @@ export namespace UserService {
    * @returns 
    */
   export function getUserProfile(options: { access_token: string }) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        if (!options.access_token) {
-          throw new CustomException("access_token cannot be empty", 417);
-        }
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo";
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            resolve(JSON.parse(http.responseText));
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     if (!options.access_token) {
       throw new CustomException("access_token cannot be empty", 417);
     }
@@ -107,29 +84,6 @@ export namespace UserService {
    * @returns 
    */
   export function getInviteUserDetails(options: { invite_id: string }) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
     return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
@@ -166,10 +120,6 @@ export namespace UserService {
         reject(ex);
       }
     });
-    /*
-    const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/communication/status/" + options.sub;
-    return Helper.createPostPromise(options, _serviceURL,false, "GET", undefined);
-     */
   };
 
   /**
@@ -194,25 +144,6 @@ export namespace UserService {
         document.body.appendChild(form);
         form.submit();
       } else {
-        /*return new Promise(function (resolve, reject) {
-          try {
-            var http = new XMLHttpRequest();
-            http.onreadystatechange = function () {
-              if (http.readyState == 4) {
-                if (http.responseText) {
-                  resolve(JSON.parse(http.responseText));
-                } else {
-                  resolve(false);
-                }
-              }
-            };
-            http.open("POST", url, true);
-            http.setRequestHeader("Content-type", "application/json");
-            http.send(JSON.stringify(options));
-          } catch (ex) {
-            reject(ex);
-          }
-        });*/
         return Helper.createPostPromise(options, url,false, "POST");
       }
     } catch (ex) {
@@ -232,25 +163,6 @@ export namespace UserService {
         document.body.appendChild(form);
         form.submit();
       } else {
-        /*return new Promise(function (resolve, reject) {
-          try {
-            var http = new XMLHttpRequest();
-            http.onreadystatechange = function () {
-              if (http.readyState == 4) {
-                if (http.responseText) {
-                  resolve(JSON.parse(http.responseText));
-                } else {
-                  resolve(false);
-                }
-              }
-            };
-            http.open("POST", url, true);
-            http.setRequestHeader("Content-type", "application/json");
-            http.send(JSON.stringify(options));
-          } catch (ex) {
-            reject(ex);
-          }
-        });*/
         return Helper.createPostPromise(options, url,false, "POST");
       }
     } catch (ex) {
@@ -264,29 +176,6 @@ export namespace UserService {
    * @returns 
    */
   export function getDeduplicationDetails(options: { trackId: string }) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
     return Helper.createPostPromise(options, _serviceURL,false, "GET", undefined);
   };

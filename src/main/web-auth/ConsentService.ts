@@ -36,30 +36,6 @@ export namespace ConsentService {
     locale: string;
     access_token: string;
   }) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        http.setRequestHeader("Authorization", `Bearer ${options.access_token}`);
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
     return Helper.createPostPromise(undefined, _serviceURL,false, "GET", options.access_token);
   };

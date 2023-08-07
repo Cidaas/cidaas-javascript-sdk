@@ -299,29 +299,6 @@ export class WebAuth {
    * @returns 
    */
   getMissingFields(options: { requestId: string; trackId: string; }) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + options.requestId + "/" + options.trackId;
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + options.requestId + "/" + options.trackId;
     return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
@@ -331,29 +308,6 @@ export class WebAuth {
    * @returns 
    */
   getTenantInfo() {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
     return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
@@ -376,29 +330,6 @@ export class WebAuth {
    * @returns 
    */
   getClientInfo(options: { requestId: string }) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
     return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
   };
@@ -409,33 +340,6 @@ export class WebAuth {
    * @returns 
    */
   getDevicesInfo(options: any) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
-        options.userAgent = window.navigator.userAgent
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        if (window.navigator.userAgent) {
-          http.send(JSON.stringify(options));
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     options.userAgent = window.navigator.userAgent;
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
     if (window.navigator.userAgent) {
@@ -450,33 +354,6 @@ export class WebAuth {
    * @returns 
    */
   deleteDevice(options: { device_id: string; userAgent?: string }) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
-        options.userAgent = window.navigator.userAgent
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("DELETE", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        if (window.navigator.userAgent) {
-          http.send(JSON.stringify(options));
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });*/
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
     options.userAgent = window.navigator.userAgent;
     if (window.navigator.userAgent) {
@@ -527,30 +404,6 @@ export class WebAuth {
  * @returns 
  */
   getUnreviewedDevices(access_token: string, sub: string) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/unreviewlist/" + sub;
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        http.setRequestHeader("Authorization", `Bearer ${access_token}`);
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        throw new CustomException(ex, 417);
-      }
-    });*/
     let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/unreviewlist/" + sub;
     return Helper.createPostPromise(undefined, _serviceURL,false, "GET", access_token);
   };
@@ -562,30 +415,6 @@ export class WebAuth {
    * @returns 
    */
   getReviewedDevices(access_token: string, sub: string) {
-    /*return new Promise(function (resolve, reject) {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/reviewlist/" + sub;
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        http.setRequestHeader("Authorization", `Bearer ${access_token}`);
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        throw new CustomException(ex, 417);
-      }
-    });*/
     let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/reviewlist/" + sub;
     return Helper.createPostPromise(undefined, _serviceURL,false, "GET", access_token);
   };
@@ -597,30 +426,6 @@ export class WebAuth {
    * @returns 
    */
   reviewDevice(options: UpdateReviewDeviceEntity, access_token: string) {
-    /*return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/updatereview";
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("PUT", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        http.setRequestHeader("Authorization", `Bearer ${access_token}`);
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send(JSON.stringify(options));
-      } catch (ex) {
-        throw new CustomException(ex, 417);
-      }
-    });*/
     let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/updatereview";
     return Helper.createPostPromise(options, _serviceURL,false, "PUT", access_token);
   };

@@ -224,8 +224,6 @@ export namespace LoginService {
         reject(ex);
       }
     });
-    /*var _serviceURL = window.webAuthSettings.authority + "/login-srv/progressive/update/user";
-    return Helper.createPostPromise(undefined, _serviceURL,false, "POST", undefined, headers);*/
   };
 
   /**
