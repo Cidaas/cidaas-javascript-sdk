@@ -53,7 +53,7 @@ var VerificationService;
      */
     function verifyAccount(options) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     VerificationService.verifyAccount = verifyAccount;
     ;
@@ -64,7 +64,7 @@ var VerificationService;
      */
     function getMFAListV2(options) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     VerificationService.getMFAListV2 = getMFAListV2;
     ;
@@ -75,7 +75,7 @@ var VerificationService;
      */
     function cancelMFAV2(options) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/cancel/" + options.type;
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined, "POST");
     }
     VerificationService.cancelMFAV2 = cancelMFAV2;
     ;
@@ -84,30 +84,8 @@ var VerificationService;
      * @returns
      */
     function getAllVerificationList(access_token) {
-        return new Promise(function (resolve, reject) {
-            try {
-                var http = new XMLHttpRequest();
-                http.onreadystatechange = function () {
-                    if (http.readyState == 4) {
-                        if (http.responseText) {
-                            resolve(JSON.parse(http.responseText));
-                        }
-                        else {
-                            resolve(undefined);
-                        }
-                    }
-                };
-                http.open("GET", "".concat(window.webAuthSettings.authority, "/verification-srv/config/list"), true);
-                http.setRequestHeader("Authorization", "Bearer ".concat(access_token));
-                if (window.localeSettings) {
-                    http.setRequestHeader("accept-language", window.localeSettings);
-                }
-                http.send();
-            }
-            catch (ex) {
-                reject(ex);
-            }
-        });
+        var _serviceURL = "".concat(window.webAuthSettings.authority, "/verification-srv/config/list");
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined, "GET", access_token);
     }
     VerificationService.getAllVerificationList = getAllVerificationList;
     ;
@@ -118,7 +96,7 @@ var VerificationService;
      */
     function enrollVerification(options) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined, "POST");
     }
     VerificationService.enrollVerification = enrollVerification;
     ;
@@ -129,7 +107,7 @@ var VerificationService;
      */
     function updateSocket(status_id) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined);
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined, "POST");
     }
     VerificationService.updateSocket = updateSocket;
     ;
@@ -140,7 +118,7 @@ var VerificationService;
      */
     function updateStatus(status_id) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined);
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined, "POST");
     }
     VerificationService.updateStatus = updateStatus;
     ;
@@ -151,7 +129,7 @@ var VerificationService;
      */
     function setupFidoVerification(options) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/suggestmfa/" + options.verification_type;
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined, "POST");
     }
     VerificationService.setupFidoVerification = setupFidoVerification;
     ;
@@ -162,7 +140,7 @@ var VerificationService;
      */
     function checkVerificationTypeConfigured(options) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined, "POST");
     }
     VerificationService.checkVerificationTypeConfigured = checkVerificationTypeConfigured;
     ;
@@ -173,7 +151,7 @@ var VerificationService;
      */
     function initiateMFAV2(options) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     VerificationService.initiateMFAV2 = initiateMFAV2;
     ;
@@ -185,7 +163,7 @@ var VerificationService;
      */
     function initiateMfaV1(options, verificationType) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/initiate";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     VerificationService.initiateMfaV1 = initiateMfaV1;
     /**
@@ -195,7 +173,7 @@ var VerificationService;
      */
     function authenticateMFAV2(options) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined, "POST");
     }
     VerificationService.authenticateMFAV2 = authenticateMFAV2;
     ;
@@ -243,7 +221,7 @@ var VerificationService;
      */
     function setupVerificationV1(options, access_token, verificationType) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/setup";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, access_token);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST", access_token);
     }
     VerificationService.setupVerificationV1 = setupVerificationV1;
     /**
@@ -256,7 +234,7 @@ var VerificationService;
      */
     function enrollVerificationV1(options, access_token, verificationType) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/enroll";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, access_token);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST", access_token);
     }
     VerificationService.enrollVerificationV1 = enrollVerificationV1;
     /**
@@ -267,7 +245,7 @@ var VerificationService;
      */
     function authenticateMfaV1(options, verificationType) {
         var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/authenticate";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     VerificationService.authenticateMfaV1 = authenticateMfaV1;
 })(VerificationService = exports.VerificationService || (exports.VerificationService = {}));

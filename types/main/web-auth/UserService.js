@@ -10,30 +10,11 @@ var UserService;
      * @returns
      */
     function getUserProfile(options) {
-        return new Promise(function (resolve, reject) {
-            try {
-                if (!options.access_token) {
-                    throw new Helper_1.CustomException("access_token cannot be empty", 417);
-                }
-                var http = new XMLHttpRequest();
-                var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo";
-                http.onreadystatechange = function () {
-                    if (http.readyState == 4) {
-                        resolve(JSON.parse(http.responseText));
-                    }
-                };
-                http.open("GET", _serviceURL, true);
-                http.setRequestHeader("Content-type", "application/json");
-                http.setRequestHeader("Authorization", "Bearer ".concat(options.access_token));
-                if (window.localeSettings) {
-                    http.setRequestHeader("accept-language", window.localeSettings);
-                }
-                http.send();
-            }
-            catch (ex) {
-                reject(ex);
-            }
-        });
+        if (!options.access_token) {
+            throw new Helper_1.CustomException("access_token cannot be empty", 417);
+        }
+        var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo";
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined, "GET", options.access_token);
     }
     UserService.getUserProfile = getUserProfile;
     ;
@@ -94,31 +75,8 @@ var UserService;
      * @returns
      */
     function getInviteUserDetails(options) {
-        return new Promise(function (resolve, reject) {
-            try {
-                var http = new XMLHttpRequest();
-                var _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
-                http.onreadystatechange = function () {
-                    if (http.readyState == 4) {
-                        if (http.responseText) {
-                            resolve(JSON.parse(http.responseText));
-                        }
-                        else {
-                            resolve(false);
-                        }
-                    }
-                };
-                http.open("GET", _serviceURL, true);
-                http.setRequestHeader("Content-type", "application/json");
-                if (window.localeSettings) {
-                    http.setRequestHeader("accept-language", window.localeSettings);
-                }
-                http.send();
-            }
-            catch (ex) {
-                reject(ex);
-            }
-        });
+        var _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, false, "GET");
     }
     UserService.getInviteUserDetails = getInviteUserDetails;
     ;
@@ -166,7 +124,7 @@ var UserService;
      */
     function initiateResetPassword(options) {
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST");
     }
     UserService.initiateResetPassword = initiateResetPassword;
     ;
@@ -176,34 +134,14 @@ var UserService;
      */
     function handleResetPassword(options) {
         try {
-            var url_1 = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
+            var url = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
             if (window.webAuthSettings.cidaas_version > 2) {
-                var form = Helper_1.Helper.createForm(url_1, options);
+                var form = Helper_1.Helper.createForm(url, options);
                 document.body.appendChild(form);
                 form.submit();
             }
             else {
-                return new Promise(function (resolve, reject) {
-                    try {
-                        var http = new XMLHttpRequest();
-                        http.onreadystatechange = function () {
-                            if (http.readyState == 4) {
-                                if (http.responseText) {
-                                    resolve(JSON.parse(http.responseText));
-                                }
-                                else {
-                                    resolve(false);
-                                }
-                            }
-                        };
-                        http.open("POST", url_1, true);
-                        http.setRequestHeader("Content-type", "application/json");
-                        http.send(JSON.stringify(options));
-                    }
-                    catch (ex) {
-                        reject(ex);
-                    }
-                });
+                return Helper_1.Helper.createPostPromise(options, url, false, "POST");
             }
         }
         catch (ex) {
@@ -225,27 +163,7 @@ var UserService;
                 form.submit();
             }
             else {
-                return new Promise(function (resolve, reject) {
-                    try {
-                        var http = new XMLHttpRequest();
-                        http.onreadystatechange = function () {
-                            if (http.readyState == 4) {
-                                if (http.responseText) {
-                                    resolve(JSON.parse(http.responseText));
-                                }
-                                else {
-                                    resolve(false);
-                                }
-                            }
-                        };
-                        http.open("POST", url, true);
-                        http.setRequestHeader("Content-type", "application/json");
-                        http.send(JSON.stringify(options));
-                    }
-                    catch (ex) {
-                        reject(ex);
-                    }
-                });
+                return Helper_1.Helper.createPostPromise(options, url, false, "POST");
             }
         }
         catch (ex) {
@@ -260,31 +178,8 @@ var UserService;
      * @returns
      */
     function getDeduplicationDetails(options) {
-        return new Promise(function (resolve, reject) {
-            try {
-                var http = new XMLHttpRequest();
-                var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
-                http.onreadystatechange = function () {
-                    if (http.readyState == 4) {
-                        if (http.responseText) {
-                            resolve(JSON.parse(http.responseText));
-                        }
-                        else {
-                            resolve(false);
-                        }
-                    }
-                };
-                http.open("GET", _serviceURL, true);
-                http.setRequestHeader("Content-type", "application/json");
-                if (window.localeSettings) {
-                    http.setRequestHeader("accept-language", window.localeSettings);
-                }
-                http.send();
-            }
-            catch (ex) {
-                reject(ex);
-            }
-        });
+        var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "GET", undefined);
     }
     UserService.getDeduplicationDetails = getDeduplicationDetails;
     ;
@@ -312,26 +207,8 @@ var UserService;
      * @returns
      */
     function registerDeduplication(options) {
-        return new Promise(function (resolve, reject) {
-            try {
-                var http = new XMLHttpRequest();
-                var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
-                http.onreadystatechange = function () {
-                    if (http.readyState == 4) {
-                        resolve(JSON.parse(http.responseText));
-                    }
-                };
-                http.open("POST", _serviceURL, true);
-                http.setRequestHeader("Content-type", "application/json");
-                if (window.localeSettings) {
-                    http.setRequestHeader("accept-language", window.localeSettings);
-                }
-                http.send();
-            }
-            catch (ex) {
-                reject(ex);
-            }
-        });
+        var _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, undefined, "POST");
     }
     UserService.registerDeduplication = registerDeduplication;
     ;
@@ -343,7 +220,7 @@ var UserService;
      */
     function changePassword(options, access_token) {
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/changepassword";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, access_token);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST", access_token);
     }
     UserService.changePassword = changePassword;
     ;
@@ -355,32 +232,8 @@ var UserService;
      * @returns
      */
     function updateProfile(options, access_token, sub) {
-        return new Promise(function (resolve, reject) {
-            try {
-                var http = new XMLHttpRequest();
-                var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
-                http.onreadystatechange = function () {
-                    if (http.readyState == 4) {
-                        if (http.responseText) {
-                            resolve(JSON.parse(http.responseText));
-                        }
-                        else {
-                            resolve(false);
-                        }
-                    }
-                };
-                http.open("PUT", _serviceURL, true);
-                http.setRequestHeader("Content-type", "application/json");
-                http.setRequestHeader("Authorization", "Bearer ".concat(access_token));
-                if (window.localeSettings) {
-                    http.setRequestHeader("accept-language", window.localeSettings);
-                }
-                http.send(JSON.stringify(options));
-            }
-            catch (ex) {
-                throw new Helper_1.CustomException(ex, 417);
-            }
-        });
+        var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "PUT", access_token);
     }
     UserService.updateProfile = updateProfile;
     ;
@@ -393,7 +246,7 @@ var UserService;
     function initiateLinkAccount(options, access_token) {
         options.user_name_type = 'email';
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/initiate";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, access_token);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST", access_token);
     }
     UserService.initiateLinkAccount = initiateLinkAccount;
     ;
@@ -405,7 +258,7 @@ var UserService;
      */
     function completeLinkAccount(options, access_token) {
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, access_token);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, false, "POST", access_token);
     }
     UserService.completeLinkAccount = completeLinkAccount;
     ;
@@ -417,7 +270,7 @@ var UserService;
      */
     function getLinkedUsers(access_token, sub) {
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo/social/" + sub;
-        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, false, access_token);
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, false, "POST", access_token);
     }
     UserService.getLinkedUsers = getLinkedUsers;
     ;
@@ -429,7 +282,7 @@ var UserService;
      */
     function unlinkAccount(access_token, identityId) {
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unlink/" + identityId;
-        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, false, access_token);
+        return Helper_1.Helper.createPostPromise(undefined, _serviceURL, false, "POST", access_token);
     }
     UserService.unlinkAccount = unlinkAccount;
     ;
@@ -440,7 +293,7 @@ var UserService;
      */
     function deleteUserAccount(options) {
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined, options.access_token);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined, "POST", options.access_token);
     }
     UserService.deleteUserAccount = deleteUserAccount;
     ;
@@ -451,7 +304,7 @@ var UserService;
      */
     function userCheckExists(options) {
         var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/checkexists/" + options.requestId;
-        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined);
+        return Helper_1.Helper.createPostPromise(options, _serviceURL, undefined, "POST");
     }
     UserService.userCheckExists = userCheckExists;
     ;

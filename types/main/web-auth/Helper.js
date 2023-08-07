@@ -31,11 +31,11 @@ var Helper = /** @class */ (function () {
     * @param options
     * @param serviceurl
     * @param errorResolver
-    * @param access_token
-    * @param headers
+    * @param access_token??
+    * @param headers??
     * @returns
     */
-    Helper.createPostPromise = function (options, serviceurl, errorResolver, access_token, headers) {
+    Helper.createPostPromise = function (options, serviceurl, errorResolver, method, access_token, headers) {
         return new Promise(function (resolve, reject) {
             try {
                 var http = new XMLHttpRequest();
@@ -49,7 +49,7 @@ var Helper = /** @class */ (function () {
                         }
                     }
                 };
-                http.open("POST", serviceurl, true);
+                http.open(method, serviceurl, true);
                 http.setRequestHeader("Content-type", "application/json");
                 if (headers) {
                     for (var key in headers) {
