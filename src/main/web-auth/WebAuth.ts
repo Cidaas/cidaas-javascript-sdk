@@ -234,9 +234,9 @@ export class WebAuth {
     var loginURL = "";
     window.usermanager._client.createSigninRequest(settings).then((signInRequest: any) => {
       loginURL = signInRequest.url;
-    }) 
+    })
     var timeRemaining = 5000
-    while(timeRemaining > 0) {
+    while (timeRemaining > 0) {
       if (loginURL) {
         break;
       }
