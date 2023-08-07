@@ -231,20 +231,12 @@ export class WebAuth {
     if (!settings.scope) {
       settings.scope = "email openid profile mobile";
     }
-    var loginURL = "";
-    window.usermanager._client.createSigninRequest(settings).then((signInRequest: any) => {
-      loginURL = signInRequest.url;
-    })
-    var timeRemaining = 5000
-    while (timeRemaining > 0) {
-      if (loginURL) {
-        break;
-      }
-      setTimeout(() => {
-        timeRemaining -= 100
-      }, 100);
-    }
-    return loginURL;
+    let loginUrl: string;
+    (async () => {
+      loginUrl = await window.usermanager._client.getSignInRedirectUrl();
+    })();
+    while (!loginUrl) { } // A simple synchronous loop to wait until the name is assigned
+    return loginUrl;
   };
 
   /**
