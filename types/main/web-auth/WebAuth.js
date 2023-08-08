@@ -49,6 +49,15 @@ var ConsentService_1 = require("./ConsentService");
 var WebAuth = /** @class */ (function () {
     function WebAuth(settings) {
         try {
+            if (!settings.response_type) {
+                settings.response_type = "code";
+            }
+            if (!settings.scope) {
+                settings.scope = "email openid profile mobile";
+            }
+            if (!settings.mode) {
+                settings.mode = 'redirect';
+            }
             var usermanager = new oidc_client_ts_1.UserManager(settings);
             window.webAuthSettings = settings;
             window.usermanager = usermanager;
@@ -57,9 +66,6 @@ var WebAuth = /** @class */ (function () {
             window.usermanager.events.addSilentRenewError(function (error) {
                 throw new Helper_1.CustomException("Error while renewing silent login", 500);
             });
-            if (!settings.mode) {
-                window.webAuthSettings.mode = 'redirect';
-            }
         }
         catch (ex) {
             console.log(ex);
@@ -250,27 +256,32 @@ var WebAuth = /** @class */ (function () {
      * @returns
      */
     WebAuth.prototype.getLoginURL = function () {
-        var settings = window.webAuthSettings;
-        if (!settings.response_type) {
-            settings.response_type = "code";
-        }
-        if (!settings.scope) {
-            settings.scope = "email openid profile mobile";
-        }
-        var loginURL = "";
-        window.usermanager._client.createSigninRequest(settings).then(function (signInRequest) {
-            loginURL = signInRequest.url;
-        });
-        var timeRemaining = 5000;
-        while (timeRemaining > 0) {
-            if (loginURL) {
-                break;
-            }
-            setTimeout(function () {
-                timeRemaining -= 100;
-            }, 100);
-        }
-        return loginURL;
+        var _this = this;
+        var loginUrl;
+        var finish = false;
+        (function () { return __awaiter(_this, void 0, void 0, function () {
+            var e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, window.usermanager._client.getSignInRedirectUrl()];
+                    case 1:
+                        loginUrl = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_2 = _a.sent();
+                        //TODO: define Error handling
+                        console.log(e_2);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        finish = true;
+                        return [2 /*return*/];
+                }
+            });
+        }); })();
+        while (!finish) { } // A simple synchronous loop to wait until the name is assigned
+        return loginUrl;
     };
     ;
     /**

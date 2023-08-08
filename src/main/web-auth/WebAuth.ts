@@ -1,4 +1,4 @@
-import { UserManager, UserManagerSettings } from "oidc-client-ts";
+import { Logger, UserManager, UserManagerSettings } from "oidc-client-ts";
 import * as CryptoJS from 'crypto-js';
 
 import { Authentication } from "../authentication";
@@ -41,6 +41,15 @@ export class WebAuth {
 
   constructor(settings: UserManagerSettings & { mode?: string, cidaas_version: number }) {
     try {
+      if (!settings.response_type) {
+        settings.response_type = "code";
+      }
+      if (!settings.scope) {
+        settings.scope = "email openid profile mobile";
+      }
+      if (!settings.mode) {
+        settings.mode = 'redirect';
+      }
       var usermanager = new UserManager(settings)
       window.webAuthSettings = settings;
       window.usermanager = usermanager;
@@ -49,9 +58,6 @@ export class WebAuth {
       window.usermanager.events.addSilentRenewError(function (error: any) {
         throw new CustomException("Error while renewing silent login", 500);
       });
-      if (!settings.mode) {
-        window.webAuthSettings.mode = 'redirect';
-      }
     } catch (ex) {
       console.log(ex);
     }
@@ -224,18 +230,19 @@ export class WebAuth {
    * @returns 
    */
   getLoginURL() {
-    var settings = window.webAuthSettings;
-    if (!settings.response_type) {
-      settings.response_type = "code";
-    }
-    if (!settings.scope) {
-      settings.scope = "email openid profile mobile";
-    }
     let loginUrl: string;
+    let finish: boolean = false;
     (async () => {
-      loginUrl = await window.usermanager._client.getSignInRedirectUrl();
+      try {
+        loginUrl = await window.usermanager._client.getSignInRedirectUrl();
+      }
+      catch (e) {
+        //TODO: define Error handling
+        console.log(e);
+      }
+      finish = true
     })();
-    while (!loginUrl) { } // A simple synchronous loop to wait until the name is assigned
+    while (!finish) { } // A simple synchronous loop to wait until the name is assigned
     return loginUrl;
   };
 
