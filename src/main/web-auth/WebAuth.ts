@@ -242,7 +242,7 @@ export class WebAuth {
       }
       finish = true
     })();
-    while (!finish) { } // A simple synchronous loop to wait until the name is assigned
+    while (!finish) { } // A simple synchronous loop to wait async call is finish
     return loginUrl;
   };
 
