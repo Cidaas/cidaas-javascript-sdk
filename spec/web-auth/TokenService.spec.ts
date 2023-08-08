@@ -1,5 +1,5 @@
 import { TestConstants } from '../TestConstants';
-import { TokenService } from '../../types/main/web-auth/TokenService';
+import { TokenService } from '../../src/main/web-auth/TokenService';
 
 let windowSpy: any;
 

@@ -1,6 +1,6 @@
 import { LoginService } from '../../src/main/web-auth/LoginService';
 import { TestConstants } from '../TestConstants';
-import { WebAuth } from '../../types/main';
+import { WebAuth } from '../../src/main';
 import { UserManagerSettings } from 'oidc-client-ts';
 
 let windowSpy:any;
