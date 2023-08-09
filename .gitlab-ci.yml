@@ -18,6 +18,7 @@ release:
   artifacts:
     reports:
       dotenv: build.env
+  when: manual
 
 github_sync:
   stage: publish

@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestConstants } from '../TestConstants';
-import { ConsentService } from '../../types/main/web-auth/ConsentService';
+import { ConsentService } from '../../src/main/web-auth/ConsentService';
 
 let windowSpy:any;
 

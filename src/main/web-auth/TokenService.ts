@@ -23,7 +23,7 @@ export namespace TokenService {
    * @param options 
    * @returns 
    */
-  export function getAccessToken(options: AccessTokenRequest) {
+  export async function getAccessToken(options: AccessTokenRequest) {
     if (!options.code) {
       throw new CustomException("code cannot be empty", 417);
     }
@@ -31,9 +31,8 @@ export namespace TokenService {
     options.redirect_uri = window.webAuthSettings.redirect_uri;
     options.grant_type = "authorization_code";
     if (!window.webAuthSettings.disablePKCE) {
-      window.usermanager._client.createSigninRequest(window.webAuthSettings).then((signInRequest: any) => {
-        options.code_verifier = signInRequest.state?.code_verifier;
-      })
+      var signInRequest = await window.usermanager._client.createSigninRequest(window.webAuthSettings);
+      options.code_verifier = signInRequest.state?.code_verifier;
     }
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
     return Helper.createPostPromise(options, _serviceURL, undefined, "POST");

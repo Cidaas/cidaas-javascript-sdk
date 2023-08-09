@@ -2,6 +2,8 @@ node_modules
 build
 coverage
 dist
+types/main/
 .nyc_output
 .idea
 .DS_Store
+*.tgz
