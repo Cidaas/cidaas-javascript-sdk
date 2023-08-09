@@ -1,4 +1,4 @@
-import { WebAuth } from '../../types/main';
+import { WebAuth } from '../../src/main';
 import { UserManagerSettings } from 'oidc-client-ts';
 import { TestConstants } from '../TestConstants';
 declare global {
