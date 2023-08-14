@@ -286,7 +286,7 @@ export namespace UserService {
 
 
   /**
-   * check if an user exists
+   * check if an user exists from users-actions-srv
    * @param options 
    * @returns 
    */
