@@ -126,7 +126,8 @@ export class FindUserEntity {
   customFields: any;
   provider: string = "";
   providerUserId: string = "";
-
+  rememberMe: string = "";
+  webfinger: string = "";
   sub_not: string = "";
 
   //additional param

@@ -286,12 +286,12 @@ export namespace UserService {
 
 
   /**
-   * check if an user exists
+   * check if an user exists from users-actions-srv
    * @param options 
    * @returns 
    */
   export function userCheckExists(options: FindUserEntity) {
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/checkexists/" + options.requestId;
+    var _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + "?webfinger=" + options.webfinger + "&rememberMe=" + options.rememberMe;
     return Helper.createPostPromise(options, _serviceURL, undefined, "POST");
   };
 }
