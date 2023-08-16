@@ -50,8 +50,8 @@ Cidaas options variable support every [OIDC Client UserManagerSettings Propertie
 | client_id | yes | client application's identifier, which could be found in cidaas admin ui |
 | redirect_uri | yes | URL to be redirected after successful login attempt. |
 | post_logout_redirect_uri | no | URL to be redirected after successful logout attempt. |
-| response_type | no | The type of response that will come after successful login attempt. The default value is 'code' if no properties is being sent.|
-| scope | no | The scope which is needed by cidaas. The default value is 'openid' if no properties is being sent. |
+| response_type | no | The type of response that will come after successful login attempt. The default value is 'code' if no properties is being sent. This determines the OAuth authorization flow being used.|
+| scope | no | the scope the application requires and requests from cidaas. The default value is 'openid' if no properties is being sent. |
 
 In addition to it, There are the following custom properties which could / need to be defined in cidaas option variable:
 
