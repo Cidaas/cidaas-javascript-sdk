@@ -5,7 +5,11 @@ stages:
   - prepare
   - test
   - release
-  
+
+prepare:
+  only:
+   - hotfix/2.2.x
+
 test_build:
   extends: .test_build
 
@@ -18,7 +22,7 @@ release:
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
     - semantic-release
   only:
-    - 2.2.x
+    - hotfix/2.2.x
 
 
 
