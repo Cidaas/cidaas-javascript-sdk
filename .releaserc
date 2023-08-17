@@ -2,7 +2,7 @@
     "branches": [
         "master",
         "2.2.x",
-        "hotfix/2.2.x"
+        "hotfix/v2.2.x"
     ],
     "prepare": [
         "@semantic-release/changelog",
