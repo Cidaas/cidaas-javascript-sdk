@@ -6,10 +6,6 @@ stages:
   - test
   - release
 
-prepare:
-  only:
-   - hotfix/2.2.x
-
 test_build:
   extends: .test_build
 
