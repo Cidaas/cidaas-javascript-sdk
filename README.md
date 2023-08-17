@@ -40,8 +40,27 @@ Please check the [Changelogs](https://github.com/Cidaas/cidaas-sdk-javascript-v2
 
 #### Initialisation
 
-After adding ****cidaas-sdk.js**** create a local file and name it like ****index.js****.
+After adding ****cidaas-sdk.js**** create a local file and name it like ****index.js****. Cidaas options variable should be defined there for initializing cidaas sdk.
 
+Cidaas options variable support every [OIDC Client UserManagerSettings Properties](https://authts.github.io/oidc-client-ts/interfaces/UserManagerSettings.html) which has the following notable properties:
+
+| Property Name | Required | Description |
+| ------ | ------ | ------ |
+| authority | yes | cidaas instance base url |
+| client_id | yes | client application's identifier, which could be found in cidaas admin ui |
+| redirect_uri | yes | URL to be redirected after successful login attempt. |
+| post_logout_redirect_uri | no | URL to be redirected after successful logout attempt. |
+| response_type | no | The type of response that will come after successful login attempt. The default value is 'code' if no properties is being sent. This determines the OAuth authorization flow being used.|
+| scope | no | the scope the application requires and requests from cidaas. The default value is 'openid' if no properties is being sent. |
+
+In addition to it, There are the following custom properties which could / need to be defined in cidaas option variable:
+
+| Property Name | Required | Description |
+| ------ | ------ | ------ |
+| cidaas_version | yes | You can find out the cidaas version from cidaas service portal |
+| mode | no | Define which login variants to be called during calling loginWithBrowser(). The selection includes: `redirect`, `window` and `silent`. The default value is `redirect` if no properties is being sent. |
+
+an example of index.js is looks like this:
 
 ```js
 var options = {
@@ -49,11 +68,10 @@ var options = {
     client_id: 'your app id',
     redirect_uri: 'your redirect url',
     post_logout_redirect_uri: 'your post logout redirect url',
-    popup_post_logout_redirect_uri: 'your post popup logout redirect url',
-    silent_redirect_uri: 'your silent redirect url',
     response_type: 'id_token token',
     scope: 'openid email roles profile',
-    mode: 'redirect'
+    mode: 'redirect',
+    cidaas_version: 3
 }
 ```
 
@@ -70,6 +88,17 @@ Since version 1.2.0 using 'code' as the 'response_type' will start the OAuth Aut
 ```js
 var cidaas = new CidaasSDK.WebAuth(options);
 ```
+
+#### Migrating to Cidaas V3
+
+Cidaas V3 has response handling adjustment on some of cidaas service call. To migrate to cidaas V3, you need to do the following:
+
+- ensure that you use at least cidaas version: 3.* You can find out the cidaas version from cidaas service portal and ask our customer service if it need to be updated.
+
+- ensure that you use at least cidaas-javascript-sdk version: 3.0.5
+
+- add `cidaas_version: 3` to Cidaas options variable
+
 
 #### Usage
 
