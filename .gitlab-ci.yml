@@ -18,7 +18,7 @@ release:
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
     - semantic-release
   only:
-    - "hotfix/v2.2.9"
+    - "2.2.x"
 
 
 
