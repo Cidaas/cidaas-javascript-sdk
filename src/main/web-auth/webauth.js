@@ -1929,7 +1929,7 @@ WebAuth.prototype.deviceCodeVerify = function (code) {
 
 
 WebAuth.prototype.userCheckExists = function (options) {
-  var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/checkexists/" + options.requestId;
+  var _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + "?webfinger=" + options.webfinger + "&rememberMe=" + options.rememberMe;
   return createPostPromise(options, _serviceURL, undefined);
 };
 
