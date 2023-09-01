@@ -57,7 +57,7 @@ In addition to it, There are the following custom properties which could / need 
 
 | Property Name | Required | Description |
 | ------ | ------ | ------ |
-| cidaas_version | yes | You can find out the cidaas version from cidaas service portal |
+| cidaas_version | no | You can find out the cidaas version from cidaas service portal |
 | mode | no | Define which login variants to be called during calling loginWithBrowser(). The selection includes: `redirect`, `window` and `silent`. The default value is `redirect` if no properties is being sent. |
 
 an example of index.js is looks like this:
@@ -99,6 +99,7 @@ Cidaas V3 has response handling adjustment on some of cidaas service call. To mi
 
 - add `cidaas_version: 3` to Cidaas options variable
 
+Without Providing CidaasVersion, your application will use response handling of Cidaas V2 by default.
 
 #### Usage
 
