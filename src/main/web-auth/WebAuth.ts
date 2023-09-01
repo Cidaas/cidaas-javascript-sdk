@@ -34,12 +34,13 @@ import {
   AcceptResetPasswordEntity,
   LoginFormRequestAsyncEntity,
   PhysicalVerificationLoginRequest,
-  IChangePasswordEntity
+  IChangePasswordEntity,
+  ICidaasSDKSettings
 } from "./Entities"
 
 export class WebAuth {
 
-  constructor(settings: UserManagerSettings & { mode?: string, cidaas_version: number }) {
+  constructor(settings: ICidaasSDKSettings) {
     try {
       if (!settings.response_type) {
         settings.response_type = "code";
