@@ -51,6 +51,9 @@ export class WebAuth {
       if (!settings.mode) {
         settings.mode = 'redirect';
       }
+      if (!settings.cidaas_version) {
+        settings.cidaas_version = 2;
+      }
       var usermanager = new UserManager(settings)
       window.webAuthSettings = settings;
       window.usermanager = usermanager;
