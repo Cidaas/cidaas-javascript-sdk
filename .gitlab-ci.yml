@@ -11,7 +11,7 @@ stages:
 
 test_build:
   extends: .test_build
-  coverage: '/coverage: \d+.\d+% of statements/'
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
 
 release:
   after_script:
