@@ -1,3 +1,5 @@
+import { UserManagerSettings } from "oidc-client-ts";
+
 export interface AcceptResetPasswordEntity {
   resetRequestId: string ;
   exchangeId: string;
@@ -600,4 +602,9 @@ export interface IChangePasswordEntity {
   accessToken?: string;
   loginSettingsId: string;
   client_id?: string;
+}
+
+export interface ICidaasSDKSettings extends UserManagerSettings {
+  mode?: string;
+  cidaas_version?: number;
 }
