@@ -1,7 +1,6 @@
 include:
   - project: widas/software-quality/gitlab-template-projects/widas-ci-templates
     file: node/npmjs-publish.yml
-    ref: feature/make-aws-s3-src-path-dynamic 
 
 stages:
   - prepare
@@ -51,5 +50,4 @@ aws_upload:
     S3_PATH: s3://cidaassdk/javascript/oidc/$PACKAGE_VERSION
   only:
    - master
-   - fix/failing-publish
   when: manual
