@@ -4,8 +4,8 @@
   "author": "cidaas by Widas ID GmbH",
   "description": "Cidaas native javascript sdk",
   "license": "MIT",
-  "main": "dist/main/index.js",
-  "types": "dist/main/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "testEnvironment": "jsdom",
   "engine": {
     "node": ">=8.9.10"
@@ -17,7 +17,7 @@
     "test:coverage": "jest --coverage --env=jsdom"
   },
   "files": [
-    "dist/main",
+    "dist",
     "README.md",
     "license.MD",
     "Changelogs.md"
