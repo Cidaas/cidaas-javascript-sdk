@@ -32,7 +32,7 @@
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^29.5.3",
     "crypto-js": "^4.1.1",
-    "oidc-client-ts": "^2.2.1"
+    "oidc-client-ts": "^2.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
