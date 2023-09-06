@@ -12,6 +12,11 @@ stages:
 test_build:
   extends: .test_build
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+  artifacts:
+    paths:
+      - coverage
+      - dist
+      - minified
 
 release:
   after_script:
@@ -41,6 +46,7 @@ github_sync:
 aws_upload:  
   extends: .aws_upload
   variables:    
+    S3_SRC_PATH: minified
     S3_PATH: s3://cidaassdk/javascript/oidc/$PACKAGE_VERSION
   only:
    - master

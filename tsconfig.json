@@ -3,13 +3,16 @@
   "include": [
     "src/**/*"
   ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ],
   "compilerOptions": {
     // Generate d.ts files
     "declaration": true,
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
-    "outDir": "types/main",
+    "outDir": "dist",
     // go to js file when using IDE functions like
     // "Go to Definition" in VSCode
     // "declarationMap": true,
