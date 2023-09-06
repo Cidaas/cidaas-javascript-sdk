@@ -21,7 +21,8 @@
         [
             "@semantic-release/npm",
             {
-                "npmPublish": true
+                "npmPublish": true,
+                "pkgRoot": "./dist/main"
             }
         ],
         "@semantic-release/gitlab",

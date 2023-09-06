@@ -1,4 +1,4 @@
-import { IUserEntity } from '../types/main/web-auth/Entities';
+import { IUserEntity } from '../src/main/web-auth/Entities';
 import {
    AcceptResetPasswordEntity,
    AccessTokenRequest,
