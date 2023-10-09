@@ -157,17 +157,6 @@ export namespace VerificationService {
   };
 
   /**
-   * @deprecated
-   * @param options 
-   * @param verificationType 
-   * @returns 
-   */
-  export function initiateMfaV1(options: any, verificationType: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/initiate";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST");
-  }
-
-  /**
    * authenticate mfa v2
    * @param options 
    * @returns 
@@ -208,40 +197,4 @@ export namespace VerificationService {
     });
   };
 
-  /**
-   * @deprecated
-   * setup verification - v1
-   * @param options 
-   * @param access_token 
-   * @param verificationType 
-   * @returns 
-   */
-  export function setupVerificationV1(options: any, access_token: string, verificationType: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/setup";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
-  }
-
-  /**
-   * @deprecated
-   * enroll verification - v1
-   * @param options 
-   * @param access_token 
-   * @param verificationType 
-   * @returns 
-   */
-  export function enrollVerificationV1(options: any, access_token: string, verificationType: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/enroll";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
-  }
-
-  /**
-   * @deprecated
-   * authenticate mfa - v1
-   * @param verificationType 
-   * @returns 
-   */
-  export function authenticateMfaV1(options: any, verificationType: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/authenticate";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST");
-  }
 }

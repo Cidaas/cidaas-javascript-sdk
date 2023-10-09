@@ -1,5 +1,4 @@
 import {
-    setupVerificationV1,
     VerificationService,
 } from '../../src/main/web-auth/VerificationService';
 import { TestConstants } from '../TestConstants';
