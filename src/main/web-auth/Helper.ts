@@ -37,11 +37,7 @@ export class Helper {
         http.onreadystatechange = function () {
           if (http.readyState == 4) {
             if (http.responseText) {
-              try {
-                resolve(JSON.parse(http.responseText));
-              } catch (e) {
-                resolve(http.responseText);
-              }
+              resolve(JSON.parse(http.responseText));
             } else {
               resolve(errorResolver);
             }
