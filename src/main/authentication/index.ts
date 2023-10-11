@@ -153,7 +153,7 @@ export class Authentication {
     };
 
     /**
-     * silent sign out callback
+     * pop up sign out callback
      */
     popupSignOutCallback() {
         try {
