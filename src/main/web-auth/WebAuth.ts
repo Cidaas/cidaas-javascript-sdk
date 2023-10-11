@@ -67,14 +67,6 @@ export class WebAuth {
     }
   }
 
-  /**
- * @param string 
- * @returns 
- */
-  private base64URL(string: any) {
-    return string.toString(CryptoJS.enc.Base64).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-  };
-
   // prototype methods 
   /**
    * login
