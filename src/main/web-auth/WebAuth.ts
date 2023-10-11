@@ -892,15 +892,6 @@ export class WebAuth {
   };
 
   /**
-   * @deprecated This function is no longer supported, instead use {this.updateStatus()}
-   * @param status_id 
-   * @returns 
-   */
-  updateSocket(status_id: string) {
-    return VerificationService.updateStatus(status_id);
-  };
-
-  /**
    * update the status of notification
    * @param status_id 
    * @returns 
@@ -998,165 +989,12 @@ export class WebAuth {
   };
 
   /**
-   * initiateVerification
-   * @param options 
-   */
-  initiateVerification(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = options.verification_type
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate email v2
-   * @param options 
-   */
-  initiateEmailV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "email"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate sms v2
-   * @param options 
-   */
-  initiateSMSV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "sms"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate ivr v2
-   * @param options 
-   */
-  initiateIVRV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "ivr"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate backupcode v2
-   * @param options 
-   */
-  initiateBackupcodeV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "backupcode"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate totp v2
-   * @param options 
-   */
-  initiateTOTPV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "totp"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate pattern v2
-   * @param options 
-   */
-  initiatePatternV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "pattern"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate touchid v2
-   * @param options 
-   */
-  initiateTouchIdV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "touchid"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate smart push v2
-   * @param options 
-   */
-  initiateSmartPushV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "push"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate face v2
-   * @param options 
-   */
-  initiateFaceV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "face"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate voice v2
-   * @param options 
-   */
-  initiateVoiceV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "voice"
-    this.initiateMFAV2(options);
-  };
-
-  /**
    * authenticate mfa v2
    * @param options 
    * @returns 
    */
   authenticateMFAV2(options: IAuthVerificationAuthenticationRequestEntity) {
     return VerificationService.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticateVerification
-   * @param options 
-   */
-  authenticateVerification(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = options.verification_type
-    this.authenticateMFAV2(options)
-  };
-
-  /**
-   * authenticate email v2
-   * @param options 
-   */
-  authenticateEmailV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "email";
-    this.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticate sms v2
-   * @param options 
-   */
-  authenticateSMSV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "sms";
-    this.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticate ivr v2
-   * @param options 
-   */
-  authenticateIVRV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "ivr";
-    this.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticate backupcode v2
-   * @param options 
-   */
-  authenticateBackupcodeV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "backupcode";
-    this.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticate totp v2
-   * @param options 
-   */
-  authenticateTOTPV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "totp";
-    this.authenticateMFAV2(options);
   };
 
   /**

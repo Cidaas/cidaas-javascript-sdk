@@ -107,16 +107,6 @@ export namespace VerificationService {
   };
 
   /**
-   * @deprecated This function is no longer supported, instead use {this.updateStatus()}
-   * @param status_id 
-   * @returns 
-   */
-  export function updateSocket(status_id: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-    return Helper.createPostPromise(undefined, _serviceURL, undefined,"POST");
-  };
-
-  /**
    * update the status of notification
    * @param status_id 
    * @returns 
