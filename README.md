@@ -2082,13 +2082,13 @@ this.cidaas.getConsentDetails({
 ```
 
 
-##### Get Consent Details V2
-To get consent details , call **getConsentDetailsV2()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/858fbeb51c62b-find-consent-info
+##### Get Consent Details
+To get consent details , call **getConsentDetails()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/858fbeb51c62b-find-consent-info
 
 ##### Sample code
 
 ```js
-cidaas.getConsentDetailsV2(options)
+cidaas.getConsentDetails(options)
 .then(function (response) {
     // type your code here
 })
@@ -2126,13 +2126,13 @@ this.cidaas.acceptConsent({
 }
 ```
 
-##### Accept Consent V2
-To accept consent, call **acceptConsentV2()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/0caa9bacdd29e-accept-consent
+##### Accept Consent
+To accept consent, call **acceptConsent**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/0caa9bacdd29e-accept-consent
 
 ##### Sample code
 
 ```js
-cidaas.acceptConsentV2(options)
+cidaas.acceptConsent(options)
 .then(function (response) {
     // type your code here
 })
@@ -2231,8 +2231,8 @@ cidaas.getScopeConsentDetails(options)
 });
 ```
 
-##### Get Scope Consent Version Details V2
-To get scope consent version detials V2, call **getScopeConsentVersionDetailsV2()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in the below table.The function calls the api available in the document https://docs.cidaas.com/docs/cidaas-iam/7e24ac2113315-get-consent-version-details. Please refer to the api document for more details.
+##### Get Scope Consent Version Details
+To get scope consent version detials, call **getScopeConsentVersionDetails**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in the below table.The function calls the api available in the document https://docs.cidaas.com/docs/cidaas-iam/7e24ac2113315-get-consent-version-details. Please refer to the api document for more details.
 
 | Key name | Type | Description | Is optional |
 | ---- | ---- | ----------- | ----------- |

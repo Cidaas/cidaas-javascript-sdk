@@ -64,21 +64,21 @@ export namespace VerificationService {
   };
 
   /**
-   * get mfa list v2
+   * get mfa list
    * @param options 
    * @returns 
    */
-  export function getMFAListV2(options: IConfiguredListRequestEntity) {
+  export function getMFAList(options: IConfiguredListRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
     return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
-   * cancel mfa v2
+   * cancel mfa
    * @param options 
    * @returns 
    */
-  export function cancelMFAV2(options: {
+  export function cancelMFA(options: {
     exchange_id: string;
     reason: string;
     type: string;
@@ -104,16 +104,6 @@ export namespace VerificationService {
   export function enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
     return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
-  };
-
-  /**
-   * @deprecated This function is no longer supported, instead use {this.updateStatus()}
-   * @param status_id 
-   * @returns 
-   */
-  export function updateSocket(status_id: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-    return Helper.createPostPromise(undefined, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -147,32 +137,21 @@ export namespace VerificationService {
   };
 
   /**
-   * initiate mfa v2
+   * initiate mfa
    * @param options 
    * @returns 
    */
-  export function initiateMFAV2(options: IInitVerificationAuthenticationRequestEntity) {
+  export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
     return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
-   * @deprecated
-   * @param options 
-   * @param verificationType 
-   * @returns 
-   */
-  export function initiateMfaV1(options: any, verificationType: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/initiate";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST");
-  }
-
-  /**
-   * authenticate mfa v2
+   * authenticate mfa
    * @param options 
    * @returns 
    */
-  export function authenticateMFAV2(options: IAuthVerificationAuthenticationRequestEntity) {
+  export function authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
     return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };
@@ -208,40 +187,4 @@ export namespace VerificationService {
     });
   };
 
-  /**
-   * @deprecated
-   * setup verification - v1
-   * @param options 
-   * @param access_token 
-   * @param verificationType 
-   * @returns 
-   */
-  export function setupVerificationV1(options: any, access_token: string, verificationType: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/setup";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
-  }
-
-  /**
-   * @deprecated
-   * enroll verification - v1
-   * @param options 
-   * @param access_token 
-   * @param verificationType 
-   * @returns 
-   */
-  export function enrollVerificationV1(options: any, access_token: string, verificationType: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/enroll";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
-  }
-
-  /**
-   * @deprecated
-   * authenticate mfa - v1
-   * @param verificationType 
-   * @returns 
-   */
-  export function authenticateMfaV1(options: any, verificationType: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/" + verificationType.toLowerCase() + "/authenticate";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST");
-  }
 }

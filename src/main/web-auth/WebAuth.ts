@@ -67,14 +67,6 @@ export class WebAuth {
     }
   }
 
-  /**
- * @param string 
- * @returns 
- */
-  private base64URL(string: any) {
-    return string.toString(CryptoJS.enc.Base64).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-  };
-
   // prototype methods 
   /**
    * login
@@ -146,7 +138,7 @@ export class WebAuth {
             window.authentication.popupSignInCallback();
             break;
           case 'silent':
-            window.authentication.silentSignInCallbackV2().then(function (data: any) {
+            window.authentication.silentSignInCallback().then(function (data: any) {
               resolve(data);
             }).catch(function (error: any) {
               reject(error);
@@ -618,21 +610,21 @@ export class WebAuth {
   };
 
   /**
-   * get mfa list v2
+   * get mfa list
    * @param options 
    * @returns 
    */
-  getMFAListV2(options: IConfiguredListRequestEntity) {
-    return VerificationService.getMFAListV2(options);
+  getMFAList(options: IConfiguredListRequestEntity) {
+    return VerificationService.getMFAList(options);
   };
 
   /**
-   * cancel mfa v2
+   * cancel mfa
    * @param options 
    * @returns 
    */
-  cancelMFAV2(options: { exchange_id: string; reason: string; type: string; }) {
-    return VerificationService.cancelMFAV2(options);
+  cancelMFA(options: { exchange_id: string; reason: string; type: string; }) {
+    return VerificationService.cancelMFA(options);
   };
 
   /** 
@@ -648,17 +640,17 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getConsentDetailsV2(options: { consent_id: string; consent_version_id: string; sub: string; }) {
-    return ConsentService.getConsentDetailsV2(options);
+  getConsentDetails(options: { consent_id: string; consent_version_id: string; sub: string; }) {
+    return ConsentService.getConsentDetails(options);
   };
 
   /**
-   * accept consent v2
+   * accept consent
    * @param options 
    * @returns 
    */
-  acceptConsentV2(options: IConsentAcceptEntity) {
-    return ConsentService.acceptConsentV2(options);
+  acceptConsent(options: IConsentAcceptEntity) {
+    return ConsentService.acceptConsent(options);
   };
 
   /**
@@ -675,8 +667,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getScopeConsentVersionDetailsV2(options: { scopeid: string; locale: string; access_token: string; }) {
-    return ConsentService.getScopeConsentVersionDetailsV2(options);
+  getScopeConsentVersionDetails(options: { scopeid: string; locale: string; access_token: string; }) {
+    return ConsentService.getScopeConsentVersionDetails(options);
   };
 
   /**
@@ -892,15 +884,6 @@ export class WebAuth {
   };
 
   /**
-   * @deprecated This function is no longer supported, instead use {this.updateStatus()}
-   * @param status_id 
-   * @returns 
-   */
-  updateSocket(status_id: string) {
-    return VerificationService.updateStatus(status_id);
-  };
-
-  /**
    * update the status of notification
    * @param status_id 
    * @returns 
@@ -989,283 +972,21 @@ export class WebAuth {
   }
 
   /**
-   * initiate mfa v2
+   * initiate mfa
    * @param options 
    * @returns 
    */
-  initiateMFAV2(options: IInitVerificationAuthenticationRequestEntity) {
-    return VerificationService.initiateMFAV2(options);
+  initiateMFA(options: IInitVerificationAuthenticationRequestEntity) {
+    return VerificationService.initiateMFA(options);
   };
 
   /**
-   * initiateVerification
-   * @param options 
-   */
-  initiateVerification(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = options.verification_type
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate email v2
-   * @param options 
-   */
-  initiateEmailV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "email"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate sms v2
-   * @param options 
-   */
-  initiateSMSV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "sms"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate ivr v2
-   * @param options 
-   */
-  initiateIVRV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "ivr"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate backupcode v2
-   * @param options 
-   */
-  initiateBackupcodeV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "backupcode"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate totp v2
-   * @param options 
-   */
-  initiateTOTPV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "totp"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate pattern v2
-   * @param options 
-   */
-  initiatePatternV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "pattern"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate touchid v2
-   * @param options 
-   */
-  initiateTouchIdV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "touchid"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate smart push v2
-   * @param options 
-   */
-  initiateSmartPushV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "push"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate face v2
-   * @param options 
-   */
-  initiateFaceV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "face"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * initiate voice v2
-   * @param options 
-   */
-  initiateVoiceV2(options: IInitVerificationAuthenticationRequestEntity) {
-    options.type = "voice"
-    this.initiateMFAV2(options);
-  };
-
-  /**
-   * @deprecated
-   * @param options 
-   * @param verificationType 
-   * @returns 
-   */
-  initiateMfaV1(options: any, verificationType: string) {
-    return VerificationService.initiateMfaV1(options, verificationType);
-  }
-
-  /**
-  * @deprecated
-  * initiate email - v1
-  * @param options 
-  */
-  initiateEmail(options: any) {
-    var verificationType = "EMAIL"
-    this.initiateMfaV1(options, verificationType)
-  };
-
-  /**
-  * @deprecated
-  * initiate SMS - v1
-  * @param options 
-  */
-  initiateSMS(options: any) {
-    var verificationType = "SMS"
-    this.initiateMfaV1(options, verificationType)
-  };
-
-  /**
-  * @deprecated
-  * initiate IVR - v1
-  * @param options 
-  */
-  initiateIVR(options: any) {
-    var verificationType = "IVR"
-    this.initiateMfaV1(options, verificationType)
-  };
-
-  /**
-  * @deprecated
-  * initiate backup code - v1
-  * @param options 
-  */
-  initiateBackupcode(options: any) {
-    var verificationType = "BACKUPCODE"
-    this.initiateMfaV1(options, verificationType)
-  };
-
-  /**
-   * @deprecated
-   * initiate TOTP - v1
-   * @param options 
-   */
-  initiateTOTP(options: any) {
-    var verificationType = "TOTP";
-    this.initiateMfaV1(options, verificationType);
-  };
-
-  /**
-  * @deprecated
-  * initiate pattern - v1
-  * @param options 
-  */
-  initiatePattern(options: any) {
-    var verificationType = "PATTERN";
-    this.initiateMfaV1(options, verificationType);
-  };
-
-  /**
-  * @deprecated
-  * initiate touchid - v1
-  * @param options 
-  */
-  initiateTouchId(options: any) {
-    var verificationType = "TOUCHID";
-    this.initiateMfaV1(options, verificationType);
-  };
-
- /**
-   * @deprecated
-   * initiate push - v1
-   * @param options 
-   */  initiateSmartPush(options: any) {
-    var verificationType = "PUSH";
-    this.initiateMfaV1(options, verificationType);
-  };
-
-  /**
-  * @deprecated
-  * initiate face - v1
-  * @param options 
-  */
-  initiateFace(options: any) {
-    var verificationType = "FACE";
-    this.initiateMfaV1(options, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * initiate Voice - v1
-   * @param options 
-   */
-  initiateVoice(options: any) {
-    var verificationType = "VOICE";
-    this.initiateMfaV1(options, verificationType);
-  };
-
-  /**
-   * authenticate mfa v2
+   * authenticate mfa
    * @param options 
    * @returns 
    */
-  authenticateMFAV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    return VerificationService.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticateVerification
-   * @param options 
-   */
-  authenticateVerification(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = options.verification_type
-    this.authenticateMFAV2(options)
-  };
-
-  /**
-   * authenticate email v2
-   * @param options 
-   */
-  authenticateEmailV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "email";
-    this.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticate sms v2
-   * @param options 
-   */
-  authenticateSMSV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "sms";
-    this.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticate ivr v2
-   * @param options 
-   */
-  authenticateIVRV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "ivr";
-    this.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticate backupcode v2
-   * @param options 
-   */
-  authenticateBackupcodeV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "backupcode";
-    this.authenticateMFAV2(options);
-  };
-
-  /**
-   * authenticate totp v2
-   * @param options 
-   */
-  authenticateTOTPV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    options.type = "totp";
-    this.authenticateMFAV2(options);
+  authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
+    return VerificationService.authenticateMFA(options);
   };
 
   /**
@@ -1275,242 +996,5 @@ export class WebAuth {
    */
   authenticateFaceVerification(options: FaceVerificationAuthenticationRequestEntity) {
     return VerificationService.authenticateFaceVerification(options);
-  };
-
-  /**
-   * @deprecated
-   * setup verification - v1
-   * @param options 
-   * @param access_token 
-   * @param verificationType 
-   * @returns 
-   */
-  setupVerificationV1(options: any, access_token: string, verificationType: string) {
-    return VerificationService.setupVerificationV1(options, access_token, verificationType);
-  }
-  /**
-   * @deprecated
-   * setup email - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupEmail(options: any, access_token: string) {
-    var verificationType = "EMAIL";
-    this.setupVerificationV1(options, access_token, verificationType)
-  };
-
-  /**
-   * @deprecated
-   * setup sms - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupSMS(options: any, access_token: string) {
-    var verificationType = "SMS";
-    this.setupVerificationV1(options, access_token, verificationType)
-  };
-
-  /**
-   * @deprecated
-   * setup ivr - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupIVR(options: any, access_token: string) {
-    var verificationType = "IVR";
-    this.setupVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * setup backupcode - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupBackupcode(options: any, access_token: string) {
-    var verificationType = "BACKUPCODE";
-    this.setupVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * setup totp - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupTOTP(options: any, access_token: string) {
-    var verificationType = "TOTP";
-    this.setupVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * setup pattern - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupPattern(options: any, access_token: string) {
-    var verificationType = "PATTERN";
-    this.setupVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * setup touch - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupTouchId(options: any, access_token: string) {
-    var verificationType = "TOUCHID";
-    this.setupVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * setup smart push - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupSmartPush(options: any, access_token: string) {
-    var verificationType = "PUSH";
-    this.setupVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * setup face - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupFace(options: any, access_token: string) {
-    var verificationType = "FACE";
-    this.setupVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * setup voice - v1
-   * @param options 
-   * @param access_token 
-   */
-  setupVoice(options: any, access_token: string) {
-    var verificationType = "VOICE";
-    this.setupVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * enroll verification - v1
-   * @param options 
-   * @param access_token 
-   * @param verificationType 
-   * @returns 
-   */
-  enrollVerificationV1(options: any, access_token: string, verificationType: string) {
-    return VerificationService.enrollVerificationV1(options, access_token, verificationType);
-  }
-
-  /**
-   * @deprecated
-   * enroll email - v1
-   * @param options 
-   * @param access_token 
-   */
-  enrollEmail(options: any, access_token: string) {
-    var verificationType = "EMAIL";
-    this.enrollVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * enroll SMS - v1
-   * @param options 
-   * @param access_token 
-   */
-  enrollSMS(options: any, access_token: string) {
-    var verificationType = "SMS";
-    this.enrollVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * enroll IVR - v1
-   * @param options 
-   * @param access_token 
-   */
-  enrollIVR(options: any, access_token: string) {
-    var verificationType = "IVR";
-    this.enrollVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * enroll TOTP - v1
-   * @param options 
-   * @param access_token 
-   */
-  enrollTOTP(options: any, access_token: string) {
-    var verificationType = "TOTP";
-    this.enrollVerificationV1(options, access_token, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * authenticate mfa - v1
-   * @param verificationType 
-   * @returns 
-   */
-  authenticateMfaV1(options: any, verificationType: string) {
-    return VerificationService.authenticateMfaV1(options, verificationType);
-  }
-
-  /**
-   * @deprecated
-   * authenticate email - v1
-   * @param options 
-   */
-  authenticateEmail(options: any) {
-    var verificationType = "EMAIL";
-    this.authenticateMfaV1(options, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * authenticate sms - v1
-   * @param options 
-   */
-  authenticateSMS(options: any) {
-    var verificationType = "SMS";
-    this.authenticateMfaV1(options, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * authenticate ivr - v1
-   * @param options
-   */
-  authenticateIVR(options: any) {
-    var verificationType = "IVR";
-    this.authenticateMfaV1(options, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * authenticate totp - v1
-   * @param options
-   */
-  authenticateTOTP(options: any) {
-    var verificationType = "TOTP";
-    this.authenticateMfaV1(options, verificationType);
-  };
-
-  /**
-   * @deprecated
-   * authenticate backupcode - v1
-   * @param options
-   */
-  authenticateBackupcode(options: any) {
-    var verificationType = "BACKUPCODE";
-    this.authenticateMfaV1(options, verificationType);
   };
 }
