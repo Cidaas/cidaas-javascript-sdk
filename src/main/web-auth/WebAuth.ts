@@ -138,7 +138,7 @@ export class WebAuth {
             window.authentication.popupSignInCallback();
             break;
           case 'silent':
-            window.authentication.silentSignInCallbackV2().then(function (data: any) {
+            window.authentication.silentSignInCallback().then(function (data: any) {
               resolve(data);
             }).catch(function (error: any) {
               reject(error);
@@ -610,21 +610,21 @@ export class WebAuth {
   };
 
   /**
-   * get mfa list v2
+   * get mfa list
    * @param options 
    * @returns 
    */
-  getMFAListV2(options: IConfiguredListRequestEntity) {
-    return VerificationService.getMFAListV2(options);
+  getMFAList(options: IConfiguredListRequestEntity) {
+    return VerificationService.getMFAList(options);
   };
 
   /**
-   * cancel mfa v2
+   * cancel mfa
    * @param options 
    * @returns 
    */
-  cancelMFAV2(options: { exchange_id: string; reason: string; type: string; }) {
-    return VerificationService.cancelMFAV2(options);
+  cancelMFA(options: { exchange_id: string; reason: string; type: string; }) {
+    return VerificationService.cancelMFA(options);
   };
 
   /** 
@@ -640,17 +640,17 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getConsentDetailsV2(options: { consent_id: string; consent_version_id: string; sub: string; }) {
-    return ConsentService.getConsentDetailsV2(options);
+  getConsentDetails(options: { consent_id: string; consent_version_id: string; sub: string; }) {
+    return ConsentService.getConsentDetails(options);
   };
 
   /**
-   * accept consent v2
+   * accept consent
    * @param options 
    * @returns 
    */
-  acceptConsentV2(options: IConsentAcceptEntity) {
-    return ConsentService.acceptConsentV2(options);
+  acceptConsent(options: IConsentAcceptEntity) {
+    return ConsentService.acceptConsent(options);
   };
 
   /**
@@ -667,8 +667,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getScopeConsentVersionDetailsV2(options: { scopeid: string; locale: string; access_token: string; }) {
-    return ConsentService.getScopeConsentVersionDetailsV2(options);
+  getScopeConsentVersionDetails(options: { scopeid: string; locale: string; access_token: string; }) {
+    return ConsentService.getScopeConsentVersionDetails(options);
   };
 
   /**
@@ -972,21 +972,21 @@ export class WebAuth {
   }
 
   /**
-   * initiate mfa v2
+   * initiate mfa
    * @param options 
    * @returns 
    */
-  initiateMFAV2(options: IInitVerificationAuthenticationRequestEntity) {
-    return VerificationService.initiateMFAV2(options);
+  initiateMFA(options: IInitVerificationAuthenticationRequestEntity) {
+    return VerificationService.initiateMFA(options);
   };
 
   /**
-   * authenticate mfa v2
+   * authenticate mfa
    * @param options 
    * @returns 
    */
-  authenticateMFAV2(options: IAuthVerificationAuthenticationRequestEntity) {
-    return VerificationService.authenticateMFAV2(options);
+  authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
+    return VerificationService.authenticateMFA(options);
   };
 
   /**

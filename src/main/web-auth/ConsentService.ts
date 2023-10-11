@@ -7,7 +7,7 @@ export namespace ConsentService {
   * @param options 
   * @returns 
   */
-  export function getConsentDetailsV2(options: {
+  export function getConsentDetails(options: {
     consent_id: string;
     consent_version_id: string;
     sub: string;
@@ -17,11 +17,11 @@ export namespace ConsentService {
   };
 
   /**
-   * accept constn v2
+   * accept consent
    * @param options 
    * @returns 
    */
-  export function acceptConsentV2(options: IConsentAcceptEntity) {
+  export function acceptConsent(options: IConsentAcceptEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
     return Helper.createPostPromise(options, _serviceURL, false, "POST" );
   };
@@ -31,7 +31,7 @@ export namespace ConsentService {
    * @param options 
    * @returns 
    */
-  export function getScopeConsentVersionDetailsV2(options: {
+  export function getScopeConsentVersionDetails(options: {
     scopeid: string;
     locale: string;
     access_token: string;

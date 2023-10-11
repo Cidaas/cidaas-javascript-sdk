@@ -152,7 +152,7 @@ test('userCheckExists, usw...', async () => {
 
 });
 
-test('cidaasV2', () => {
+test('kube-nightly env', () => {
     windowSpy.mockImplementation(() => ({
         webAuthSettings:{
             authority: 'https://kube-nightlybuild-dev.cidaas.de',

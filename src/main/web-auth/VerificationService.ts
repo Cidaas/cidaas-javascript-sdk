@@ -64,21 +64,21 @@ export namespace VerificationService {
   };
 
   /**
-   * get mfa list v2
+   * get mfa list
    * @param options 
    * @returns 
    */
-  export function getMFAListV2(options: IConfiguredListRequestEntity) {
+  export function getMFAList(options: IConfiguredListRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
     return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
-   * cancel mfa v2
+   * cancel mfa
    * @param options 
    * @returns 
    */
-  export function cancelMFAV2(options: {
+  export function cancelMFA(options: {
     exchange_id: string;
     reason: string;
     type: string;
@@ -137,21 +137,21 @@ export namespace VerificationService {
   };
 
   /**
-   * initiate mfa v2
+   * initiate mfa
    * @param options 
    * @returns 
    */
-  export function initiateMFAV2(options: IInitVerificationAuthenticationRequestEntity) {
+  export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
     return Helper.createPostPromise(options, _serviceURL, false,"POST");
   };
 
   /**
-   * authenticate mfa v2
+   * authenticate mfa
    * @param options 
    * @returns 
    */
-  export function authenticateMFAV2(options: IAuthVerificationAuthenticationRequestEntity) {
+  export function authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
     return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
   };

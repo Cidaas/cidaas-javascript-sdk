@@ -34,15 +34,15 @@ test('getAccessToken, renewToken, validateAccessToken', async() => {
         }
     }));
 
-    let data = ConsentService.getScopeConsentVersionDetailsV2({scopeid:'s',locale:'en',access_token:'a'}).catch( err => {
+    let data = ConsentService.getScopeConsentVersionDetails({scopeid:'s',locale:'en',access_token:'a'}).catch( err => {
     });
     expect(data).not.toBe(undefined)
 
-    data = ConsentService.getConsentDetailsV2({sub:'s',consent_id:'c',consent_version_id:'v'}).catch( ex => {
+    data = ConsentService.getConsentDetails({sub:'s',consent_id:'c',consent_version_id:'v'}).catch( ex => {
     });
     expect(data).not.toBe(undefined);
 
-    data = ConsentService.acceptConsentV2(TestConstants.consent).catch( ex => {
+    data = ConsentService.acceptConsent(TestConstants.consent).catch( ex => {
     });
     expect(data).not.toBe(undefined);
 

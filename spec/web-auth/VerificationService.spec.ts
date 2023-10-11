@@ -47,7 +47,7 @@ test('verifyAccount', () => {
     expect(data).not.toBe(undefined)
 });
 
-test('getMFAListV2', () => {
+test('getMFAList', () => {
     windowSpy.mockImplementation(() => ({
         location: {
             origin: 'https://kube-nightlybuild-dev.cidaas.de'
@@ -57,11 +57,11 @@ test('getMFAListV2', () => {
         }
     }));
 
-    let data = VerificationService.getMFAListV2(TestConstants.configuredList);
+    let data = VerificationService.getMFAList(TestConstants.configuredList);
     expect(data).not.toBe(undefined)
 });
 
-test('cancelMFAV2', () => {
+test('cancelMFA', () => {
     windowSpy.mockImplementation(() => ({
         location: {
             origin: 'https://kube-nightlybuild-dev.cidaas.de'
@@ -71,7 +71,7 @@ test('cancelMFAV2', () => {
         }
     }));
 
-    let data = VerificationService.cancelMFAV2({type:'typ',exchange_id:'ex1',reason:'1'});
+    let data = VerificationService.cancelMFA({type:'typ',exchange_id:'ex1',reason:'1'});
     expect(data).not.toBe(undefined)
 });
 
@@ -93,10 +93,10 @@ test('updateStatus, setupFidoVerification, usw..', () => {
     data = VerificationService.setupFidoVerification(TestConstants.fido);
     expect(data).not.toBe(undefined);
 
-    data = VerificationService.authenticateMFAV2(TestConstants.authenticationVerificationRequest);
+    data = VerificationService.authenticateMFA(TestConstants.authenticationVerificationRequest);
     expect(data).not.toBe(undefined);
 
-    data = VerificationService.initiateMFAV2(TestConstants.initVerificationRequest);
+    data = VerificationService.initiateMFA(TestConstants.initVerificationRequest);
     expect(data).not.toBe(undefined);
 
     data = VerificationService.checkVerificationTypeConfigured(TestConstants.configuredList);

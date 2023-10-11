@@ -153,6 +153,19 @@ export class Authentication {
     };
 
     /**
+     * silent sign out callback
+     */
+    popupSignOutCallback() {
+        try {
+            if (this.userManager) {
+                this.userManager.signoutPopupCallback(this.webAuthSettings.post_logout_redirect_uri, true);
+            } else {
+                throw "user manager is null";
+            }
+        } catch (ex) { console.error(ex) }
+    };
+
+    /**
      * silent sign in
      */
     silentSignIn() {
@@ -171,22 +184,9 @@ export class Authentication {
 
     /**
      * silent sign in callback
-     */
-    silentSignInCallback() {
-        try {
-            if (this.userManager) {
-                this.userManager.signinSilentCallback();
-            } else {
-                throw "user manager is null";
-            }
-        } catch (ex) { console.error(ex) }
-    };
-
-    /**
-     * silent sign in callback v2
      * @returns 
      */
-    silentSignInCallbackV2() {
+    silentSignInCallback() {
         return new Promise((resolve, reject) => {
             try {
                 if (this.userManager) {
@@ -206,18 +206,5 @@ export class Authentication {
             }
         });
 
-    };
-
-    /**
-     * silent sign out callback
-     */
-    popupSignOutCallback() {
-        try {
-            if (this.userManager) {
-                this.userManager.signoutPopupCallback(this.webAuthSettings.post_logout_redirect_uri, true);
-            } else {
-                throw "user manager is null";
-            }
-        } catch (ex) { console.error(ex) }
     };
 }
