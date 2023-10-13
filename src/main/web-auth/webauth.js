@@ -676,7 +676,13 @@ WebAuth.prototype.getRegistrationSetup = function (options) {
       };
       http.open("GET", _serviceURL, true);
       http.setRequestHeader("Content-type", "application/json");
-      http.setRequestHeader("accept-language", options.acceptlanguage? options.acceptlanguage : window?.localeSettings);
+      let acceptLanguage = ''
+      if(options && options.acceptLanguage){
+        acceptLanguage = options.acceptLanguage;
+      }else{
+        acceptLanguage =  window?.localeSettings || ''; 
+      }
+      http.setRequestHeader("accept-language", acceptLanguage);
 
       http.send();
     } catch (ex) {
