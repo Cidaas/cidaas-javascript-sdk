@@ -76,17 +76,35 @@ export class WebAuth {
       if (!window.webAuthSettings && !window.authentication) {
         throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
-      switch (window.webAuthSettings.mode) {
-        case 'redirect':
-          window.authentication.redirectSignIn('login');
-          break;
-        case 'window':
-          window.authentication.popupSignIn();
-          break;
-        case 'silent':
-          window.authentication.silentSignIn();
-          break;
+      window.authentication.redirectSignIn('login');
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  /**
+   * popupSignIn
+   */
+  popupSignIn() {
+    try {
+      if (!window.webAuthSettings && !window.authentication) {
+        throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
+      window.authentication.popupSignIn();
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  /**
+   * silentSignIn
+   */
+  silentSignIn() {
+    try {
+      if (!window.webAuthSettings && !window.authentication) {
+        throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
+      }
+      window.authentication.silentSignIn();
     } catch (ex) {
       console.log(ex);
     }
@@ -100,17 +118,7 @@ export class WebAuth {
       if (!window.webAuthSettings && !window.authentication) {
         throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
-      switch (window.webAuthSettings.mode) {
-        case 'redirect':
-          window.authentication.redirectSignIn('register');
-          break;
-        case 'window':
-          window.authentication.popupSignIn();
-          break;
-        case 'silent':
-          window.authentication.silentSignIn();
-          break;
-      }
+      window.authentication.redirectSignIn('register');
     } catch (ex) {
       console.log(ex);
     }
@@ -126,25 +134,49 @@ export class WebAuth {
         if (!window.webAuthSettings && !window.authentication) {
           throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
         }
-        switch (window.webAuthSettings.mode) {
-          case 'redirect':
-            window.authentication.redirectSignInCallback().then(function (user: any) {
-              resolve(user);
-            }).catch(function (ex: any) {
-              reject(ex);
-            });
-            break;
-          case 'window':
-            window.authentication.popupSignInCallback();
-            break;
-          case 'silent':
-            window.authentication.silentSignInCallback().then(function (data: any) {
-              resolve(data);
-            }).catch(function (error: any) {
-              reject(error);
-            })
-            break;
+        window.authentication.redirectSignInCallback().then(function (user: any) {
+          resolve(user);
+        }).catch(function (ex: any) {
+          reject(ex);
+        });
+      } catch (ex) {
+        console.log(ex);
+      }
+    });
+  };
+
+  /**
+   * popup signin callback
+   * @returns 
+   */
+  popupSignInCallback() {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!window.webAuthSettings && !window.authentication) {
+          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
         }
+        window.authentication.popupSignInCallback();
+      } catch (ex) {
+        console.log(ex);
+      }
+    });
+  };
+
+  /**
+   * silent signin callback
+   * @returns 
+   */
+  silentSignInCallback() {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!window.webAuthSettings && !window.authentication) {
+          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
+        }
+        window.authentication.silentSignInCallback().then(function (data: any) {
+          resolve(data);
+        }).catch(function (error: any) {
+          reject(error);
+        })
       } catch (ex) {
         console.log(ex);
       }
@@ -178,18 +210,27 @@ export class WebAuth {
         if (!window.webAuthSettings && !window.authentication) {
           throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
         }
-        if (window.webAuthSettings.mode == 'redirect') {
-          window.authentication.redirectSignOut().then(function (result: any) {
-            resolve(result);
-            return;
-          });
-        } else if (window.webAuthSettings.mode == 'window') {
-          window.authentication.popupSignOut();
-        } else if (window.webAuthSettings.mode == 'silent') {
-          window.authentication.redirectSignOut();
-        } else {
-          resolve(undefined);
+        window.authentication.redirectSignOut().then(function (result: any) {
+          resolve(result);
+          return;
+        });
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  };
+
+  /**
+   * popup signout
+   * @returns 
+   */
+  popupSignOut() {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!window.webAuthSettings && !window.authentication) {
+          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
         }
+        window.authentication.popupSignOut();
       } catch (ex) {
         reject(ex);
       }
@@ -206,20 +247,31 @@ export class WebAuth {
         if (!window.webAuthSettings && !window.authentication) {
           throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
         }
-        if (window.webAuthSettings.mode == 'redirect') {
-          window.authentication.redirectSignOutCallback().then(function (resp: any) {
-            resolve(resp);
-          });
-        } else if (window.webAuthSettings.mode == 'window') {
-          window.authentication.popupSignOutCallback();
-        } else if (window.webAuthSettings.mode == 'silent') {
-          window.authentication.redirectSignOutCallback();
-        }
+        window.authentication.redirectSignOutCallback().then(function (resp: any) {
+          resolve(resp);
+        });
       } catch (ex) {
         reject(ex);
       }
     });
   };
+
+  /**
+   * popup signout callback
+   * @returns 
+   */
+  popupSignOutCallback() {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!window.webAuthSettings && !window.authentication) {
+          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
+        }
+        window.authentication.popupSignOutCallback();
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  };  
 
   /**
    * get login url
