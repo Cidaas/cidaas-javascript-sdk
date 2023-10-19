@@ -47,7 +47,6 @@ test('getMissingFields', async () =>{
             client_secret: TestConstants.interactiveTestConfig.clientSecret,
         },
         authentication: {
-            mode: 'silent',
             client_id: TestConstants.testConfig.clientId,
             client_secret: TestConstants.testConfig.clientSecret,
         },

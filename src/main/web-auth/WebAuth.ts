@@ -48,9 +48,6 @@ export class WebAuth {
       if (!settings.scope) {
         settings.scope = "email openid profile mobile";
       }
-      if (!settings.mode) {
-        settings.mode = 'redirect';
-      }
       if (!settings.cidaas_version) {
         settings.cidaas_version = 2;
       }

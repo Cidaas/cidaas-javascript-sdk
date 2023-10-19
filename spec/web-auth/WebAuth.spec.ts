@@ -18,7 +18,6 @@ beforeEach(() => {
         redirect_uri:TestConstants.interactiveTestConfig.redirectUrl
     };
     window.authentication =  {
-        mode: 'silent',
         client_id: TestConstants.interactiveTestConfig.clientId,
         client_secret: TestConstants.interactiveTestConfig.clientSecret
     };

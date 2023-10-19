@@ -58,7 +58,6 @@ In addition to it, There are the following custom properties which could / need 
 | Property Name | Required | Description |
 | ------ | ------ | ------ |
 | cidaas_version | no | You can find out the cidaas version from cidaas service portal |
-| mode | no | Define which login variants to be called during calling loginWithBrowser(). The selection includes: `redirect`, `window` and `silent`. The default value is `redirect` if no properties is being sent. |
 
 an example of index.js is looks like this:
 
@@ -70,7 +69,6 @@ var options = {
     post_logout_redirect_uri: 'your post logout redirect url',
     response_type: 'id_token token',
     scope: 'openid email roles profile',
-    mode: 'redirect',
     cidaas_version: 3
 }
 ```
