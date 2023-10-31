@@ -508,10 +508,25 @@ export class WebAuth {
   };
 
   /**
-  * get user info
-  * @param options 
-  * @returns 
-  */
+   * To get the user profile information, call getUserProfile(). The function accepts a function parameter of type object. In the sample example the object is named as options. Below are the key that need to be passed in the options object
+   * 
+   * @param options - contains access_token property.
+   * 
+   * @returns user profile
+   * 
+   * @example
+   * ```
+   * let options = {
+   *   access_token: YOUR_ACCESS_TOKEN,
+   * }
+   * cidaas.getUserProfile(options)
+   * .then(function (response) {
+   *   // the response will give you user profile information.
+   * }).catch(function (ex) {
+   *   // your failure code here
+   * });
+   * ```
+   */
   getUserProfile(options: { access_token: string }) {
     return UserService.getUserProfile(options);
   };
