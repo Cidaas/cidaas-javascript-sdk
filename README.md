@@ -828,47 +828,6 @@ cidaas.getProfileInfo({
 }
 ```
 
-#### Getting user profile
-
-To get the user profile information, call ****getUserProfile()****. The function accepts a function parameter of type object. In the sample example the object is named as options. Below are the key that need to be passed in the options object
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| access_token | string | a bearer token | false |
-| acceptlanguage | string | browser/custom local  | true |
-
-##### Sample code
-```js
-let options = {
-  access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-  acceptlanguage: 'en-US'
-}
-cidaas.getUserProfile(options)
-.then(function (response) {
-  // the response will give you user profile information.
-}).catch(function (ex) {
-  // your failure code here
-});
-```
-
-##### Response
-```json
-{
-    "sub": "cc28a557-ce0d-4896-9580-49639cbde8d5",
-    "email": "davidjhonson1984@gmail.com",
-    "email_verified": true,
-    "name": "David Jhonson",
-    "family_name": "Jhonson",
-    "given_name": "David",
-    "nickname": "test",
-    "preferred_username": "davidjhonson",
-    "gender": "Male",
-    "locale": "en-us",
-    "updated_at": 1527662349,
-    "username": "davidjhonson"
-}
-```
-
 #### Updating user profile
 
 To update the user profile information, call ****updateProfile()****.

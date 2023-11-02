@@ -1,3 +1,4 @@
+import { Helper } from '../../src/main/web-auth/Helper';
 import {
     UserService,
 } from '../../src/main/web-auth/UserService';
@@ -5,6 +6,7 @@ import {
 import { TestConstants } from '../TestConstants';
 
 let windowSpy:any;
+let httpSpy: any;
 
 beforeEach(() => {
     const xhrMock: Partial<XMLHttpRequest> = {
@@ -24,12 +26,19 @@ beforeEach(() => {
             json: () => Promise.resolve({ test: 100 }),
         }),
     ) as jest.Mock;
+    httpSpy = jest.spyOn(Helper, 'createPostPromise');
+    (window as any).webAuthSettings = {authority: 'baseURL'}
 });
 
 afterEach(() => {
     windowSpy.mockRestore();
 })
 
+test('getUserProfile', () => {
+    const option = {access_token: 'access_token'};
+    UserService.getUserProfile(option);
+    expect(httpSpy).toHaveBeenCalledWith(undefined, "baseURL/users-srv/userinfo", undefined, "GET", option.access_token);
+});
 
 test('updateProfile', () => {
     windowSpy.mockImplementation(() => ({
@@ -44,36 +53,6 @@ test('updateProfile', () => {
     let data = UserService.updateProfile(TestConstants.userEnt,TestConstants.changePwd.accessToken,TestConstants.user.sub);
     expect(data).not.toBe(undefined)
 });
-
-/*
-test('resetPassword', () => {
-    windowSpy.mockImplementation(() => ({
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de',
-            cidaas_version: 2
-        }
-
-    }));
-
-    let data = UserService.resetPassword(TestConstants.resetPwd);
-    expect(data).not.toBe(null)
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de',
-            cidaas_version: 3
-        }
-
-    }));
-
-    //Error Form Submit
-    // data = UserService.resetPassword(TestConstants.resetPwd);
-});
-*/
-
-
 
 test('resetPassword', async () => {
     windowSpy.mockImplementation(() => ({
@@ -163,5 +142,4 @@ test('kube-nightly env', () => {
     }));
     UserService.handleResetPassword(TestConstants.handleResetPwdRequest);
 });
-
 
