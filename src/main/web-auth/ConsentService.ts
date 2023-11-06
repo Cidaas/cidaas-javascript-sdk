@@ -29,7 +29,7 @@ export namespace ConsentService {
     sub: string;
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST");
+    return Helper.createPostPromise(options, _serviceURL, false, "POST");
   };
 
   /**
@@ -50,7 +50,7 @@ export namespace ConsentService {
    */
   export function acceptConsent(options: IConsentAcceptEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
-    return Helper.createPostPromise(options, _serviceURL, false, "POST" );
+    return Helper.createPostPromise(options, _serviceURL, false, "POST");
   };
 
   /**
@@ -74,7 +74,7 @@ export namespace ConsentService {
     access_token: string;
   }) {
     const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
-    return Helper.createPostPromise(undefined, _serviceURL,false, "GET", options.access_token);
+    return Helper.createPostPromise(undefined, _serviceURL, false, "GET", options.access_token);
   };
 
   /**
@@ -110,7 +110,7 @@ export namespace ConsentService {
    */
   export function acceptClaimConsent(options: { client_id: string; sub: string; accepted_claims: string[]; }) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
-    return Helper.createPostPromise(options, _serviceURL, false,  "POST");
+    return Helper.createPostPromise(options, _serviceURL, false, "POST");
   };
 
   /**
