@@ -69,8 +69,8 @@ export namespace ConsentService {
    * @param options 
    * @returns 
    */
-  export function revokeClaimConsent(options: { client_id: string; sub: string; revoked_claims: string[]; }) {
+  export function revokeClaimConsent(options: { access_token?: string; client_id: string; sub: string; revoked_claims: string[]; }) {
     var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
-    return Helper.createPostPromise(options, _serviceURL, false,  "POST");
+    return Helper.createPostPromise(options, _serviceURL, false, "POST", options.access_token);
   };
 }
