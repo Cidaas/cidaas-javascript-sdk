@@ -1601,23 +1601,21 @@ cidaas.getAllVerificationList(access_token)
 });
 ```
 
-#### Consent Management
+#### Deduplication
 
-For the first time login, the user needs to accept the terms and conditions.
+##### Get deduplication details
 
-##### Get consent details
-
-To get the details of consent tile and description, call ****getConsentDetails()****
+To get the list of existing users in deduplication, call ****getDeduplicationDetails()****.
 
 ##### Sample code
 ```js
-this.cidaas.getConsentDetails({
-      consent_name: 'your consent name',
+this.cidaas.getDeduplicationDetails({
+      track_id: 'your track id',
       acceptlanguage: 'your locale' // optional example: de-de, en-US
     }).then((response) => {
-      // the response will give you details of consent.
+      // the response will give you deduplication details of users.
     }).catch((err) => {
-      // your failure code here 
+      // your failure code here
     });
 ```
 
@@ -1626,43 +1624,62 @@ this.cidaas.getConsentDetails({
 {
     "success":true,
     "status":200,
+    "data": [
+        {
+            "provider": 'SELF',
+            "sub": 'etsdf34545sdfsdf',
+            "email": 'davidjhonson@gmail.com',
+            "emailName": 'davidjhonson@gmail.com',
+            "firstname": 'David',
+            "lastname": 'Jhonson',
+            "displayName": 'David Jhonson',
+        }
+    ]
+}
+```
+
+##### Register deduplication 
+
+To register new user in deduplication, call ****registerDeduplication()****.
+
+##### Sample code
+```js
+this.cidaas.registerDeduplication({
+      track_id: 'your track id',
+      acceptlanguage: 'your locale' // optional example: de-de, en-US
+    }).then((response) => {
+      // the response will give you new registered deduplication user. 
+    }).catch((err) => {
+      // your failure code here
+    });
+```
+
+##### Response
+```json
+{
+    "success": true,
+    "status": 200,
     "data": {
-        "title" : 'consent title',
-        "description" : 'consent description',
-        "userAgreeText" : 'I agree'
+        "sub": "7dfb2122-fa5e-4f7a-8494-dadac9b43f9d",
+        "userStatus": "VERIFIED",
+        "email_verified": false,
+        "suggested_action": "LOGIN"
     }
 }
 ```
 
+##### Deduplication login
 
-##### Get Consent Details
-To get consent details , call **getConsentDetails()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/858fbeb51c62b-find-consent-info
-
-##### Sample code
-
-```js
-cidaas.getConsentDetails(options)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-});
-```
-
-##### Accept consent
-
-To accept consent, call ****acceptConsent()****
+To use the existing users in deduplication, you need to enter password for the users and call ****deduplicationLogin()****.
 
 ##### Sample code
 ```js
-this.cidaas.acceptConsent({
-      name: 'your consent name',
-      sub: 'your sub',
-      client_id: 'your client id',
-      accepted: true
+this.cidaas.deduplicationLogin({
+        sub: 'your sub',
+        requestId: 'your request id',
+        password: 'your password'
     }).then((response) => {
-      // the response will give you details of accepted consent.
+      // the response will give you deduplication login details. 
     }).catch((err) => {
       // your failure code here
     });
@@ -1674,177 +1691,14 @@ this.cidaas.acceptConsent({
     "success":true,
     "status":200,
     "data": {
-        "accepted": true
+        "token_type":"Bearer",
+        "expires_in":86400,
+        "access_token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMjM2ZWZiLWRlMjEtNDI5Mi04Z.",
+        "session_state":"3F7CuT3jnKOTwRyyLBWaRizLiPm5mJ4PnhY.jfQO3MeEAuM",
+        "viewtype":"login",
+        "grant_type":"login"
     }
 }
-```
-
-##### Accept Consent
-To accept consent, call **acceptConsent**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/0caa9bacdd29e-accept-consent
-
-##### Sample code
-
-```js
-cidaas.acceptConsent(options)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-});
-```
-
-##### Consent Continue
-
-To continue after Consent acceptance, call ****consentContinue()****.
-
-##### Sample code
-```js
-this.cidaas.consentContinue({
-      name: 'your consent name',
-      version: 'your consent version',
-      client_id: 'your client id',
-      track_id: 'your track id', 
-      sub: 'your sub',
-    });
-```
-##### Accept claim
-
-To accept Claim Consent, call ****acceptClaimConsent()****
-
-##### Sample code
-```js
-this.cidaas.acceptClaimConsent({
-      q: 'your sub',
-      client_id: 'your client id',
-      accepted: "accepted claims with array eg: []"
-    }).then((response) => {
-      // the response will give you accepted claim consent. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": true
-}
-```
-
-##### Revoke claim
-
-To revoke Claim Consent, call ****revokeClaimConsent()****
-
-##### Sample code
-```js
-this.cidaas.revokeClaimConsent({
-      sub: 'your sub',
-      revoked_claims: "revoked claims with array eg: []"
-    }).then((response) => {
-      // the response will give you revoked claim consent.
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": true
-}
-```
-
-##### Get Scope Consent Details
-To get scope consent details, call **getScopeConsentDetails()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in the below table.The function calls the api available in the document https://docs.cidaas.com/docs/cidaas-iam/f4b1bee4c3313-pre-login-check. Please refer to the api document for more details
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| track_id | string | the track id recieved while logging in | false |
-| locale | string | browser accept language or custom language | false |
-
-##### Sample code
-
-```js
-let options = {
-    track_id: "5f5cbb84-4ceb-4975-b347-4bfac61e9248",
-    locale: "en-US"
-}
-
-cidaas.getScopeConsentDetails(options)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-});
-```
-
-##### Get Scope Consent Version Details
-To get scope consent version detials, call **getScopeConsentVersionDetails**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in the below table.The function calls the api available in the document https://docs.cidaas.com/docs/cidaas-iam/7e24ac2113315-get-consent-version-details. Please refer to the api document for more details.
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| scopeid | string | the consent id(please refer to api document mentioned above) | false |
-| locale | string | browser accept language or custom language | false |
-
-##### Sample code
-
-```js
-let options = {
-    scopeid: "5f5cbb84-4ceb-4975-b347-4bfac61e9248",
-    locale: "en-US"
-}
-
-cidaas.getScopeConsentVersionDestailsV(options)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-});
-```
-
-##### Accept Scope Consent
-To accept scope consent, call **acceptScopeConsent()**. The options paramter in the sample must contain the keys mentioned in in  the api document https://docs.cidaas.com/docs/cidaas-iam/84c69a098c5c7-accept-scope-consent. Please refer to the api document for more details.
-
-##### Sample code
-
-```js
-cidaas
-    .acceptScopeConsent(options)
-    .then(function (response) {
-        // type your code here
-    })
-    .catch(function (ex) {
-        // your failure code here
-    });
-```
-
-##### Scope Consent Continue Login
-To scope consent continue login, call **scopeConsentContinue()**. The function accepts a parameter of type object. The options paramter in the sample must contain the keys mentioned in the below table.The function calls the api available in the document https://docs.cidaas.com/docs/cidaas-iam/aa32097970c52-continue-authentication-flow-after-prechecks. Please refer to the api document for more details.
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| track_id | string | track id recieved while loggine in| false |
-
-##### Sample code
-
-```js
-let options = {
-    track_id: "5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-}
-cidaas.scopeConsentContinue(options)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-});
 ```
 
 ##### Initiate Users Link

@@ -8,6 +8,7 @@ If you are upgrading: please see ['UPGRADING.md'](UPGRADING.md)
 - popup & silent authentication functions is directly implemented in WebAuth instead of using mode.
 - document functions as typedoc.
 - add more unit tests.
+- add access_token option to revokeClaimConsent() function
 
 ### Changed
 - **Breaking** rename functions.
