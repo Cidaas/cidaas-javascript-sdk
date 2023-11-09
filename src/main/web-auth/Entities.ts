@@ -108,7 +108,6 @@ export interface ChangePasswordEntity {
   old_password: string;
   new_password: string;
   confirm_password: string;
-  accessToken: string;
 }
 
 export interface FidoSetupEntity {
