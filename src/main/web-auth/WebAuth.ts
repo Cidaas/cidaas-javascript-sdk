@@ -343,7 +343,7 @@ export class WebAuth {
    */
   getMissingFields(options: { requestId: string; trackId: string; }) {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + options.requestId + "/" + options.trackId;
-    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -352,7 +352,7 @@ export class WebAuth {
    */
   getTenantInfo() {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
-    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -374,7 +374,7 @@ export class WebAuth {
    */
   getClientInfo(options: { requestId: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
-    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -386,9 +386,9 @@ export class WebAuth {
     options.userAgent = window.navigator.userAgent;
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
     if (window.navigator.userAgent) {
-      return Helper.createPostPromise(options, _serviceURL,false, "GET");
+      return Helper.createHttpPromise(options, _serviceURL,false, "GET");
     }
-    return Helper.createPostPromise(undefined, _serviceURL,false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
   };
 
   /**
@@ -400,9 +400,9 @@ export class WebAuth {
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
     options.userAgent = window.navigator.userAgent;
     if (window.navigator.userAgent) {
-      return Helper.createPostPromise(options, _serviceURL,false, "DELETE");
+      return Helper.createHttpPromise(options, _serviceURL,false, "DELETE");
     }
-    return Helper.createPostPromise(undefined, _serviceURL,false, "DELETE");
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "DELETE");
   };
 
   /**
@@ -448,7 +448,7 @@ export class WebAuth {
  */
   getUnreviewedDevices(access_token: string, sub: string) {
     let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/unreviewlist/" + sub;
-    return Helper.createPostPromise(undefined, _serviceURL,false, "GET", access_token);
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", access_token);
   };
 
   /**
@@ -459,7 +459,7 @@ export class WebAuth {
    */
   getReviewedDevices(access_token: string, sub: string) {
     let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/reviewlist/" + sub;
-    return Helper.createPostPromise(undefined, _serviceURL,false, "GET", access_token);
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", access_token);
   };
 
   /**
@@ -470,7 +470,7 @@ export class WebAuth {
    */
   reviewDevice(options: UpdateReviewDeviceEntity, access_token: string) {
     let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/updatereview";
-    return Helper.createPostPromise(options, _serviceURL,false, "PUT", access_token);
+    return Helper.createHttpPromise(options, _serviceURL,false, "PUT", access_token);
   };
 
   /**
@@ -865,7 +865,7 @@ export class WebAuth {
    */
   getUserActivities(options: UserActivityEntity, access_token: string) {
     var _serviceURL = window.webAuthSettings.authority + "/useractivity-srv/latestactivity";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
+    return Helper.createHttpPromise(options, _serviceURL, false,"POST", access_token);
   };
 
   /**
@@ -924,7 +924,7 @@ export class WebAuth {
    */
   updateProfileImage(options: { image_key: string; }, access_token: string) {
     var _serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST", access_token);
+    return Helper.createHttpPromise(options, _serviceURL, false,"POST", access_token);
   };
 
   /**

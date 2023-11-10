@@ -16,7 +16,7 @@ test('Helper.CreateForm', () => {
 test('Helper.CreatePromise', () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "image/jpeg")
-    const data = Helper.createPostPromise({
+    const data = Helper.createHttpPromise({
         key1: "value1"
     }, 'http://google.com', false, "POST", 'a', myHeaders)
     expect(data).not.toBe(null)
