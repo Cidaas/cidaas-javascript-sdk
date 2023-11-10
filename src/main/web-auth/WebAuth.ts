@@ -1,5 +1,4 @@
 import { UserManager, UserManagerSettings } from "oidc-client-ts";
-import * as CryptoJS from 'crypto-js';
 
 import { Authentication } from "../authentication";
 import { Helper, CustomException } from "./Helper";
