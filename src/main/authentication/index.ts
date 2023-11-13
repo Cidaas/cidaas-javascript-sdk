@@ -169,34 +169,47 @@ export class Authentication {
      * silent sign in
      */
     silentSignIn() {
-        try {
-            if (this.userManager && this.webAuthSettings) {
-                this.userManager.signinSilent({
-                    state: this.webAuthSettings
-                }).then(function (user: any) {
-                    console.log("signed in : " + user.access_token);
-                });
-            } else {
-                throw "user manager is null";
+        return new Promise((resolve, reject) => {
+            try {
+                if (this.userManager && this.webAuthSettings) {
+
+                    this.userManager.signinSilent({
+                        state: this.webAuthSettings,
+                        silentRequestTimeoutInSeconds: 60
+                    }).then(function (user: any) {
+                        if (user) {
+                            resolve(user);
+                            return;
+                        }
+                        resolve(undefined);
+                    });
+                } else {
+                    throw "user manager or web auth settings is null";
+                }
+            } catch (ex) {
+                reject(ex);
             }
-        } catch (ex) { console.error(ex) }
+        });
     };
 
     /**
      * silent sign in callback
      * @returns 
      */
-    silentSignInCallback() {
+    silentSignInCallback(callbackurl?: string) {
         return new Promise((resolve, reject) => {
             try {
                 if (this.userManager) {
-                    this.userManager.signinSilentCallback(this.webAuthSettings.silent_redirect_uri)
+                    this.userManager.signinSilentCallback(callbackurl)
                         .then(function (user: any) {
                             if (user) {
                                 resolve(user);
                                 return;
                             }
                             resolve(undefined);
+                        })
+                        .catch((e) => {
+                            reject(e);
                         });
                 } else {
                     throw "user manager is null";
