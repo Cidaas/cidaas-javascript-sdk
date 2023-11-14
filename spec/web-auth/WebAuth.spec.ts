@@ -24,6 +24,10 @@ beforeEach(() => {
     webAuth = new WebAuth(settings);
 });
 
+test('empty test', async () =>{
+    expect(true).toBe(true);
+});
+
 /*
 test('getTenantInfo', async () =>{
     let tenant:any = await webAuth.getTenantInfo();
