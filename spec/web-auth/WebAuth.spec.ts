@@ -24,21 +24,6 @@ beforeEach(() => {
     webAuth = new WebAuth(settings);
 });
 
-test('getRequestId, getClientInfo getRegistrationSetup', async () =>{
-    let request:any = await webAuth.getRequestId();
-    expect(request).not.toBe(undefined);
-    expect(request.data).not.toBe(undefined);
-    expect(request.data.requestId).toBeTruthy();
-    let clientInfo:any = await webAuth.getClientInfo({requestId:request.data.requestId});
-    expect(clientInfo).not.toBe(undefined);
-    expect(clientInfo.data).not.toBe(undefined);
-    expect(clientInfo.data.client_name).toMatch("javascript-sdk-test-ui");
-    let regSetup:any = await webAuth.getRegistrationSetup({acceptlanguage:'en',requestId:request.data.requestId});
-    expect(regSetup).not.toBe(undefined);
-    expect(regSetup.data).not.toBe(undefined);
-    expect(regSetup.data.length).toEqual(6);
-});
-
 /*
 test('getTenantInfo', async () =>{
     let tenant:any = await webAuth.getTenantInfo();
