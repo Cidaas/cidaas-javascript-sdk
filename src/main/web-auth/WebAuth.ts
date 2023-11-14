@@ -97,14 +97,21 @@ export class WebAuth {
    * silentSignIn
    */
   silentSignIn() {
-    try {
-      if (!window.webAuthSettings && !window.authentication) {
-        throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
+
+    return new Promise((resolve, reject) => {
+      try {
+        if (!window.webAuthSettings && !window.authentication) {
+          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
+        }
+        window.authentication.silentSignIn().then(function (user: any) {
+          resolve(user);
+        }).catch(function (ex: any) {
+          reject(ex);
+        });
+      } catch (ex) {
+        console.log(ex);
       }
-      window.authentication.silentSignIn();
-    } catch (ex) {
-      console.log(ex);
-    }
+    });
   };
 
   /**
