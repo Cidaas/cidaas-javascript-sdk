@@ -60,7 +60,7 @@ export namespace VerificationService {
     code: string;
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -70,7 +70,7 @@ export namespace VerificationService {
    */
   export function getMFAList(options: IConfiguredListRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
-    return Helper.createPostPromise(options, _serviceURL, false,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -84,7 +84,7 @@ export namespace VerificationService {
     type: string;
   }) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/cancel/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -93,7 +93,7 @@ export namespace VerificationService {
    */
   export function getAllVerificationList(access_token: string) {
     const _serviceURL = `${window.webAuthSettings.authority}/verification-srv/config/list`;
-    return Helper.createPostPromise(undefined, _serviceURL,undefined, "GET", access_token);
+    return Helper.createHttpPromise(undefined, _serviceURL,undefined, "GET", access_token);
   };
 
   /**
@@ -103,7 +103,7 @@ export namespace VerificationService {
    */
   export function enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -113,7 +113,7 @@ export namespace VerificationService {
    */
   export function updateStatus(status_id: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-    return Helper.createPostPromise(undefined, _serviceURL, undefined,"POST");
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -123,7 +123,7 @@ export namespace VerificationService {
    */
   export function setupFidoVerification(options: FidoSetupEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/suggestmfa/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -133,7 +133,7 @@ export namespace VerificationService {
    */
   export function checkVerificationTypeConfigured(options: IConfiguredListRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
-    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**
@@ -143,7 +143,7 @@ export namespace VerificationService {
    */
   export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, false,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, false,"POST");
   };
 
   /**
@@ -153,7 +153,7 @@ export namespace VerificationService {
    */
   export function authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
-    return Helper.createPostPromise(options, _serviceURL, undefined,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined,"POST");
   };
 
   /**

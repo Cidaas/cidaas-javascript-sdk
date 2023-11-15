@@ -6,7 +6,7 @@ import { IConsentAcceptEntity } from '../../src/main/web-auth/Entities';
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/consent-management-srv/v2/consent`;
 const serviceBaseUrlV1: string = `${authority}/consent-management-srv/consent`;
-const httpSpy = jest.spyOn(Helper, 'createPostPromise');
+const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
 beforeAll(() => {
   (window as any).webAuthSettings = { authority: authority }

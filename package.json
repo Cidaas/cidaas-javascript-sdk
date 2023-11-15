@@ -28,7 +28,6 @@
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.4.0",
     "@toolz/is-a-regular-object": "^1.0.1",
-    "crypto-js": "^4.1.1",
     "oidc-client-ts": "^2.2.1"
   },
   "devDependencies": {
@@ -36,7 +35,6 @@
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-typescript": "^7.22.5",
     "@jest/globals": "^29.6.1",
-    "@types/crypto-js": "^4.1.2",
     "@types/jest": "^29.5.4",
     "@types/mocha": "5.2.7",
     "babel-jest": "^29.6.1",

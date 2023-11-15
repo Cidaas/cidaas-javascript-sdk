@@ -30,7 +30,7 @@ export class Helper {
   * @param headers??
   * @returns 
   */
-  static createPostPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any) {
+  static createHttpPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any) {
     return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();

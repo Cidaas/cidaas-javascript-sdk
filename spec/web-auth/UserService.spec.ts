@@ -26,7 +26,7 @@ beforeEach(() => {
             json: () => Promise.resolve({ test: 100 }),
         }),
     ) as jest.Mock;
-    httpSpy = jest.spyOn(Helper, 'createPostPromise');
+    httpSpy = jest.spyOn(Helper, 'createHttpPromise');
     (window as any).webAuthSettings = {authority: 'baseURL'}
 });
 
