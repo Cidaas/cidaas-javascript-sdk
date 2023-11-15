@@ -21,7 +21,7 @@ export namespace UserService {
       throw new CustomException("access_token cannot be empty", 417);
     }
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo";
-    return Helper.createPostPromise(undefined, _serviceURL, undefined, "GET", options.access_token);
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", options.access_token);
   };
 
   /**
@@ -85,7 +85,7 @@ export namespace UserService {
    */
   export function getInviteUserDetails(options: { invite_id: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
-    return Helper.createPostPromise(undefined, _serviceURL, false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 
   /**
@@ -129,7 +129,7 @@ export namespace UserService {
    */
   export function initiateResetPassword(options: ResetPasswordEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
-    return Helper.createPostPromise(options, _serviceURL, false, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST");
   };
 
   /**
@@ -144,7 +144,7 @@ export namespace UserService {
         document.body.appendChild(form);
         form.submit();
       } else {
-        return Helper.createPostPromise(options, url, false, "POST");
+        return Helper.createHttpPromise(options, url, false, "POST");
       }
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -163,7 +163,7 @@ export namespace UserService {
         document.body.appendChild(form);
         form.submit();
       } else {
-        return Helper.createPostPromise(options, url, false, "POST");
+        return Helper.createHttpPromise(options, url, false, "POST");
       }
     } catch (ex) {
       throw new CustomException(ex, 417);
@@ -177,7 +177,7 @@ export namespace UserService {
    */
   export function getDeduplicationDetails(options: { trackId: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
-    return Helper.createPostPromise(options, _serviceURL, false, "GET", undefined);
+    return Helper.createHttpPromise(options, _serviceURL, false, "GET", undefined);
   };
 
   /**
@@ -203,7 +203,7 @@ export namespace UserService {
    */
   export function registerDeduplication(options: { trackId: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
-    return Helper.createPostPromise(undefined, _serviceURL, undefined, "POST");
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST");
   };
 
   /**
@@ -214,7 +214,7 @@ export namespace UserService {
    */
   export function changePassword(options: ChangePasswordEntity, access_token: string) {
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/changepassword";
-    return Helper.createPostPromise(options, _serviceURL, false, "POST", access_token);
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
   };
 
   /**
@@ -226,7 +226,7 @@ export namespace UserService {
    */
   export function updateProfile(options: UserEntity, access_token: string, sub: string) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
-    return Helper.createPostPromise(options, _serviceURL, false, "PUT", access_token);
+    return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
   };
 
   /**
@@ -238,7 +238,7 @@ export namespace UserService {
   export function initiateLinkAccount(options: IUserLinkEntity, access_token: string) {
     options.user_name_type = 'email';
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/initiate";
-    return Helper.createPostPromise(options, _serviceURL, false, "POST", access_token);
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
   };
 
   /**
@@ -249,7 +249,7 @@ export namespace UserService {
    */
   export function completeLinkAccount(options: { code?: string; link_request_id?: string; }, access_token: string) {
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
-    return Helper.createPostPromise(options, _serviceURL, false, "POST", access_token);
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
   };
 
   /**
@@ -260,7 +260,7 @@ export namespace UserService {
    */
   export function getLinkedUsers(access_token: string, sub: string) {
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo/social/" + sub;
-    return Helper.createPostPromise(undefined, _serviceURL, false, "POST", access_token);
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "POST", access_token);
   };
 
   /**
@@ -271,7 +271,7 @@ export namespace UserService {
    */
   export function unlinkAccount(access_token: string, identityId: string) {
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unlink/" + identityId;
-    return Helper.createPostPromise(undefined, _serviceURL, false, "POST", access_token);
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "POST", access_token);
   };
 
   /**
@@ -281,7 +281,7 @@ export namespace UserService {
    */
   export function deleteUserAccount(options: { access_token: string, sub: string }) {
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
-    return Helper.createPostPromise(options, _serviceURL, undefined, "POST", options.access_token);
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", options.access_token);
   };
 
 
@@ -292,6 +292,6 @@ export namespace UserService {
    */
   export function userCheckExists(options: FindUserEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + "?webfinger=" + options.webfinger + "&rememberMe=" + options.rememberMe;
-    return Helper.createPostPromise(options, _serviceURL, undefined, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
   };
 }
