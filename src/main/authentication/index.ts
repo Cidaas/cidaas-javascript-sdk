@@ -5,8 +5,20 @@ export class Authentication {
     constructor(public webAuthSettings: UserManagerSettings, public userManager: UserManager) { }
 
     /**
-     * redirect sign in
-     * @param view_type 
+     * To use redirectSignIn through cidaas sdk, call ****loginWithBrowser()****. This will redirect you to the hosted login page.
+     * once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
+     * @example
+     * ```js
+     * cidaas.loginWithBrowser();
+     * ```
+     * 
+     * To register through cidaas sdk, call ****registerWithBrowser()****. This will redirect you to the hosted registration page.
+     * * @example
+     * ```js
+     * cidaas.registerWithBrowser();
+     * ```
+     * 
+     * @param view_type: either 'login' or 'register'
      */
     redirectSignIn(view_type: string) {
         try {
@@ -37,8 +49,16 @@ export class Authentication {
     };
 
     /**
-     * redirect sign in callback
-     * @returns 
+     * once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
+     * To complete the login process, call ****logincallback()****. This will parses the access_token, id_token and whatever in hash in the redirect url.
+     * @example
+     * ```js
+     * cidaas.loginCallback().then(function (response) {
+     *   // the response will give you login details.
+     * }).catch(function(ex) {
+     *  // your failure code here
+     * });
+     * ```
      */
     redirectSignInCallback() {
         return new Promise((resolve, reject) => {
@@ -62,8 +82,15 @@ export class Authentication {
     }
 
     /**
-     * redirect sign out
-     * @returns 
+     * If you use the logout method, you need set the redirect url, if not it will automatically redirect to the login page
+     * @example
+     * ```js
+     * cidaas.logout().then(function () {
+     *   // your logout success code here
+     * }).catch(function(ex) {
+     *  // your failure code here
+     * });
+     * ```
      */
     redirectSignOut() {
         return new Promise((resolve, reject) => {
@@ -87,8 +114,15 @@ export class Authentication {
     };
 
     /**
-     * redirect sign out callback
-     * @returns 
+     * ****logoutCallback()**** will parses the details of userState after logout.
+     * @example
+     * ```js
+     * cidaas.logoutCallback().then(function (response) {
+     *   // the response will give you userState details.
+     * }).catch(function(ex) {
+     *  // your failure code here
+     * });
+     * ```
      */
     redirectSignOutCallback() {
         return new Promise((resolve, reject) => {
@@ -109,7 +143,11 @@ export class Authentication {
     };
 
     /**
-     * pop up sign in
+     * ****popupSignIn()**** will open the hosted login page in pop up window.
+     * @example
+     * ```js
+     * cidaas.popupSignIn();
+     * ```
      */
     popupSignIn() {
         try {
@@ -124,7 +162,16 @@ export class Authentication {
     };
 
     /**
-     * pop up sign in callback
+     * To complete the popup login process, call ****popupSignInCallback()**** from the popup login window. 
+     * Popup window will be closed after doing callback
+     * @example
+     * ```js
+     * cidaas.popupSignInCallback().then(function (response) {
+     *   // the response will give you login details.
+     * }).catch(function(ex) {
+     *  // your failure code here
+     * });
+     * ```
      */
     popupSignInCallback() {
         try {
@@ -135,7 +182,11 @@ export class Authentication {
     };
 
     /**
-     * pop up sign out
+     * ****popupSignOut()**** will open the hosted logout page in pop up window.
+     * @example
+     * ```js
+     * cidaas.popupSignOut()
+     * ```
      */
     popupSignOut() {
         try {
@@ -153,7 +204,12 @@ export class Authentication {
     };
 
     /**
-     * pop up sign out callback
+     * calling ****popupSignOutCallback()**** from the popup window complete popup logout process. 
+     * Popup window won't be closed after doing callback
+     * @example
+     * ```js
+     * cidaas.popupSignOutCallback();
+     * ```
      */
     popupSignOutCallback() {
         try {
@@ -166,37 +222,62 @@ export class Authentication {
     };
 
     /**
-     * silent sign in
+     * ****silentSignIn()**** will open the hosted login page in an iframe. 
+     * this function could only be called from the same domain. Cross Domain is not supported for security purpose.
+     * @example
+     * ```js
+     * cidaas.silentSignIn().then(function (response) {
+     *   // the response will give you user details.
+     * }).catch(function(ex) {
+     *  // your failure code here
+     * });
+     * ```
      */
     silentSignIn() {
-        try {
-            if (this.userManager && this.webAuthSettings) {
-                this.userManager.signinSilent({
-                    state: this.webAuthSettings
-                }).then(function (user: any) {
-                    console.log("signed in : " + user.access_token);
-                });
-            } else {
-                throw "user manager is null";
+        return new Promise((resolve, reject) => {
+            try {
+                if (this.userManager && this.webAuthSettings) {
+
+                    this.userManager.signinSilent({
+                        state: this.webAuthSettings,
+                        silentRequestTimeoutInSeconds: 60
+                    }).then(function (user: any) {
+                        if (user) {
+                            resolve(user);
+                            return;
+                        }
+                        resolve(undefined);
+                    });
+                } else {
+                    throw "user manager or web auth settings is null";
+                }
+            } catch (ex) {
+                reject(ex);
             }
-        } catch (ex) { console.error(ex) }
+        });
     };
 
     /**
-     * silent sign in callback
-     * @returns 
+     * To complete the silent login process, call ****logincallback()**** from the iframe. This will complete the login process in iframe.
+     * @example
+     * ```js
+     * cidaas.silentSignInCallback();
+     * ```
      */
-    silentSignInCallback() {
+    silentSignInCallback(callbackurl?: string) {
         return new Promise((resolve, reject) => {
             try {
                 if (this.userManager) {
-                    this.userManager.signinSilentCallback(this.webAuthSettings.silent_redirect_uri)
+                    this.userManager.signinSilentCallback(callbackurl)
                         .then(function (user: any) {
                             if (user) {
                                 resolve(user);
                                 return;
                             }
                             resolve(undefined);
+                        })
+                        .catch((e) => {
+                            reject(e);
                         });
                 } else {
                     throw "user manager is null";

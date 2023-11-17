@@ -4,6 +4,9 @@
 
 If you are upgrading: please see ['UPGRADING.md'](UPGRADING.md)
 
+### Fixed
+- fix silent sign in flow
+
 ### Added
 - popup & silent authentication functions is directly implemented in WebAuth instead of using mode.
 - document functions as typedoc.
@@ -13,6 +16,7 @@ If you are upgrading: please see ['UPGRADING.md'](UPGRADING.md)
 ### Changed
 - **Breaking** rename functions.
 - **Breaking** update WebAuth Entities
+- **Breaking** silentSignIn now returning User Promise
 
 ### Removed
 - **Breaking** remove deprecated functions

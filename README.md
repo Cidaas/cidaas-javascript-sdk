@@ -101,10 +101,6 @@ Without Providing CidaasVersion, your application will use response handling of 
 
 #### Usage
 
-#### Browser Methods
-
-The below methods will applicable for using cidaas hosted pages only.
-
 ##### Login With Browser
 
 To login through cidaas sdk, call ****loginWithBrowser()****. This will redirect you to the hosted login page.
@@ -126,14 +122,6 @@ cidaas.loginCallback().then(function(response) {
 });
 ```
 
-##### Register With Browser
-
-To register through cidaas sdk, call ****registerWithBrowser()****. This will redirect you to the hosted registration page.
-
-```js
-cidaas.registerWithBrowser();
-```
-
 
 ##### Getting UserInfo
 
@@ -145,19 +133,6 @@ cidaas.getUserInfo().then(function (response) {
     // your failure code here
 });; 
 ```
-
-
-##### Logout
-
-```js
-cidaas.logout().then(function () {
-    // your logout success code here
-}).catch(function(ex) {
-    // your failure code here
-});
-```
-
-If you use the logout method, you need set the redirect url, if not it will automatically redirect to the login page
 
 #### Native SDK methods
 
