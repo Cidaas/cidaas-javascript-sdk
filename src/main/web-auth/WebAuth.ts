@@ -573,15 +573,6 @@ export class WebAuth {
   };
 
   /**
-   * login with username and password and return response
-   * @param options 
-   * @returns 
-   */
-  async loginWithCredentialsAsynFn(options: LoginFormRequestAsyncEntity) {
-    await LoginService.loginWithCredentialsAsynFn(options);
-  };
-
-  /**
    * login with social
    * @param options 
    * @param queryParams 
@@ -751,28 +742,12 @@ export class WebAuth {
   };
 
   /**
-   * scope consent continue login
-   * @param options 
-   */
-  scopeConsentContinue(options: { track_id: string }) {
-    LoginService.scopeConsentContinue(options);
-  };
-
-  /**
    * accept claim Consent
    * @param options 
    * @returns 
    */
   acceptClaimConsent(options: { client_id: string; sub: string; accepted_claims: string[]; }) {
     return ConsentService.acceptClaimConsent(options);
-  };
-
-  /**
-   * claim consent continue login
-   * @param options 
-   */
-  claimConsentContinue(options: { track_id: string }) {
-    LoginService.claimConsentContinue(options);
   };
 
   /**
