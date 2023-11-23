@@ -1013,8 +1013,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  initiateMFA(options: IInitVerificationAuthenticationRequestEntity) {
-    return VerificationService.initiateMFA(options);
+  initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken: string) {
+    return VerificationService.initiateMFA(options, accessToken);
   };
 
   /**
