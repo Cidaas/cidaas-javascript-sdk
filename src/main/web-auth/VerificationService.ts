@@ -141,9 +141,9 @@ export namespace VerificationService {
    * @param options 
    * @returns 
    */
-  export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity) {
+  export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-    return Helper.createHttpPromise(options, _serviceURL, false,"POST");
+    return Helper.createHttpPromise(options, _serviceURL, false,"POST", accessToken);
   };
 
   /**

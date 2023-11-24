@@ -573,15 +573,6 @@ export class WebAuth {
   };
 
   /**
-   * login with username and password and return response
-   * @param options 
-   * @returns 
-   */
-  async loginWithCredentialsAsynFn(options: LoginFormRequestAsyncEntity) {
-    await LoginService.loginWithCredentialsAsynFn(options);
-  };
-
-  /**
    * login with social
    * @param options 
    * @param queryParams 
@@ -751,28 +742,12 @@ export class WebAuth {
   };
 
   /**
-   * scope consent continue login
-   * @param options 
-   */
-  scopeConsentContinue(options: { track_id: string }) {
-    LoginService.scopeConsentContinue(options);
-  };
-
-  /**
    * accept claim Consent
    * @param options 
    * @returns 
    */
   acceptClaimConsent(options: { client_id: string; sub: string; accepted_claims: string[]; }) {
     return ConsentService.acceptClaimConsent(options);
-  };
-
-  /**
-   * claim consent continue login
-   * @param options 
-   */
-  claimConsentContinue(options: { track_id: string }) {
-    LoginService.claimConsentContinue(options);
   };
 
   /**
@@ -1009,14 +984,6 @@ export class WebAuth {
   };
 
   /**
-   * loginAfterRegister
-   * @param options 
-   */
-  loginAfterRegister(options: { device_id: string; dc?: string; rememberMe: boolean; trackId: string; }) {
-    LoginService.loginAfterRegister(options);
-  };
-
-  /**
    * device code flow - verify
    * @param code 
    */
@@ -1046,8 +1013,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  initiateMFA(options: IInitVerificationAuthenticationRequestEntity) {
-    return VerificationService.initiateMFA(options);
+  initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken: string) {
+    return VerificationService.initiateMFA(options, accessToken);
   };
 
   /**
