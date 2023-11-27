@@ -20,7 +20,7 @@ import {
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
 const serviceBaseUrl1: string = `${authority}/useractions-srv/userexistence`
-const httpSpy = jest.spyOn(Helper, 'createPostPromise');
+const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 const formSpy = jest.spyOn(Helper, 'createForm');
 const cidaas_version = 3;
 
@@ -34,7 +34,7 @@ test('getUserProfile', () => {
   }
   const serviceURL = `${serviceBaseUrl}/userinfo`;
   UserService.getUserProfile(options);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', options.access_token);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, 'GET', options.access_token);
 });
 
 test('getInviteUserDetails', () => {
@@ -146,7 +146,7 @@ test('registerDeduplication', () => {
   }
   const serviceURL = `${serviceBaseUrl}/deduplication/register/${options.trackId}`;
   UserService.registerDeduplication(options);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'POST');
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, 'POST');
 });
 
 test('changePassword', () => {
@@ -226,7 +226,7 @@ test('deleteUserAccount', () => {
   }
   const serviceURL = `${serviceBaseUrl}/user/unregister/scheduler/schedule/${options.sub}`;
   UserService.deleteUserAccount(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', options.access_token);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', options.access_token);
 });
 
 test('userCheckExists', () => {
@@ -245,7 +245,7 @@ test('userCheckExists', () => {
   }
   const serviceURL = `${serviceBaseUrl1}/${options.requestId}?webfinger=${options.webfinger}&rememberMe=${options.rememberMe}`;
   UserService.userCheckExists(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
 });
 
 test('deduplicationLogin', () => {

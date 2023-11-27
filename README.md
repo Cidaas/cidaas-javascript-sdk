@@ -101,10 +101,6 @@ Without Providing CidaasVersion, your application will use response handling of 
 
 #### Usage
 
-#### Browser Methods
-
-The below methods will applicable for using cidaas hosted pages only.
-
 ##### Login With Browser
 
 To login through cidaas sdk, call ****loginWithBrowser()****. This will redirect you to the hosted login page.
@@ -126,14 +122,6 @@ cidaas.loginCallback().then(function(response) {
 });
 ```
 
-##### Register With Browser
-
-To register through cidaas sdk, call ****registerWithBrowser()****. This will redirect you to the hosted registration page.
-
-```js
-cidaas.registerWithBrowser();
-```
-
 
 ##### Getting UserInfo
 
@@ -145,19 +133,6 @@ cidaas.getUserInfo().then(function (response) {
     // your failure code here
 });; 
 ```
-
-
-##### Logout
-
-```js
-cidaas.logout().then(function () {
-    // your logout success code here
-}).catch(function(ex) {
-    // your failure code here
-});
-```
-
-If you use the logout method, you need set the redirect url, if not it will automatically redirect to the login page
 
 #### Native SDK methods
 
@@ -257,60 +232,6 @@ cidaas.getClientInfo({
         "client_name":"Single Page WebApp"
     }
 }
-```
-
-##### Login with credentials
-
-To login with your credentials, call ****loginWithCredentials()****. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/5gphdk6vapp56-classic-login#call-login-api for more detials.
-
-##### Sample code
-```js
-cidaas.loginWithCredentials({
-    username: 'xxxx@gmail.com',
-    username_type: 'email',
-    password: '123456',
-    requestId: 'your requestId',
-});
-```
-
-#### Login with credentials and get response
-To login with username and password, call **loginWithCredentialsAsynFn()**. The function accepts a function parameter of type object. In the sample example the object is named as options. Below are the key that need to be passed in the options object
-
-| Name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| request_id | string | request id of the session | false |
-| username | string | the username of the user  | false |
-| password | string | password to authenticate the username | false |
-
-
-##### Sample code
-
-```js
-options = {
-  request_id: "bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-  username: "test@cidaas.de"
-  password: "cidaas"
-}
-
-cidaas.loginWithCredentialsAsynFn(options)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-});
-```
-
-##### Login with social
-
-To login with social providers, call ****loginWithSocial()****. This will redirect you to the facebook login page. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9mi5uqxhqlsm5-social-login#call-social-login-api for more details
-
-##### Sample code
-```js
- cidaas.loginWithSocial({
-    provider: 'facebook',
-    requestId: 'your requestId',
-});
 ```
 
 ##### Getting Registration Fields
@@ -440,52 +361,6 @@ cidaas.getMissingFields({
     // your failure code here
 });
 ```
-
-##### Progressive Registration
-For progressive registration, call **progressiveRegistration()**. While logging in If the API returns 417 with the error message MissingRequiredFields, call the **getMissingFieldsLogin** to get the list of missing fileds and proceed with progressive registration. In the sample request only the required fields are added, however you must provide the missing fields along with the required fields.
-
-##### Function parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| options | object | The object with the keys described in the below table under section options |
-| headers | object | The object with the keys described in the below table under section headers  |
-
-##### options
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| acceptlanguage | string | your locale/browser local  | true |
-
-* Please provide provide the missing fields along with the required fields
-
-##### headers
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| trackId | string | the track id received while logging in  | false |
-| requestId | string | request id of the session | false |
-
-
-##### Sample code
-
-```js
-options = {
-    acceptlanguage: 'en-Us'
-}
-
-headers = {
-    trackId: 'bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-    requestId: 'bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-}
-cidaas.progressiveRegistration(options, headers)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-})
-```
-
 ##### Get Missing Fields Login
 To get the missing fields after login, call **getMissingFieldsLogin()**.
 
@@ -1569,20 +1444,6 @@ this.cidaas.initiateVoice({
 ```
 
 Once response is received, listen to the socket
-
-#### MFA Continue
-
-To continue after MFA completion, call ****mfaContinue()****.
-
-##### Sample code
-```js
-this.cidaas.mfaContinue({
-      trackingCode: 'your tracking Code', // receives in socket
-      track_id: 'your track id', 
-      sub: 'your sub',
-      requestId: 'your request id'
-    });
-```
 
 
 ##### Get All Verification List

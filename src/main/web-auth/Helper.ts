@@ -30,7 +30,7 @@ export class Helper {
   * @param headers??
   * @returns 
   */
-  static createPostPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any) {
+  static createHttpPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any) {
     return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
@@ -55,8 +55,16 @@ export class Helper {
         if (access_token) {
           http.setRequestHeader("Authorization", `Bearer ${access_token}`);
         }
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
+        let acceptlanguage;
+        if (headers?.acceptlanguage) {
+          acceptlanguage = headers.acceptlanguage
+        } else if (options?.acceptlanguage) {
+          acceptlanguage = options.acceptlanguage
+        } else {
+          acceptlanguage = window?.localeSettings
+        }
+        if (acceptlanguage) {
+          http.setRequestHeader("accept-language", acceptlanguage); 
         }
         if (options) {
           http.send(JSON.stringify(options));

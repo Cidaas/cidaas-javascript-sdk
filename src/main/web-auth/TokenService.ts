@@ -15,7 +15,7 @@ export namespace TokenService {
     options.client_id = window.webAuthSettings.client_id;
     options.grant_type = 'refresh_token';
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
-    return Helper.createPostPromise(options, _serviceURL, undefined, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
   };
 
   /**
@@ -35,7 +35,7 @@ export namespace TokenService {
       options.code_verifier = signInRequest.state?.code_verifier;
     }
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
-    return Helper.createPostPromise(options, _serviceURL, undefined, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
   };
 
   /**
@@ -48,7 +48,7 @@ export namespace TokenService {
       throw new CustomException("token or token_type_hint cannot be empty", 417);
     }
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
-    return Helper.createPostPromise(options, _serviceURL, false, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST");
   };
 
   /**
@@ -61,7 +61,7 @@ export namespace TokenService {
     locale: string;
   }) {
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id + "?acceptLanguage=" + options.locale;
-    return Helper.createPostPromise(undefined, _serviceURL, false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 
   /**
@@ -72,7 +72,7 @@ export namespace TokenService {
    */
   export function updateSuggestMFA(track_id: string, options: ISuggestedMFAActionConfig) {
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
-    return Helper.createPostPromise(options, _serviceURL, false, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST");
   };
 
   /**
@@ -82,7 +82,7 @@ export namespace TokenService {
    */
   export function getMissingFieldsLogin(trackId: string) {
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + trackId;
-    return Helper.createPostPromise(undefined, _serviceURL, false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 
   /**
