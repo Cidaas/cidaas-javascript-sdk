@@ -206,7 +206,7 @@ test('getLinkedUsers', () => {
   }
   const serviceURL = `${serviceBaseUrl}/userinfo/social/${options.sub}`;
   UserService.getLinkedUsers(options.access_token, options.sub);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'POST', options.access_token);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', options.access_token);
 });
 
 test('unlinkAccount', () => {

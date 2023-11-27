@@ -362,7 +362,7 @@ export namespace UserService {
    */
   export function getLinkedUsers(access_token: string, sub: string) {
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo/social/" + sub;
-    return Helper.createPostPromise(undefined, _serviceURL, false, "POST", access_token);
+    return Helper.createPostPromise(undefined, _serviceURL, false, "GET", access_token);
   };
 
   /**
