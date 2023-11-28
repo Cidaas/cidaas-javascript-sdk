@@ -1,162 +1,158 @@
-import {
-    VerificationService,
-} from '../../src/main/web-auth/VerificationService';
-import { TestConstants } from '../TestConstants';
+import { VerificationService } from '../../src/main/web-auth/VerificationService';
+import { Helper } from "../../src/main/web-auth/Helper";
+import { AccountVerificationRequestEntity, IAuthVerificationAuthenticationRequestEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity } from '../../src/main/web-auth/Entities';
 
-let windowSpy:any;
 
-beforeEach(() => {
-    windowSpy = jest.spyOn(window, "window", "get");
-    const xhrMock: Partial<XMLHttpRequest> = {
-        open: jest.fn(),
-        send: jest.fn(),
-        setRequestHeader: jest.fn(),
-        readyState: 4,
-        status: 200,
-        response: 'Hello World!'
-    };
-    jest.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
+const authority = 'baseURL';
+const serviceBaseUrl: string = `${authority}/verification-srv`;
+const createFormSpy = jest.spyOn(Helper, 'createForm');
+const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
+const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            json: () => Promise.resolve({ test: 100 }),
-        }),
-    ) as jest.Mock;
-
-    //Empty Implementation
-    jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation(() => {
-    });
-
+beforeAll(() => {
+  (window as any).webAuthSettings = { authority: authority }
 });
 
-afterEach(() => {
-    windowSpy.mockRestore();
-})
+test('initiateAccountVerification', () => {
+  const options: AccountVerificationRequestEntity = {
+    sub: '123'
+  };
+  const serviceURL = `${serviceBaseUrl}/account/initiate`;
+  VerificationService.initiateAccountVerification(options);
+  expect(createFormSpy).toHaveBeenCalledWith(serviceURL, options);
+  expect(submitFormSpy).toHaveBeenCalled();
+});
 
 test('verifyAccount', () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
-
-    let data = VerificationService.verifyAccount({accvid:'1', code:'1'});
-    expect(data).not.toBe(undefined)
+  const options = {
+    accvid: 'accvid',
+    code: 'code'
+  };
+  const serviceURL = `${serviceBaseUrl}/account/verify`;
+  VerificationService.verifyAccount(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
 });
 
 test('getMFAList', () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
-
-    let data = VerificationService.getMFAList(TestConstants.configuredList);
-    expect(data).not.toBe(undefined)
+  const options: IConfiguredListRequestEntity = {
+    sub: 'sub',
+    email: 'email',
+    mobile_number: 'mobile_number',
+    username: 'username',
+    request_id: 'request_id',
+    verification_types: [],
+    single_factor_sub_ref: 'single_factor_sub_ref',
+    device_fp: 'device_fp',
+    provider: 'provider',
+    device_id: 'device_id',
+    verification_type: 'verification_type'
+  };
+  const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
+  VerificationService.getMFAList(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
 });
 
 test('cancelMFA', () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
-
-    let data = VerificationService.cancelMFA({type:'typ',exchange_id:'ex1',reason:'1'});
-    expect(data).not.toBe(undefined)
+  const options = {
+    exchange_id: 'exchange_id',
+    reason: 'reason',
+    type: 'type'
+  };
+  const serviceURL = `${serviceBaseUrl}/v2/authenticate/cancel/${options.type}`;
+  VerificationService.cancelMFA(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
 });
 
-
-
-test('updateStatus, setupFidoVerification, usw..', () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
-
-    let data = VerificationService.updateStatus('i');
-    expect(data).not.toBe(undefined);
-
-    data = VerificationService.setupFidoVerification(TestConstants.fido);
-    expect(data).not.toBe(undefined);
-
-    data = VerificationService.authenticateMFA(TestConstants.authenticationVerificationRequest);
-    expect(data).not.toBe(undefined);
-
-    data = VerificationService.initiateMFA(TestConstants.initVerificationRequest);
-    expect(data).not.toBe(undefined);
-
-    data = VerificationService.checkVerificationTypeConfigured(TestConstants.configuredList);
-    expect(data).not.toBe(undefined);
-
-    data = VerificationService.setupFidoVerification(TestConstants.fido);
-    expect(data).not.toBe(undefined);
-
-    data = VerificationService.authenticateFaceVerification(TestConstants.faceVerification);
-    expect(data).not.toBe(undefined);
-
-    data = VerificationService.enrollVerification(TestConstants.enrollVerificationRequest);
-    expect(data).not.toBe(undefined);
-
+test('getAllVerificationList', () => {
+  const accessToken = 'accessToken';
+  const serviceURL = `${serviceBaseUrl}/config/list`;
+  VerificationService.getAllVerificationList(accessToken);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, "GET", accessToken);
 });
 
-
-
-test('getAllVerificationList', async () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
-
-    let data =  VerificationService.getAllVerificationList('1');
-    expect(data).not.toBe(undefined)
+test('initiateEnrollment', () => {
+  const options = {
+    verification_type: 'verification_type',
+    deviceInfo: {
+      deviceId: 'deviceId', 
+      location: {
+        lat: 'lat', 
+        lon: 'lon'
+      }
+    }
+  };
+  const accessToken = 'accessToken';
+  const serviceURL = `${serviceBaseUrl}/v2/setup/initiate/${options.verification_type}`;
+  VerificationService.initiateEnrollment(options, accessToken);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST", accessToken);
 });
 
-
-
-//Fetch
-test('initiateAccountVerificationAsynFn', async () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
-
-    let data = VerificationService.initiateAccountVerificationAsynFn(TestConstants.accountVerification);
-    expect(data).not.toBe(undefined);
+test('getEnrollmentStatus', () => {
+  const status_id = 'status_id';
+  const accessToken = 'accessToken';
+  const serviceURL = `${serviceBaseUrl}/v2/notification/status/${status_id}`;
+  VerificationService.getEnrollmentStatus(status_id, accessToken);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, "POST", accessToken);
 });
 
-//Form Submit
-test('initiateAccountVerification', async () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
-    VerificationService.initiateAccountVerification(TestConstants.accountVerification);
-
+test('enrollVerification', () => {
+  const options: IEnrollVerificationSetupRequestEntity = {
+    exchange_id: 'exchange_id',
+    device_id: 'device_id',
+    finger_print: 'finger_print',
+    client_id: 'client_id',
+    push_id: 'push_id',
+    pass_code: 'pass_code',
+    pkce_key: 'pkce_key',
+    face_attempt: 0,
+    attempt: 0,
+    fido2_client_response: {},
+    verification_type: 'verification_type'
+  };
+  const serviceURL = `${serviceBaseUrl}/v2/setup/enroll/${options.verification_type}`;
+  VerificationService.enrollVerification(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
 });
 
+test('checkVerificationTypeConfigured', () => {
+  const options: IConfiguredListRequestEntity = {
+    sub: 'sub',
+    email: 'email',
+    mobile_number: 'mobile_number',
+    username: 'username',
+    request_id: 'request_id',
+    verification_types: [],
+    single_factor_sub_ref: 'single_factor_sub_ref',
+    device_fp: 'device_fp',
+    provider: 'provider',
+    device_id: 'device_id',
+    verification_type: 'verification_type'
+  };
+  const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/check/${options.verification_type}`;
+  VerificationService.checkVerificationTypeConfigured(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
+});
+
+test('initiateMFA', () => {
+  const options: IInitVerificationAuthenticationRequestEntity = {
+    usage_type: 'usage_type',
+    processingType: 'processingType',
+    request_id: 'request_id',
+    type: 'type'
+  };
+  const accessToken = 'accessToken';
+  const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
+  VerificationService.initiateMFA(options, accessToken);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", accessToken);
+});
+
+test('authenticateMFA', () => {
+  const options: IAuthVerificationAuthenticationRequestEntity = {
+    type: 'type',
+    exchange_id: 'exchange_id',
+    client_id: 'client_id'
+  };
+  const serviceURL = `${serviceBaseUrl}/v2/authenticate/authenticate/${options.type}`;
+  VerificationService.authenticateMFA(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
+});

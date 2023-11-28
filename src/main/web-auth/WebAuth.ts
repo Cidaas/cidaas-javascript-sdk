@@ -628,15 +628,6 @@ export class WebAuth {
   };
 
   /**
-   * initiate verification and return response
-   * @param options 
-   * @returns 
-   */
-  async initiateAccountVerificationAsynFn(options: AccountVerificationRequestEntity) {
-    return await VerificationService.initiateAccountVerificationAsynFn(options);
-  };
-
-  /**
    * verify account
    * @param options 
    * @returns 
@@ -924,8 +915,14 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
-    return VerificationService.enrollVerification(options);
+  initiateEnrollment(options: {
+    verification_type: string,
+    deviceInfo: {
+      deviceId: "", 
+      location: {lat: "", lon: ""}
+    }
+  }, accessToken: string) {
+    return VerificationService.initiateEnrollment(options, accessToken);
   };
 
   /**
@@ -933,18 +930,18 @@ export class WebAuth {
    * @param status_id 
    * @returns 
    */
-  updateStatus(status_id: string) {
-    return VerificationService.updateStatus(status_id);
+  getEnrollmentStatus(status_id: string, accessToken: string) {
+    return VerificationService.getEnrollmentStatus(status_id, accessToken);
   };
 
   /**
-   * setupFidoVerification
+   * enrollVerification
    * @param options 
    * @returns 
    */
-  setupFidoVerification(options: FidoSetupEntity) {
-    return VerificationService.setupFidoVerification(options);
-  };
+    enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
+      return VerificationService.enrollVerification(options);
+    };
 
   /**
    * checkVerificationTypeConfigured
@@ -1024,14 +1021,5 @@ export class WebAuth {
    */
   authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
     return VerificationService.authenticateMFA(options);
-  };
-
-  /**
-   * authenticateVerification form type (for face)
-   * @param options 
-   * @returns 
-   */
-  authenticateFaceVerification(options: FaceVerificationAuthenticationRequestEntity) {
-    return VerificationService.authenticateFaceVerification(options);
   };
 }
