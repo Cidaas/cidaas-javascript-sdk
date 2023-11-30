@@ -901,16 +901,6 @@ export class WebAuth {
   };
 
   /**
-   * updateSuggestMFA
-   * @param track_id 
-   * @param options 
-   * @returns 
-   */
-  updateSuggestMFA(track_id: string, options: ISuggestedMFAActionConfig) {
-    return TokenService.updateSuggestMFA(track_id, options)
-  };
-
-  /**
    * enrollVerification
    * @param options 
    * @returns 
