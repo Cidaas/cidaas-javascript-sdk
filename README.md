@@ -408,27 +408,6 @@ cidaas.getMissingFields({
     // your failure code here
 });
 ```
-##### Get Missing Fields Login
-To get the missing fields after login, call **getMissingFieldsLogin()**.
-
-##### Function parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| trackId | string | the track id received while logging in  |
-
-
-##### Sample code
-
-```js
-let trackId = 'bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
-cidaas.getMissingFieldsLogin(trackId)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-});
-```
 
 ##### Get Communication Status
 
@@ -1092,79 +1071,6 @@ this.socket.on("status-update", (msg) => {
     if (msg.status == "AUTHENTICATED") {
         // do next process
     }
-});
-```
-#### Access Token
-
-##### Get aceess token
-To get a new token with th grant type authorization_code, call **getAccessToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| code | string | code to create a new token | false |
-
-##### Sample code
-
-```js
-options = {
-  code: "123456",
-}
-
-cidaas.getAccessToken(options)
-.then(function (response) {
-  // type your code here
-})
-.catch(function (ex) {
-  // your failure code here
-});
-```
-
-##### Validate access token
-To validate an access token, call **validateAccessToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table.
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| token | string | access token | false |
-| token_type_hint | string | token type hint. accepted token type hints are access_token, id_token, refresh_token, sso | false |
-
-
-##### Sample code
-
-```js
-options = {
-  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-  token_type_hint: "access_token",
-}
-
-cidaas.validateAccessToken(options)
-.then(function (response) {
-  // type your code here
-})
-.catch(function (ex) {
-  // your failure code here
-});
-```
-
-##### Renew token
-To get a new token with the grant type refresh_token, call **renewToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table
-
-| Key Name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| refresh_token | string | The refresh token to create a new token. The refresh token is received while creating an access token using the token endpoint and later can be used to fetch a new token without using credentials | false |
-
-##### Sample code
-
-```js
-options = {
-  refresh_token: "bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-}
-
-cidaas.renewToken(options)
-.then(function (response) {
-  // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
 });
 ```
 #### Device

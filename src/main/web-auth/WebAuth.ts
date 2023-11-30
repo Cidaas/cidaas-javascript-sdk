@@ -981,6 +981,13 @@ export class WebAuth {
   };
 
   /**
+   * device code flow - initiate
+   */
+  initiateDeviceCode(clientId?: string) {
+    return TokenService.initiateDeviceCode(clientId);
+  }
+
+  /**
    * device code flow - verify
    * @param code 
    */
@@ -1021,5 +1028,12 @@ export class WebAuth {
    */
   authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
     return VerificationService.authenticateMFA(options);
+  };
+
+  /**
+   * offline token check
+   */
+  offlineTokenCheck(accessToken: string) {
+    return TokenService.offlineTokenCheck(accessToken);
   };
 }

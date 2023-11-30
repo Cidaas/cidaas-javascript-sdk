@@ -1,84 +1,94 @@
-import { TestConstants } from '../TestConstants';
+import { AccessTokenRequest, TokenIntrospectionEntity } from '../../src/main/web-auth/Entities';
+import { Helper } from '../../src/main/web-auth/Helper';
 import { TokenService } from '../../src/main/web-auth/TokenService';
 
-let windowSpy: any;
+const authority = 'baseURL';
+const serviceBaseUrl: string = `${authority}/token-srv`;
+const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
+const createFormSpy = jest.spyOn(Helper, 'createForm');
+const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
 
-beforeEach(() => {
-
-    const xhrMock: Partial<XMLHttpRequest> = {
-        open: jest.fn(),
-        send: jest.fn(),
-        setRequestHeader: jest.fn(),
-        readyState: 4,
-        status: 200,
-        response: 'Hello World!'
-    };
-    jest.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
-
-    windowSpy = jest.spyOn(window, "window", "get");
-    jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation(() => {
-    });
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            json: () => Promise.resolve({ test: 100 }),
-        }),
-    ) as jest.Mock;
-
+beforeAll(() => {
+	(window as any).webAuthSettings = { authority: authority }
 });
 
-afterEach(() => {
-    windowSpy.mockRestore();
-})
-
-test('getAccessToken, renewToken, validateAccessToken', async () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: TestConstants.interactiveTestConfig.baseUrl
-        },
-        webAuthSettings: {
-            authority: TestConstants.interactiveTestConfig.baseUrl,
-            disablePKCE: true
-        }
-    }));
-
-    TestConstants.tokenRequest.refresh_token = 'ref';
-    TestConstants.tokenRequest.code = 'code';
-    TestConstants.tokenIntrospect.token = 'token';
-    TestConstants.tokenIntrospect.token_type_hint = 'hint';
-    let data = TokenService.renewToken(TestConstants.tokenRequest).catch(err => {
-    });
-    expect(data).not.toBe(undefined)
-
-    data = TokenService.getAccessToken(TestConstants.tokenRequest).catch(ex => {
-    });
-    expect(data).not.toBe(undefined);
-
-    data = TokenService.validateAccessToken(TestConstants.tokenIntrospect).catch(ex => {
-    });
-    expect(data).not.toBe(undefined)
+test('renewToken', () => {
+  const options: AccessTokenRequest = {
+		user_agent: 'user_agent',
+		ip_address: 'ip_address',
+		accept_language: 'accept_language',
+		lat: 'lat',
+		lng: 'lng',
+		finger_print: 'finger_print',
+		referrer: 'referrer',
+		pre_login_id: 'pre_login_id',
+		login_type: 'login_type',
+		device_code: 'device_code',
+		refresh_token: 'refresh_token'
+	};
+  const serviceURL = `${serviceBaseUrl}/token`;
+  TokenService.renewToken(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
 });
 
-test('getAccessToken, renewToken, validateAccessToken', async () => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings: {
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
+test('validateAccessToken', () => {
+  const options: TokenIntrospectionEntity = {
+		token: 'token',
+		token_type_hint: 'token_type_hint',
+		strictGroupValidation: false,
+		strictScopeValidation: false,
+		strictRoleValidation: false,
+		strictValidation: false
+	};
+  const serviceURL = `${serviceBaseUrl}/introspect`;
+  TokenService.validateAccessToken(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', 'token');
+});
 
-    let data = TokenService.getScopeConsentDetails({ track_id: 'tr', locale: 'en' }).catch(err => {
-    });
-    expect(data).not.toBe(undefined);
+test('getScopeConsentDetails', () => {
+  const options = {
+		track_id: 'track_id',
+    locale: 'locale'
+	};
+  const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${options.track_id}?acceptLanguage=${options.locale}`;
+  TokenService.getScopeConsentDetails(options);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+});
 
-    data = TokenService.getMissingFieldsLogin('tr').catch(err => {
-    });
-    expect(data).not.toBe(undefined);
+test('getMissingFieldsLogin', () => {
+	const trackId = 'trackId';
+  const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${trackId}`;
+  TokenService.getMissingFieldsLogin(trackId);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+});
 
-    data = TokenService.updateSuggestMFA('tr', TestConstants.suggestEnt);
-    expect(data).not.toBe(undefined)
+test('initiateDeviceCode', () => {
+	const clientId = 'clientId';
+  const serviceURL = `${authority}/authz-srv/device/authz?client_id=${clientId}`;
+  TokenService.initiateDeviceCode(clientId);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+});
 
-    //form submit
-    TokenService.deviceCodeVerify('tr');
+test('deviceCodeVerify', () => {
+	const code = 'code';
+	const encodedCode = encodeURI(code);
+	const options = {
+		user_code: encodedCode
+	}
+  const serviceURL = `${serviceBaseUrl}/device/verify?user_code=${encodedCode}`;
+  TokenService.deviceCodeVerify(code);
+  expect(createFormSpy).toHaveBeenCalledWith(serviceURL, options, 'GET');
+	expect(submitFormSpy).toHaveBeenCalled();
+});
+
+test('offlineTokenCheck', () => {
+	(window as any).webAuthSettings.scope = 'profile email openid cidaas:register javascript_sdk_example_scope_consent offline_access cidaas:users_write';
+	(window as any).webAuthSettings.authority = 'https://demo.cidaas.de';
+	const accessToken = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjZlMmFkYzQ3LWE0OTMtNDM0Yi1hZTJiLTM4YzlkZjA0YzQ0OCJ9.eyJhbXIiOlsiMTAiXSwidWFfaGFzaCI6ImVlZGU4NWRiNGI0M2UwOTU4NThjYzYxM2Q5YzQ4ZTExIiwic2lkIjoiODFmYTBiZjMtNjliZC00MzY4LThiOWYtYWQ2NjE0ODczZGM2Iiwic3ViIjoiOGQyNGIwMDQtOTM0NS00Y2M5LTg4NWUtY2YyZDhiN2Q5ZmI1IiwiaXN1YiI6IjI1ZmMxZWY2LTdjMDItNDA4NS1iMjQyLWJlMTAzYmIxMjdhYSIsImF1ZCI6ImQ1NjExMjY3LTNhODgtNDI3Mi1iYjI0LWU5MDJkZGVkYjdiNCIsImlhdCI6MTcwMDU2NzAyMiwiYXV0aF90aW1lIjoxNzAwNTY3MDIxLCJpc3MiOiJodHRwczovL2RlbW8uY2lkYWFzLmRlIiwianRpIjoiMzIxMjhlNjQtNzczNi00ZmEwLTljMGUtMDVhNTg3NGQ2NzBjIiwibm9uY2UiOiIxNzAwNTY3MDEwOTU5Iiwic2NvcGVzIjpbInByb2ZpbGUiLCJlbWFpbCIsIm9wZW5pZCIsImNpZGFhczpyZWdpc3RlciIsImphdmFzY3JpcHRfc2RrX2V4YW1wbGVfc2NvcGVfY29uc2VudCIsIm9mZmxpbmVfYWNjZXNzIiwiY2lkYWFzOnVzZXJzX3dyaXRlIl0sInJvbGVzIjpbIlVTRVIiXSwiZXhwIjoxNzAwNjUzNDIyfQ.B6LWNNMuwgrbWjlKa6eHvNYwaA4eDLGpXIda1LAKREf5RAysZ3e4eAGnRoTIaNCCCSm46Cm_H4UmJv3IlBuBMD7sm88BPZHDiILTRGjK4xfZnbzf9R4IzajEpPGjwODip813AjoKlS0L7SMVz_7-xdH-sUSB8ecFNg8ImvMt14hf84rvIWgKe4CBeu9AuKs4d_-ChWdQ4PWxAl4s6ssG0F7uotLzgWOzZaFPTI9bQFlPSuQ5MpZurM5J60b9fiUhom7sJE2yVfyWeVn9vXX77LeSFuochA6whikb1l6tz5-s0VP-L1tZwGv4abpjM_PfeIi-xYoYjU6xsHawrmLxkA';
+  const result = {
+		isExpiryDateValid: false,
+		isScopesValid: true,
+		isIssuerValid: true
+	}
+	expect(TokenService.offlineTokenCheck(accessToken)).toEqual(result);
 });
