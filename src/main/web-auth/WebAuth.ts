@@ -901,16 +901,6 @@ export class WebAuth {
   };
 
   /**
-   * updateSuggestMFA
-   * @param track_id 
-   * @param options 
-   * @returns 
-   */
-  updateSuggestMFA(track_id: string, options: ISuggestedMFAActionConfig) {
-    return TokenService.updateSuggestMFA(track_id, options)
-  };
-
-  /**
    * enrollVerification
    * @param options 
    * @returns 
@@ -981,6 +971,13 @@ export class WebAuth {
   };
 
   /**
+   * device code flow - initiate
+   */
+  initiateDeviceCode(clientId?: string) {
+    return TokenService.initiateDeviceCode(clientId);
+  }
+
+  /**
    * device code flow - verify
    * @param code 
    */
@@ -1021,5 +1018,12 @@ export class WebAuth {
    */
   authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
     return VerificationService.authenticateMFA(options);
+  };
+
+  /**
+   * offline token check
+   */
+  offlineTokenCheck(accessToken: string) {
+    return TokenService.offlineTokenCheck(accessToken);
   };
 }
