@@ -628,15 +628,6 @@ export class WebAuth {
   };
 
   /**
-   * initiate verification and return response
-   * @param options 
-   * @returns 
-   */
-  async initiateAccountVerificationAsynFn(options: AccountVerificationRequestEntity) {
-    return await VerificationService.initiateAccountVerificationAsynFn(options);
-  };
-
-  /**
    * verify account
    * @param options 
    * @returns 
@@ -910,22 +901,18 @@ export class WebAuth {
   };
 
   /**
-   * updateSuggestMFA
-   * @param track_id 
-   * @param options 
-   * @returns 
-   */
-  updateSuggestMFA(track_id: string, options: ISuggestedMFAActionConfig) {
-    return TokenService.updateSuggestMFA(track_id, options)
-  };
-
-  /**
    * enrollVerification
    * @param options 
    * @returns 
    */
-  enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
-    return VerificationService.enrollVerification(options);
+  initiateEnrollment(options: {
+    verification_type: string,
+    deviceInfo: {
+      deviceId: "", 
+      location: {lat: "", lon: ""}
+    }
+  }, accessToken: string) {
+    return VerificationService.initiateEnrollment(options, accessToken);
   };
 
   /**
@@ -933,18 +920,18 @@ export class WebAuth {
    * @param status_id 
    * @returns 
    */
-  updateStatus(status_id: string) {
-    return VerificationService.updateStatus(status_id);
+  getEnrollmentStatus(status_id: string, accessToken: string) {
+    return VerificationService.getEnrollmentStatus(status_id, accessToken);
   };
 
   /**
-   * setupFidoVerification
+   * enrollVerification
    * @param options 
    * @returns 
    */
-  setupFidoVerification(options: FidoSetupEntity) {
-    return VerificationService.setupFidoVerification(options);
-  };
+    enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
+      return VerificationService.enrollVerification(options);
+    };
 
   /**
    * checkVerificationTypeConfigured
@@ -982,6 +969,13 @@ export class WebAuth {
   progressiveRegistration(options: IUserEntity, headers: { requestId: string; trackId: string; acceptlanguage: string; }) {
     return LoginService.progressiveRegistration(options, headers);
   };
+
+  /**
+   * device code flow - initiate
+   */
+  initiateDeviceCode(clientId?: string) {
+    return TokenService.initiateDeviceCode(clientId);
+  }
 
   /**
    * device code flow - verify
@@ -1027,11 +1021,9 @@ export class WebAuth {
   };
 
   /**
-   * authenticateVerification form type (for face)
-   * @param options 
-   * @returns 
+   * offline token check
    */
-  authenticateFaceVerification(options: FaceVerificationAuthenticationRequestEntity) {
-    return VerificationService.authenticateFaceVerification(options);
+  offlineTokenCheck(accessToken: string) {
+    return TokenService.offlineTokenCheck(accessToken);
   };
 }

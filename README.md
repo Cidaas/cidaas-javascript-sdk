@@ -361,41 +361,19 @@ cidaas.getMissingFields({
     // your failure code here
 });
 ```
-##### Get Missing Fields Login
-To get the missing fields after login, call **getMissingFieldsLogin()**.
 
-##### Function parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| trackId | string | the track id received while logging in  |
+##### Get Communication Status
 
+Once registration successful, verify the account based on the flow. To get the details, call ****getCommunicationStatus()****.
 
 ##### Sample code
 
 ```js
-let trackId = 'bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
-cidaas.getMissingFieldsLogin(trackId)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
-});
-```
-
-##### Intiate Account Verification
-
-To initiate the account verification, call ****initiateAccountVerification()****. This will send verification code  email or sms or ivr based on the verificationMedium you mentioned.
-
-##### Sample code
-```js
-cidaas.initiateAccountVerification({
-    verificationMedium: 'email',
-    requestId: 'your requestId',
-    processingType: 'CODE', 
-    sub: 'your sub'
+cidaas.getCommunicationStatus({
+    sub: 'your sub', // which you will get on the registration response
+    acceptlanguage: 'your locale' // optional example: de-de, en-US
 }).then(function (response) {
-    // the response will give you account verification details.
+    // the response will give you account details once its verified.
 }).catch(function(ex) {
     // your failure code here
 });
@@ -407,25 +385,131 @@ cidaas.initiateAccountVerification({
     "success": true,
     "status": 200,
     "data": {
-        "accvid": "32aca19a-c83a-4ea5-979e-f8242605bcd4"
+        "EMAIL": false,
+        "MOBILE": false,
+        "USER_NAME": true
     }
 }
 ```
 
-##### Authenticate Account Verification
+#### Resetting your password
 
-To complete the verification, call ****verifyAccount()****. 
+##### Initiate Reset Password
+
+To initiate the password resetting, call ****initiateResetPassword()****. This will send verification code to your email or mobile based on the resetMedium you mentioned. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/6b29bac6002f4-initiate-password-reset for more details.
 
 ##### Sample code
+
 ```js
-cidaas.verifyAccount({
-    accvid: 'your accvid', // which you will get on initiate account verification response
-    code: 'your code in email or sms or ivr'
+cidaas.initiateResetPassword({
+    email: 'xxxxxx@xxx.com',
+    processingType: 'CODE',
+    requestId: 'your requestId',
+    resetMedium: 'email'
 }).then(function (response) {
-    // the response will give you account verification ID and unique code.
+    // the response will give you password reset details.
 }).catch(function(ex) {
     // your failure code here
 });
+```
+
+##### Response
+```json
+{
+    "success": true,
+    "status": 200,
+    "data": {
+        "reset_initiated": true,
+        "rprq": "e98b2451-f1ca-4c81-b5e0-0ef85bb49a05"
+    }
+}
+```
+
+##### Handle Reset Password
+
+To handling the reset password by entering the verification code you received, call ****handleResetPassword()****. This will check your verification code was valid or not and allows you to proceed to the next step. More details available on https://docs.cidaas.com/docs/cidaas-iam/4aede115e5460-validate-reset-password
+
+##### Sample code
+```js
+cidaas.handleResetPassword({
+    code: 'your code in email or sms or ivr',
+    resetRequestId: 'your resetRequestId' // which you will get on initiate reset password response
+}).then(function (response) {
+    // the response will give you valid verification code.
+}).catch(function(ex) {
+    // your failure code here
+});
+```
+
+##### Response
+```json
+{
+    "success": true,
+    "status": 200,
+    "data": {
+        "exchangeId": "d5ee97cd-2454-461d-8e42-554371a15c00",
+        "resetRequestId": "1834130e-7f53-4861-99d3-7f934fbba179"
+    }
+}
+```
+
+##### Reset Password
+
+To change the password, call ****resetPassword()****. This will allow you to change your password. More detials available on https://docs.cidaas.com/docs/cidaas-iam/c7d767a7414df-accept-reset-password
+
+##### Sample code
+```js
+cidaas.resetPassword({        
+    password: '123456',
+    confirmPassword: '123456',
+    exchangeId: 'your exchangeId', // which you will get on handle reset password response
+    resetRequestId: 'your resetRequestId' // which you will get on handle reset password response
+}).then(function (response) {
+    // the response will give you reset password details.
+}).catch(function(ex) {
+    // your failure code here
+});
+```
+
+##### Response
+```json
+{
+    "success": true,
+    "status": 200,
+    "data": {
+        "reseted": true
+    }
+}
+```
+
+##### Change Password
+
+To change the password, call ****changePassword()****. This will allow you to change your password. More details available on https://docs.cidaas.com/docs/cidaas-iam/09873c57d1fb8-change-password
+
+##### Sample code
+```js
+cidaas.changePassword({
+        old_password: '123456',
+        new_password: '123456789',
+        confirm_password: '123456789',
+        identityId: 'asdauet1-quwyteuqqwejh-asdjhasd',
+}, 'your access token')
+.then(function () {
+    // the response will give you changed password.
+}).catch(function (ex) {
+    // your failure code here
+});
+```
+
+##### Response
+```json
+{
+    "success": true,
+    "status": 200,
+    "data": {
+        "changed": true
+    }
+}
 ```
 
 #### Get user profile information
@@ -512,953 +596,6 @@ To logout the user, call ****logoutUser()****.
 ```js
 cidaas.logoutUser({
   access_token : 'your accessToken'
-});
-```
-
-#### Physical Verification
-
-After successful login, we can add multifactor authentications.
-
-#### EMAIL
-
-##### Setup Email
-
-To configure email, call ****setupEmail()****.
-
-##### Sample code
-```js
-this.cidaas.setupEmail({
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for email setup.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Enroll Email
-
-To enroll email, call ****enrollEmail()****.
-
-##### Sample code
-```js
-this.cidaas.enrollEmail({
-      statusId: 'your status id', // which you received in setup email response
-      code: '1221234234', // which you received in email 
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you email and device info to be linked.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "sub":"5f5cbb84-4ceb-4975-b347-4bfac61e9248",
-        "trackingCode": "75hafysd7-5f5cbb84-4ceb-4975-b347-4bfac61e92"
-    }
-}
-```
-
-##### Initiate Email
-
-To send a verification code to email, call ****initiateEmail()****.
-
-##### Sample code
-```js
-this.cidaas.initiateEmail({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you email verification code details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Authenticate Email
-
-To verify the code, call ****authenticateEmail()****.
-
-##### Sample code
-```js
-this.cidaas.authenticateEmail({
-      verifierPassword: 'your generated otp', // received in Email
-      code: 'your generated otp', // received in Email
-      statusId: 'your status id', // received from initiate call
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you email authentication details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": { 
-        "sub":"6f7e672c-1e69-4108-92c4-3556f13eda74","trackingCode":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### SMS
-
-##### Setup SMS
-
-To configure SMS, call ****setupSMS()****.
-
-##### Sample code
-```js
-this.cidaas.setupSMS({
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for SMS setup. 
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Enroll SMS
-
-To enroll SMS, call ****enrollSMS()****.
-
-##### Sample code
-```js
-this.cidaas.enrollSMS({
-      statusId: 'your status id', // which you received in setup sms response
-      code: '1221234234', // which you received via sms 
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you SMS and device info to be linked 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "sub":"5f5cbb84-4ceb-4975-b347-4bfac61e9248",
-        "trackingCode": "75hafysd7-5f5cbb84-4ceb-4975-b347-4bfac61e92"
-    }
-}
-```
-
-##### Initiate SMS
-
-To send a verification code to sms, call ****initiateSMS()****.
-
-##### Sample code
-```js
-this.cidaas.initiateSMS({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you SMS verification code details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Authenticate SMS
-
-To verify the code, call ****authenticateSMS()****.
-
-##### Sample code
-```js
-this.cidaas.authenticateSMS({
-      verifierPassword: 'your generated otp', // received in SMS
-      code: 'your generated otp', // received in SMS
-      statusId: 'your status id', // received from initiate call
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you SMS authentiction details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": { 
-        "sub":"6f7e672c-1e69-4108-92c4-3556f13eda74","trackingCode":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### IVR
-
-##### Setup IVR
-
-To configure IVR, call ****setupIVR()****.
-
-##### Sample code
-```js
-this.cidaas.setupIVR({
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for IVR setup.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Enroll IVR
-
-To enroll IVR, call ****enrollIVR()****.
-
-##### Sample code
-```js
-this.cidaas.enrollIVR({
-      statusId: 'your status id', // which you received in setup ivr response
-      code: '1221234234', // which you received via voice call 
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you IVR and device info to be linked.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "sub":"5f5cbb84-4ceb-4975-b347-4bfac61e9248",
-        "trackingCode": "75hafysd7-5f5cbb84-4ceb-4975-b347-4bfac61e92"
-    }
-}
-```
-
-##### Initiate IVR
-
-To send a verification code to a voice call, call ****initiateIVR()****.
-
-##### Sample code
-```js
-this.cidaas.initiateIVR({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you IVR verification code details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Authenticate IVR
-
-To verify the code, call ****authenticateIVR()****.
-
-##### Sample code
-```js
-this.cidaas.authenticateIVR({
-      verifierPassword: 'your generated otp', // received via voice call
-      code: 'your generated otp', // received via voice call
-      statusId: 'your status id', // received from initiate call
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you IVR authentication details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": { 
-        "sub":"6f7e672c-1e69-4108-92c4-3556f13eda74","trackingCode":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### BACKUPCODE
-
-##### Setup Backupcode
-
-To configure backupcode, call ****setupBackupcode()****.
-
-##### Sample code
-```js
-this.cidaas.setupBackupcode({
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for backup-code setup.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248",
-        "backupcodes": [
-            {
-                "statusId": "5f5cbb84-4ceb-4975-b347-4bfac61e9248",
-                "code": "8767344",
-                "used": false
-            }
-        ]
-    }
-}
-```
-
-##### Initiate Backupcode
-
-To create a verification code, call ****initiateBackupcode()****.
-
-##### Sample code
-```js
-this.cidaas.initiateBackupcode({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you backup-code verification code details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Authenticate Backupcode
-
-To verify the code, call ****authenticateBackupcode()****.
-
-##### Sample code
-```js
-this.cidaas.authenticateBackupcode({
-      verifierPassword: 'your generated otp', // received via voice call
-      code: 'your generated otp', // received via voice call
-      statusId: 'your status id', // received from initiate call
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you backup-code authentication details. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": { 
-        "sub":"6f7e672c-1e69-4108-92c4-3556f13eda74","trackingCode":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### TOTP
-
-##### Setup TOTP
-
-To configure TOTP, call ****setupTOTP()****.
-
-##### Sample code
-```js
-this.cidaas.setupTOTP({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for TOTP setup. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Enroll TOTP
-
-To enroll TOTP, call ****enrollTOTP()****.
-
-##### Sample code
-```js
-this.cidaas.enrollTOTP({
-      statusId: 'your status id', // which you received in setup totp response
-      code: '1221234234', // which you seen in any of the authenticator apps you configured
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you TOTP and device info to be linked. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "sub":"5f5cbb84-4ceb-4975-b347-4bfac61e9248",
-        "trackingCode": "75hafysd7-5f5cbb84-4ceb-4975-b347-4bfac61e92"
-    }
-}
-```
-
-##### Initiate TOTP
-
-To initiate a TOTP verification type, call ****initiateTOTP()****.
-
-##### Sample code
-```js
-this.cidaas.initiateTOTP({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you TOTP verification details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-##### Authenticate TOTP
-
-To verify the code, call ****authenticateTOTP()****.
-
-##### Sample code
-```js
-this.cidaas.authenticateTOTP({
-      verifierPassword: 'your generated otp', // received via voice call
-      code: 'your generated otp', // received via voice call
-      statusId: 'your status id', // received from initiate call
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you TOTP authentication details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": { 
-        "sub":"6f7e672c-1e69-4108-92c4-3556f13eda74","trackingCode":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### PATTERN
-
-##### Setup Patttern
-
-To configure Pattern, call ****setupPattern()****.
-
-##### Sample code
-```js
-this.cidaas.setupPattern({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for Pattern setup.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-##### Initiate PATTERN
-
-To initiate a PATTERN verification type, call ****initiatePattern()****.
-
-##### Sample code
-```js
-this.cidaas.initiatePattern({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you Pattern verification details. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-#### TOUCHID
-
-##### Setup TouchId
-
-To configure TouchId, call ****setupTouchId()****.
-
-##### Sample code
-```js
-this.cidaas.setupTouchId({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for Touch ID setup.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-##### Initiate TOUCHID
-
-To initiate a TOUCHID verification type, call ****initiateTouchId()****.
-
-##### Sample code
-```js
-this.cidaas.initiateTouchId({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you Touch ID verification details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-Once response is received, listen to the socket
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### SMART PUSH
-
-##### Setup Smart Push
-
-To configure SmartPush, call ****setupSmartPush()****.
-
-##### Sample code
-```js
-this.cidaas.setupSmartPush({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for Smart Push setup. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-Once response is received, listen to the socket
-
-##### Initiate SMART PUSH
-
-To initiate a SMART PUSH verification type, call ****initiateSmartPush()****.
-
-##### Sample code
-```js
-this.cidaas.initiateSmartPush({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you Smart Push verification details. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-Once response is received, listen to the socket
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### FACE
-
-##### Setup Face
-
-To configure Face, call ****setupFace()****.
-
-##### Sample code
-```js
-this.cidaas.setupFace({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for Face setup. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-##### Initiate FACE
-
-To initiate a FACE verification type, call ****initiateFace()****.
-
-##### Sample code
-```js
-this.cidaas.initiateFace({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you Face verification details.
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-Once response is received, listen to the socket
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-#### VOICE
-
-##### Setup Voice
-
-To configure Voice, call ****setupVoice()****.
-
-##### Sample code
-```js
-this.cidaas.setupVoice({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you details for Voice setup. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-##### Initiate VOICE
-
-To initiate a VOICE verification type, call ****initiateVoice()****.
-
-##### Sample code
-```js
-this.cidaas.initiateVoice({
-      sub: 'your sub',
-      physicalVerificationId: 'your physical verification id',
-      userDeviceId: deviceId,
-      usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-      // the response will give you Voice verification details. 
-    }).catch((err) => {
-      // your failure code here
-    });
-```
-
-##### Response
-```json
-{
-    "success":true,
-    "status":200,
-    "data": {
-        "statusId":"5f5cbb84-4ceb-4975-b347-4bfac61e9248"
-    }
-}
-```
-
-Once response is received, listen to the socket
-
-
-##### Get All Verification List
-List all verification type configured, call **getAllVerificationList()**. access_token must be passed as function paramere.
-
-##### Sample code
-```js
-const access_token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMjM2ZWZiLWRlMjEtNDI5Mi04Z.";
-
-cidaas.getAllVerificationList(access_token)
-.then(function (response) {
-    // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
 });
 ```
 
@@ -1682,79 +819,6 @@ this.socket.on("status-update", (msg) => {
     if (msg.status == "AUTHENTICATED") {
         // do next process
     }
-});
-```
-#### Access Token
-
-##### Get aceess token
-To get a new token with th grant type authorization_code, call **getAccessToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| code | string | code to create a new token | false |
-
-##### Sample code
-
-```js
-options = {
-  code: "123456",
-}
-
-cidaas.getAccessToken(options)
-.then(function (response) {
-  // type your code here
-})
-.catch(function (ex) {
-  // your failure code here
-});
-```
-
-##### Validate access token
-To validate an access token, call **validateAccessToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table.
-
-| Key name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| token | string | access token | false |
-| token_type_hint | string | token type hint. accepted token type hints are access_token, id_token, refresh_token, sso | false |
-
-
-##### Sample code
-
-```js
-options = {
-  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-  token_type_hint: "access_token",
-}
-
-cidaas.validateAccessToken(options)
-.then(function (response) {
-  // type your code here
-})
-.catch(function (ex) {
-  // your failure code here
-});
-```
-
-##### Renew token
-To get a new token with the grant type refresh_token, call **renewToken()**. The function accepts a function parameter of type object. The object with the keys described in the below table
-
-| Key Name | Type | Description | Is optional |
-| ---- | ---- | ----------- | ----------- |
-| refresh_token | string | The refresh token to create a new token. The refresh token is received while creating an access token using the token endpoint and later can be used to fetch a new token without using credentials | false |
-
-##### Sample code
-
-```js
-options = {
-  refresh_token: "bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-}
-
-cidaas.renewToken(options)
-.then(function (response) {
-  // type your code here
-})
-.catch(function (ex) {
-    // your failure code here
 });
 ```
 #### Device
