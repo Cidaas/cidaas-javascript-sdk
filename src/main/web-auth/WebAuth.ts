@@ -33,22 +33,18 @@ import {
   AcceptResetPasswordEntity,
   LoginFormRequestAsyncEntity,
   PhysicalVerificationLoginRequest,
-  IChangePasswordEntity,
-  ICidaasSDKSettings
+  IChangePasswordEntity
 } from "./Entities"
 
 export class WebAuth {
 
-  constructor(settings: ICidaasSDKSettings) {
+  constructor(settings: UserManagerSettings) {
     try {
       if (!settings.response_type) {
         settings.response_type = "code";
       }
       if (!settings.scope) {
         settings.scope = "email openid profile mobile";
-      }
-      if (!settings.cidaas_version) {
-        settings.cidaas_version = 2;
       }
       var usermanager = new UserManager(settings)
       window.webAuthSettings = settings;
@@ -614,8 +610,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getCommunicationStatus(options: { sub: string, requestId: string }) {
-    return UserService.getCommunicationStatus(options);
+  getCommunicationStatus(options: { sub: string }, headers: {requestId: string }) {
+    return UserService.getCommunicationStatus(options, headers);
   };
 
   /**

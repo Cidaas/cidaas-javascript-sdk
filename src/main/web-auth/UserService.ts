@@ -12,17 +12,17 @@ import { Helper, CustomException } from "./Helper";
 export namespace UserService {
 
   /**
-   * get user info , call **getUserProfile()**.
+   * To get the user profile information, call **getUserProfile()**.
    * @example
    * ```js
-   * this.cidaas.getUserProfile({
-   *   access_token: 'access_token id'
-   * })
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * const options = {
+   *   access_token: 'your access token'
+   * }
+   * cidaas.getUserProfile(options)
+   * .then(function () {
+   *   // the response will give you user profile information.
+   * }).catch(function (ex) {
+   *   // your failure code here
    * });
    * ```
    */
@@ -35,131 +35,130 @@ export namespace UserService {
   };
 
   /**
-   * register user , call **register()**.
+   * to register user, call **register()**. This method will create a new user.
+   * Note: Only requestId in the headers is required.
    * @example
    * ```js
-   * this.cidaas.register(options: UserEntity, headers: {
-    requestId: string;
-    captcha?: string;
-    acceptlanguage?: string;
-    bot_captcha_response?: string;
-    trackId?: string;
-  })
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * const headers = {
+   *   requestId: 'your_received_requestId',
+   *   captcha: 'captcha',
+   *   acceptlanguage: 'acceptlanguage',
+   *   bot_captcha_response: 'bot_captcha_response'
+   * };
+   * 
+   * cidaas.register({ 
+   *   email: 'xxx123@xxx.com',  
+   *   given_name: 'xxxxx', 
+   *   family_name: 'yyyyy', 
+   *   password: '123456', 
+   *   password_echo: '123456', 
+   *   provider: 'your provider', // FACEBOOK, GOOGLE, SELF
+   *   acceptlanguage: 'your locale' // optional example: de-de, en-US
+   * }, headers).then(function (response) {
+   *   // the response will give you client registration details.
+   * }).catch(function(ex) {
+   *   // your failure code here
    * });
-   * ```
+   *```
    */
-
   export function register(options: UserEntity, headers: {
     requestId: string;
     captcha?: string;
     acceptlanguage?: string;
     bot_captcha_response?: string;
     trackId?: string;
-  }){
-    console.log("header", headers)
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/register";
+  }) {
+    let _serviceURL = window.webAuthSettings.authority + "/users-srv/register";
     if (options.invite_id) {
       _serviceURL = _serviceURL + "?invite_id=" + options.invite_id;
     }
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
   };
 
-   /**
-   * get invite user details , call **getInviteUserDetails()**.
+  /**
+   * to get information about invitation details, call getInviteUserDetails()
    * @example
    * ```js
-   * this.cidaas.getInviteUserDetails(options: {
-    invite_id: 'invite_id'
-  })
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * const options = {
+   *   invite_id: 'id of user invitation'
+   * }
+   * cidaas.getInviteUserDetails(options)
+   * .then(function () {
+   *   // the response will give you information about the invitation.
+   * }).catch(function (ex) {
+   *   // your failure code here
    * });
    * ```
    */
-
   export function getInviteUserDetails(options: { invite_id: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 
   /**
-   * get Communication status
-   * @param options 
-   * @returns 
-   */
-
-  /**
-   * get Communication status , call **getCommunicationStatus()**.
+   * Once registration successful, verify the account based on the flow. To get the details, call **getCommunicationStatus()**.
    * @example
    * ```js
-   * this.cidaas.getCommunicationStatus(options: {
-    sub: 'sub ',
-    requestId" 'requestId'
-  })
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * cidaas.getCommunicationStatus({
+   *   sub: 'your sub', // which you will get on the registration response
+   * }).then(function (response) {
+   *   // the response will give you account details once its verified.
+   * }).catch(function(ex) {
+   *   // your failure code here
    * });
    * ```
    */
-
-  export function getCommunicationStatus(options: { sub: string, requestId: string }) {
-    var headers = { requestId: options.requestId }
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/communication/status/" + options.sub;
+  export function getCommunicationStatus(options: { sub: string }, headers?: {requestId: string }) {
+    let _serviceURL = window.webAuthSettings.authority + "/users-srv/user/communication/status/" + options.sub;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
   };
 
   /**
-   * initiate reset password , call **initiateResetPassword()**.
+   * To initiate the password resetting, call **initiateResetPassword()**. This will send verification code to your email or mobile based on the resetMedium you mentioned. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/6b29bac6002f4-initiate-password-reset for more details.
    * @example
    * ```js
-   * this.cidaas.initiateResetPassword(options: ResetPasswordEntity)
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * cidaas.initiateResetPassword({
+   *   email: 'xxxxxx@xxx.com',
+   *   processingType: 'CODE',
+   *   requestId: 'your requestId',
+   *   resetMedium: 'email'
+   * }).then(function (response) {
+   *   // the response will give you password reset details.
+   * }).catch(function(ex) {
+   *   // your failure code here
    * });
    * ```
    */
-
   export function initiateResetPassword(options: ResetPasswordEntity) {
     var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
   };
 
   /**
-   * handle reset password , call **handleResetPassword()**.
+   * To handle the reset password by entering the verification code you received, call **handleResetPassword()**. This will check if your verification code was valid or not, and allows you to proceed to the next step. More details available on https://docs.cidaas.com/docs/cidaas-iam/3t8ztokeb7cfz-handle-reset-password
    * @example
    * ```js
-   * this.cidaas.handleResetPassword(options: ValidateResetPasswordEntity)
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * const handleResponseAsJson = 'true if the response need to be handled the old way (as json). In the current handling, the response information will be given as query parameter in redirect url.';
+   * cidaas.handleResetPassword({
+   *   code: 'your code in email or sms or ivr',
+   *   resetRequestId: 'your resetRequestId' // which you will get on initiate reset password response
+   * }, handleResponseAsJson).then(function (response) {
+   *   // the response will give you valid verification code.
+   * }).catch(function(ex) {
+   *   // your failure code here
    * });
    * ```
    */
-
-  export function handleResetPassword(options: ValidateResetPasswordEntity) {
+  export function handleResetPassword(options: ValidateResetPasswordEntity, handleResponseAsJson?: boolean) {
     try {
       const url = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
-      if (window.webAuthSettings.cidaas_version > 2) {
+      if (!handleResponseAsJson) {
+        // current handling will redirect and give query parameters
         let form = Helper.createForm(url, options)
         document.body.appendChild(form);
         form.submit();
       } else {
+        // older cidaas service handling return json object
         return Helper.createHttpPromise(options, url, false, "POST");
       }
     } catch (ex) {
@@ -168,26 +167,32 @@ export namespace UserService {
   };
 
   /**
-   * reset password , call **handleResetPassword()**.
+   * To finish reseting the password, call **resetPassword()**. This will allow you to change your password. More details available on https://docs.cidaas.com/docs/cidaas-iam/qa9ny0gkzlf6y-accept-reset-password
    * @example
    * ```js
-   * this.cidaas.handleResetPassword(options: AcceptResetPasswordEntity)
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * const handleResponseAsJson = 'true if the response need to be handled the old way (as json). In the current handling, user will be redirected to success page after successful reset password.';
+   * cidaas.resetPassword({        
+   *   password: '123456',
+   *   confirmPassword: '123456',
+   *   exchangeId: 'your exchangeId', // which you will get on handle reset password response
+   *   resetRequestId: 'your resetRequestId' // which you will get on handle reset password response
+   * }).then(function (response) {
+   *   // the response will give you reset password details.
+   * }).catch(function(ex) {
+   *   // your failure code here
    * });
    * ```
    */
-  export function resetPassword(options: AcceptResetPasswordEntity) {
+  export function resetPassword(options: AcceptResetPasswordEntity, handleResponseAsJson?: boolean) {
     const url = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
     try {
-      if (window.webAuthSettings.cidaas_version > 2) {
+      if (!handleResponseAsJson) {
+        // current handling will redirect and give query parameters
         let form = Helper.createForm(url, options)
         document.body.appendChild(form);
         form.submit();
       } else {
+        // older cidaas service handling return json object
         return Helper.createHttpPromise(options, url, false, "POST");
       }
     } catch (ex) {
@@ -196,41 +201,38 @@ export namespace UserService {
   };
 
   /**
-   * get Deduplication details , call **getDeduplicationDetails()**.
+   * To get the list of existing users in deduplication, call **getDeduplicationDetails()**.
    * @example
    * ```js
-   * this.cidaas.getDeduplicationDetails(options: {trackId:'trackId'})
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * this.cidaas.getDeduplicationDetails({
+   *   track_id: 'your track id'
+   * }).then((response) => {
+   *   // the response will give you deduplication details of users.
+   * }).catch((err) => {
+   *   // your failure code here
    * });
    * ```
    */
   export function getDeduplicationDetails(options: { trackId: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
-    return Helper.createHttpPromise(options, _serviceURL, false, "GET", undefined);
+    return Helper.createHttpPromise(options, _serviceURL, false, "GET");
   };
 
   /**
-   * deduplication login , call **deduplicationLogin()**.
+   * To use the existing users in deduplication, you need to call **deduplicationLogin()**.
    * @example
    * ```js
-   * this.cidaas.deduplicationLogin(options: {trackId:'trackId', requestId: 'requestId', sub:'sub'})
-   * .then(function (response) {
-   *  // type your code here
+   * this.cidaas.deduplicationLogin({
+   *   sub: 'your sub',
+   *   requestId: 'request id from deduplication initialisation after register',
+   *   trackId: 'track id from deduplication initialisation after register'
    * })
-   * .catch(function (ex) {
-   *  // your failure code here
-   * });
    * ```
    */
   export function deduplicationLogin(options: { trackId: string, requestId: string, sub: string }) {
     try {
-      var form = document.createElement('form');
-      form.action = window.webAuthSettings.authority + "/users-srv/deduplication/login/redirection?trackId=" + options.trackId + "&requestId=" + options.requestId + "&sub=" + options.sub;
-      form.method = 'POST';
+      const url = window.webAuthSettings.authority + "/users-srv/deduplication/login/redirection?trackId=" + options.trackId + "&requestId=" + options.requestId + "&sub=" + options.sub;
+      const form = Helper.createForm(url, {});
       document.body.appendChild(form);
       form.submit();
     } catch (ex) {
@@ -239,15 +241,15 @@ export namespace UserService {
   };
 
   /**
-   * deduplication register , call **registerDeduplication()**.
+   * To register new user in deduplication, call **registerDeduplication()**.
    * @example
    * ```js
-   * this.cidaas.registerDeduplication(options: {trackId:'trackId'})
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * this.cidaas.registerDeduplication({
+   *   track_id: 'track id from deduplication initialisation after register',
+   * }).then((response) => {
+   *   // the response will give you new registered deduplication user. 
+   * }).catch((err) => {
+   *   // your failure code here
    * });
    * ```
    */
@@ -257,20 +259,19 @@ export namespace UserService {
   };
 
   /**
-   * change password , call **changePassword()**.
+   * To change the password, call **changePassword()**. This will allow you to change your password. More details available on https://docs.cidaas.com/docs/cidaas-iam/8221883241464-change-password
    * @example
    * ```js
-   * this.cidaas.changePassword(options: {
-   * sub: 'sub',
-   * dentityId: 'dentityId',
-   * old_password: 'old_password',
-   * new_password: 'new_password',
-   * confirm_password: 'confirm_password' }, access_token: 'access_token)
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * cidaas.changePassword({
+   *   old_password: 'your old password',
+   *   new_password: 'your new password',
+   *   confirm_password: 'your new password',
+   *   sub: 'your sub',
+   * }, 'your access token')
+   * .then(function () {
+   *   // your success code
+   * }).catch(function (ex) {
+   *   // your failure code
    * });
    * ```
    */
@@ -280,43 +281,40 @@ export namespace UserService {
   };
 
   /**
-   * update profile , call **updateProfile()**.
+   * To update the user profile information, call **updateProfile()**.
    * @example
    * ```js
-   * this.cidaas.updateProfile(options: {
-   * email: 'testertest@widas.de',
-   * given_name: 'tester',
-   * family_name: 'sample',
-   * password: '123456',
-   * password_echo: '123456' }, access_token: 'access_token, sub:'sub')
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * cidaas.updateProfile({
+   *   family_name: 'Doe',
+   *   given_name: 'John',
+   *   provider: 'self',
+   *   acceptlanguage: 'your locale' // optional example: de-de, en-US
+   * }, 'your access token', 'your sub').then(function () {
+   *   // the response will give you updated user profile info.
+   * }).catch(function (ex) {
+   *   // your failure code here
    * });
    * ```
    */
-
   export function updateProfile(options: UserEntity, access_token: string, sub: string) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
     return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
   };
 
   /**
-   * update profile , call **initiateLinkAccount()**.
+   * To initiate account linking, call **initiateLinkAccount()**.
    * @example
    * ```js
-   * this.cidaas.initiateLinkAccount(options: {
-   * master_sub: 'sub',
-   * user_name_type: 'user_name_type',
-   * user_name_to_link: 'user_name_to_link',
-   * }, access_token: 'access_token)
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * const options = {
+   *   master_sub: 'sub of the user who initiates the user link',
+   *   user_name_to_link: 'username of the user which should get linked',
+   *   user_name_type: 'type of user name to link. E.g. email'
+   * }
+   * const access_token = 'your access token'
+   * this.cidaas.initiateLinkAccount(options, access_token).then((response) => {
+   *   // your success code
+   * }).catch((err) => {
+   *   // your failure code here 
    * });
    * ```
    */
@@ -327,18 +325,18 @@ export namespace UserService {
   };
 
   /**
-   * complete link accoount , call **completeLinkAccount()**.
+   * To complete account linking, call **completeLinkAccount()**.
    * @example
    * ```js
-   * this.cidaas.completeLinkAccount(options: {
-   * code: 'code',
-   * link_request_id: 'link_request_id'
-   * }, access_token: 'access_token)
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * const options = {
+   *   code: 'code which is sent to account to be linked',
+   *   link_request_id: 'comes from initiateLinkAccount'
+   * }
+   * const access_token = 'your access token'
+   * this.cidaas.completeLinkAccount(options, access_token).then((response) => {
+   *   // your success code
+   * }).catch((err) => {
+   *   // your failure code here 
    * });
    * ```
    */
@@ -348,15 +346,18 @@ export namespace UserService {
   };
 
   /**
-   * get linked users , call **getLinkedUsers()**.
+   * To get all the linked accounts, call **getLinkedUsers()**.
    * @example
    * ```js
-   * this.cidaas.getLinkedUsers(access_token, sub)
+   * const acccess_token= 'your access token';
+   * const sub = 'your sub';
+   * 
+   * cidaas.getLinkedUsers(access_token, sub)
    * .then(function (response) {
-   *  // type your code here
+   *   // type your code here
    * })
    * .catch(function (ex) {
-   *  // your failure code here
+   *   // your failure code here
    * });
    * ```
    */
@@ -366,15 +367,18 @@ export namespace UserService {
   };
 
   /**
-   * unlink account , call **unlinkAccount()**.
+   * To unlink an account for a user, call **unlinkAccount()**.
    * @example
    * ```js
-   * this.cidaas.unlinkAccount(access_token, identityId)
+   * const acccess_token= "your access token";
+   * const identityId = "comes from getLinkedUsers";
+   * 
+   * cidaas.unlinkAccount(access_token, identityId)
    * .then(function (response) {
-   *  // type your code here
+   *   // type your code here
    * })
    * .catch(function (ex) {
-   *  // your failure code here
+   *   // your failure code here
    * });
    * ```
    */
@@ -384,15 +388,18 @@ export namespace UserService {
   };
 
   /**
-   * deleteUserAccount , call **deleteUserAccount()**.
+   * To delete the user account directly in the application, call **deleteUserAccount()**.
    * @example
    * ```js
-   * this.cidaas.deleteUserAccount(access_token, sub)
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * options = {
+   *   access_token: "your access token",
+   *   sub: "your sub"
+   * }
+   * 
+   * cidaas.deleteUserAccount(options).then(function (response) {
+   *   // your success code
+   * }).catch(function(ex) {
+   *   // your failure code here
    * });
    * ```
    */
@@ -401,26 +408,36 @@ export namespace UserService {
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", options.access_token);
   };
 
+
   /**
-   * check if an user exists from users-actions-srv , call **userCheckExists()**.
+   * To check if user exists, call **userCheckExists()**.
    * @example
-   * ```js
-   * this.cidaas.userCheckExists(options: {
-   *  email: 'your email',
-   *  requestId: 'requestId',
-   *  webfinger:'webfinger',
-   *  rememberMe: 'rememberMe'
-   * })
-   * .then(function (response) {
-   *  // type your code here
-   * })
-   * .catch(function (ex) {
-   *  // your failure code here
+   * options = {
+   *   requestId: "your request id",
+   *   email: "your email"
+   * }
+   * 
+   * cidaas.userCheckExists(options).then(function (response) {
+   *   // your success code
+   * }).catch(function(ex) {
+   *   // your failure code here
    * });
    * ```
    */
   export function userCheckExists(options: FindUserEntity) {
-    var _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + "?webfinger=" + options.webfinger + "&rememberMe=" + options.rememberMe;
+    let queryParameter = ''
+    if (options.webfinger || options.rememberMe) {
+      queryParameter += '?';
+      if (options.webfinger) {
+        queryParameter += 'webfinger=' + options.webfinger;
+        if (options.rememberMe) {
+          queryParameter += '&rememberMe=' + options.rememberMe;
+        }
+      } else if (options.rememberMe) {
+        queryParameter += 'rememberMe=' + options.rememberMe;
+      }
+    }
+    var _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + queryParameter;
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
   };
 }

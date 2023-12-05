@@ -595,7 +595,3 @@ export interface IChangePasswordEntity {
   loginSettingsId: string;
   client_id?: string;
 }
-
-export interface ICidaasSDKSettings extends UserManagerSettings {
-  cidaas_version?: number;
-}
