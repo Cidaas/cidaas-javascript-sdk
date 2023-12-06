@@ -108,7 +108,6 @@ export interface ChangePasswordEntity {
   old_password: string;
   new_password: string;
   confirm_password: string;
-  accessToken: string;
 }
 
 export interface FidoSetupEntity {
@@ -595,8 +594,4 @@ export interface IChangePasswordEntity {
   accessToken?: string;
   loginSettingsId: string;
   client_id?: string;
-}
-
-export interface ICidaasSDKSettings extends UserManagerSettings {
-  cidaas_version?: number;
 }
