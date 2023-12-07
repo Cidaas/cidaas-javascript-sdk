@@ -595,3 +595,14 @@ export interface IChangePasswordEntity {
   loginSettingsId: string;
   client_id?: string;
 }
+
+export interface IUserActivityPayloadEntity {
+  sub: string; // sub of user to get its activities
+  size?: number; // limits activities number to be shown
+  from?: number; // shows activities starting from the 'from' number. Default is 0
+  descending?: boolean; // if true, the activites will be sorted with the latest one at start
+  dateFilter: {
+    from_date: string, // earliest time to show activities
+    to_date: string // latest time to show activities
+  }
+}

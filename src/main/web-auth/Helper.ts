@@ -30,7 +30,7 @@ export class Helper {
   * @param headers??
   * @returns 
   */
-  static createHttpPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any) {
+  static createHttpPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any, formPayload?: FormData) {
     return new Promise((resolve, reject) => {
       try {
         var http = new XMLHttpRequest();
@@ -44,7 +44,9 @@ export class Helper {
           }
         };
         http.open(method, serviceurl, true);
-        http.setRequestHeader("Content-type", "application/json");
+        if (!formPayload) {
+          http.setRequestHeader("Content-type", "application/json");
+        }
         if (headers) {
           for (var key in headers) {
             if (headers.hasOwnProperty(key)) {
@@ -66,7 +68,9 @@ export class Helper {
         if (acceptlanguage) {
           http.setRequestHeader("accept-language", acceptlanguage); 
         }
-        if (options) {
+        if (formPayload) {
+          http.send(formPayload);
+        } else if (options) {
           http.send(JSON.stringify(options));
         } else {
           http.send();
