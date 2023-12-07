@@ -325,16 +325,6 @@ export class WebAuth {
   };
 
   /**
-   * get missing fields
-   * @param options 
-   * @returns 
-   */
-  getMissingFields(options: { requestId: string; trackId: string; }) {
-    const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + options.requestId + "/" + options.trackId;
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
-  };
-
-  /**
    * To get the tenant basic information, call **getTenantInfo()**. This will return the basic tenant details such as tenant name and allowed login with types (Email, Mobile, Username).
    * @example
    * ```js
