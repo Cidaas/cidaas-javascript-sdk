@@ -1,4 +1,4 @@
-import { UserManager, UserManagerSettings } from "oidc-client-ts";
+import { SigninRequest, SigninState, UserManager, UserManagerSettings } from "oidc-client-ts";
 
 import { Authentication } from "../authentication";
 import { Helper, CustomException } from "./Helper";
@@ -17,23 +17,18 @@ import {
   IInitVerificationAuthenticationRequestEntity,
   FindUserEntity,
   IUserEntity,
-  FidoSetupEntity,
   IEnrollVerificationSetupRequestEntity,
-  ISuggestedMFAActionConfig,
   IUserLinkEntity,
-  UpdateReviewDeviceEntity,
-  UserActivityEntity,
   ChangePasswordEntity,
   IConsentAcceptEntity,
   IAuthVerificationAuthenticationRequestEntity,
-  FaceVerificationAuthenticationRequestEntity,
   LoginFormRequestEntity,
   AccountVerificationRequestEntity,
   ValidateResetPasswordEntity,
   AcceptResetPasswordEntity,
-  LoginFormRequestAsyncEntity,
   PhysicalVerificationLoginRequest,
-  IChangePasswordEntity
+  IChangePasswordEntity,
+  IUserActivityPayloadEntity,
 } from "./Entities"
 
 export class WebAuth {
@@ -183,8 +178,15 @@ export class WebAuth {
   };
 
   /**
-   * get user info
-   * @returns 
+   * To get the user profile information, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
+   * @example
+   * ```js
+   * cidaas.getUserInfo().then(function (response) {
+   *   // the response will give you profile details.
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });; 
+   * ``` 
    */
   async getUserInfo() {
     try {
@@ -273,85 +275,65 @@ export class WebAuth {
   };  
 
   /**
-   * get login url
-   * @returns 
+   * To get the generated login url, call **getLoginURL()**. This will call authz service and generate login url to be used.
+   * @example
+   * ```js
+   * cidaas.getLoginURL().then(function (response) {
+   *   // the response will give you login url.
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });; 
+   * ``` 
    */
-  getLoginURL() {
-    let loginUrl: string;
-    let finish: boolean = false;
-    (async () => {
-      try {
-        loginUrl = await window.usermanager._client.getSignInRedirectUrl();
-      }
-      catch (e) {
-        //TODO: define Error handling
-        console.log(e);
-      }
-      finish = true
-    })();
-    while (!finish) { } // A simple synchronous loop to wait async call is finish
-    return loginUrl;
-  };
-
-  /**
-   * get request id
-   * @returns 
-   */
-  getRequestId() {
+  getLoginURL(state?: SigninState) {
     return new Promise((resolve, reject) => {
       try {
-        var respone_type = window.webAuthSettings.response_type;
-        if (!respone_type) {
-          respone_type = "token";
-        }
-        var response_mode = window.webAuthSettings.response_mode;
-        if (!response_mode) {
-          response_mode = "fragment";
-        }
-        var bodyParams = {
-          "client_id": window.webAuthSettings.client_id,
-          "redirect_uri": window.webAuthSettings.redirect_uri,
-          "response_type": respone_type,
-          "response_mode": response_mode,
-          "scope": window.webAuthSettings.scope,
-          "nonce": new Date().getTime().toString()
-        };
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/authz-srv/authrequest/authz/generate";
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              resolve(JSON.parse(http.responseText));
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("POST", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send(JSON.stringify(bodyParams));
-      } catch (ex) {
-        reject(ex);
+        window.usermanager._client.createSigninRequest({state:state}).then((signinRequest: SigninRequest) => {
+          resolve(signinRequest.url);
+          return ;
+        }); 
+      } catch (e) {
+        reject(e);
       }
     });
   };
 
   /**
-   * get missing fields
-   * @param options 
-   * @returns 
+   * Each and every proccesses starts with requestId, it is an entry point to login or register. For getting the requestId, call **getRequestId()**.
+   * @example
+   * ```js
+   * cidaas.getRequestId().then(function (response) {
+   *   // the response will give you request id.
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });; 
+   * ``` 
    */
-  getMissingFields(options: { requestId: string; trackId: string; }) {
-    const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + options.requestId + "/" + options.trackId;
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
+  getRequestId() {
+    const ui_locales = window.webAuthSettings.ui_locales
+    const options = {
+      'client_id': window.webAuthSettings.client_id,
+      'redirect_uri': window.webAuthSettings.redirect_uri,
+      'response_type': window.webAuthSettings.response_type ?? 'token',
+      "response_mode": window.webAuthSettings.response_mode ?? 'fragment',
+      "scope": window.webAuthSettings.scope,
+      "nonce": new Date().getTime().toString(),
+      ...(ui_locales && { ui_locales } || {})
+    };
+    const serviceURL = window.webAuthSettings.authority + '/authz-srv/authrequest/authz/generate';
+    return Helper.createHttpPromise(options, serviceURL, false, "POST");
   };
 
   /**
-   * get Tenant info
-   * @returns 
+   * To get the tenant basic information, call **getTenantInfo()**. This will return the basic tenant details such as tenant name and allowed login with types (Email, Mobile, Username).
+   * @example
+   * ```js
+   * cidaas.getTenantInfo().then(function (response) {
+   *   // the response will give you tenant details
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });; 
+   * ``` 
    */
   getTenantInfo() {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
@@ -359,8 +341,13 @@ export class WebAuth {
   };
 
   /**
-   * logout api call
-   * @param options 
+   * To logout the user, call **logoutUser()**.
+   * @example
+   * ```js
+   * cidaas.logoutUser({
+   *   access_token : 'your accessToken'
+   * });
+   * ```
    */
   logoutUser(options: { access_token: string }) {
     try {
@@ -371,9 +358,17 @@ export class WebAuth {
   };
 
   /**
-   * get Client Info
-   * @param options 
-   * @returns 
+   * To get the client basic information, call **getClientInfo()**. This will return the basic client details such as client name and its details.
+   * @example
+   * ```js
+   * cidaas.getClientInfo({
+   *   requestId: 'your requestId',
+   * }).then(function (resp) {
+   *   // the response will give you client info.
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });
+   * ```
    */
   getClientInfo(options: { requestId: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
@@ -381,153 +376,96 @@ export class WebAuth {
   };
 
   /**
-   * get all devices associated to the client
-   * @param options 
-   * @returns 
-   */
-  getDevicesInfo(options: any) {
-    options.userAgent = window.navigator.userAgent;
-    const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
-    if (window.navigator.userAgent) {
-      return Helper.createHttpPromise(options, _serviceURL,false, "GET");
-    }
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
-  };
-
-  /**
-   * delete a device
-   * @param options 
-   * @returns 
-   */
-  deleteDevice(options: { device_id: string; userAgent?: string }) {
-    const _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
-    options.userAgent = window.navigator.userAgent;
-    if (window.navigator.userAgent) {
-      return Helper.createHttpPromise(options, _serviceURL,false, "DELETE");
-    }
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "DELETE");
-  };
-
-  /**
-   * get Registration setup
-   * @param options 
-   * @returns 
-   */
-  getRegistrationSetup(options: { acceptlanguage: string; requestId: string }) {
-    return new Promise((resolve, reject) => {
-      try {
-        var http = new XMLHttpRequest();
-        var _serviceURL = window.webAuthSettings.authority + "/registration-setup-srv/public/list?acceptlanguage=" + options.acceptlanguage + "&requestId=" + options.requestId;
-        http.onreadystatechange = function () {
-          if (http.readyState == 4) {
-            if (http.responseText) {
-              var parsedResponse = JSON.parse(http.responseText);
-              if (parsedResponse && parsedResponse.data && parsedResponse.data.length > 0) {
-                let registrationFields = parsedResponse.data;
-              }
-              resolve(parsedResponse);
-            } else {
-              resolve(false);
-            }
-          }
-        };
-        http.open("GET", _serviceURL, true);
-        http.setRequestHeader("Content-type", "application/json");
-        if (window.localeSettings) {
-          http.setRequestHeader("accept-language", window.localeSettings);
-        }
-        http.send();
-      } catch (ex) {
-        reject(ex);
-      }
-    });
-  };
-
-  /**
- * get unreviewed devices
- * @param access_token 
- * @param sub 
- * @returns 
- */
-  getUnreviewedDevices(access_token: string, sub: string) {
-    let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/unreviewlist/" + sub;
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", access_token);
-  };
-
-  /**
-   * get reviewed devices
-   * @param access_token 
-   * @param sub 
-   * @returns 
-   */
-  getReviewedDevices(access_token: string, sub: string) {
-    let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/reviewlist/" + sub;
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", access_token);
-  };
-
-  /**
-   * review device
-   * @param options 
-   * @param access_token 
-   * @returns 
-   */
-  reviewDevice(options: UpdateReviewDeviceEntity, access_token: string) {
-    let _serviceURL = window.webAuthSettings.authority + "/reports-srv/device/updatereview";
-    return Helper.createHttpPromise(options, _serviceURL,false, "PUT", access_token);
-  };
-
-  /**
-   * get device info
-   * @returns 
-   */
-  getDeviceInfo() {
-    return new Promise((resolve, reject) => {
-      try {
-        var value = ('; ' + document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
-        var options = { userAgent: "" };
-        if (!value) {
-          (async () => {
-            options.userAgent = window.navigator.userAgent
-            var http = new XMLHttpRequest();
-            var _serviceURL = window.webAuthSettings.authority + "/device-srv/deviceinfo";
-            http.onreadystatechange = function () {
-              if (http.readyState == 4) {
-                resolve(JSON.parse(http.responseText));
-              }
-            };
-            http.open("POST", _serviceURL, true);
-            http.setRequestHeader("Content-type", "application/json");
-            if (window.localeSettings) {
-              http.setRequestHeader("accept-language", window.localeSettings);
-            }
-            http.send(JSON.stringify(options));
-          })();
-        }
-      } catch (ex) {
-        reject(ex);
-      }
-    });
-  };
-
-  /**
-   * To get the user profile information, call getUserProfile(). The function accepts a function parameter of type object. In the sample example the object is named as options. Below are the key that need to be passed in the options object
-   * 
-   * @param options - contains access_token property.
-   * 
-   * @returns user profile
-   * 
+   * To get all devices information associated to the client, call **getDevicesInfo()**
    * @example
-   * ```
-   * let options = {
-   *   access_token: YOUR_ACCESS_TOKEN,
-   * }
-   * cidaas.getUserProfile(options)
-   * .then(function (response) {
-   *   // the response will give you user profile information.
-   * }).catch(function (ex) {
+   * ```js
+   * const options = {};
+   * const accessToken = 'your access token';
+   * cidaas.getDevicesInfo(options, accessToken).then(function (resp) {
+   *   // the response will give you devices informations.
+   * }).catch(function(ex) {
    *   // your failure code here
    * });
    * ```
+   */
+  getDevicesInfo(options: any, accessToken: string) {
+    options.userAgent = window.navigator.userAgent;
+    const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
+    if (window.navigator.userAgent) {
+      return Helper.createHttpPromise(options, _serviceURL,false, "GET", accessToken);
+    }
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", accessToken);
+  };
+
+  /**
+   * To delete device associated to the client, call **deleteDevice()**
+   * @example
+   * ```js
+   * const options = {
+   *   device_id: 'id of device associated to the client.' // call **getDevicesInfo()** to get List of device ids and its details.
+   * };
+   * const accessToken = 'your access token';
+   * cidaas.deleteDevice(options, accessToken).then(function (resp) {
+   *   // your success code
+   * }).catch(function(ex) {
+   *   // your failure code
+   * });
+   * ```
+   */
+  deleteDevice(options: { device_id: string; userAgent?: string }, accessToken: string) {
+    const _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
+    options.userAgent = window.navigator.userAgent;
+    if (window.navigator.userAgent) {
+      return Helper.createHttpPromise(options, _serviceURL,false, "DELETE", accessToken);
+    }
+    return Helper.createHttpPromise(undefined, _serviceURL,false, "DELETE", accessToken);
+  };
+
+  /**
+   * To handle registration, first you need the registration fields. To get the registration fields, call **getRegistrationSetup()**. This will return the fields that has to be needed while registration.
+   * @example
+   * ```js
+   * cidaas.getRegistrationSetup({
+   *   requestId: 'your requestId',
+   *   acceptlanguage: 'your locale' // optional example: de-de, en-US
+   * }).then(function (resp) {
+   *   // the response will give you fields that are required.
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });
+   * ```
+   */
+  getRegistrationSetup(options: { acceptlanguage?: string; requestId: string }) {
+    const serviceURL = window.webAuthSettings.authority + '/registration-setup-srv/public/list?acceptlanguage=' + options.acceptlanguage + '&requestId=' + options.requestId;
+    return Helper.createHttpPromise(undefined, serviceURL, false, 'GET');
+  };
+
+  /**
+   * to generate device info, call **generateDeviceInfo()**.
+   * @example
+   * ```js
+   * cidaas.generateDeviceInfo().then(function (resp) {
+   *   // your success code
+   * }).catch(function(ex) {
+   *   // your failure code
+   * });
+   * ```
+   */
+  generateDeviceInfo() {
+    const value = ('; ' + document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
+    if (!value) {
+      const options = { 
+        userAgent: window.navigator.userAgent
+      };
+      const serviceURL = window.webAuthSettings.authority + '/device-srv/deviceinfo';
+      return Helper.createHttpPromise(options, serviceURL, false, 'POST');
+    }
+  };
+
+  /**
+   * get the user profile information
+   * @param options 
+   * @returns 
    */
   getUserProfile(options: { access_token: string }) {
     return UserService.getUserProfile(options);
@@ -827,15 +765,28 @@ export class WebAuth {
   };
 
   /**
-   * get user activities
-   * @param options 
-   * @param access_token 
-   * @returns 
+   * To get user activities, call **getUserActivities()**.
+   * @example
+   * ```js
+   * const options = {
+   *   sub: 'your sub',
+   *   dateFilter: {
+   *     from_date: 'date in UTC format',
+   *     to:date: 'date in UTC format'
+   *   }
+   * };
+   * const accessToken = 'your access token';
+   * cidaas.getUserActivities(options, accessToken).then(function (resp) {
+   *   // your success code
+   * }).catch(function(ex) {
+   *   // your failure code
+   * });
+   * ```
    */
-  getUserActivities(options: UserActivityEntity, access_token: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/useractivity-srv/latestactivity";
-    return Helper.createHttpPromise(options, _serviceURL, false,"POST", access_token);
-  };
+  getUserActivities(options: IUserActivityPayloadEntity, accessToken: string) {
+    const serviceURL = window.webAuthSettings.authority + '/activity-streams-srv/user-activities';
+    return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
+  }
 
   /**
    * @param access_token 
@@ -885,15 +836,47 @@ export class WebAuth {
     return UserService.unlinkAccount(access_token, identityId);
   };
 
-  /**
-   * image upload
-   * @param options 
-   * @param access_token 
-   * @returns 
+   /**
+   * To change profile image, call **updateProfileImage()**.
+   * @example
+   * ```js
+   * const options = {
+   *   image_key: 'id for your image e.g. user sub',
+   *   photo: yourImageFile,
+   *   filename: 'name of your image file'
+   * };
+   * const accessToken = 'your access token';
+   * cidaas.updateProfileImage(options, accessToken).then(function (resp) {
+   *   // your success code
+   * }).catch(function(ex) {
+   *   // your failure code
+   * });
+   * ```
    */
-  updateProfileImage(options: { image_key: string; }, access_token: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
-    return Helper.createHttpPromise(options, _serviceURL, false,"POST", access_token);
+  updateProfileImage(options: { image_key: string, photo: any; filename: string }, access_token: string) {
+    const serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
+
+    const form = document.createElement('form');
+    form.action = serviceURL;
+    form.method = 'POST';
+
+    const image_key = document.createElement('input');
+    image_key.setAttribute('type', 'hidden');
+    image_key.setAttribute('name', 'image_key');
+    form.appendChild(image_key);
+
+    const photo = document.createElement('input');
+    photo.setAttribute('type', 'file');
+    photo.setAttribute('hidden', 'true');
+    photo.setAttribute("name", "photo");
+    form.appendChild(photo);
+
+    const formdata = new FormData(form);
+    formdata.set('image_key', options.image_key);
+    formdata.set('photo', options.photo, options.filename);
+
+    return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', access_token, null, formdata);
+
   };
 
   /**
@@ -903,9 +886,9 @@ export class WebAuth {
    */
   initiateEnrollment(options: {
     verification_type: string,
-    deviceInfo: {
-      deviceId: "", 
-      location: {lat: "", lon: ""}
+    deviceInfo?: {
+      deviceId: string, 
+      location: {lat: string, lon: string}
     }
   }, accessToken: string) {
     return VerificationService.initiateEnrollment(options, accessToken);

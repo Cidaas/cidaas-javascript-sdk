@@ -144,7 +144,7 @@ export namespace VerificationService {
    */
   export function initiateEnrollment(options: {
     verification_type: string,
-    deviceInfo: {
+    deviceInfo?: {
       deviceId: string,
       location: {
         lat: string,
