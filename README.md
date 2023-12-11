@@ -85,19 +85,6 @@ Since version 1.2.0 using 'code' as the 'response_type' will start the OAuth Aut
 
 ```js
 var cidaas = new CidaasSDK.WebAuth(options);
-```
-
-#### Migrating to Cidaas V3
-
-Cidaas V3 has response handling adjustment on some of cidaas service call. To migrate to cidaas V3, you need to do the following:
-
-- ensure that you use at least cidaas version: 3.* You can find out the cidaas version from cidaas service portal and ask our customer service if it need to be updated.
-
-- ensure that you use at least cidaas-javascript-sdk version: 3.0.5
-
-- add `cidaas_version: 3` to Cidaas options variable
-
-Without Providing CidaasVersion, your application will use response handling of Cidaas V2 by default.
 
 #### Usage
 
