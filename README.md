@@ -1,4 +1,4 @@
-![Logo](logo.jpg)
+![Logo](https://raw.githubusercontent.com/Cidaas/cidaas-javascript-sdk/master/logo.jpg)
 
 ## About cidaas:
 [cidaas](https://www.cidaas.com)
