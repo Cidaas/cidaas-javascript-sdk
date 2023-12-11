@@ -68,6 +68,7 @@ var options = {
 
 ```js
 var cidaas = new CidaasSDK.WebAuth(options);
+```
 
 #### Usage
 
