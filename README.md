@@ -15,13 +15,26 @@
 
 This cidaas Javascript SDK library is built on the top of [OIDC client typescript library](https://github.com/authts/oidc-client-ts). 
 
-#### Requirements
+## Table of Contents
+
+<!--ts-->
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Initialisation](#initialisation)
+* [Usage](#usage)
+    <!--ts-->
+    * [Login With Browser](#login-with-browser)
+    * [Further use case which is supported by the sdk](#further-use-case-which-is-supported-by-the-sdk)
+    <!--te-->
+* [Possible Error](#possible-error)
+
+### Requirements
 
 Make sure you have installed all of the following prerequisites on your development machine:
 * Node.js - Download & Install Node.js. The version required is >= 8
 * npm - node package manager to add the package and install dependent packages
 
-#### Installation
+### Installation
 
 From CDN
 
@@ -38,7 +51,7 @@ npm install cidaas-javascript-sdk
 
 Please check the [Changelog](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/CHANGELOG.md) for more information about the latest release
 
-#### Initialisation
+### Initialisation
 
 After adding **cidaas-sdk.js** create a local file and name it like **index.js**. Cidaas options variable should be defined there for initializing cidaas sdk.
 
@@ -70,9 +83,9 @@ var options = {
 var cidaas = new CidaasSDK.WebAuth(options);
 ```
 
-#### Usage
+### Usage
 
-##### Login With Browser
+#### Login With Browser
 
 To login through cidaas sdk, call **loginWithBrowser()**. This will redirect you to the hosted login page.
 
@@ -91,6 +104,10 @@ cidaas.loginCallback().then(function(response) {
     // your failure code here
 });
 ```
+
+#### Further use case which is supported by the sdk
+
+Cidaas Javascript SDK also features the following functionality:
 
 ## Possible Error
 
