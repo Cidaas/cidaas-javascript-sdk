@@ -228,7 +228,7 @@ export interface IEnrollVerificationSetupRequestEntity {
 }
 
 export interface IInitVerificationAuthenticationRequestEntity {
-  usage_type: string; // one of "multifactor" (first time password, after that asked for mfa -> 2 steps) or "passwordless" (directly first login asked for mfa -> 1 step)
+  usage_type: string; // one of "multifactor" (first time password, after that asked for mfa -> 2 steps) or "passwordless" (directly first login asked for mfa -> 1 step) -> PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
   processingType: string; // enum: "link" or "code"
 
   q?: string; // masked sub
@@ -251,19 +251,6 @@ export interface IInitVerificationAuthenticationRequestEntity {
 
   trackId?: string; // id for current flow, needed for multifactor authentication
 }
-
-export interface IMobileEntity {
-  given_phone: string;
-  phone: string;
-  country: string;
-  dail_code: string;
-  carrier_type: string;
-  carrier_name: string;
-  national_format: string;
-  international_format: string;
-  E164_format: string;
-}
-
 
 export interface ISuggestedMFAActionConfig {
   sub?: string;
@@ -311,14 +298,6 @@ export interface IUserEntity {
   rawJSON: string;
   trackId: string;
   need_reset_password: boolean;
-}
-
-
-export interface IUserGroupMap {
-  sub: string;
-  groupId: string;
-  roles: string[];
-  appendRole: boolean;
 }
 
 export interface IUserLinkEntity {

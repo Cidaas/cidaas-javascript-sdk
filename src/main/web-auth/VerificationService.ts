@@ -10,6 +10,7 @@ import { Helper, CustomException } from "./Helper";
 export namespace VerificationService {
   /**
      * To initiate the account verification, call **initiateAccountVerification()**. This will send verification code  email or sms or ivr based on the verificationMedium you mentioned.
+     * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/cgans5erj5alg-init-account-verification for more details.
      * @example
      * ```js
      * cidaas.initiateAccountVerification({
@@ -36,7 +37,8 @@ export namespace VerificationService {
   };
 
   /**
-   * To complete the verification, call **verifyAccount()**. 
+   * To complete the verification, call **verifyAccount()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/r8h9mvavvw2e6-verify-account for more details.
    * @example
    * ```js
    * cidaas.verifyAccount({
@@ -58,7 +60,8 @@ export namespace VerificationService {
   };
 
   /**
-   * To get all configured multi factor authentication, call **getMFAList()**. 
+   * To get all configured multi factor authentication, call **getMFAList()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/ee688a9c52b63-list-of-configured-verification-methods for more details.
    * @example
    * ```js
    * cidaas.getMFAList({
@@ -122,6 +125,7 @@ export namespace VerificationService {
 
   /**
    * To initiate enrollment of new multi factor authentication, call **initiateEnrollment()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/branches/master/f85aef6754714-initiate-physical-verification-setup for more details.
    * @example
    * ```js
    * const access_token = "your access token";
@@ -157,7 +161,8 @@ export namespace VerificationService {
   };
 
   /**
-   * to get the status of MFA enrollment, call **getEnrollmentStatus**.
+   * to get the status of MFA enrollment, call **getEnrollmentStatus()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/branches/master/b06447d02d8e0-get-status-of-physical-verification-setup-configuration for more details.
    * @example
    * ```js
    * cidaas.getEnrollmentStatus('statusId from initiateEnrollment()', 'your access token')
@@ -175,7 +180,8 @@ export namespace VerificationService {
   };
 
   /**
-   * to finish enrollment process of new multi factor authentication, call **enrollVerification**.
+   * to finish enrollment process of new multi factor authentication, call **enrollVerification()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/branches/master/20ec76e937b27-enroll-physical-verification-setup for more details.
    * @example
    * ```js
    * const fidoPayload = {
@@ -202,7 +208,7 @@ export namespace VerificationService {
   };
 
   /**
-   * to see details of configured verification type, call **checkVerificationTypeConfigured**.
+   * to see details of configured verification type, call **checkVerificationTypeConfigured()**.
    * @example
    * ```js
    * cidaas.checkVerificationTypeConfigured({
@@ -223,7 +229,8 @@ export namespace VerificationService {
   };
 
   /**
-   * to initiate multi factor auhentication, call **initiateMFA**.
+   * to initiate multi factor auhentication, call **initiateMFA()**. 
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2a3ea581bb249-initiate-verification for more details.
    * @example
    * ```js
    * const access_token = "your access token";
@@ -250,7 +257,8 @@ export namespace VerificationService {
   };
 
   /**
-   * to authenticate with multi factor auhentication, call **authenticateMFA**.
+   * to authenticate with multi factor auhentication, call **authenticateMFA()**. 
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/1aa38936252d6-perform-the-authentication-method for more details.
     * @example
    * ```js
    * cidaas.authenticateMFA({

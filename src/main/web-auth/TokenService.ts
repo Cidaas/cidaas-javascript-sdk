@@ -33,7 +33,8 @@ export namespace TokenService {
   };
 
   /**
-   * To get a new token with th grant type authorization_code, call **getAccessToken()** with code to create a new token.
+   * To get a new token with the grant type authorization_code, call **getAccessToken()** with code to create a new token.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/4ff850f48629a-generate-token for more details.
    * @example
    * ```js
    * const options = {
@@ -66,6 +67,7 @@ export namespace TokenService {
 
   /**
    * To validate an access token, call **validateAccessToken()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/26ff31e2937f1-introspect-with-bearer-token for more details.
    * @example 
    * ```js
    * const options = {
@@ -91,7 +93,8 @@ export namespace TokenService {
   };
 
   /**
-   * To get details of scope-consent, call **getScopeConsentDetails()**
+   * To get details of scope-consent, call **getScopeConsentDetails()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/aappczju1t3uh-precheck-information for more details.
    * @example
    * ```js
    * const options = {
@@ -117,11 +120,12 @@ export namespace TokenService {
   };
 
   /**
-   * To get the missing fields after login, call **getMissingFieldsLogin()**.
+   * To get the missing fields after login, call **getMissingFields()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/aappczju1t3uh-precheck-information for more details.
    * @example
    * ```js
    * const trackId = "your track id from login";
-   * cidaas.getMissingFieldsLogin(trackId)
+   * cidaas.getMissingFields(trackId)
    *   .then(function (response) {
    *     // type your code here
    * })
@@ -130,13 +134,14 @@ export namespace TokenService {
    * });
    * ```
    */
-  export function getMissingFieldsLogin(trackId: string) {
+  export function getMissingFields(trackId: string) {
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + trackId;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 
   /**
-   * To initiate device code, call **initiateDeviceCode()**
+   * To initiate device code, call **initiateDeviceCode()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/b6d284f55be5e-authorization-request for more details.
    * @example 
    * ```js
    * const clientId = "your client id";
@@ -156,7 +161,7 @@ export namespace TokenService {
   }
 
   /**
-   * To verify device code, call **initiateDeviceCode()**
+   * To verify device code, call **deviceCodeVerify()**. 
    * @example 
    * ```js
    * const code = "your code which has been send after initiateDeviceCode()";

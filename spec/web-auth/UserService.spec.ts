@@ -177,12 +177,13 @@ test('updateProfile', () => {
 });
 
 test('initiateLinkAccount', () => {
+  const mockDate = new Date('1970-01-01T00:00:00Z');
   const options: IUserLinkEntity = {
     master_sub: 'master_sub',
     user_name_type: 'email',
     user_name_to_link: 'user_name_to_link',
     link_accepted_by: 'link_accepted_by',
-    link_response_time: new Date(),
+    link_response_time: mockDate,
     link_accepted: false,
     communication_type: 'communication_type',
     verification_status_id: 'verification_status_id',

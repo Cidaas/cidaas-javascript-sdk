@@ -1,10 +1,11 @@
 import { LoginService } from '../../src/main/web-auth/LoginService';
 import { Helper } from "../../src/main/web-auth/Helper";
-import { IChangePasswordEntity, IUserEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
+import { IChangePasswordEntity, IConsentContinue, IUserEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;
-const formSpy = jest.spyOn(Helper, 'createForm');
+const createFormSpy = jest.spyOn(Helper, 'createForm');
+const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
 beforeAll(() => {
@@ -19,7 +20,8 @@ test('loginWithCredentials', () => {
   };
   const serviceURL = `${serviceBaseUrl}/login`;
   LoginService.loginWithCredentials(option);
-  expect(formSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(submitFormSpy).toHaveBeenCalled();
 });
 
 test('loginWithSocial', () => {
@@ -65,7 +67,8 @@ test('passwordlessLogin', () => {
   };
   const serviceURL = `${serviceBaseUrl}/verification/login`;
   LoginService.passwordlessLogin(option);
-  expect(formSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(submitFormSpy).toHaveBeenCalled();
 });
 
 test('consentContinue', () => {
@@ -79,7 +82,8 @@ test('consentContinue', () => {
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
   LoginService.consentContinue(option);
-  expect(formSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(submitFormSpy).toHaveBeenCalled();
 });
 
 test('mfaContinue', () => {
@@ -90,7 +94,8 @@ test('mfaContinue', () => {
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
   LoginService.mfaContinue(option);
-  expect(formSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(submitFormSpy).toHaveBeenCalled();
 });
 
 test('firstTimeChangePassword', () => {
@@ -103,7 +108,8 @@ test('firstTimeChangePassword', () => {
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.loginSettingsId}`;
   LoginService.firstTimeChangePassword(option);
-  expect(formSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
+  expect(submitFormSpy).toHaveBeenCalled();
 });
 
 test('progressiveRegistration', () => {

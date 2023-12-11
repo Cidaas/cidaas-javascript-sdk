@@ -5,14 +5,15 @@ import {
   IUserLinkEntity,
   ChangePasswordEntity,
   ValidateResetPasswordEntity,
-  AcceptResetPasswordEntity,
+  AcceptResetPasswordEntity
 } from "./Entities"
 import { Helper, CustomException } from "./Helper";
 
 export namespace UserService {
 
   /**
-   * To get the user profile information, call **getUserProfile()**.
+   * To get the user profile information by using cidaas internal api, call **getUserProfile()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2zfvjx3vtq6g6-get-user-info for more details.
    * @example
    * ```js
    * const options = {
@@ -35,7 +36,8 @@ export namespace UserService {
   };
 
   /**
-   * to register user, call **register()**. This method will create a new user.
+   * To register user, call **register()**. This method will create a new user.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/427632e587203-register-a-new-user for more details.
    * Note: Only requestId in the headers is required.
    * @example
    * ```js
@@ -76,7 +78,7 @@ export namespace UserService {
   };
 
   /**
-   * to get information about invitation details, call getInviteUserDetails()
+   * to get information about invitation details, call **getInviteUserDetails()**
    * @example
    * ```js
    * const options = {
@@ -114,7 +116,8 @@ export namespace UserService {
   };
 
   /**
-   * To initiate the password resetting, call **initiateResetPassword()**. This will send verification code to your email or mobile based on the resetMedium you mentioned. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/6b29bac6002f4-initiate-password-reset for more details.
+   * To initiate the password resetting, call **initiateResetPassword()**. This will send verification code to your email or mobile based on the resetMedium you mentioned.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/6b29bac6002f4-initiate-password-reset for more details.
    * @example
    * ```js
    * cidaas.initiateResetPassword({
@@ -135,7 +138,8 @@ export namespace UserService {
   };
 
   /**
-   * To handle the reset password by entering the verification code you received, call **handleResetPassword()**. This will check if your verification code was valid or not, and allows you to proceed to the next step. More details available on https://docs.cidaas.com/docs/cidaas-iam/3t8ztokeb7cfz-handle-reset-password
+   * To handle the reset password by entering the verification code you received, call **handleResetPassword()**. This will check if your verification code was valid or not, and allows you to proceed to the next step.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/3t8ztokeb7cfz-handle-reset-password for more details.
    * @example
    * ```js
    * const handleResponseAsJson = 'true if the response need to be handled the old way (as json). In the current handling, the response information will be given as query parameter in redirect url.';
@@ -167,7 +171,8 @@ export namespace UserService {
   };
 
   /**
-   * To finish reseting the password, call **resetPassword()**. This will allow you to change your password. More details available on https://docs.cidaas.com/docs/cidaas-iam/qa9ny0gkzlf6y-accept-reset-password
+   * To finish reseting the password, call **resetPassword()**. This will allow you to change your password.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/qa9ny0gkzlf6y-accept-reset-password for more details.
    * @example
    * ```js
    * const handleResponseAsJson = 'true if the response need to be handled the old way (as json). In the current handling, user will be redirected to success page after successful reset password.';
@@ -259,7 +264,8 @@ export namespace UserService {
   };
 
   /**
-   * To change the password, call **changePassword()**. This will allow you to change your password. More details available on https://docs.cidaas.com/docs/cidaas-iam/8221883241464-change-password
+   * To change the password, call **changePassword()**. This will allow you to change your password.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/8221883241464-change-password for more details.
    * @example
    * ```js
    * cidaas.changePassword({
@@ -282,6 +288,7 @@ export namespace UserService {
 
   /**
    * To update the user profile information, call **updateProfile()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/i3uqnxcpxr19r-update-user-profile for more details.
    * @example
    * ```js
    * cidaas.updateProfile({
@@ -389,6 +396,7 @@ export namespace UserService {
 
   /**
    * To delete the user account directly in the application, call **deleteUserAccount()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/x133xdifl1sx9-schedule-user-deletion for more details.
    * @example
    * ```js
    * options = {
