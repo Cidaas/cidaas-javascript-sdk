@@ -38,7 +38,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './minified'),
     filename: '[name].min.js',
-    library: '[name]',
+    library: 'CidaasSDK',
     libraryTarget: 'umd',
     umdNamedDefine: true,
     clean: true,
