@@ -1,7 +1,6 @@
 import { IdTokenClaims, SignoutResponse, User, UserManager } from 'oidc-client-ts';
 import { Authentication } from '../../src/main/authentication';
 
-
 const options = {
 	authority: 'baseURL',
 	client_id: 'clientId',
@@ -50,6 +49,7 @@ test('loginCallback', () => {
 });
 
 test('logout', () => {
+    (window as any).authentication = { logoutCallback: () => Promise.resolve({})};
     const logoutSpy = jest.spyOn(userManager, 'signoutRedirect').mockResolvedValue();
 	authentication.logout();
 	expect(logoutSpy).toHaveBeenCalled();
