@@ -13,7 +13,7 @@
 
 # Cidaas Javascript SDK
 
-This cidaas Javascript SDK library is built on the top of [OIDC client javascript library](https://github.com/IdentityModel/oidc-client-js). 
+This cidaas Javascript SDK library is built on the top of [OIDC client typescript library](https://github.com/authts/oidc-client-ts). 
 
 #### Requirements
 
@@ -26,7 +26,7 @@ Make sure you have installed all of the following prerequisites on your developm
 From CDN
 
 ```html
-<!-- Replace the required <version> in the script tag, example: 3.0.0. All the released tag can be found https://www.npmjs.com/package/cidaas-javascript-sdk?activeTab=versions -->
+<!-- Replace the required <version> in the script tag, example: 4.0.0. All the released tag can be found https://www.npmjs.com/package/cidaas-javascript-sdk?activeTab=versions -->
 <script src="https://cdn.cidaas.de/javascript/oidc/<version>/cidaas-javascript-sdk.min.js"></script>
 ```
 
@@ -36,11 +36,11 @@ From npm
 npm install cidaas-javascript-sdk
 ```
 
-Please check the [Changelogs](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/Changelogs.md) for more information about the latest release
+Please check the [Changelog](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/CHANGELOG.md) for more information about the latest release
 
 #### Initialisation
 
-After adding ****cidaas-sdk.js**** create a local file and name it like ****index.js****. Cidaas options variable should be defined there for initializing cidaas sdk.
+After adding **cidaas-sdk.js** create a local file and name it like **index.js**. Cidaas options variable should be defined there for initializing cidaas sdk.
 
 Cidaas options variable support every [OIDC Client UserManagerSettings Properties](https://authts.github.io/oidc-client-ts/interfaces/UserManagerSettings.html) which has the following notable properties:
 
@@ -50,14 +50,7 @@ Cidaas options variable support every [OIDC Client UserManagerSettings Propertie
 | client_id | yes | client application's identifier, which could be found in cidaas admin ui |
 | redirect_uri | yes | URL to be redirected after successful login attempt. |
 | post_logout_redirect_uri | no | URL to be redirected after successful logout attempt. |
-| response_type | no | The type of response that will come after successful login attempt. The default value is 'code' if no properties is being sent. This determines the OAuth authorization flow being used.|
 | scope | no | the scope the application requires and requests from cidaas. The default value is 'openid' if no properties is being sent. |
-
-In addition to it, There are the following custom properties which could / need to be defined in cidaas option variable:
-
-| Property Name | Required | Description |
-| ------ | ------ | ------ |
-| cidaas_version | no | You can find out the cidaas version from cidaas service portal |
 
 an example of index.js is looks like this:
 
@@ -67,9 +60,7 @@ var options = {
     client_id: 'your app id',
     redirect_uri: 'your redirect url',
     post_logout_redirect_uri: 'your post logout redirect url',
-    response_type: 'id_token token',
     scope: 'openid email roles profile',
-    cidaas_version: 3
 }
 ```
 
@@ -82,16 +73,15 @@ var cidaas = new CidaasSDK.WebAuth(options);
 
 ##### Login With Browser
 
-To login through cidaas sdk, call ****loginWithBrowser()****. This will redirect you to the hosted login page.
+To login through cidaas sdk, call **loginWithBrowser()**. This will redirect you to the hosted login page.
 
 ```js
 cidaas.loginWithBrowser();
 ```
 
-
 once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
 
-To complete the login process, call ****logincallback()****. This will parses the access_token, id_token and whatever in hash in the redirect url.
+To complete the login process, call **logincallback()**. This will parses the access_token, id_token and whatever in hash in the redirect url.
 
 ```js
 cidaas.loginCallback().then(function(response) {
