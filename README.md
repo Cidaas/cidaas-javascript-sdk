@@ -73,14 +73,6 @@ var options = {
 }
 ```
 
-```
-#### <i class="fab fa-quote-left fa-fw" aria-hidden="true"></i> To use the PKCE Flow add 'code' as the 'response_type' 
-```
-
-### Note:
-
-Since version 1.2.0 using 'code' as the 'response_type' will start the OAuth Authorization Flow with PKCE instead of the normal Authorization Code Flow.
-
 ### Initialise the cidaas sdk using the configured options mentioned above:
 
 ```js
