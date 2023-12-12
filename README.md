@@ -107,14 +107,15 @@ cidaas.loginCallback().then(function(response) {
 
 #### Further use case which is supported by the sdk
 
-Cidaas Javascript SDK also features the following functionality:
+Cidaas Javascript SDK features the following functionality:
 
-* Variance of Authentication Mode: The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. 
-* Login Management: The SDK support the following login management functions:
-    * User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform 
+* Authentication Mode:
+    * The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. 
+* Login Management:
+    * User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform
     * Progressive Registration. In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login
     * depending on the missing information, user will be redirected to another page after login to either do progressive registration, accepting consent or changing password
-* User Management: The SDK support the following user management functions:
+* User Management:
     * registering a new user via classic registration form or by using social provider
     * getting & updating user information
     * removing user
@@ -123,24 +124,24 @@ Cidaas Javascript SDK also features the following functionality:
     * password change
     * in case a new user is registered with similiar information as existing user, deduplication could be activated to either proceed with the registration, or combine the user with an existing one
     * link user with another account
-* Token Management: The SDK support the following token management functions:
+* Token Management:
     * renew current session using refresh token
     * login using PKCE flow
     * device code flow for authenticating user without user interaction possibilty in device
     * validate if token is still valid using introspection endpoint
     * offline token check
-* Multi Factor Authentication Management: The SDK support the following MFA management functions:
+* Verification Management:
     * passwordless login flow, which starts with initiating & authenticating MFA
     * verifying user account using preconfigured MFA
     * canceling MFA process
     * getting information about every supported MFA & configured MFA
     * enrolling a new MFA type
-* Consent Management: The SDK support the following Consent management functions:
+* Consent Management:
     * getting consent details (app level consent, scope consent or field consent)
     * getting details of consent version
     * accepting consent (app level consent, scope consent or field consent)
     * revoke field consent
-* Other functionality: The SDK support the following functions:
+* Other functionality:
     * end user session
     * getting login authz url
     * getting public info
