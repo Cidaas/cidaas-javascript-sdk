@@ -18,7 +18,6 @@ This cidaas Javascript SDK library is built on the top of [OIDC client typescrip
 ## Table of Contents
 
 <!--ts-->
-* [Requirements](#requirements)
 * [Installation](#installation)
 * [Initialisation](#initialisation)
 * [Usage](#usage)
@@ -33,12 +32,6 @@ This cidaas Javascript SDK library is built on the top of [OIDC client typescrip
     * [Other Functionality](#other-functionality)
     <!--te-->
 * [Possible Error](#possible-error)
-
-### Requirements
-
-Make sure you have installed all of the following prerequisites on your development machine:
-* Node.js - Download & Install Node.js. The version required is >= 8
-* npm - node package manager to add the package and install dependent packages
 
 ### Installation
 
