@@ -30,6 +30,7 @@ This cidaas Javascript SDK library is built on the top of [OIDC client typescrip
     * [Token Management](#token-management)
     * [Verification Management](#verification-management)
     * [Consent Management](#consent-management)
+    * [Other Functionality](#other-functionality)
     <!--te-->
 * [Possible Error](#possible-error)
 
