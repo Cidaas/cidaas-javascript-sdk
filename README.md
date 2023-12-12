@@ -92,9 +92,9 @@ To login through cidaas sdk, call **loginWithBrowser()**. This will redirect you
 cidaas.loginWithBrowser();
 ```
 
-once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
+once login is successful, it will automatically redirects you to redirect_uri you have configured in cidaas options. You will get information such as code & state as redirect url parameter (query or fragment), which is needed to get access token.
 
-To complete the login process, call **logincallback()**. This will parses the access_token, id_token and whatever in hash in the redirect url.
+To complete the login process, call **logincallback()**.
 
 ```js
 cidaas.loginCallback().then(function(response) {
@@ -103,6 +103,10 @@ cidaas.loginCallback().then(function(response) {
     // your failure code here
 });
 ```
+
+After successful loginCallback, You will get access token, along with id token and refresh token in the json response, depends on your application congifuration.
+
+There are code documentations for each of the functions with example code of how to call them individually.
 
 ### Functions Overview
 
