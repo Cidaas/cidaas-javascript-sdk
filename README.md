@@ -114,7 +114,7 @@ Cidaas Javascript SDK features the following functionality:
 
 #### Authentication Functions
 
-The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in.
+The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. The functions for authentication could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/authentication/index.ts)
 
 | SDK Functions                                                                    | Description                                                                                                                                                                    |
 |----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -124,7 +124,7 @@ The SDK offers multiple way to authenticate user. Whether using browser redirect
 
 #### Login Management
 
-The SDK support the following login management functions:
+The login functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/LoginService.ts). The SDK support the following login management functions:
 
 | SDK Functions                                            | Description                                                                                                                                                                                         |
 |----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -134,7 +134,7 @@ The SDK support the following login management functions:
 
 #### User Management
 
-The SDK support the following user management functions:
+The user functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/UserService.ts). The SDK support the following user management functions:
 
 | SDK Functions                                                                                                                       | Description                                                                                                                                                                                                                                 |
 |-------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -149,7 +149,7 @@ The SDK support the following user management functions:
 
 #### Token Management
 
-The SDK support the following token management functions:
+The token functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/TokenService.ts). The SDK support the following token management functions:
 
 | SDK Functions                        | Description                                                                                         |
 |--------------------------------------|-----------------------------------------------------------------------------------------------------|
@@ -161,7 +161,7 @@ The SDK support the following token management functions:
 
 #### Verification Management
 
-The SDK support the following verification management functions:
+The verification functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/VerificationService.ts). The SDK support the following verification management functions:
 
 | SDK Functions                                                       | Description                                                                           |
 |---------------------------------------------------------------------|---------------------------------------------------------------------------------------|
@@ -173,7 +173,7 @@ The SDK support the following verification management functions:
 
 #### Consent Management
 
-The SDK support the following consent management functions:
+The consent functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/ConsentService.ts). The SDK support the following consent management functions:
 
 | SDK Functions                                                             | Description                                                                                                           |
 |---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
@@ -182,7 +182,7 @@ The SDK support the following consent management functions:
 
 #### Other Functionality
 
-The SDK support the following other functionality:
+general SDK functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/WebAuth.ts). The SDK support the following other functionality:
 
 | SDK Functions                                  | Description                                                                                 |
 |------------------------------------------------|---------------------------------------------------------------------------------------------|
