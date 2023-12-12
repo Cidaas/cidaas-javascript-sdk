@@ -90,15 +90,3 @@ test('revokeClaimConsent', () => {
   ConsentService.revokeClaimConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', option.access_token);
 });
-
-test('revokeClaimConsent', () => {
-  const option = {
-    access_token: 'access_token',
-    client_id: 'client_id',
-    sub: 'sub',
-    revoked_claims: ['revoked_claims']
-  };
-  const serviceURL = `${serviceBaseUrlV1}/claim/revoke`;
-  ConsentService.revokeClaimConsent(option);
-  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', option.access_token);
-});
