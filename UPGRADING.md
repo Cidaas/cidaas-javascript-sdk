@@ -58,6 +58,7 @@ Functions which has been deprecated for a while has been removed in V4. There ar
 | scopeConsentContinue / claimConsentContinue   | consentContinue       |
 | loginWithCredentialsAsynFn  | loginWithCredentials       |
 | initiateAccountVerificationAsynFn   | initiateAccountVerification       |
+| getScopeConsentDetails   | loginPrecheck       |
 
 ## 3. Handling for removed functions
 

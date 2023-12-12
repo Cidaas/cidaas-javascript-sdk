@@ -34,6 +34,7 @@ If you are upgrading from v3.x.x,  please see ['UPGRADING.md'](UPGRADING.md)
 - **Breaking** rename getScopeConsentVersionDetails() function to getConsentVersionDetails()
 - **Breaking** rename updateStatus() function to getEnrollmentStatus()
 - **Breaking** rename getDeviceInfo() function to createDeviceInfo()
+- **Breaking** rename getScopeConsentDetails() function to loginPrecheck()
 - **Breaking** getMissingFieldsLogin() is now reimplemented as getMissingFields()
 - document functions description and usage as typedoc instead in readme file.
 - update cancelMFA() to call the latest cancel endpoint

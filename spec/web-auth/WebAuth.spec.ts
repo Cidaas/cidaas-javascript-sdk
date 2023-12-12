@@ -507,14 +507,14 @@ describe('Token service functions', () => {
 		expect(validateAccessTokenSpy).toHaveBeenCalledWith(options);
 	});
 	
-	test('getScopeConsentDetails', () => {
-		const getScopeConsentDetailsSpy = jest.spyOn(TokenService, 'getScopeConsentDetails').mockImplementation();
+	test('loginPrecheck', () => {
+		const loginPrecheckSpy = jest.spyOn(TokenService, 'loginPrecheck').mockImplementation();
 		const options = {
 			track_id: '',
 			locale: ''
 		};
-		webAuth.getScopeConsentDetails(options);
-		expect(getScopeConsentDetailsSpy).toHaveBeenCalledWith(options);
+		webAuth.loginPrecheck(options);
+		expect(loginPrecheckSpy).toHaveBeenCalledWith(options);
 	});
 
 	test('getMissingFields', () => {

@@ -93,7 +93,7 @@ export namespace TokenService {
   };
 
   /**
-   * To get details of scope-consent, call **getScopeConsentDetails()**.
+   * To get precheck result after login, call **loginPrecheck()**. If there is missing information, user will be redirected to either accepting consent, changing password, continuing MFA process, or do progressive registration
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/aappczju1t3uh-precheck-information for more details.
    * @example
    * ```js
@@ -102,7 +102,7 @@ export namespace TokenService {
    *   locale: "your preferred locale",
    * }
    * 
-   * cidaas.getScopeConsentDetails(options)
+   * cidaas.loginPrecheck(options)
    * .then(function (response) {
    *   // type your code here
    * })
@@ -111,7 +111,7 @@ export namespace TokenService {
    * });
    * ```
    */
-  export function getScopeConsentDetails(options: {
+  export function loginPrecheck(options: {
     track_id: string;
     locale: string;
   }) {

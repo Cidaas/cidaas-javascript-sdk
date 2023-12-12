@@ -650,8 +650,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getScopeConsentDetails(options: { track_id: string; locale: string; }) {
-    return TokenService.getScopeConsentDetails(options);
+  loginPrecheck(options: { track_id: string; locale: string; }) {
+    return TokenService.loginPrecheck(options);
   };
 
   /**

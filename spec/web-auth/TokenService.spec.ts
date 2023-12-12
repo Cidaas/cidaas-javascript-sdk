@@ -70,13 +70,13 @@ test('validateAccessToken', () => {
 	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', 'token');
 });
 
-test('getScopeConsentDetails', () => {
+test('loginPrecheck', () => {
 	const options = {
 		track_id: 'track_id',
 		locale: 'locale'
 	};
 	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${options.track_id}?acceptLanguage=${options.locale}`;
-	TokenService.getScopeConsentDetails(options);
+	TokenService.loginPrecheck(options);
 	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
