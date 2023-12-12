@@ -8,6 +8,7 @@ import { Helper } from "./Helper";
 export namespace ConsentService {
   /**
    * To get consent details , call **getConsentDetails()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/858fbeb51c62b-find-consent-info for more details.
    * @example
    * ```js
    * this.cidaas.getConsentDetails({
@@ -33,7 +34,7 @@ export namespace ConsentService {
   };
 
   /**
-   * To accept consent, call ****acceptConsent()****
+   * To accept consent, call **acceptConsent()**.
    * @example
    * ```js
    * this.cidaas.acceptConsent({
@@ -54,11 +55,12 @@ export namespace ConsentService {
   };
 
   /**
-   * To get scope consent version details, call **getScopeConsentVersionDetails**.
+   * To get version details of consent, call **getConsentVersionDetails()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/7e24ac2113315-get-consent-version-details for more details.
    * @example
    * ```js
-   * this.cidaas.getScopeConsentVersionDestails({
-   *   scopeid: 'scope consent id',
+   * this.cidaas.getConsentVersionDetails({
+   *   consentid: 'your consent id',
    *   locale: 'browser accept language or custom language',
    *   access_token: 'your access token',
    * }).then((response) => {
@@ -68,12 +70,12 @@ export namespace ConsentService {
    * });
    * ```
    */
-  export function getScopeConsentVersionDetails(options: {
-    scopeid: string;
+  export function getConsentVersionDetails(options: {
+    consentid: string;
     locale: string;
     access_token: string;
   }) {
-    const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.scopeid + "?locale=" + options.locale;
+    const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.consentid + "?locale=" + options.locale;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", options.access_token);
   };
 
@@ -98,7 +100,7 @@ export namespace ConsentService {
   };
 
   /**
-   * To accept Claim Consent, call ****acceptClaimConsent()****
+   * To accept claim consent, call **acceptClaimConsent()**.
    * @example
    * ```js
    * this.cidaas.acceptClaimConsent({
@@ -114,7 +116,8 @@ export namespace ConsentService {
   };
 
   /**
-   * To revoke Claim Consent, call ****revokeClaimConsent()****
+   * To revoke claim consent, call **revokeClaimConsent()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9ae62e98842fe-revoke-user-consent-claim for more details.
    * @example
    * ```js
    * this.cidaas.revokeClaimConsent({
@@ -126,7 +129,7 @@ export namespace ConsentService {
    *    // the response will give you revoked claim consent.
    *  }).catch((err) => {
    *    // your failure code here 
-   *  });
+   *  }); 
    * ```
    */
   export function revokeClaimConsent(options: { access_token?: string; client_id: string; sub: string; revoked_claims: string[]; }) {

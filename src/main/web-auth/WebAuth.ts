@@ -63,7 +63,7 @@ export class WebAuth {
       if (!window.webAuthSettings && !window.authentication) {
         throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
-      window.authentication.redirectSignIn('login');
+      window.authentication.loginOrRegisterWithBrowser('login');
     } catch (ex) {
       console.log(ex);
     }
@@ -112,7 +112,7 @@ export class WebAuth {
       if (!window.webAuthSettings && !window.authentication) {
         throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
-      window.authentication.redirectSignIn('register');
+      window.authentication.loginOrRegisterWithBrowser('register');
     } catch (ex) {
       console.log(ex);
     }
@@ -128,7 +128,7 @@ export class WebAuth {
         if (!window.webAuthSettings && !window.authentication) {
           throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
         }
-        window.authentication.redirectSignInCallback().then(function (user: any) {
+        window.authentication.loginCallback().then(function (user: any) {
           resolve(user);
         }).catch(function (ex: any) {
           reject(ex);
@@ -178,7 +178,7 @@ export class WebAuth {
   };
 
   /**
-   * To get the user profile information, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
+   * To get the user profile information by using oidc-client-ts library, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
    * @example
    * ```js
    * cidaas.getUserInfo().then(function (response) {
@@ -202,7 +202,7 @@ export class WebAuth {
 
 
   /**
-   * logout
+   * logout by using oidc-client-ts library
    * @returns 
    */
   logout() {
@@ -211,7 +211,7 @@ export class WebAuth {
         if (!window.webAuthSettings && !window.authentication) {
           throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
         }
-        window.authentication.redirectSignOut().then(function (result: any) {
+        window.authentication.logout().then(function (result: any) {
           resolve(result);
           return;
         });
@@ -248,7 +248,7 @@ export class WebAuth {
         if (!window.webAuthSettings && !window.authentication) {
           throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
         }
-        window.authentication.redirectSignOutCallback().then(function (resp: any) {
+        window.authentication.logoutCallback().then(function (resp: any) {
           resolve(resp);
         });
       } catch (ex) {
@@ -341,7 +341,8 @@ export class WebAuth {
   };
 
   /**
-   * To logout the user, call **logoutUser()**.
+   * To logout the user by using cidaas internal api, call **logoutUser()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/3b5ce6a54bf29-logout for more details.
    * @example
    * ```js
    * cidaas.logoutUser({
@@ -359,6 +360,7 @@ export class WebAuth {
 
   /**
    * To get the client basic information, call **getClientInfo()**. This will return the basic client details such as client name and its details.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/dc8a6cfb28abb-public-page-information for more details.
    * @example
    * ```js
    * cidaas.getClientInfo({
@@ -377,6 +379,7 @@ export class WebAuth {
 
   /**
    * To get all devices information associated to the client, call **getDevicesInfo()**
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2a2feed70303c-get-device-by-user for more details.
    * @example
    * ```js
    * const options = {};
@@ -399,6 +402,7 @@ export class WebAuth {
 
   /**
    * To delete device associated to the client, call **deleteDevice()**
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/3d44ad903d6e8-logout-the-user-for-a-device for more details.
    * @example
    * ```js
    * const options = {
@@ -423,6 +427,7 @@ export class WebAuth {
 
   /**
    * To handle registration, first you need the registration fields. To get the registration fields, call **getRegistrationSetup()**. This will return the fields that has to be needed while registration.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/4eae72956f65a-registration-field-setup for more details.
    * @example
    * ```js
    * cidaas.getRegistrationSetup({
@@ -441,17 +446,18 @@ export class WebAuth {
   };
 
   /**
-   * to generate device info, call **generateDeviceInfo()**.
+   * to generate device info, call **createDeviceInfo()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9b5a892afaf0b-create-device-info for more details.
    * @example
    * ```js
-   * cidaas.generateDeviceInfo().then(function (resp) {
+   * cidaas.createDeviceInfo().then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
    * });
    * ```
    */
-  generateDeviceInfo() {
+  createDeviceInfo() {
     const value = ('; ' + document.cookie).split(`; cidaas_dr=`).pop().split(';')[0];
     if (!value) {
       const options = { 
@@ -644,8 +650,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getScopeConsentDetails(options: { track_id: string; locale: string; }) {
-    return TokenService.getScopeConsentDetails(options);
+  loginPrecheck(options: { track_id: string; locale: string; }) {
+    return TokenService.loginPrecheck(options);
   };
 
   /**
@@ -653,8 +659,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getScopeConsentVersionDetails(options: { scopeid: string; locale: string; access_token: string; }) {
-    return ConsentService.getScopeConsentVersionDetails(options);
+  getConsentVersionDetails(options: { consentid: string; locale: string; access_token: string; }) {
+    return ConsentService.getConsentVersionDetails(options);
   };
 
   /**
@@ -766,6 +772,7 @@ export class WebAuth {
 
   /**
    * To get user activities, call **getUserActivities()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/346141453781e-get-user-activities for more details.
    * @example
    * ```js
    * const options = {
@@ -931,12 +938,12 @@ export class WebAuth {
   };
 
   /**
-   * getMissingFieldsLogin
+   * getMissingFields
    * @param trackId 
    * @returns 
    */
-  getMissingFieldsLogin(trackId: string) {
-    return TokenService.getMissingFieldsLogin(trackId);
+  getMissingFields(trackId: string) {
+    return TokenService.getMissingFields(trackId);
   };
 
   /**

@@ -13,20 +13,32 @@
 
 # Cidaas Javascript SDK
 
-This cidaas Javascript SDK library is built on the top of [OIDC client javascript library](https://github.com/IdentityModel/oidc-client-js). 
+This cidaas Javascript SDK library is built on the top of [OIDC client typescript library](https://github.com/authts/oidc-client-ts). 
 
-#### Requirements
+## Table of Contents
 
-Make sure you have installed all of the following prerequisites on your development machine:
-* Node.js - Download & Install Node.js. The version required is >= 8
-* npm - node package manager to add the package and install dependent packages
+<!--ts-->
+* [Installation](#installation)
+* [Initialisation](#initialisation)
+* [Usage](#usage)
+* [Functions Overview](#functions-overview)
+    <!--ts-->
+    * [Authentication Functions](#authentication-functions)
+    * [Login Management](#login-management)
+    * [User Management](#user-management)
+    * [Token Management](#token-management)
+    * [Verification Management](#verification-management)
+    * [Consent Management](#consent-management)
+    * [Other Functionality](#other-functionality)
+    <!--te-->
+* [Possible Error](#possible-error)
 
-#### Installation
+### Installation
 
 From CDN
 
 ```html
-<!-- Replace the required <version> in the script tag, example: 3.0.0. All the released tag can be found https://www.npmjs.com/package/cidaas-javascript-sdk?activeTab=versions -->
+<!-- Replace the required <version> in the script tag, example: 4.0.0. All the released tag can be found https://www.npmjs.com/package/cidaas-javascript-sdk?activeTab=versions -->
 <script src="https://cdn.cidaas.de/javascript/oidc/<version>/cidaas-javascript-sdk.min.js"></script>
 ```
 
@@ -36,11 +48,11 @@ From npm
 npm install cidaas-javascript-sdk
 ```
 
-Please check the [Changelogs](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/Changelogs.md) for more information about the latest release
+Please check the [Changelog](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/CHANGELOG.md) for more information about the latest release
 
-#### Initialisation
+### Initialisation
 
-After adding ****cidaas-sdk.js**** create a local file and name it like ****index.js****. Cidaas options variable should be defined there for initializing cidaas sdk.
+After adding the sdk library, create a local file such as **cidaas.service.ts** and define Cidaas options variable there for initializing cidaas sdk.
 
 Cidaas options variable support every [OIDC Client UserManagerSettings Properties](https://authts.github.io/oidc-client-ts/interfaces/UserManagerSettings.html) which has the following notable properties:
 
@@ -50,69 +62,39 @@ Cidaas options variable support every [OIDC Client UserManagerSettings Propertie
 | client_id | yes | client application's identifier, which could be found in cidaas admin ui |
 | redirect_uri | yes | URL to be redirected after successful login attempt. |
 | post_logout_redirect_uri | no | URL to be redirected after successful logout attempt. |
-| response_type | no | The type of response that will come after successful login attempt. The default value is 'code' if no properties is being sent. This determines the OAuth authorization flow being used.|
 | scope | no | the scope the application requires and requests from cidaas. The default value is 'openid' if no properties is being sent. |
-
-In addition to it, There are the following custom properties which could / need to be defined in cidaas option variable:
-
-| Property Name | Required | Description |
-| ------ | ------ | ------ |
-| cidaas_version | no | You can find out the cidaas version from cidaas service portal |
 
 an example of index.js is looks like this:
 
 ```js
-var options = {
+const options = {
     authority: 'your domain base url',
     client_id: 'your app id',
     redirect_uri: 'your redirect url',
     post_logout_redirect_uri: 'your post logout redirect url',
-    response_type: 'id_token token',
     scope: 'openid email roles profile',
-    cidaas_version: 3
 }
 ```
-
-```
-#### <i class="fab fa-quote-left fa-fw" aria-hidden="true"></i> To use the PKCE Flow add 'code' as the 'response_type' 
-```
-
-### Note:
-
-Since version 1.2.0 using 'code' as the 'response_type' will start the OAuth Authorization Flow with PKCE instead of the normal Authorization Code Flow.
 
 ### Initialise the cidaas sdk using the configured options mentioned above:
 
 ```js
-var cidaas = new CidaasSDK.WebAuth(options);
+const cidaas = new CidaasSDK.WebAuth(options);
 ```
 
-#### Migrating to Cidaas V3
+### Usage
 
-Cidaas V3 has response handling adjustment on some of cidaas service call. To migrate to cidaas V3, you need to do the following:
+#### Login With Browser
 
-- ensure that you use at least cidaas version: 3.* You can find out the cidaas version from cidaas service portal and ask our customer service if it need to be updated.
-
-- ensure that you use at least cidaas-javascript-sdk version: 3.0.5
-
-- add `cidaas_version: 3` to Cidaas options variable
-
-Without Providing CidaasVersion, your application will use response handling of Cidaas V2 by default.
-
-#### Usage
-
-##### Login With Browser
-
-To login through cidaas sdk, call ****loginWithBrowser()****. This will redirect you to the hosted login page.
+To login through cidaas sdk, call **loginWithBrowser()**. This will redirect you to the hosted login page.
 
 ```js
 cidaas.loginWithBrowser();
 ```
 
+once login is successful, it will automatically redirects you to redirect_uri you have configured in cidaas options. You will get information such as code & state as redirect url parameter (query or fragment), which is needed to get access token.
 
-once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
-
-To complete the login process, call ****logincallback()****. This will parses the access_token, id_token and whatever in hash in the redirect url.
+To complete the login process, call **logincallback()**.
 
 ```js
 cidaas.loginCallback().then(function(response) {
@@ -121,95 +103,95 @@ cidaas.loginCallback().then(function(response) {
     // your failure code here
 });
 ```
-#### Socket Connection
 
-##### Installation
+After successful loginCallback, You will get access token, along with id token and refresh token in the json response, depends on your application configuration.
 
-Install ng-socket-io in your project and refer the following link https://www.npmjs.com/package/ng-socket-io to configure. Use the "your_base_url/socket-srv/socket/socket.io" path for the socket listening url and enter the following snippet
+There are code documentations for each of the functions with example code of how to call them individually.
 
-#### Configuration
+### Functions Overview
 
-##### Emitting the socket
+Cidaas Javascript SDK features the following functionality:
 
-```
-this.socket.emit("join", {
-    id: 'your status id' // which you received in the response of setup call
-});
-```
+#### Authentication Functions
 
-##### Sample code
+The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in.
 
-```
-this.cidaas.setupPattern({
-      logoUrl: 'your logo url',
-      deviceInfo: {
-        deviceId: 'your device id'
-      }
-    }).then((response) => {
-        this.socket.emit("join", {
-            id: response.data.statusId
-        });
-    }).catch((err) => {
-      // your failure code here 
-    });
-```
+| SDK Functions                                                                    | Description                                                                                                                                                                    |
+|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| loginWithBrowser, registerWithBrowser, loginCallback, logout, logoutCallback | The SDK support browser redirection for authenticating user. The authentication process will then happens in a new tab. This is the default authentication function of the SDK |
+| popupSignIn, popupSignInCallback, popupSignOut, popupSignOutCallback             | The SDK support using pop up window for authenticating user. The authentication process will then happens in a new popup window                                                      |
+| silentSignIn, silentSignInCallback                                               | The SDK support silent authentication. The authentication process will then happens in an iframe.                                                                              |
 
-##### Listening the socket 
+#### Login Management
 
-You can listen the socket anywhere in your component
+The SDK support the following login management functions:
 
-```
-this.socket.on("status-update", (msg) => {
-    if (msg.status == "SCANNED") {
-        // do next process
-    }
-    else if (msg.status == "ENROLLED") {
-        // do next process
-    }
-});
-```
+| SDK Functions                                            | Description                                                                                                                                                                                         |
+|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| passwordlessLogin, loginWithCredentials, loginWithSocial | User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform                        |
+| loginPrecheck, consentContinue, firstTimeChangePassword, mfaContinue    | Depending on the missing information from loginPrecheck, user will be redirected to another page after login to either  accepting consent, changing password, continuing MFA process, or do progressive registration  |
+| getMissingFields, progressiveRegistration                                  | In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login |
 
-#### Usage
+#### User Management
 
-##### Emitting the socket
+The SDK support the following user management functions:
 
-```
-this.socket.emit("on-trigger-verification", {
-    id: 'your status id' // which you received in the response of initiate call
-});
-```
+| SDK Functions                                                                                                                       | Description                                                                                                                                                                                                                                 |
+|-------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| getRegistrationSetup, register, registerWithSocial                                                                                                        | Registering a new user is possible by using classic registration (getting registration fields information & call register function) or by using social provider                                                                                                                                       |
+| getUserProfile, getInviteUserDetails, getCommunicationStatus, updateProfile, updateProfileImage, deleteUserAccount, userCheckExists | To maintain user, functions for getting user information by using cidaas internal api, updating user information, removing user, as well as check if user exist are supported                                                                                                           |
+| getUserInfo | The SDK could be used to get user information by using oidc client ts library                                                                                                           |
+| getUserActivities | In case user want to see the history of his activities, getUserActivities function is provided                                                                                                           |
+| initiateResetPassword, handleResetPassword, resetPassword                                                                           | In case user want to reset password, password reset flow is supported. From initiating the reset password, handling the code or link which has been sent to predefined medium such as email, sms & ivr, and finishing up the reset password |
+| changePassword                                                                                                                      | In case user want to change password, changePassword function is provided                                                                                                                                                                  |
+| registerDeduplication, deduplicationLogin, getDeduplicationDetails                                                                  | In case a new user is registered with similiar information as existing user, deduplication could be activated to either proceed with the registration, or combine the user with an existing one                                             |
+| initiateLinkAccount, completeLinkAccount, unlinkAccount, getLinkedUsers                                                             | Linking und unlinking user account with another account, as well as getting linked user is supported                                                                                                                                        |
 
-##### Sample code
+#### Token Management
 
-```
-this.cidaas.initiatePattern({
-    sub: 'your sub',
-    physicalVerificationId: 'your physical verification id',
-    userDeviceId: deviceId,
-    usageType: 'your usage type', // PASSWORDLESS_AUTHENTICATION or MULTI_FACTOR_AUTHENTICATION
-    deviceInfo: {
-        deviceId: 'your device id'
-    }
-}).then((response) => {
-    this.socket.emit("on-trigger-verification", {
-        id: response.data.statusId
-    });
-}).catch((err) => {
-        // your failure code here 
-});
-```
+The SDK support the following token management functions:
 
-##### Listening the socket 
+| SDK Functions                        | Description                                                                                         |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------|
+| getAccessToken                       | The SDK facilitate login using PKCE flow by exchanging code after succesful login with access token |
+| renewToken                           | Session renewal is possible by using refresh token                                                  |
+| initiateDeviceCode, deviceCodeVerify | Device code flow is supported for authenticating user without user interaction possibilty in device |
+| validateAccessToken                  | Token validation could be done by using introspection endpoint                                      |
+| offlineTokenCheck                    | To save API call, offline token check function could be used                                        |
 
-You can listen the socket anywhere in your component.
+#### Verification Management
 
-```
-this.socket.on("status-update", (msg) => {
-    if (msg.status == "AUTHENTICATED") {
-        // do next process
-    }
-});
-```
+The SDK support the following verification management functions:
+
+| SDK Functions                                                       | Description                                                                           |
+|---------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| initiateMFA, authenticateMFA                                        | The SDK support initiating & authenticating MFA, which starts passwordless login flow |
+| initiateAccountVerification, verifyAccount                          | User account verification using preconfigured MFA is supported                         |
+| cancelMFA                                                           | MFA process could be aborted in case something go the wrong way                     |
+| getAllVerificationList, getMFAList, checkVerificationTypeConfigured | Information about every supported MFA Verification types, List of configured MFA, and details about particular configured verification type are provided by the SDK        |
+| initiateEnrollment, enrollVerification, getEnrollmentStatus         | Additional MFA verification type could be enrolled using the sdk                                   |
+
+#### Consent Management
+
+The SDK support the following consent management functions:
+
+| SDK Functions                                                             | Description                                                                                                           |
+|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| getConsentDetails, getConsentVersionDetails                               | The SDK could be used to get consent details as well as details of consent's version                                  |
+| acceptConsent, acceptScopeConsent, acceptClaimConsent, revokeClaimConsent | The SDK support accepting consent (app level consent, scope consent or claim consent) as well as revoke claim consent |
+
+#### Other Functionality
+
+The SDK support the following other functionality:
+
+| SDK Functions                                  | Description                                                                                 |
+|------------------------------------------------|---------------------------------------------------------------------------------------------|
+| getRequestId                                   | The SDK could be used to get request id, which is required as input to call other functions |
+| getLoginURL                                    | Getting login authz url is supported by the SDK                                                        |
+| getTenantInfo, getClientInfo                   | Getting public information such as tenant info & client info is supported by the SDK                                                    |
+| setAcceptLanguageHeader                        | The SDK could be used to change response language                                           |
+| createDeviceInfo, getDevicesInfo, deleteDevice | Creating, getting, and removing device information is supported by the SDK                          |
+| logoutUser                                     | The SDK could be used to end user session by using cidaas internal api                      |
 
 ## Possible Error
 

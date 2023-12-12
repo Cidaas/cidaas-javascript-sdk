@@ -9,7 +9,8 @@ import {
 export namespace LoginService {
 
   /**
-   * To login with your credentials, call **loginWithCredentials()**. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/5gphdk6vapp56-classic-login#call-login-api for more details.
+   * To login with your credentials, call **loginWithCredentials()**. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/5gphdk6vapp56-classic-login#call-login-api for more details.
    * @example
    * ```js
    * cidaas.loginWithCredentials({
@@ -32,7 +33,8 @@ export namespace LoginService {
   };
 
   /**
-   * To login with social providers, call **loginWithSocial()**. This will redirect you to the facebook login page. Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9mi5uqxhqlsm5-social-login#call-social-login-api for more details
+   * To login with social providers, call **loginWithSocial()**. This will redirect you to the facebook login page.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9mi5uqxhqlsm5-social-login#call-social-login-api for more details
    * @example
    * ```js
    * cidaas.loginWithSocial({
@@ -65,7 +67,7 @@ export namespace LoginService {
    *   dc: dc,
    *   device_fp: device_fp
    * 
-   * cidaas.loginWithSocial({
+   * cidaas.registerWithSocial({
    *   provider: 'facebook',
    *   requestId: 'your requestId',
    * }, queryParams);
@@ -86,7 +88,8 @@ export namespace LoginService {
   };
 
   /** 
-  * To authenticate without using password, call **registerWithSocial()**.
+  * To authenticate without using password, call **passwordlessLogin()**.
+  * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/k1lwsraxk0rjc-login-passwordless-request for more details.
   * @example
   * ```js
   * cidaas.passwordlessLogin({
@@ -121,14 +124,7 @@ export namespace LoginService {
   * });
   * ```
   */
-  export function consentContinue(options: {
-    client_id: string;
-    consent_refs: string[];
-    sub: string;
-    scopes: string[];
-    matcher: any;
-    track_id: string;
-  }) {
+  export function consentContinue(options: {track_id: string}) {
     try {
       const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
       let form = Helper.createForm(url, options)
@@ -144,7 +140,7 @@ export namespace LoginService {
    * @example
    * ```js
    * cidaas.mfaContinue({
-   *   trackingCode: 'your tracking Code', // receives in socket
+   *   trackingCode: 'your tracking Code',
    *   track_id: 'your track id', 
    *   sub: 'your sub',
    *   requestId: 'your request id'
@@ -163,7 +159,8 @@ export namespace LoginService {
   };
 
   /**
-   * to handle changing password by first login attempt after registration, call **firstTimeChangePassword()**
+   * to handle changing password by first login attempt after registration, call **firstTimeChangePassword()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/fd8f478d96f58-continue-authentication-flow-after-prechecks for more details.
    * @example
    * ```js
    * cidaas.firstTimeChangePassword({
@@ -187,7 +184,8 @@ export namespace LoginService {
   };
 
   /**
-   * For progressive registration, call **progressiveRegistration()**. While logging in If the API returns 417 with the error message MissingRequiredFields, call the **getMissingFieldsLogin** to get the list of missing fileds and proceed with progressive registration. In the sample request only the required fields are added, however you must provide the missing fields along with the required fields.
+   * For progressive registration, call **progressiveRegistration()**. While logging in If the API returns 417 with the error message MissingRequiredFields, call the **getMissingFields** to get the list of missing fileds and proceed with progressive registration. In the sample request only the required fields are added, however you must provide the missing fields along with the required fields.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/l7sknp2pytryr-progressive-registration for more details.
    * @example
    * ```js
    * const options = {

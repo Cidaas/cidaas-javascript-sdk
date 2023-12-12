@@ -1,11 +1,11 @@
 # Upgrading Notes
-This document described how to handle breaking changes from upgrading Cidaas Javascript SDK to the first stable 4.x release.
+This document described how to handle breaking changes from upgrading Cidaas Javascript SDK v3.x.x to the stable v4.0.0 release.
 
 ## 1. Remove mode from configuration variable & use function from webauth directly instead of mode functions.
 
 The SDK will now allow calling each of the register, login & logout functions directly without having to define mode. 
 
-The following functions should be called instead of old function using the mode. Please note that the default mode value if empy is `redirect`.
+The following functions should be called instead of old function using the mode. Please note that previously, the default mode value if empty is `redirect`.
 
 | Mode     | Old Function        | New Function         |
 |----------|---------------------|----------------------|
@@ -33,10 +33,10 @@ Functions which has been deprecated for a while has been removed in V4. There ar
 |---------------------------------------------------|---------------------------------------------|
 | getConsentDetailsV2                               | getConsentDetails                           |
 | acceptConsentV2                                   | acceptConsent                               |
-| getScopeConsentVersionDetailsV2                   | getScopeConsentVersionDetails               |
+| getScopeConsentVersionDetailsV2                   | getConsentVersionDetails               |
 | getMFAListV2                                      | getMFAList                                  |
 | cancelMFAV2                                       | cancelMFA                                   |
-| updateSocket                                      | updateStatus                                |
+| updateSocket                                      | getEnrollmentStatus                                |
 | initiateMFAV2 / initiateMfaV1                     | initiateMFA                                 |
 | initiateEmailV2 / initiateEmail                   | initiateMFA({... , type: "email"})          |
 | initiateSMSV2 / initiateSMS                       | initiateMFA({... , type: "sms"})            |
@@ -54,7 +54,16 @@ Functions which has been deprecated for a while has been removed in V4. There ar
 | authenticateIVRV2 / authenticateIVR               | authenticateMFA({... , type: "ivr"})        |
 | authenticateBackupcodeV2 / authenticateBackupcode | authenticateMFA({... , type: "backupcode"}) |
 | authenticateTOTPV2 / authenticateTOTP             | authenticateMFA({... , type: "totp"})       |
+| authenticateFaceVerification            | authenticateMFA({... , type: "face"})       |
+| scopeConsentContinue / claimConsentContinue   | consentContinue       |
+| loginWithCredentialsAsynFn  | loginWithCredentials       |
+| initiateAccountVerificationAsynFn   | initiateAccountVerification       |
+| getScopeConsentDetails   | loginPrecheck       |
 
-## 3. Update webAuth entities
+## 3. Handling for removed functions
 
-some properties in entities request types is updated to mirror current cidaas api request parameter. Please refer to each entity's typedoc in the  to see if there is any changes need to be done.
+* If you used getMissingFieldsLogin() previously, it has now been reimplemented as getMissingFields() function. The previous existing getMissingFields() function is removed, to be replaced by the new implementation.
+* If you used loginAfterRegister() previously, now it should be configured from the Admin UI under Advance Setting, Flow Setting.
+* setupFidoVerification() & updateSuggestMFA() is removed as the feature is not release yet. It will be added in the future once Cidaas Service support the use case.
+* device review flow (getReviewedDevices(), getUnreviewedDevices(), reviewDevice()) is no longer supported in the new SDK.
+* socket functions is no longer supported in the new SDK.

@@ -112,12 +112,12 @@ describe('Webauth functions without module or services', () => {
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 	});
 	
-	test('generateDeviceInfo', () => {
+	test('createDeviceInfo', () => {
 		const options = {
 			userAgent: window.navigator.userAgent
 		};
 		const serviceURL = `${authority}/device-srv/deviceinfo`;
-		webAuth.generateDeviceInfo();
+		webAuth.createDeviceInfo();
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
 	});
 
@@ -174,9 +174,9 @@ describe('Webauth functions without module or services', () => {
 // Authentication Module
 describe('Authentication module functions', () => {
 	test('loginWithBrowser', () => {
-		const redirectSignInSpy = jest.spyOn((window as any).authentication, 'redirectSignIn').mockResolvedValue({});;
+		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});;
 		webAuth.loginWithBrowser();
-		expect(redirectSignInSpy).toHaveBeenCalledWith('login');
+		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('login');
 	});
 	
 	test('popupSignIn', () => {
@@ -192,15 +192,15 @@ describe('Authentication module functions', () => {
 	});
 	
 	test('registerWithBrowser', () => {
-		const redirectSignInSpy = jest.spyOn((window as any).authentication, 'redirectSignIn').mockResolvedValue({});;
+		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});;
 		webAuth.registerWithBrowser();
-		expect(redirectSignInSpy).toHaveBeenCalledWith('register');
+		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register');
 	});
 	
 	test('loginCallback', () => {
-		const redirectSignInCallbackSpy = jest.spyOn((window as any).authentication, 'redirectSignInCallback').mockResolvedValue({});
+		const loginCallbackSpy = jest.spyOn((window as any).authentication, 'loginCallback').mockResolvedValue({});
 		webAuth.loginCallback();
-		expect(redirectSignInCallbackSpy).toHaveBeenCalled();
+		expect(loginCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignInCallback', () => {
@@ -216,9 +216,9 @@ describe('Authentication module functions', () => {
 	});
 	
 	test('logout', () => {
-		const redirectSignOutSpy = jest.spyOn((window as any).authentication, 'redirectSignOut').mockResolvedValue({});
+		const logoutSpy = jest.spyOn((window as any).authentication, 'logout').mockResolvedValue({});
 		webAuth.logout();
-		expect(redirectSignOutSpy).toHaveBeenCalled();
+		expect(logoutSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignOut', () => {
@@ -228,9 +228,9 @@ describe('Authentication module functions', () => {
 	});
 	
 	test('logoutCallback', () => {
-		const redirectSignOutCallbackSpy = jest.spyOn((window as any).authentication, 'redirectSignOutCallback').mockResolvedValue({});
+		const logoutCallbackSpy = jest.spyOn((window as any).authentication, 'logoutCallback').mockResolvedValue({});
 		webAuth.logoutCallback();
-		expect(redirectSignOutCallbackSpy).toHaveBeenCalled();
+		expect(logoutCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignOutCallback', () => {
@@ -507,21 +507,21 @@ describe('Token service functions', () => {
 		expect(validateAccessTokenSpy).toHaveBeenCalledWith(options);
 	});
 	
-	test('getScopeConsentDetails', () => {
-		const getScopeConsentDetailsSpy = jest.spyOn(TokenService, 'getScopeConsentDetails').mockImplementation();
+	test('loginPrecheck', () => {
+		const loginPrecheckSpy = jest.spyOn(TokenService, 'loginPrecheck').mockImplementation();
 		const options = {
 			track_id: '',
 			locale: ''
 		};
-		webAuth.getScopeConsentDetails(options);
-		expect(getScopeConsentDetailsSpy).toHaveBeenCalledWith(options);
+		webAuth.loginPrecheck(options);
+		expect(loginPrecheckSpy).toHaveBeenCalledWith(options);
 	});
 
-	test('getMissingFieldsLogin', () => {
-		const getMissingFieldsLoginSpy = jest.spyOn(TokenService, 'getMissingFieldsLogin').mockImplementation();
+	test('getMissingFields', () => {
+		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
 		const	trackId = '';
-		webAuth.getMissingFieldsLogin(trackId);
-		expect(getMissingFieldsLoginSpy).toHaveBeenCalledWith(trackId);
+		webAuth.getMissingFields(trackId);
+		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId);
 	});
 
 	test('initiateDeviceCode', () => {
@@ -853,15 +853,15 @@ describe('Consent service functions', () => {
 		expect(acceptConsentSpy).toHaveBeenCalledWith(options);
 	});
 	
-	test('getScopeConsentVersionDetails', () => {
-		const getScopeConsentVersionDetailsSpy = jest.spyOn(ConsentService, 'getScopeConsentVersionDetails').mockImplementation();
+	test('getConsentVersionDetails', () => {
+		const getConsentVersionDetailsSpy = jest.spyOn(ConsentService, 'getConsentVersionDetails').mockImplementation();
 		const options = {
-			scopeid: '',
+			consentid: '',
 			locale: '',
 			access_token: ''
 		};
-		webAuth.getScopeConsentVersionDetails(options);
-		expect(getScopeConsentVersionDetailsSpy).toHaveBeenCalledWith(options);
+		webAuth.getConsentVersionDetails(options);
+		expect(getConsentVersionDetailsSpy).toHaveBeenCalledWith(options);
 	});
 	
 	test('acceptScopeConsent', () => {

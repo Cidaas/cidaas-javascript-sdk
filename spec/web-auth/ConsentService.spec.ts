@@ -46,14 +46,14 @@ test('acceptConsent', () => {
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
-test('getScopeConsentVersionDetails', () => {
+test('getConsentVersionDetails', () => {
   const option = {
-    scopeid: 'scopeid',
+    consentid: 'consentid',
     locale: 'locale',
     access_token: 'access_token'
   };
-  const serviceURL = `${serviceBaseUrl}/versions/details/${option.scopeid}?locale=${option.locale}`;
-  ConsentService.getScopeConsentVersionDetails(option);
+  const serviceURL = `${serviceBaseUrl}/versions/details/${option.consentid}?locale=${option.locale}`;
+  ConsentService.getConsentVersionDetails(option);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', option.access_token);
 });
 
