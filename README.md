@@ -22,9 +22,14 @@ This cidaas Javascript SDK library is built on the top of [OIDC client typescrip
 * [Installation](#installation)
 * [Initialisation](#initialisation)
 * [Usage](#usage)
+* [Functions Overview](#functions-overview)
     <!--ts-->
-    * [Login With Browser](#login-with-browser)
-    * [Further use case which is supported by the sdk](#further-use-case-which-is-supported-by-the-sdk)
+    * [Multiple Authentication Mode](#multiple-authentication-mode)
+    * [Login Management](#login-management)
+    * [User Management](#user-management)
+    * [Token Management](#token-management)
+    * [Verification Management](#verification-management)
+    * [Consent Management](#consent-management)
     <!--te-->
 * [Possible Error](#possible-error)
 
@@ -105,50 +110,56 @@ cidaas.loginCallback().then(function(response) {
 });
 ```
 
-#### Further use case which is supported by the sdk
+### Functions Overview
 
 Cidaas Javascript SDK features the following functionality:
 
-* Authentication Mode:
-    * The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. 
-* Login Management:
-    * User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform
-    * Progressive Registration. In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login
-    * depending on the missing information, user will be redirected to another page after login to either do progressive registration, accepting consent or changing password
-* User Management:
-    * registering a new user via classic registration form or by using social provider
-    * getting & updating user information
-    * removing user
-    * check if user exist
-    * password reset flow from initiating the reset password, handling the code or link which has been sent to predefined medium such as email, sms & ivr, and finishing up the reset password
-    * password change
-    * in case a new user is registered with similiar information as existing user, deduplication could be activated to either proceed with the registration, or combine the user with an existing one
-    * link user with another account
-* Token Management:
-    * renew current session using refresh token
-    * login using PKCE flow
-    * device code flow for authenticating user without user interaction possibilty in device
-    * validate if token is still valid using introspection endpoint
-    * offline token check
-* Verification Management:
-    * passwordless login flow, which starts with initiating & authenticating MFA
-    * verifying user account using preconfigured MFA
-    * canceling MFA process
-    * getting information about every supported MFA & configured MFA
-    * enrolling a new MFA type
-* Consent Management:
-    * getting consent details (app level consent, scope consent or field consent)
-    * getting details of consent version
-    * accepting consent (app level consent, scope consent or field consent)
-    * revoke field consent
-* Other functionality:
-    * end user session
-    * getting login authz url
-    * getting public info
-    * getting registration fields information
-    * getting user activities history
-    * getting, creating, and removing device information
-    * changing response language
+#### Multiple Authentication Mode
+The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. 
+
+#### Login Management
+* User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform
+* Progressive Registration. In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login
+* depending on the missing information, user will be redirected to another page after login to either do progressive registration, accepting consent or changing password
+
+#### User Management
+* registering a new user via classic registration form or by using social provider
+* getting & updating user information
+* removing user
+* check if user exist
+* password reset flow from initiating the reset password, handling the code or link which has been sent to predefined medium such as email, sms & ivr, and finishing up the reset password
+* password change
+* in case a new user is registered with similiar information as existing user, deduplication could be activated to either proceed with the registration, or combine the user with an existing one
+* link user with another account
+
+#### Token Management
+* renew current session using refresh token
+* login using PKCE flow
+* device code flow for authenticating user without user interaction possibilty in device
+* validate if token is still valid using introspection endpoint
+* offline token check
+
+#### Verification Management
+* passwordless login flow, which starts with initiating & authenticating MFA
+* verifying user account using preconfigured MFA
+* canceling MFA process
+* getting information about every supported MFA & configured MFA
+* enrolling a new MFA type
+
+#### Consent Management
+* getting consent details (app level consent, scope consent or field consent)
+* getting details of consent version
+* accepting consent (app level consent, scope consent or field consent)
+* revoke field consent
+
+#### Other Functionality
+* end user session
+* getting login authz url
+* getting public info
+* getting registration fields information
+* getting user activities history
+* getting, creating, and removing device information
+* changing response language
 
 ## Possible Error
 
