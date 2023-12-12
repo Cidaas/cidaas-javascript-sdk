@@ -24,7 +24,7 @@ This cidaas Javascript SDK library is built on the top of [OIDC client typescrip
 * [Usage](#usage)
 * [Functions Overview](#functions-overview)
     <!--ts-->
-    * [Multiple Authentication Mode](#multiple-authentication-mode)
+    * [Authentication Functions](#authentication-functions)
     * [Login Management](#login-management)
     * [User Management](#user-management)
     * [Token Management](#token-management)
@@ -115,49 +115,86 @@ cidaas.loginCallback().then(function(response) {
 
 Cidaas Javascript SDK features the following functionality:
 
-#### Multiple Authentication Mode
-The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. 
+#### Authentication Functions
+
+The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in.
+
+| SDK Functions                                                                    | Description                                                                                                                                                                    |
+|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| loginWithBrowser, registerWithBrowser, loginCallback, logout, logoutCallback | The SDK support browser redirection for authenticating user. The authentication process will then happens in a new tab. This is the default authentication function of the SDK |
+| popupSignIn, popupSignInCallback, popupSignOut, popupSignOutCallback             | The SDK support pop up window for authenticating user. The authentication process will then happens in a new popup window                                                      |
+| silentSignIn, silentSignInCallback                                               | The SDK support silent authentication. The authentication process will then happens in an iframe.                                                                              |
 
 #### Login Management
-* User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform
-* Progressive Registration. In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login
-* Depending on the missing information, user will be redirected to another page after login to either do progressive registration, accepting consent or changing password
+
+The SDK support the following login management functions:
+
+| SDK Functions                                            | Description                                                                                                                                                                                         |
+|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| passwordlessLogin, loginWithCredentials, loginWithSocial | User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform                        |
+| loginPrecheck, consentContinue, firstTimeChangePassword, mfaContinue    | Depending on the missing information from loginPrecheck, user will be redirected to another page after login to either  accepting consent, changing password, continuing MFA process, or do progressive registration  |
+| getMissingFields, progressiveRegistration                                  | In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login |
 
 #### User Management
-* Registering a new user is possible by using classic registration form or by using social provider
-* To maintain user, functions for getting & updating user information, removing user, as well as check if user exist are supported
-* In case user want to reset password, password reset flow is supported. From initiating the reset password, handling the code or link which has been sent to predefined medium such as email, sms & ivr, and finishing up the reset password
-* In case user want to change password, password change function is provided
-* In case a new user is registered with similiar information as existing user, deduplication could be activated to either proceed with the registration, or combine the user with an existing one
-* Linking user account with another account is supported 
+
+The SDK support the following user management functions:
+
+| SDK Functions                                                                                                                       | Description                                                                                                                                                                                                                                 |
+|-------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| getRegistrationSetup, register, registerWithSocial                                                                                                        | Registering a new user is possible by using classic registration (getting registration fields information & call register function) or by using social provider                                                                                                                                       |
+| getUserProfile, getInviteUserDetails, getCommunicationStatus, updateProfile, updateProfileImage, deleteUserAccount, userCheckExists | To maintain user, functions for getting user information by using cidaas internal api, updating user information, removing user, as well as check if user exist are supported                                                                                                           |
+| getUserInfo | The SDK could be used to get user information by using oidc client ts library                                                                                                           |
+| getUserActivities | In case user want to see the history of his activities, getUserActivities function is provided                                                                                                           |
+| initiateResetPassword, handleResetPassword, resetPassword                                                                           | In case user want to reset password, password reset flow is supported. From initiating the reset password, handling the code or link which has been sent to predefined medium such as email, sms & ivr, and finishing up the reset password |
+| changePassword                                                                                                                      | In case user want to change password, changePassword function is provided                                                                                                                                                                  |
+| registerDeduplication, deduplicationLogin, getDeduplicationDetails                                                                  | In case a new user is registered with similiar information as existing user, deduplication could be activated to either proceed with the registration, or combine the user with an existing one                                             |
+| initiateLinkAccount, completeLinkAccount, unlinkAccount, getLinkedUsers                                                             | Linking und unlinking user account with another account, as well as getting linked user is supported                                                                                                                                        |
 
 #### Token Management
-* The SDK facilitate login using PKCE flow
-* Session renewal is possible by using refresh token
-* Device code flow is supported for authenticating user without user interaction possibilty in device
-* Token validation could be done by using introspection endpoint
-* To save API call, offline token check function could be used
+
+The SDK support the following token management functions:
+
+| SDK Functions                        | Description                                                                                         |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------|
+| getAccessToken                       | The SDK facilitate login using PKCE flow by exchanging code after succesful login with access token |
+| renewToken                           | Session renewal is possible by using refresh token                                                  |
+| initiateDeviceCode, deviceCodeVerify | Device code flow is supported for authenticating user without user interaction possibilty in device |
+| validateAccessToken                  | Token validation could be done by using introspection endpoint                                      |
+| offlineTokenCheck                    | To save API call, offline token check function could be used                                        |
 
 #### Verification Management
-* The SDK support initiating & authenticating MFA, which starts passwordless login flow
-* User account verification using preconfigured MFA is possible
-* MFA process could be aborted in case something gone the wrong way
-* Information about every supported MFA & configured MFA is provided by the SDK
-* Additional MFA type could be enrolled using the sdk
+
+The SDK support the following verification management functions:
+
+| SDK Functions                                                       | Description                                                                           |
+|---------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| initiateMFA, authenticateMFA                                        | The SDK support initiating & authenticating MFA, which starts passwordless login flow |
+| initiateAccountVerification, verifyAccount                          | User account verification using preconfigured MFA is supported                         |
+| cancelMFA                                                           | MFA process could be aborted in case something go the wrong way                     |
+| getAllVerificationList, getMFAList, checkVerificationTypeConfigured | Information about every supported MFA Verification types, List of configured MFA, and details about particular configured verification type are provided by the SDK        |
+| initiateEnrollment, enrollVerification, getEnrollmentStatus         | Additional MFA verification type could be enrolled using the sdk                                   |
 
 #### Consent Management
-* The SDK could be used to get consent details (app level consent, scope consent or field consent)
-* Getting details of consent version by using the SDK is possible
-* The SDK support accepting consent (app level consent, scope consent or field consent) as well as revoke field consent
+
+The SDK support the following consent management functions:
+
+| SDK Functions                                                             | Description                                                                                                           |
+|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| getConsentDetails, getConsentVersionDetails                               | The SDK could be used to get consent details as well as details of consent's version                                  |
+| acceptConsent, acceptScopeConsent, acceptClaimConsent, revokeClaimConsent | The SDK support accepting consent (app level consent, scope consent or claim consent) as well as revoke claim consent |
 
 #### Other Functionality
-* The SDK could be used to end user session
-* The SDK could be used to change response language
-* Getting login authz url is supported
-* Getting public info is supported
-* Getting registration fields information is supported
-* Getting user activities history is supported
-* Getting, creating, and removing device information is supported
+
+The SDK support the following other functionality:
+
+| SDK Functions                                  | Description                                                                                 |
+|------------------------------------------------|---------------------------------------------------------------------------------------------|
+| getRequestId                                   | The SDK could be used to get request id, which is required as input to call other functions |
+| getLoginURL                                    | Getting login authz url is supported by the SDK                                                        |
+| getTenantInfo, getClientInfo                   | Getting public information such as tenant info & client info is supported by the SDK                                                    |
+| setAcceptLanguageHeader                        | The SDK could be used to change response language                                           |
+| createDeviceInfo, getDevicesInfo, deleteDevice | Creating, getting, and removing device information is supported by the SDK                          |
+| logoutUser                                     | The SDK could be used to end user session by using cidaas internal api                      |
 
 ## Possible Error
 
