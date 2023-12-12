@@ -1,60 +1,92 @@
 import { expect } from '@jest/globals';
-import { TestConstants } from '../TestConstants';
 import { ConsentService } from '../../src/main/web-auth/ConsentService';
+import { Helper } from '../../src/main/web-auth/Helper';
+import { IConsentAcceptEntity } from '../../src/main/web-auth/Entities';
 
-let windowSpy:any;
+const authority = 'baseURL';
+const serviceBaseUrl: string = `${authority}/consent-management-srv/v2/consent`;
+const serviceBaseUrlV1: string = `${authority}/consent-management-srv/consent`;
+const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
-beforeEach(() => {
-
-    const xhrMock: Partial<XMLHttpRequest> = {
-        open: jest.fn(),
-        send: jest.fn(),
-        setRequestHeader: jest.fn(),
-        readyState: 4,
-        status: 200,
-        response: 'Hello World!'
-    };
-    jest.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
-
-    windowSpy = jest.spyOn(window, "window", "get");
-
+beforeAll(() => {
+  (window as any).webAuthSettings = { authority: authority }
 });
 
-afterEach(() => {
-    windowSpy.mockRestore();
-})
+test('getConsentDetails', () => {
+  const option = {
+    consent_id: 'consent_id',
+    consent_version_id: 'consent_version_id',
+    sub: 'sub'
+  };
+  const serviceURL = `${serviceBaseUrl}/usage/public/info`;
+  ConsentService.getConsentDetails(option);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+});
 
-test('getAccessToken, renewToken, validateAccessToken', async() => {
-    windowSpy.mockImplementation(() => ({
-        location: {
-            origin: 'https://kube-nightlybuild-dev.cidaas.de'
-        },
-        webAuthSettings:{
-            authority: 'https://kube-nightlybuild-dev.cidaas.de'
-        }
-    }));
+test('acceptConsent', () => {
+  const option: IConsentAcceptEntity = {
+    client_id: 'client_id',
+    consent_id: 'consent_id',
+    consent_version_id: 'consent_id',
+    sub: 'sub',
+    scopes: ['scopes'],
+    url: 'url',
+    matcher: null,
+    field_key: 'field_key',
+    accepted_fields: ['accepted_fields'],
+    accepted_by: 'accepted_by',
+    skipped: true,
+    action_type: 'action_type',
+    action_id: 'action_id',
+    q: 'q',
+    revoked: false
+  };
+  const serviceURL = `${serviceBaseUrl}/usage/accept`;
+  ConsentService.acceptConsent(option);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+});
 
-    let data = ConsentService.getScopeConsentVersionDetailsV2({scopeid:'s',locale:'en',access_token:'a'}).catch( err => {
-    });
-    expect(data).not.toBe(undefined)
+test('getConsentVersionDetails', () => {
+  const option = {
+    consentid: 'consentid',
+    locale: 'locale',
+    access_token: 'access_token'
+  };
+  const serviceURL = `${serviceBaseUrl}/versions/details/${option.consentid}?locale=${option.locale}`;
+  ConsentService.getConsentVersionDetails(option);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', option.access_token);
+});
 
-    data = ConsentService.getConsentDetailsV2({sub:'s',consent_id:'c',consent_version_id:'v'}).catch( ex => {
-    });
-    expect(data).not.toBe(undefined);
+test('acceptScopeConsent', () => {
+  const option = {
+    client_id: 'client_id',
+    sub: 'sub',
+    scopes: ['scopes']
+  };
+  const serviceURL = `${serviceBaseUrlV1}/scope/accept`;
+  ConsentService.acceptScopeConsent(option);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+});
 
-    data = ConsentService.acceptConsentV2(TestConstants.consent).catch( ex => {
-    });
-    expect(data).not.toBe(undefined);
+test('acceptClaimConsent', () => {
+  const option = {
+    client_id: 'client_id',
+    sub: 'sub',
+    accepted_claims: ['accepted_claims']
+  };
+  const serviceURL = `${serviceBaseUrlV1}/claim/accept`;
+  ConsentService.acceptClaimConsent(option);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+});
 
-    data = ConsentService.acceptScopeConsent({sub:'s',client_id:'c',scopes:['v']}).catch( ex => {
-    });
-    expect(data).not.toBe(undefined);
-
-    data = ConsentService.acceptClaimConsent({sub:'s',client_id:'c',accepted_claims:['v']}).catch( ex => {
-    });
-    expect(data).not.toBe(undefined);
-
-    data = ConsentService.revokeClaimConsent({sub:'s',client_id:'c',revoked_claims:['v']}).catch( ex => {
-    });
-    expect(data).not.toBe(undefined);
+test('revokeClaimConsent', () => {
+  const option = {
+    access_token: 'access_token',
+    client_id: 'client_id',
+    sub: 'sub',
+    revoked_claims: ['revoked_claims']
+  };
+  const serviceURL = `${serviceBaseUrlV1}/claim/revoke`;
+  ConsentService.revokeClaimConsent(option);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', option.access_token);
 });

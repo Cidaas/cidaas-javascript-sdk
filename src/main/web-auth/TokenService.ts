@@ -1,12 +1,26 @@
 import { AccessTokenRequest, TokenIntrospectionEntity, ISuggestedMFAActionConfig } from "./Entities"
 import { Helper, CustomException } from "./Helper";
+import { JwtHelper } from "./JwtHelper";
 
 export namespace TokenService {
 
   /**
-   * renew token using refresh token
-   * @param options 
-   * @returns 
+   * To get a new token with the grant type refresh_token, call **renewToken()**.
+   * The refresh token to create a new token. The refresh token is received while creating an access token using the token endpoint and later can be used to fetch a new token without using credentials
+   * @example
+   * ```js
+   * const options = {
+   *   refresh_token: "your refresh token",
+   * }
+   * 
+   * cidaas.renewToken(options)
+   *   .then(function (response) {
+   *     // type your code here
+   *   })
+   *   .catch(function (ex) {
+   *     // your failure code here
+   *   });
+   * ```
    */
   export function renewToken(options: AccessTokenRequest) {
     if (!options.refresh_token) {
@@ -15,13 +29,26 @@ export namespace TokenService {
     options.client_id = window.webAuthSettings.client_id;
     options.grant_type = 'refresh_token';
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
-    return Helper.createPostPromise(options, _serviceURL, undefined, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
   };
 
   /**
-   * get access token from code
-   * @param options 
-   * @returns 
+   * To get a new token with the grant type authorization_code, call **getAccessToken()** with code to create a new token.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/4ff850f48629a-generate-token for more details.
+   * @example
+   * ```js
+   * const options = {
+   *   code: "your code to be exchanged with access token",
+   * }
+   * 
+   * cidaas.getAccessToken(options)
+   *   .then(function (response) {
+   *     // type your code here
+   *   })
+   *   .catch(function (ex) {
+   *     // your failure code here
+   *   });
+   * ```
    */
   export async function getAccessToken(options: AccessTokenRequest) {
     if (!options.code) {
@@ -35,59 +62,117 @@ export namespace TokenService {
       options.code_verifier = signInRequest.state?.code_verifier;
     }
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
-    return Helper.createPostPromise(options, _serviceURL, undefined, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
   };
 
   /**
-   * validate access token
-   * @param options 
-   * @returns 
+   * To validate an access token, call **validateAccessToken()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/26ff31e2937f1-introspect-with-bearer-token for more details.
+   * @example 
+   * ```js
+   * const options = {
+   *   token: "your access token",
+   *   token_type_hint: "accepted token type hints are access_token, id_token, refresh_token, sso",
+   * }
+   * 
+   * cidaas.validateAccessToken(options)
+   * .then(function (response) {
+   *   // type your code here
+   * })
+   * .catch(function (ex) {
+   *   // your failure code here
+   * });
+   * ```
    */
   export function validateAccessToken(options: TokenIntrospectionEntity) {
     if (!options.token || !options.token_type_hint) {
       throw new CustomException("token or token_type_hint cannot be empty", 417);
     }
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
-    return Helper.createPostPromise(options, _serviceURL, false, "POST");
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.token);
   };
 
   /**
-   * get scope consent details
-   * @param options 
-   * @returns 
+   * To get precheck result after login, call **loginPrecheck()**. If there is missing information, user will be redirected to either accepting consent, changing password, continuing MFA process, or do progressive registration
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/aappczju1t3uh-precheck-information for more details.
+   * @example
+   * ```js
+   * const options = {
+   *   trackId: "your track id from login",
+   *   locale: "your preferred locale",
+   * }
+   * 
+   * cidaas.loginPrecheck(options)
+   * .then(function (response) {
+   *   // type your code here
+   * })
+   * .catch(function (ex) {
+   *   // your failure code here
+   * });
+   * ```
    */
-  export function getScopeConsentDetails(options: {
+  export function loginPrecheck(options: {
     track_id: string;
     locale: string;
   }) {
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id + "?acceptLanguage=" + options.locale;
-    return Helper.createPostPromise(undefined, _serviceURL, false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 
   /**
-   * updateSuggestMFA
-   * @param track_id 
-   * @param options 
-   * @returns 
+   * To get the missing fields after login, call **getMissingFields()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/aappczju1t3uh-precheck-information for more details.
+   * @example
+   * ```js
+   * const trackId = "your track id from login";
+   * cidaas.getMissingFields(trackId)
+   *   .then(function (response) {
+   *     // type your code here
+   * })
+   *   .catch(function (ex) {
+   *     // your failure code here
+   * });
+   * ```
    */
-  export function updateSuggestMFA(track_id: string, options: ISuggestedMFAActionConfig) {
-    const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/suggested/mfa/update/" + track_id;
-    return Helper.createPostPromise(options, _serviceURL, false, "POST");
-  };
-
-  /**
-   * getMissingFieldsLogin
-   * @param trackId 
-   * @returns 
-   */
-  export function getMissingFieldsLogin(trackId: string) {
+  export function getMissingFields(trackId: string) {
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + trackId;
-    return Helper.createPostPromise(undefined, _serviceURL, false, "GET");
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 
   /**
-   * device code flow - verify
-   * @param code 
+   * To initiate device code, call **initiateDeviceCode()**.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/b6d284f55be5e-authorization-request for more details.
+   * @example 
+   * ```js
+   * const clientId = "your client id";
+   * cidaas.initiateDeviceCode(clientId)
+   *   .then(function (response) {
+   *     // type your code here
+   * })
+   *   .catch(function (ex) {
+   *     // your failure code here
+   * });
+   * ```
+   */
+  export function initiateDeviceCode(clientId?: string) {
+    const clientid = clientId ?? window.webAuthSettings.client_id;
+    const _serviceURL = `${window.webAuthSettings.authority}/authz-srv/device/authz?client_id=${clientid}`;
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
+  }
+
+  /**
+   * To verify device code, call **deviceCodeVerify()**. 
+   * @example 
+   * ```js
+   * const code = "your code which has been send after initiateDeviceCode()";
+   * cidaas.deviceCodeVerify(code)
+   *   .then(function (response) {
+   *     // type your code here
+   * })
+   *   .catch(function (ex) {
+   *     // your failure code here
+   * });
+   * ```
    */
   export function deviceCodeVerify(code: string) {
     var params = `user_code=${encodeURI(code)}`;
@@ -102,5 +187,45 @@ export namespace TokenService {
     } catch (ex) {
       throw new Error(ex);
     }
+  }
+
+  /**
+   * To check access token without having to call cidaas api, call **offlineTokenCheck()**. THe function will return true if the token is valid & false if the token is invalid.
+   * @example
+   * ```js
+   * cidaas.offlineTokenCheck('your access token');
+   * ```
+   */
+  export function offlineTokenCheck(accessToken: string) {
+    let result = {
+      isExpiryDateValid: false,
+      isScopesValid: false,
+      isIssuerValid: false,
+    }
+    const accessTokenHeaderAsJson = JwtHelper.decodeTokenHeader(accessToken);
+    const accessTokenAsJson = JwtHelper.decodeToken(accessToken);
+    if (!accessTokenAsJson || !accessTokenHeaderAsJson) {
+      return result;
+    } else {
+      if (accessTokenAsJson.exp) {
+        const expirationDate = new Date(0);
+        expirationDate.setUTCSeconds(accessTokenAsJson.exp);
+        result.isExpiryDateValid = expirationDate.valueOf() > new Date().valueOf();
+      }
+      const accessTokenScopes: string[] = accessTokenAsJson.scopes;
+      const webAuthSettingScopes: string[] = window.webAuthSettings?.scope?.split(' ');
+      if (accessTokenScopes?.length === webAuthSettingScopes?.length) {
+        webAuthSettingScopes.forEach(webAuthSettingScope => {
+          const i = accessTokenScopes.indexOf(webAuthSettingScope);
+          if (i > -1) {
+            accessTokenScopes.splice(i, 1);
+          }
+        });
+        result.isScopesValid = accessTokenScopes.length === 0;
+      }
+      result.isIssuerValid = accessTokenAsJson.iss === window.webAuthSettings.authority
+    }
+
+    return result;
   }
 }
