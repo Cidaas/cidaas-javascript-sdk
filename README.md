@@ -104,7 +104,7 @@ cidaas.loginCallback().then(function(response) {
 });
 ```
 
-After successful loginCallback, You will get access token, along with id token and refresh token in the json response, depends on your application congifuration.
+After successful loginCallback, You will get access token, along with id token and refresh token in the json response, depends on your application configuration.
 
 There are code documentations for each of the functions with example code of how to call them individually.
 
@@ -119,7 +119,7 @@ The SDK offers multiple way to authenticate user. Whether using browser redirect
 | SDK Functions                                                                    | Description                                                                                                                                                                    |
 |----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | loginWithBrowser, registerWithBrowser, loginCallback, logout, logoutCallback | The SDK support browser redirection for authenticating user. The authentication process will then happens in a new tab. This is the default authentication function of the SDK |
-| popupSignIn, popupSignInCallback, popupSignOut, popupSignOutCallback             | The SDK support pop up window for authenticating user. The authentication process will then happens in a new popup window                                                      |
+| popupSignIn, popupSignInCallback, popupSignOut, popupSignOutCallback             | The SDK support using pop up window for authenticating user. The authentication process will then happens in a new popup window                                                      |
 | silentSignIn, silentSignInCallback                                               | The SDK support silent authentication. The authentication process will then happens in an iframe.                                                                              |
 
 #### Login Management
