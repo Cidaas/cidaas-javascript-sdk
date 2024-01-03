@@ -251,9 +251,13 @@ export namespace VerificationService {
    * });
    * ```
    */
-  export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken: string) {
+  export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken?: string) {
     var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+    // TODO: remove accessToken parameter in the next major release
+    if (accessToken) {
+      return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+    } 
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST");
   };
 
   /**

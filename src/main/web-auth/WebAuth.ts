@@ -993,8 +993,12 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken: string) {
-    return VerificationService.initiateMFA(options, accessToken);
+  initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken?: string) {
+    // TODO: remove accessToken parameter in the next major release
+    if (accessToken) {
+      return VerificationService.initiateMFA(options, accessToken);
+    } 
+    return VerificationService.initiateMFA(options);
   };
 
   /**

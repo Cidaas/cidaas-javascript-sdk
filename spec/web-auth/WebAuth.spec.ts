@@ -799,7 +799,18 @@ describe('Verification service functions', () => {
 			processingType: '',
 			request_id: ''
 		};
-		const accessToken = '';
+		webAuth.initiateMFA(options);
+		expect(initiateMFASpy).toHaveBeenCalledWith(options);
+	});
+
+	test('initiateMFA with access token', () => {
+		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
+		const options: IInitVerificationAuthenticationRequestEntity = {
+			usage_type: '',
+			processingType: '',
+			request_id: ''
+		};
+		const accessToken = 'accessToken';
 		webAuth.initiateMFA(options, accessToken);
 		expect(initiateMFASpy).toHaveBeenCalledWith(options, accessToken);
 	});
