@@ -15,6 +15,8 @@
 
 This cidaas Javascript SDK library is built on the top of [OIDC client typescript library](https://github.com/authts/oidc-client-ts). 
 
+Please check the [Changelog](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/CHANGELOG.md) for more information about the latest release.
+
 ## Table of Contents
 
 <!--ts-->
@@ -48,8 +50,6 @@ From npm
 npm install cidaas-javascript-sdk
 ```
 
-Please check the [Changelog](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/CHANGELOG.md) for more information about the latest release
-
 ### Initialisation
 
 After adding the sdk library, create a local file such as **cidaas.service.ts** and define Cidaas options variable there for initializing cidaas sdk.
@@ -64,7 +64,7 @@ Cidaas options variable support every [OIDC Client UserManagerSettings Propertie
 | post_logout_redirect_uri | no | URL to be redirected after successful logout attempt. |
 | scope | no | the scope the application requires and requests from cidaas. The default value is 'openid' if no properties is being sent. |
 
-an example of index.js is looks like this:
+an example of Cidaas options variable looks like this:
 
 ```js
 const options = {
