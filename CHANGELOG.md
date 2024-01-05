@@ -1,5 +1,10 @@
 # Changelog
 
+## V4.0.1
+
+### Changed
+- initiateMFA() function will no longer require accessToken as parameter
+
 ## V4.0.0
 
 If you are upgrading from v3.x.x,  please see ['UPGRADING.md'](UPGRADING.md)

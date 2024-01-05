@@ -140,6 +140,18 @@ test('initiateMFA', () => {
     request_id: 'request_id',
     type: 'type'
   };
+  const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
+  VerificationService.initiateMFA(options);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
+});
+
+test('initiateMFA with access token', () => {
+  const options: IInitVerificationAuthenticationRequestEntity = {
+    usage_type: 'usage_type',
+    processingType: 'processingType',
+    request_id: 'request_id',
+    type: 'type'
+  };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
   VerificationService.initiateMFA(options, accessToken);
