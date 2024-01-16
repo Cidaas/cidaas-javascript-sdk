@@ -98,6 +98,27 @@ export namespace UserService {
   };
 
   /**
+   * to get information about invitation details, call **getUserInvitationV2()**
+   * @example
+   * ```js
+   * const options = {
+   *   inviteId: 'id of user invitation'
+   * }
+   * cidaas.getUserInvitationV2(options)
+   * .then(function () {
+   *   // the response will give you information about the invitation.
+   * }).catch(function (ex) {
+   *   // your failure code here
+   * });
+   * ```
+   */
+
+  export function getUserInvitationV2(options: { inviteId: string }) {
+    const _serviceURL = window.webAuthSettings.authority + "/useractions-srv/invitations/" + options.inviteId;
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
+  };
+
+  /**
    * Once registration successful, verify the account based on the flow. To get the details, call **getCommunicationStatus()**.
    * @example
    * ```js

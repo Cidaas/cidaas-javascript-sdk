@@ -4,6 +4,7 @@ import { UserService } from '../../src/main/web-auth/UserService';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
+const serviceBaseUrlUsersActions: string = `${authority}/useractions-srv`;
 const createFormSpy = jest.spyOn(Helper, 'createForm');
 const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -43,6 +44,15 @@ test('getInviteUserDetails', () => {
   };
   const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
   UserService.getInviteUserDetails(options);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+});
+
+test('getUserInvitationV2', () => {
+  const options = {
+      inviteId: 'inviteId',
+  };
+  const serviceURL = `${serviceBaseUrlUsersActions}/invitations/${options.inviteId}`;
+  UserService.getUserInvitationV2(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
