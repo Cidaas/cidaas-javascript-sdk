@@ -1,5 +1,11 @@
 # Changelog
 
+## V4.0.2
+
+### Changed
+- Update getInviteUserDetails() function will now additionally accept callListApi parameter ensure to use useractions-srv API or users-srv API to get user information
+
+
 ## V4.0.1
 
 ### Changed

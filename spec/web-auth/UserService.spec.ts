@@ -38,21 +38,32 @@ test('register', () => {
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
-test('getInviteUserDetails', () => {
+test('getInviteUserDetails: to use useractions-srv API', () => {
   const options = {
     invite_id: 'invite_id',
+    callLatestAPI: true
+  };
+  const serviceURL = `${serviceBaseUrlUsersActions}/invitations/${options.invite_id}`;
+  UserService.getInviteUserDetails(options);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+});
+
+test('getInviteUserDetails: to use users-srv API', () => {
+  const options = {
+    invite_id: 'invite_id',
+    callLatestAPI: false
   };
   const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
   UserService.getInviteUserDetails(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
-test('getUserInvitationV2', () => {
+test('getInviteUserDetails: to use users-srv API if callListApi is undefined', () => {
   const options = {
-      inviteId: 'inviteId',
+    invite_id: 'invite_id',
   };
-  const serviceURL = `${serviceBaseUrlUsersActions}/invitations/${options.inviteId}`;
-  UserService.getUserInvitationV2(options);
+  const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
+  UserService.getInviteUserDetails(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 

@@ -92,29 +92,13 @@ export namespace UserService {
    * });
    * ```
    */
-  export function getInviteUserDetails(options: { invite_id: string }) {
-    const _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
-    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
-  };
-
-  /**
-   * to get information about invitation details, call **getUserInvitationV2()**
-   * @example
-   * ```js
-   * const options = {
-   *   inviteId: 'id of user invitation'
-   * }
-   * cidaas.getUserInvitationV2(options)
-   * .then(function () {
-   *   // the response will give you information about the invitation.
-   * }).catch(function (ex) {
-   *   // your failure code here
-   * });
-   * ```
-   */
-
-  export function getUserInvitationV2(options: { inviteId: string }) {
-    const _serviceURL = window.webAuthSettings.authority + "/useractions-srv/invitations/" + options.inviteId;
+  export function getInviteUserDetails(options: { invite_id: string, callLatestAPI?: boolean }) {
+    let _serviceURL: string = "";
+    if(options.callLatestAPI){
+      _serviceURL = window.webAuthSettings.authority + "/useractions-srv/invitations/" + options.invite_id;
+    }else{
+      _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
+    }
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 
