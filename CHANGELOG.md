@@ -1,5 +1,13 @@
 # Changelog
 
+## V4.0.2
+
+### Added
+- add github repository link to package.json
+
+### Fixed
+- fix missing error handling in loginCallback() function
+
 ## V4.0.1
 
 ### Changed

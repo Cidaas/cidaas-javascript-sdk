@@ -71,7 +71,10 @@ export class Authentication {
                                 return;
                             }
                             resolve(undefined);
-                        });
+                        })
+                        .catch((ex) => {
+                            reject(ex);
+                          })
                 } else {
                     throw "user manager is null";
                 }
