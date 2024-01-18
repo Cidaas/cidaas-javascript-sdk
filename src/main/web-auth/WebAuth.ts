@@ -134,7 +134,7 @@ export class WebAuth {
           reject(ex);
         });
       } catch (ex) {
-        console.log(ex);
+        reject(ex);
       }
     });
   };
