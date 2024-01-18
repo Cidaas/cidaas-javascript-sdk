@@ -11,13 +11,13 @@ export class Authentication {
      * ```js
      * cidaas.loginWithBrowser();
      * ```
-     * 
+     *
      * To register through cidaas sdk, call **registerWithBrowser()**. This will redirect you to the hosted registration page.
      * * @example
      * ```js
      * cidaas.registerWithBrowser();
      * ```
-     * 
+     *
      * @param view_type: either 'login' or 'register'
      */
     loginOrRegisterWithBrowser(view_type: string) {
@@ -71,6 +71,8 @@ export class Authentication {
                                 return;
                             }
                             resolve(undefined);
+                        }).catch(function (ex: any) {
+                            reject(ex);
                         });
                 } else {
                     throw "user manager is null";
@@ -102,6 +104,8 @@ export class Authentication {
                         console.log('signed out', resp);
                         window.authentication.logoutCallback().then(function (resp: any) {
                             resolve(resp);
+                        }).catch(function (ex: any) {
+                            reject(ex);
                         });
                     });
                 } else {
@@ -131,6 +135,8 @@ export class Authentication {
                     this.userManager.signoutRedirectCallback().then(function (resp: any) {
                         console.log("Signed out");
                         resolve(resp);
+                    }).catch(function (ex: any) {
+                        reject(ex);
                     });
                 } else {
                     resolve(undefined);
@@ -162,7 +168,7 @@ export class Authentication {
     };
 
     /**
-     * To complete the popup login process, call **popupSignInCallback()** from the popup login window. 
+     * To complete the popup login process, call **popupSignInCallback()** from the popup login window.
      * Popup window will be closed after doing callback
      * @example
      * ```js
@@ -204,7 +210,7 @@ export class Authentication {
     };
 
     /**
-     * calling **popupSignOutCallback()** from the popup window complete popup logout process. 
+     * calling **popupSignOutCallback()** from the popup window complete popup logout process.
      * Popup window won't be closed after doing callback
      * @example
      * ```js
@@ -222,7 +228,7 @@ export class Authentication {
     };
 
     /**
-     * **silentSignIn()** will open the hosted login page in an iframe. 
+     * **silentSignIn()** will open the hosted login page in an iframe.
      * this function could only be called from the same domain. Cross Domain is not supported for security purpose.
      * @example
      * ```js
@@ -247,6 +253,8 @@ export class Authentication {
                             return;
                         }
                         resolve(undefined);
+                    }).catch(function (ex: any) {
+                        reject(ex);
                     });
                 } else {
                     throw "user manager or web auth settings is null";
