@@ -124,18 +124,14 @@ export class WebAuth {
    */
   loginCallback() {
     return new Promise((resolve, reject) => {
-      try {
-        if (!window.webAuthSettings && !window.authentication) {
-          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
-        }
-        window.authentication.loginCallback().then(function (user: any) {
-          resolve(user);
-        }).catch(function (ex: any) {
-          reject(ex);
-        });
-      } catch (ex) {
-        reject(ex);
+      if (!window.webAuthSettings && !window.authentication) {
+        throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
+      window.authentication.loginCallback().then(function (user: any) {
+        resolve(user);
+      }).catch(function (ex: any) {
+        reject(ex);
+      });
     });
   };
 
