@@ -1,10 +1,14 @@
 # Changelog
 
-## V4.0.2
+## V4.0.3
 
 ### Added
 - add latest getInviteUserDetails API, which can be called by specifying function parameter callLatestAPI: true
 
+## V4.0.2
+
+### Fixed
+- fix missing error handling in loginCallback() function
 
 ## V4.0.1
 
