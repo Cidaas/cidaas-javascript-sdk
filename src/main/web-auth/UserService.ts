@@ -79,14 +79,13 @@ export namespace UserService {
 
   /**
    * to get information about invitation details, call **getInviteUserDetails()**. This API allows to retrieve invitation details and prefill the registration form.
-   * callLatestApi : is a boolean value, if it is true it uses latest api call, else it uses older api call
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/0b5efa5a2db5d-prefill-the-user-invitation for more details.
    * Minimum cidaas version to use latest api is v3.100
    * @example
    * ```js
    * const options = {
    *   invite_id: 'id of user invitation'
-   *   callLatestAPI: 'boolean value, indicate to use latest api or older api'
+   *   callLatestAPI: 'true' // call latest api if parameter is given. By default, the older api will be called
    * }
    * cidaas.getInviteUserDetails(options)
    * .then(function () {
