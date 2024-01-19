@@ -1,5 +1,10 @@
 # Changelog
 
+## V4.1.0
+
+### Changed
+- support trailing slash on Cidaas options: 'authority'
+
 ## V4.0.2
 
 ### Fixed
