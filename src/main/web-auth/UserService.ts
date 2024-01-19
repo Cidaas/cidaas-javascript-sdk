@@ -78,11 +78,14 @@ export namespace UserService {
   };
 
   /**
-   * to get information about invitation details, call **getInviteUserDetails()**
+   * to get information about invitation details, call **getInviteUserDetails()**. This API allows to retrieve invitation details and prefill the registration form.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/0b5efa5a2db5d-prefill-the-user-invitation for more details.
+   * Minimum cidaas version to use latest api is v3.100
    * @example
    * ```js
    * const options = {
    *   invite_id: 'id of user invitation'
+   *   callLatestAPI: 'true' // call latest api if parameter is given. By default, the older api will be called
    * }
    * cidaas.getInviteUserDetails(options)
    * .then(function () {
@@ -92,8 +95,13 @@ export namespace UserService {
    * });
    * ```
    */
-  export function getInviteUserDetails(options: { invite_id: string }) {
-    const _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
+  export function getInviteUserDetails(options: { invite_id: string, callLatestAPI?: boolean }) {
+    let _serviceURL: string = "";
+    if(options.callLatestAPI){
+      _serviceURL = window.webAuthSettings.authority + "/useractions-srv/invitations/" + options.invite_id;
+    }else{
+      _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
+    }
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
   };
 

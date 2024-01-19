@@ -4,6 +4,7 @@ import { UserService } from '../../src/main/web-auth/UserService';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
+const serviceBaseUrlUsersActions: string = `${authority}/useractions-srv`;
 const createFormSpy = jest.spyOn(Helper, 'createForm');
 const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -37,14 +38,35 @@ test('register', () => {
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
-test('getInviteUserDetails', () => {
+test('getInviteUserDetails: to use older api, if no callLatestApi is present', () => {
+    const options = {
+        invite_id: 'invite_id',
+    };
+    const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
+    UserService.getInviteUserDetails(options);
+    expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+});
+
+test('getInviteUserDetails using latest api', () => {
   const options = {
     invite_id: 'invite_id',
+    callLatestAPI: true
+  };
+  const serviceURL = `${serviceBaseUrlUsersActions}/invitations/${options.invite_id}`;
+  UserService.getInviteUserDetails(options);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+});
+
+test('getInviteUserDetails using older api', () => {
+  const options = {
+    invite_id: 'invite_id',
+    callLatestAPI: false
   };
   const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
   UserService.getInviteUserDetails(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
+
 
 test('getCommunicationStatus', () => {
   const options = {

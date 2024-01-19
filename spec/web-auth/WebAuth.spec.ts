@@ -296,10 +296,20 @@ describe('User service functions', () => {
 		expect(registerSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
-	test('getInviteUserDetails', () => {
+	test('getInviteUserDetails to call with callLatestApi parameter', () => {
 		const getInviteUserDetailsSpy = jest.spyOn(UserService, 'getInviteUserDetails').mockImplementation();
 		const options = {
-			invite_id: ''
+			invite_id: '',
+			callLatestAPI: true
+		};
+		webAuth.getInviteUserDetails(options);
+		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);
+	});
+
+	test('getInviteUserDetails to call without callLatestApi parameter', () => {
+		const getInviteUserDetailsSpy = jest.spyOn(UserService, 'getInviteUserDetails').mockImplementation();
+		const options = {
+			invite_id: '',
 		};
 		webAuth.getInviteUserDetails(options);
 		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);

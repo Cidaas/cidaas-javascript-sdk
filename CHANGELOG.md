@@ -2,6 +2,9 @@
 
 ## V4.1.0
 
+### Added
+- add latest getInviteUserDetails API, which can be called by specifying function parameter callLatestAPI: true
+
 ### Changed
 - support trailing slash on Cidaas options: 'authority'
 

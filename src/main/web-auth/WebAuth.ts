@@ -544,7 +544,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getInviteUserDetails(options: { invite_id: string }) {
+  getInviteUserDetails(options: { invite_id: string, callLatestAPI?: boolean }) {
     return UserService.getInviteUserDetails(options);
   };
 
