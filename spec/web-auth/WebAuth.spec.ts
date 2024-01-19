@@ -26,6 +26,34 @@ beforeAll(() => {
 });
 
 describe('Webauth functions without module or services', () => {
+	test('doNotRemoveAuthorityTrailingSlashIfNotExist', () => {
+		const optionsWithoutTrailingSlashAuthority = {
+			authority: 'https://domain/path',
+			client_id: 'clientId',
+			redirect_uri: 'redirectUri',
+			post_logout_redirect_uri: 'logoutUri',
+			response_type: 'code',
+			scope: 'scope'
+		};
+		new WebAuth(optionsWithoutTrailingSlashAuthority);
+		expect((window as any).webAuthSettings.authority).toEqual('https://domain/path');
+		new WebAuth(options);
+	});
+	
+	test('removeAuthorityTrailingSlashIfExist', () => {
+		const optionsWithTrailingSlashAuthority = {
+			authority: 'https://domain/path/',
+			client_id: 'clientId',
+			redirect_uri: 'redirectUri',
+			post_logout_redirect_uri: 'logoutUri',
+			response_type: 'code',
+			scope: 'scope'
+		};
+		new WebAuth(optionsWithTrailingSlashAuthority);
+		expect((window as any).webAuthSettings.authority).toEqual('https://domain/path');
+		new WebAuth(options);
+	});
+
 	test('getUserInfo', () => {
 		const getUserSpy = jest.spyOn((window as any).usermanager, 'getUser');
 		webAuth.getUserInfo();

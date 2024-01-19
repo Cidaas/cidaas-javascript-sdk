@@ -41,7 +41,10 @@ export class WebAuth {
       if (!settings.scope) {
         settings.scope = "email openid profile mobile";
       }
-      var usermanager = new UserManager(settings)
+      if (settings.authority && settings.authority.charAt(settings.authority.length - 1) === '/' ) {
+        settings.authority = settings.authority.slice(0, settings.authority.length - 1);
+      }
+      var usermanager = new UserManager(settings);
       window.webAuthSettings = settings;
       window.usermanager = usermanager;
       window.localeSettings = null;
