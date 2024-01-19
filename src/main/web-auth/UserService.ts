@@ -78,7 +78,7 @@ export namespace UserService {
   };
 
   /**
-   * to get information about invitation details, call **getInviteUserDetails()**
+   * to get information about invitation details, call **getInviteUserDetails()**. This API allows to retrieve invitation details and prefill the registration form.
    * @example
    * ```js
    * const options = {

@@ -271,7 +271,8 @@ describe('User service functions', () => {
 	test('getInviteUserDetails', () => {
 		const getInviteUserDetailsSpy = jest.spyOn(UserService, 'getInviteUserDetails').mockImplementation();
 		const options = {
-			invite_id: ''
+			invite_id: '',
+			callLatestAPI: false
 		};
 		webAuth.getInviteUserDetails(options);
 		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);

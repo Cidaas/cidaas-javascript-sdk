@@ -2,8 +2,8 @@
 
 ## V4.0.2
 
-### Changed
-- Update getInviteUserDetails() function will now additionally accept callListApi parameter ensure to use useractions-srv API or users-srv API to get user information
+### Added
+- add latest getInviteUserDetails API, which can be called by specifying function parameter callLatestAPI: true
 
 
 ## V4.0.1
