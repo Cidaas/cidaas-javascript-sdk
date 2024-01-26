@@ -289,7 +289,6 @@ export class WebAuth {
       try {
         window.usermanager._client.createSigninRequest({state:state}).then((signinRequest: SigninRequest) => {
           resolve(signinRequest.url);
-          return ;
         }); 
       } catch (e) {
         reject(e);
