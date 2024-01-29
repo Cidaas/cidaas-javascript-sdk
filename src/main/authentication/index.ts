@@ -74,7 +74,7 @@ export class Authentication {
                         })
                         .catch((ex) => {
                             reject(ex);
-                          })
+                        })
                 } else {
                     throw "user manager is null";
                 }
@@ -106,6 +106,8 @@ export class Authentication {
                         window.authentication.logoutCallback().then(function (resp: any) {
                             resolve(resp);
                         });
+                    }).catch((ex) => {
+                        reject(ex);
                     });
                 } else {
                     throw "user manager or settings is null";
@@ -134,6 +136,8 @@ export class Authentication {
                     this.userManager.signoutRedirectCallback().then(function (resp: any) {
                         console.log("Signed out");
                         resolve(resp);
+                    }).catch((ex) => {
+                        reject(ex);
                     });
                 } else {
                     resolve(undefined);
@@ -250,6 +254,8 @@ export class Authentication {
                             return;
                         }
                         resolve(undefined);
+                    }).catch((ex) => {
+                        reject(ex);
                     });
                 } else {
                     throw "user manager or web auth settings is null";
