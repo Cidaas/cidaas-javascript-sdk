@@ -31,6 +31,10 @@ import {
   IUserActivityPayloadEntity,
 } from "./Entities"
 
+export const createPreloginWebauth = (authority: string) => {
+  return new WebAuth({'authority': authority} as UserManagerSettings);
+}
+
 export class WebAuth {
 
   constructor(settings: UserManagerSettings) {
@@ -90,20 +94,15 @@ export class WebAuth {
    * silentSignIn
    */
   silentSignIn() {
-
     return new Promise((resolve, reject) => {
-      try {
-        if (!window.webAuthSettings && !window.authentication) {
-          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
-        }
-        window.authentication.silentSignIn().then(function (user: any) {
-          resolve(user);
-        }).catch(function (ex: any) {
-          reject(ex);
-        });
-      } catch (ex) {
-        console.log(ex);
+      if (!window.webAuthSettings && !window.authentication) {
+        throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
+      window.authentication.silentSignIn().then(function (user: any) {
+        resolve(user);
+      }).catch(function (ex: any) {
+        reject(ex);
+      });
     });
   };
 
@@ -206,17 +205,15 @@ export class WebAuth {
    */
   logout() {
     return new Promise((resolve, reject) => {
-      try {
-        if (!window.webAuthSettings && !window.authentication) {
-          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
-        }
-        window.authentication.logout().then(function (result: any) {
-          resolve(result);
-          return;
-        });
-      } catch (ex) {
-        reject(ex);
+      if (!window.webAuthSettings && !window.authentication) {
+        throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
+      window.authentication.logout().then(function (result: any) {
+        resolve(result);
+        return;
+      }).catch(function (ex: any) {
+        reject(ex);
+      });
     });
   };
 
@@ -243,16 +240,15 @@ export class WebAuth {
    */
   logoutCallback() {
     return new Promise((resolve, reject) => {
-      try {
-        if (!window.webAuthSettings && !window.authentication) {
-          throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
-        }
-        window.authentication.logoutCallback().then(function (resp: any) {
-          resolve(resp);
-        });
-      } catch (ex) {
-        reject(ex);
+      if (!window.webAuthSettings && !window.authentication) {
+        throw new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417);
       }
+      window.authentication.logoutCallback().then(function (resp: any) {
+        resolve(resp);
+      }).catch(function (ex: any) {
+        reject(ex);
+      });
+
     });
   };
 
