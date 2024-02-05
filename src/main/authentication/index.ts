@@ -21,31 +21,17 @@ export class Authentication {
      * @param view_type: either 'login' or 'register'
      */
     loginOrRegisterWithBrowser(view_type: string) {
-        try {
-            if (this.userManager) {
-                if (this.webAuthSettings) {
-                    if (!this.webAuthSettings.extraQueryParams) {
-                        this.webAuthSettings.extraQueryParams = {};
-                    }
-                    this.webAuthSettings.extraQueryParams.view_type = view_type;
-                    if (this.webAuthSettings.scope) {
-                        if (this.webAuthSettings.response_type.indexOf("id_token") == -1 && this.webAuthSettings.scope.indexOf("openid") != -1 && !this.webAuthSettings.extraQueryParams.nonce) {
-                            this.webAuthSettings.extraQueryParams.nonce = new Date().getTime().toString();
-                        }
-                    }
-                }
-                this.userManager.signinRedirect({
-                    extraQueryParams: this.webAuthSettings.extraQueryParams,
-                    redirect_uri: this.webAuthSettings.redirect_uri
-                }).then(function () {
-                    console.log("Redirect logged in using cidaas sdk");
-                });
-            } else {
-                throw "user manager is null";
-            }
-        } catch (ex) {
-            console.log("user manager instance is empty : " + ex);
+        if (!this.webAuthSettings.extraQueryParams) {
+            this.webAuthSettings.extraQueryParams = {};
         }
+        this.webAuthSettings.extraQueryParams.view_type = view_type;
+        if (this.webAuthSettings.response_type.indexOf("id_token") == -1 && this.webAuthSettings.scope?.indexOf("openid") != -1 && !this.webAuthSettings.extraQueryParams.nonce) {
+            this.webAuthSettings.extraQueryParams.nonce = new Date().getTime().toString();
+        }
+        this.userManager.signinRedirect({
+            extraQueryParams: this.webAuthSettings.extraQueryParams,
+            redirect_uri: this.webAuthSettings.redirect_uri
+        });
     };
 
     /**
@@ -61,27 +47,7 @@ export class Authentication {
      * ```
      */
     loginCallback() {
-        return new Promise((resolve, reject) => {
-            try {
-                if (this.userManager) {
-                    this.userManager.signinRedirectCallback()
-                        .then(function (user: any) {
-                            if (user) {
-                                resolve(user);
-                                return;
-                            }
-                            resolve(undefined);
-                        })
-                        .catch((ex) => {
-                            reject(ex);
-                        })
-                } else {
-                    throw "user manager is null";
-                }
-            } catch (ex) {
-                reject(ex);
-            }
-        });
+        return this.userManager.signinRedirectCallback();
     }
 
     /**
