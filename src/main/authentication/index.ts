@@ -54,35 +54,12 @@ export class Authentication {
      * To use the **logout()** method, you need set the redirect url, if not it will automatically redirect to the login page
      * @example
      * ```js
-     * cidaas.logout().then(function () {
-     *   // your logout success code here
-     * }).catch(function(ex) {
-     *  // your failure code here
-     * });
+     * cidaas.logout();
      * ```
      */
     logout() {
-        return new Promise((resolve, reject) => {
-            try {
-                if (this.userManager && this.webAuthSettings) {
-                    this.userManager.signoutRedirect({
-                        state: this.webAuthSettings
-                    }).then(function (resp: any) {
-                        console.log('signed out', resp);
-                        window.authentication.logoutCallback().then(function (resp: any) {
-                            resolve(resp);
-                        });
-                    }).catch((ex) => {
-                        reject(ex);
-                    });
-                } else {
-                    throw "user manager or settings is null";
-                }
-            } catch (ex) {
-                reject(ex);
-            }
-        });
-    };
+        return this.userManager.signoutRedirect({ state: this.webAuthSettings });
+    }
 
     /**
      * **logoutCallback()** will parses the details of userState after logout.
@@ -96,23 +73,7 @@ export class Authentication {
      * ```
      */
     logoutCallback() {
-        return new Promise((resolve, reject) => {
-            try {
-                if (this.userManager) {
-                    this.userManager.signoutRedirectCallback().then(function (resp: any) {
-                        console.log("Signed out");
-                        resolve(resp);
-                    }).catch((ex) => {
-                        reject(ex);
-                    });
-                } else {
-                    resolve(undefined);
-                    throw "user manager is null";
-                }
-            } catch (ex) {
-                reject(ex);
-            }
-        });
+        return this.userManager.signoutRedirectCallback();
     };
 
     /**
