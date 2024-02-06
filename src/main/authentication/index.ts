@@ -28,7 +28,7 @@ export class Authentication {
         if (this.webAuthSettings.response_type.indexOf("id_token") == -1 && this.webAuthSettings.scope?.indexOf("openid") != -1 && !this.webAuthSettings.extraQueryParams.nonce) {
             this.webAuthSettings.extraQueryParams.nonce = new Date().getTime().toString();
         }
-        this.userManager.signinRedirect({
+        return this.userManager.signinRedirect({
             extraQueryParams: this.webAuthSettings.extraQueryParams,
             redirect_uri: this.webAuthSettings.redirect_uri
         });
