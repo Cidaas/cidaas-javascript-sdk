@@ -80,19 +80,15 @@ export class Authentication {
      * **popupSignIn()** will open the hosted login page in pop up window.
      * @example
      * ```js
-     * cidaas.popupSignIn();
+     * cidaas.popupSignIn().then(function (response) {
+     *   // the response will give you user details after finishing popupSignInCallback().
+     * }).catch(function(ex) {
+     *  // your failure code here
+     * });
      * ```
      */
     popupSignIn() {
-        try {
-            if (this.userManager && this.webAuthSettings) {
-                this.userManager.signinPopup().then(function () {
-                    console.log("signed in");
-                });
-            } else {
-                throw "user manager or settings is null";
-            }
-        } catch (ex) { console.error(ex) }
+        return this.userManager.signinPopup();
     };
 
     /**
@@ -100,41 +96,26 @@ export class Authentication {
      * Popup window will be closed after doing callback
      * @example
      * ```js
-     * cidaas.popupSignInCallback().then(function (response) {
-     *   // the response will give you login details.
-     * }).catch(function(ex) {
-     *  // your failure code here
-     * });
+     * cidaas.popupSignInCallback();
      * ```
      */
     popupSignInCallback() {
-        try {
-            if (this.userManager) {
-                this.userManager.signinPopupCallback();
-            }
-        } catch (ex) { console.error(ex) }
+        return this.userManager.signinPopupCallback();
     };
 
     /**
      * **popupSignOut()** will open the hosted logout page in pop up window.
      * @example
      * ```js
-     * cidaas.popupSignOut()
+     * cidaas.popupSignOut().then(function() {
+     *   // success callback in main application window after finishing popupSignOutCallback().
+     * }).catch(function(ex) {
+     *   // your failure code here
+     * });
      * ```
      */
     popupSignOut() {
-        try {
-            if (this.userManager && this.webAuthSettings) {
-                this.userManager.signoutPopup({
-                    state: this.webAuthSettings
-                }).then(function (resp: any) {
-                    console.log('signed out', resp);
-                });
-            } else {
-                throw "user manager or settings is null";
-            }
-        } catch (ex) { console.error(ex) }
-
+        return this.userManager.signoutPopup({ state: this.webAuthSettings });
     };
 
     /**
@@ -142,17 +123,15 @@ export class Authentication {
      * Popup window won't be closed after doing callback
      * @example
      * ```js
-     * cidaas.popupSignOutCallback();
+     * cidaas.popupSignOutCallback().then(function() {
+     *   // success callback in popup window after finishing popupSignOutCallback().
+     * }).catch(function(ex) {
+     *   // your failure code here
+     * });
      * ```
      */
     popupSignOutCallback() {
-        try {
-            if (this.userManager) {
-                this.userManager.signoutPopupCallback(this.webAuthSettings.post_logout_redirect_uri, true);
-            } else {
-                throw "user manager is null";
-            }
-        } catch (ex) { console.error(ex) }
+        return this.userManager.signoutPopupCallback(this.webAuthSettings.post_logout_redirect_uri, true);
     };
 
     /**
