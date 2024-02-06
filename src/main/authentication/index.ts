@@ -147,28 +147,9 @@ export class Authentication {
      * ```
      */
     silentSignIn() {
-        return new Promise((resolve, reject) => {
-            try {
-                if (this.userManager && this.webAuthSettings) {
-
-                    this.userManager.signinSilent({
-                        state: this.webAuthSettings,
-                        silentRequestTimeoutInSeconds: 60
-                    }).then(function (user: any) {
-                        if (user) {
-                            resolve(user);
-                            return;
-                        }
-                        resolve(undefined);
-                    }).catch((ex) => {
-                        reject(ex);
-                    });
-                } else {
-                    throw "user manager or web auth settings is null";
-                }
-            } catch (ex) {
-                reject(ex);
-            }
+        return this.userManager.signinSilent({
+            state: this.webAuthSettings,
+            silentRequestTimeoutInSeconds: 60
         });
     };
 
@@ -180,27 +161,6 @@ export class Authentication {
      * ```
      */
     silentSignInCallback(callbackurl?: string) {
-        return new Promise((resolve, reject) => {
-            try {
-                if (this.userManager) {
-                    this.userManager.signinSilentCallback(callbackurl)
-                        .then(function (user: any) {
-                            if (user) {
-                                resolve(user);
-                                return;
-                            }
-                            resolve(undefined);
-                        })
-                        .catch((e) => {
-                            reject(e);
-                        });
-                } else {
-                    throw "user manager is null";
-                }
-            } catch (ex) {
-                reject(ex);
-            }
-        });
-
+        return this.userManager.signinSilentCallback(callbackurl);
     };
 }
