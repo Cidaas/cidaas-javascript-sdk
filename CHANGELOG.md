@@ -1,5 +1,14 @@
 # Changelog
 
+## V4.2.0
+#### Changed
+- loginWithBrowser now returning promise
+- registerWithBrowser now returning promise
+- popupSignIn now returning User object after popupSignInCallback is finished
+- popupSignInCallback now returning promise
+- popupSignOut now returning promise
+- popupSignOutCallback now returning promise
+
 ## V4.1.0
 
 ### Added
