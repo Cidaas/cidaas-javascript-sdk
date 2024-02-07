@@ -143,7 +143,7 @@ export class WebAuth {
    *   // the response will give you profile details.
    * }).catch(function(ex) {
    *   // your failure code here
-   * });; 
+   * });
    * ``` 
    */
   async getUserInfo() {
@@ -205,7 +205,7 @@ export class WebAuth {
    *   // the response will give you login url.
    * }).catch(function(ex) {
    *   // your failure code here
-   * });; 
+   * });
    * ``` 
    */
   getLoginURL(state?: SigninState) {
@@ -228,7 +228,7 @@ export class WebAuth {
    *   // the response will give you request id.
    * }).catch(function(ex) {
    *   // your failure code here
-   * });; 
+   * });
    * ``` 
    */
   getRequestId() {
@@ -254,7 +254,7 @@ export class WebAuth {
    *   // the response will give you tenant details
    * }).catch(function(ex) {
    *   // your failure code here
-   * });; 
+   * });
    * ``` 
    */
   getTenantInfo() {

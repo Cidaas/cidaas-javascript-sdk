@@ -202,7 +202,7 @@ describe('Webauth functions without module or services', () => {
 // Authentication Module
 describe('Authentication module functions', () => {
 	test('loginWithBrowser', () => {
-		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});;
+		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});
 		webAuth.loginWithBrowser();
 		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('login');
 	});
@@ -220,7 +220,7 @@ describe('Authentication module functions', () => {
 	});
 	
 	test('registerWithBrowser', () => {
-		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});;
+		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});
 		webAuth.registerWithBrowser();
 		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register');
 	});
