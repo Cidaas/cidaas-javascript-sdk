@@ -1,6 +1,6 @@
 # Changelog
 
-## V4.2.0
+## V4.x.x-SNAPSHOT
 #### Changed
 - loginWithBrowser now returning promise
 - registerWithBrowser now returning promise
