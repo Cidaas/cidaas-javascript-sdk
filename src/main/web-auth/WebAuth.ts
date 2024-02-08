@@ -53,7 +53,7 @@ export class WebAuth {
       window.usermanager = usermanager;
       window.localeSettings = null;
       window.authentication = new Authentication(window.webAuthSettings, window.usermanager);
-      window.usermanager.events.addSilentRenewError(function (error: any) {
+      window.usermanager.events.addSilentRenewError(function () {
         throw new CustomException("Error while renewing silent login", 500);
       });
     } catch (ex) {
