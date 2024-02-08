@@ -174,7 +174,7 @@ export namespace LoginService {
    */
   export function firstTimeChangePassword(options: IChangePasswordEntity) {
     try {
-      const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.loginSettingsId;;
+      const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.loginSettingsId;
       let form = Helper.createForm(url, options)
       document.body.appendChild(form);
       form.submit();
