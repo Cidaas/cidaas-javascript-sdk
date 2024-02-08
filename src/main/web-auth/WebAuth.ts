@@ -273,11 +273,7 @@ export class WebAuth {
    * ```
    */
   logoutUser(options: { access_token: string }) {
-    try {
-      window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
-    } catch (ex) {
-      throw new CustomException(ex, 417);
-    }
+    window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
   };
 
   /**
