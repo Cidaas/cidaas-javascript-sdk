@@ -555,11 +555,19 @@ describe('Token service functions', () => {
 		expect(loginPrecheckSpy).toHaveBeenCalledWith(options);
 	});
 
-	test('getMissingFields', () => {
+	test('getMissingFieldsFromDefaultProvider', () => {
 		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
 		const	trackId = '';
 		webAuth.getMissingFields(trackId);
 		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId);
+	});
+
+	test('getMissingFieldsFromSocialProvider', () => {
+		const trackId = '';
+		const useSocialProvider = {requestId: ''};
+		const serviceURL = `${authority}/public-srv/public/trackinfo/${useSocialProvider.requestId}/${trackId}`;
+		webAuth.getMissingFields(trackId, useSocialProvider);
+		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL,false, "GET");
 	});
 
 	test('initiateDeviceCode', () => {
