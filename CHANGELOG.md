@@ -1,7 +1,11 @@
 # Changelog
 
-## V4.x.x-SNAPSHOT
-#### Changed
+## V4.2.0
+
+### Added
+- add back functionality to get missing field from social provider in getMissingFields() function.
+
+### Changed
 - loginWithBrowser now returning promise
 - registerWithBrowser now returning promise
 - popupSignIn now returning User object after popupSignInCallback is finished

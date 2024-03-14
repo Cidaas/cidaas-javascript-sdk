@@ -857,11 +857,30 @@ export class WebAuth {
 
   /**
    * getMissingFields
-   * @param trackId 
-   * @returns 
+   * @param trackId - required. If only trackId is given, it will get missing fields from cidaas after succesfull registration using default provider
+   * @param useSocialProvider - optional. If given, it will get missing fields from social provider after successful registration using social provider
+   * 
+   * @example
+   * ```js
+   * const trackId = 'your track id'
+   * const useSocialProvider = {
+   *   requestId: 'request id from cidaas'
+   * };
+   * cidaas.getMissingFields(trackId, useSocialProvider).then(function (resp) {
+   *   // your success code
+   * }).catch(function(ex) {
+   *   // your failure code
+   * });
+   * ```
+   * 
    */
-  getMissingFields(trackId: string) {
-    return TokenService.getMissingFields(trackId);
+  getMissingFields(trackId: string, useSocialProvider?: {requestId: string}) {
+    if (useSocialProvider) {
+      const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + useSocialProvider.requestId + "/" + trackId;
+      return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
+    } else {
+      return TokenService.getMissingFields(trackId);
+    }
   };
 
   /**
