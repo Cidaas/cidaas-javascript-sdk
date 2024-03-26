@@ -33,7 +33,7 @@ export namespace UserService {
     }
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo";
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", options.access_token);
-  };
+  }
 
   /**
    * To register user, call **register()**. This method will create a new user.
@@ -75,7 +75,7 @@ export namespace UserService {
       _serviceURL = _serviceURL + "?invite_id=" + options.invite_id;
     }
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
-  };
+  }
 
   /**
    * to get information about invitation details, call **getInviteUserDetails()**. This API allows to retrieve invitation details and prefill the registration form.
@@ -103,7 +103,7 @@ export namespace UserService {
       _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
     }
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
-  };
+  }
 
   /**
    * Once registration successful, verify the account based on the flow. To get the details, call **getCommunicationStatus()**.
@@ -119,9 +119,9 @@ export namespace UserService {
    * ```
    */
   export function getCommunicationStatus(options: { sub: string }, headers?: {requestId: string }) {
-    let _serviceURL = window.webAuthSettings.authority + "/users-srv/user/communication/status/" + options.sub;
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/communication/status/" + options.sub;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
-  };
+  }
 
   /**
    * To initiate the password resetting, call **initiateResetPassword()**. This will send verification code to your email or mobile based on the resetMedium you mentioned.
@@ -141,9 +141,9 @@ export namespace UserService {
    * ```
    */
   export function initiateResetPassword(options: ResetPasswordEntity) {
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
-  };
+  }
 
   /**
    * To handle the reset password by entering the verification code you received, call **handleResetPassword()**. This will check if your verification code was valid or not, and allows you to proceed to the next step.
@@ -166,7 +166,7 @@ export namespace UserService {
       const url = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
       if (!handleResponseAsJson) {
         // current handling will redirect and give query parameters
-        let form = Helper.createForm(url, options)
+        const form = Helper.createForm(url, options)
         document.body.appendChild(form);
         form.submit();
       } else {
@@ -176,7 +176,7 @@ export namespace UserService {
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
    * To finish reseting the password, call **resetPassword()**. This will allow you to change your password.
@@ -201,7 +201,7 @@ export namespace UserService {
     try {
       if (!handleResponseAsJson) {
         // current handling will redirect and give query parameters
-        let form = Helper.createForm(url, options)
+        const form = Helper.createForm(url, options)
         document.body.appendChild(form);
         form.submit();
       } else {
@@ -211,7 +211,7 @@ export namespace UserService {
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
    * To get the list of existing users in deduplication, call **getDeduplicationDetails()**.
@@ -229,7 +229,7 @@ export namespace UserService {
   export function getDeduplicationDetails(options: { trackId: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
     return Helper.createHttpPromise(options, _serviceURL, false, "GET");
-  };
+  }
 
   /**
    * To use the existing users in deduplication, you need to call **deduplicationLogin()**.
@@ -251,7 +251,7 @@ export namespace UserService {
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
    * To register new user in deduplication, call **registerDeduplication()**.
@@ -269,7 +269,7 @@ export namespace UserService {
   export function registerDeduplication(options: { trackId: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST");
-  };
+  }
 
   /**
    * To change the password, call **changePassword()**. This will allow you to change your password.
@@ -290,9 +290,9 @@ export namespace UserService {
    * ```
    */
   export function changePassword(options: ChangePasswordEntity, access_token: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/changepassword";
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/changepassword";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
-  };
+  }
 
   /**
    * To update the user profile information, call **updateProfile()**.
@@ -314,7 +314,7 @@ export namespace UserService {
   export function updateProfile(options: UserEntity, access_token: string, sub: string) {
     const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
     return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
-  };
+  }
 
   /**
    * To initiate account linking, call **initiateLinkAccount()**.
@@ -335,9 +335,9 @@ export namespace UserService {
    */
   export function initiateLinkAccount(options: IUserLinkEntity, access_token: string) {
     options.user_name_type = 'email';
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/initiate";
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/initiate";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
-  };
+  }
 
   /**
    * To complete account linking, call **completeLinkAccount()**.
@@ -356,9 +356,9 @@ export namespace UserService {
    * ```
    */
   export function completeLinkAccount(options: { code?: string; link_request_id?: string; }, access_token: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
-  };
+  }
 
   /**
    * To get all the linked accounts, call **getLinkedUsers()**.
@@ -377,9 +377,9 @@ export namespace UserService {
    * ```
    */
   export function getLinkedUsers(access_token: string, sub: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo/social/" + sub;
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo/social/" + sub;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
-  };
+  }
 
   /**
    * To unlink an account for a user, call **unlinkAccount()**.
@@ -398,9 +398,9 @@ export namespace UserService {
    * ```
    */
   export function unlinkAccount(access_token: string, identityId: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unlink/" + identityId;
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unlink/" + identityId;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "POST", access_token);
-  };
+  }
 
   /**
    * To delete the user account directly in the application, call **deleteUserAccount()**.
@@ -420,9 +420,9 @@ export namespace UserService {
    * ```
    */
   export function deleteUserAccount(options: { access_token: string, sub: string }) {
-    var _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
+    const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", options.access_token);
-  };
+  }
 
 
   /**
@@ -453,7 +453,7 @@ export namespace UserService {
         queryParameter += 'rememberMe=' + options.rememberMe;
       }
     }
-    var _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + queryParameter;
+    const _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + queryParameter;
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-  };
+  }
 }

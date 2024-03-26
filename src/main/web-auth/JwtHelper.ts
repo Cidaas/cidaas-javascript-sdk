@@ -24,12 +24,12 @@ export class JwtHelper {
 			return null;
 		}
 
-		let parts = token.split('.');
+		const parts = token.split('.');
 		if (parts.length !== 3) {
 			throw new Error('The inspected token doesn\'t appear to be a JWT. Check to make sure it has three parts and see https://jwt.io for more.');
 		}
 
-		let decoded = this.urlBase64Decode(parts[1]);
+		const decoded = this.urlBase64Decode(parts[1]);
 		if (!decoded) {
 			throw new Error('Cannot decode the token.');
 		}
@@ -70,7 +70,7 @@ export class JwtHelper {
 
 	// credits for decoder goes to https://github.com/atk
 	static b64decode(str: any): any {
-		let chars =
+		const chars =
 				'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 			let output: string = '';
 	

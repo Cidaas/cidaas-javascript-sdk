@@ -48,9 +48,8 @@ export class WebAuth {
       if (settings.authority && settings.authority.charAt(settings.authority.length - 1) === '/' ) {
         settings.authority = settings.authority.slice(0, settings.authority.length - 1);
       }
-      var usermanager = new UserManager(settings);
       window.webAuthSettings = settings;
-      window.usermanager = usermanager;
+      window.usermanager = new UserManager(settings);
       window.localeSettings = null;
       window.authentication = new Authentication(window.webAuthSettings, window.usermanager);
       window.usermanager.events.addSilentRenewError(function () {
@@ -70,7 +69,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginOrRegisterWithBrowser('login');  
-  };
+  }
 
   /**
    * popupSignIn
@@ -80,7 +79,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignIn();
-  };
+  }
 
   /**
    * silentSignIn
@@ -90,7 +89,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.silentSignIn();
-  };
+  }
 
   /**
    * register
@@ -100,7 +99,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginOrRegisterWithBrowser('register');
-  };
+  }
 
   /**
    * login callback
@@ -111,7 +110,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginCallback();
-  };
+  }
 
   /**
    * popup signin callback
@@ -122,7 +121,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignInCallback();
-  };
+  }
 
   /**
    * silent signin callback
@@ -133,7 +132,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.silentSignInCallback();
-  };
+  }
 
   /**
    * To get the user profile information by using oidc-client-ts library, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
@@ -151,7 +150,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("UserManager cannot be empty", 417));
     }
     return await window.usermanager.getUser();
-  };
+  }
 
   /**
    * logout by using oidc-client-ts library
@@ -162,7 +161,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.logout();
-  };
+  }
 
   /**
    * popup signout
@@ -173,7 +172,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignOut();
-  };
+  }
 
   /**
    * logout callback
@@ -184,7 +183,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.logoutCallback();
-  };
+  }
 
   /**
    * popup signout callback
@@ -195,7 +194,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignOutCallback();
-  };  
+  }  
 
   /**
    * To get the generated login url, call **getLoginURL()**. This will call authz service and generate login url to be used.
@@ -211,14 +210,14 @@ export class WebAuth {
   getLoginURL(state?: SigninState) {
     return new Promise((resolve, reject) => {
       try {
-        window.usermanager._client.createSigninRequest({state:state}).then((signinRequest: SigninRequest) => {
+        (<any>window).usermanager._client.createSigninRequest({state:state}).then((signinRequest: SigninRequest) => {
           resolve(signinRequest.url);
         }); 
       } catch (e) {
         reject(e);
       }
     });
-  };
+  }
 
   /**
    * Each and every proccesses starts with requestId, it is an entry point to login or register. For getting the requestId, call **getRequestId()**.
@@ -244,7 +243,7 @@ export class WebAuth {
     };
     const serviceURL = window.webAuthSettings.authority + '/authz-srv/authrequest/authz/generate';
     return Helper.createHttpPromise(options, serviceURL, false, "POST");
-  };
+  }
 
   /**
    * To get the tenant basic information, call **getTenantInfo()**. This will return the basic tenant details such as tenant name and allowed login with types (Email, Mobile, Username).
@@ -260,7 +259,7 @@ export class WebAuth {
   getTenantInfo() {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
     return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
-  };
+  }
 
   /**
    * To logout the user by using cidaas internal api, call **logoutUser()**.
@@ -274,7 +273,7 @@ export class WebAuth {
    */
   logoutUser(options: { access_token: string }) {
     window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
-  };
+  }
 
   /**
    * To get the client basic information, call **getClientInfo()**. This will return the basic client details such as client name and its details.
@@ -293,7 +292,7 @@ export class WebAuth {
   getClientInfo(options: { requestId: string }) {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
     return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
-  };
+  }
 
   /**
    * To get all devices information associated to the client, call **getDevicesInfo()**
@@ -316,7 +315,7 @@ export class WebAuth {
       return Helper.createHttpPromise(options, _serviceURL,false, "GET", accessToken);
     }
     return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", accessToken);
-  };
+  }
 
   /**
    * To delete device associated to the client, call **deleteDevice()**
@@ -341,7 +340,7 @@ export class WebAuth {
       return Helper.createHttpPromise(options, _serviceURL,false, "DELETE", accessToken);
     }
     return Helper.createHttpPromise(undefined, _serviceURL,false, "DELETE", accessToken);
-  };
+  }
 
   /**
    * To handle registration, first you need the registration fields. To get the registration fields, call **getRegistrationSetup()**. This will return the fields that has to be needed while registration.
@@ -361,7 +360,7 @@ export class WebAuth {
   getRegistrationSetup(options: { acceptlanguage?: string; requestId: string }) {
     const serviceURL = window.webAuthSettings.authority + '/registration-setup-srv/public/list?acceptlanguage=' + options.acceptlanguage + '&requestId=' + options.requestId;
     return Helper.createHttpPromise(undefined, serviceURL, false, 'GET');
-  };
+  }
 
   /**
    * to generate device info, call **createDeviceInfo()**.
@@ -384,7 +383,7 @@ export class WebAuth {
       const serviceURL = window.webAuthSettings.authority + '/device-srv/deviceinfo';
       return Helper.createHttpPromise(options, serviceURL, false, 'POST');
     }
-  };
+  }
 
   /**
    * get the user profile information
@@ -393,7 +392,7 @@ export class WebAuth {
    */
   getUserProfile(options: { access_token: string }) {
     return UserService.getUserProfile(options);
-  };
+  }
 
   /**
    * renew token using refresh token
@@ -402,7 +401,7 @@ export class WebAuth {
    */
   renewToken(options: AccessTokenRequest) {
     return TokenService.renewToken(options);
-  };
+  }
 
   /**
    * get access token from code
@@ -411,7 +410,7 @@ export class WebAuth {
    */
   getAccessToken(options: AccessTokenRequest) {
     return TokenService.getAccessToken(options);
-  };
+  }
 
   /**
    * validate access token
@@ -420,7 +419,7 @@ export class WebAuth {
    */
   validateAccessToken(options: TokenIntrospectionEntity) {
     return TokenService.validateAccessToken(options);
-  };
+  }
 
   /**
    * login with username and password
@@ -428,7 +427,7 @@ export class WebAuth {
    */
   loginWithCredentials(options: LoginFormRequestEntity) {
     LoginService.loginWithCredentials(options);
-  };
+  }
 
   /**
    * login with social
@@ -437,7 +436,7 @@ export class WebAuth {
    */
   loginWithSocial(options: { provider: string; requestId: string; }, queryParams: { dc: string; device_fp: string }) {
     LoginService.loginWithSocial(options, queryParams)
-  };
+  }
 
   /**
    * register with social
@@ -446,7 +445,7 @@ export class WebAuth {
    */
   registerWithSocial(options: { provider: string; requestId: string; }, queryParams: { dc: string; device_fp: string }) {
     LoginService.registerWithSocial(options, queryParams)
-  };
+  }
 
   /**
    * register user
@@ -456,7 +455,7 @@ export class WebAuth {
    */
   register(options: UserEntity, headers: { requestId: string; captcha?: string; acceptlanguage?: string; bot_captcha_response?: string; trackId?: string; }) {
     return UserService.register(options, headers);
-  };
+  }
 
   /**
    * get invite info
@@ -465,7 +464,7 @@ export class WebAuth {
    */
   getInviteUserDetails(options: { invite_id: string, callLatestAPI?: boolean }) {
     return UserService.getInviteUserDetails(options);
-  };
+  }
 
   /**
    * get Communication status
@@ -474,7 +473,7 @@ export class WebAuth {
    */
   getCommunicationStatus(options: { sub: string }, headers: {requestId: string }) {
     return UserService.getCommunicationStatus(options, headers);
-  };
+  }
 
   /**
    * initiate verification
@@ -483,7 +482,7 @@ export class WebAuth {
    */
   initiateAccountVerification(options: AccountVerificationRequestEntity) {
     VerificationService.initiateAccountVerification(options);
-  };
+  }
 
   /**
    * verify account
@@ -492,7 +491,7 @@ export class WebAuth {
    */
   verifyAccount(options: { accvid: string; code: string; }) {
     return VerificationService.verifyAccount(options)
-  };
+  }
 
   /**
    * initiate reset password
@@ -501,7 +500,7 @@ export class WebAuth {
    */
   initiateResetPassword(options: ResetPasswordEntity) {
     return UserService.initiateResetPassword(options);
-  };
+  }
 
   /**
    * handle reset password
@@ -509,7 +508,7 @@ export class WebAuth {
    */
   handleResetPassword(options: ValidateResetPasswordEntity) {
     return UserService.handleResetPassword(options);
-  };
+  }
 
   /**
   * reset password
@@ -517,7 +516,7 @@ export class WebAuth {
   */
   resetPassword(options: AcceptResetPasswordEntity) {
     return UserService.resetPassword(options);
-  };
+  }
 
   /**
    * get mfa list
@@ -526,7 +525,7 @@ export class WebAuth {
    */
   getMFAList(options: IConfiguredListRequestEntity) {
     return VerificationService.getMFAList(options);
-  };
+  }
 
   /**
    * cancel mfa
@@ -535,7 +534,7 @@ export class WebAuth {
    */
   cancelMFA(options: { exchange_id: string; reason: string; type: string; }) {
     return VerificationService.cancelMFA(options);
-  };
+  }
 
   /** 
    * passwordless login
@@ -543,7 +542,7 @@ export class WebAuth {
    */
   passwordlessLogin(options: PhysicalVerificationLoginRequest) {
     LoginService.passwordlessLogin(options);
-  };
+  }
 
   /**
    * get user consent details
@@ -552,7 +551,7 @@ export class WebAuth {
    */
   getConsentDetails(options: { consent_id: string; consent_version_id: string; sub: string; }) {
     return ConsentService.getConsentDetails(options);
-  };
+  }
 
   /**
    * accept consent
@@ -561,7 +560,7 @@ export class WebAuth {
    */
   acceptConsent(options: IConsentAcceptEntity) {
     return ConsentService.acceptConsent(options);
-  };
+  }
 
   /**
    * get scope consent details
@@ -570,7 +569,7 @@ export class WebAuth {
    */
   loginPrecheck(options: { track_id: string; locale: string; }) {
     return TokenService.loginPrecheck(options);
-  };
+  }
 
   /**
    * get scope consent version details
@@ -579,7 +578,7 @@ export class WebAuth {
    */
   getConsentVersionDetails(options: { consentid: string; locale: string; access_token: string; }) {
     return ConsentService.getConsentVersionDetails(options);
-  };
+  }
 
   /**
    * accept scope Consent
@@ -588,7 +587,7 @@ export class WebAuth {
    */
   acceptScopeConsent(options: { client_id: string; sub: string; scopes: string[]; }) {
     return ConsentService.acceptScopeConsent(options);
-  };
+  }
 
   /**
    * accept claim Consent
@@ -597,7 +596,7 @@ export class WebAuth {
    */
   acceptClaimConsent(options: { client_id: string; sub: string; accepted_claims: string[]; }) {
     return ConsentService.acceptClaimConsent(options);
-  };
+  }
 
   /**
    * revoke claim Consent
@@ -606,7 +605,7 @@ export class WebAuth {
    */
   revokeClaimConsent(options: { client_id: string; sub: string; revoked_claims: string[]; }) {
     return ConsentService.revokeClaimConsent(options);
-  };
+  }
 
   /**
    * get Deduplication details
@@ -615,7 +614,7 @@ export class WebAuth {
    */
   getDeduplicationDetails(options: { trackId: string }) {
     return UserService.getDeduplicationDetails(options);
-  };
+  }
 
   /**
    * deduplication login
@@ -623,7 +622,7 @@ export class WebAuth {
    */
   deduplicationLogin(options: { trackId: string, requestId: string, sub: string }) {
     UserService.deduplicationLogin(options);
-  };
+  }
 
   /**
    * register Deduplication
@@ -632,7 +631,7 @@ export class WebAuth {
    */
   registerDeduplication(options: { trackId: string }) {
     return UserService.registerDeduplication(options);
-  };
+  }
 
   /**
    * accepts any as the request
@@ -648,7 +647,7 @@ export class WebAuth {
     track_id: string;
   }) {
     LoginService.consentContinue(options)
-  };
+  }
 
   /**
    * mfa continue login
@@ -656,7 +655,7 @@ export class WebAuth {
    */
   mfaContinue(options: PhysicalVerificationLoginRequest & { track_id: string }) {
     LoginService.mfaContinue(options);
-  };
+  }
 
   /**
    * change password continue
@@ -664,7 +663,7 @@ export class WebAuth {
    */
   firstTimeChangePassword(options: IChangePasswordEntity) {
     LoginService.firstTimeChangePassword(options);
-  };
+  }
 
   /**
    * change password
@@ -674,7 +673,7 @@ export class WebAuth {
    */
   changePassword(options: ChangePasswordEntity, access_token: string) {
     return UserService.changePassword(options, access_token);
-  };
+  }
 
 
   /**
@@ -686,7 +685,7 @@ export class WebAuth {
    */
   updateProfile(options: UserEntity, access_token: string, sub: string) {
     return UserService.updateProfile(options, access_token, sub);
-  };
+  }
 
   /**
    * To get user activities, call **getUserActivities()**.
@@ -719,7 +718,7 @@ export class WebAuth {
    */
   getAllVerificationList(access_token: string) {
     return VerificationService.getAllVerificationList(access_token);
-  };
+  }
 
   /**
    * initiate link accoount
@@ -729,7 +728,7 @@ export class WebAuth {
    */
   initiateLinkAccount(options: IUserLinkEntity, access_token: string) {
     return UserService.initiateLinkAccount(options, access_token);
-  };
+  }
 
   /**
    * complete link accoount
@@ -739,7 +738,7 @@ export class WebAuth {
    */
   completeLinkAccount(options: { code?: string; link_request_id?: string; }, access_token: string) {
     return UserService.completeLinkAccount(options, access_token);
-  };
+  }
 
   /**
    * get linked users
@@ -749,7 +748,7 @@ export class WebAuth {
    */
   getLinkedUsers(access_token: string, sub: string) {
     return UserService.getLinkedUsers(access_token, sub)
-  };
+  }
 
   /**
    * unlink accoount
@@ -759,7 +758,7 @@ export class WebAuth {
    */
   unlinkAccount(access_token: string, identityId: string) {
     return UserService.unlinkAccount(access_token, identityId);
-  };
+  }
 
    /**
    * To change profile image, call **updateProfileImage()**.
@@ -802,7 +801,7 @@ export class WebAuth {
 
     return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', access_token, null, formdata);
 
-  };
+  }
 
   /**
    * enrollVerification
@@ -817,7 +816,7 @@ export class WebAuth {
     }
   }, accessToken: string) {
     return VerificationService.initiateEnrollment(options, accessToken);
-  };
+  }
 
   /**
    * update the status of notification
@@ -826,7 +825,7 @@ export class WebAuth {
    */
   getEnrollmentStatus(status_id: string, accessToken: string) {
     return VerificationService.getEnrollmentStatus(status_id, accessToken);
-  };
+  }
 
   /**
    * enrollVerification
@@ -835,7 +834,7 @@ export class WebAuth {
    */
     enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
       return VerificationService.enrollVerification(options);
-    };
+    }
 
   /**
    * checkVerificationTypeConfigured
@@ -844,7 +843,7 @@ export class WebAuth {
    */
   checkVerificationTypeConfigured(options: IConfiguredListRequestEntity) {
     return VerificationService.checkVerificationTypeConfigured(options);
-  };
+  }
 
   /**
    * deleteUserAccount
@@ -853,7 +852,7 @@ export class WebAuth {
    */
   deleteUserAccount(options: { access_token: string, sub: string }) {
     return UserService.deleteUserAccount(options);
-  };
+  }
 
   /**
    * getMissingFields
@@ -881,7 +880,7 @@ export class WebAuth {
     } else {
       return TokenService.getMissingFields(trackId);
     }
-  };
+  }
 
   /**
    * progressiveRegistration
@@ -891,7 +890,7 @@ export class WebAuth {
    */
   progressiveRegistration(options: IUserEntity, headers: { requestId: string; trackId: string; acceptlanguage: string; }) {
     return LoginService.progressiveRegistration(options, headers);
-  };
+  }
 
   /**
    * device code flow - initiate
@@ -915,7 +914,7 @@ export class WebAuth {
    */
   userCheckExists(options: FindUserEntity) {
     return UserService.userCheckExists(options);
-  };
+  }
 
   /**
    * To set accept language
@@ -936,7 +935,7 @@ export class WebAuth {
       return VerificationService.initiateMFA(options, accessToken);
     } 
     return VerificationService.initiateMFA(options);
-  };
+  }
 
   /**
    * authenticate mfa
@@ -945,12 +944,12 @@ export class WebAuth {
    */
   authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
     return VerificationService.authenticateMFA(options);
-  };
+  }
 
   /**
    * offline token check
    */
   offlineTokenCheck(accessToken: string) {
     return TokenService.offlineTokenCheck(accessToken);
-  };
+  }
 }

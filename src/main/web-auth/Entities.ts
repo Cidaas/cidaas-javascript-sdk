@@ -401,8 +401,8 @@ export class UpdateReviewDeviceEntity {
 }
 
 export interface UserActivityEntity {
-  skip?: Number;
-  take?: Number;
+  skip?: number;
+  take?: number;
   sub?: string;
   startDate?: string;
   endDate?: string;

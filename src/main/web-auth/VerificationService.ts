@@ -28,13 +28,13 @@ export namespace VerificationService {
   export function initiateAccountVerification(options: AccountVerificationRequestEntity) {
     try {
       const url = window.webAuthSettings.authority + "/verification-srv/account/initiate";
-      let form = Helper.createForm(url, options)
+      const form = Helper.createForm(url, options)
       document.body.appendChild(form);
       form.submit();
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
    * To complete the verification, call **verifyAccount()**.
@@ -55,9 +55,9 @@ export namespace VerificationService {
     accvid: string;
     code: string;
   }) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
-  };
+  }
 
   /**
    * To get all configured multi factor authentication, call **getMFAList()**.
@@ -75,9 +75,9 @@ export namespace VerificationService {
    * ```
    */
   export function getMFAList(options: IConfiguredListRequestEntity) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
-  };
+  }
 
   /**
    * to cancel mfa process, call **cancelMFA()**. 
@@ -99,9 +99,9 @@ export namespace VerificationService {
     reason: string;
     type: string;
   }) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/cancel/" + options.type;
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/cancel/" + options.type;
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-  };
+  }
 
   /**
    * To get list of all verification type configured, call **getAllVerificationList()**. access_token must be passed as function parameter.
@@ -121,7 +121,7 @@ export namespace VerificationService {
   export function getAllVerificationList(access_token: string) {
     const _serviceURL = `${window.webAuthSettings.authority}/verification-srv/config/list`;
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", access_token);
-  };
+  }
 
   /**
    * To initiate enrollment of new multi factor authentication, call **initiateEnrollment()**.
@@ -156,9 +156,9 @@ export namespace VerificationService {
       }
     }
   }, accessToken: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/" + options.verification_type;
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/" + options.verification_type;
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", accessToken);
-  };
+  }
 
   /**
    * to get the status of MFA enrollment, call **getEnrollmentStatus()**.
@@ -175,9 +175,9 @@ export namespace VerificationService {
    * ```
   */
   export function getEnrollmentStatus(status_id: string, accessToken: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", accessToken);
-  };
+  }
 
   /**
    * to finish enrollment process of new multi factor authentication, call **enrollVerification()**.
@@ -203,9 +203,9 @@ export namespace VerificationService {
    * ```
    */
   export function enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-  };
+  }
 
   /**
    * to see details of configured verification type, call **checkVerificationTypeConfigured()**.
@@ -224,9 +224,9 @@ export namespace VerificationService {
    * ```
    */
   export function checkVerificationTypeConfigured(options: IConfiguredListRequestEntity) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-  };
+  }
 
   /**
    * to initiate multi factor auhentication, call **initiateMFA()**. 
@@ -252,13 +252,13 @@ export namespace VerificationService {
    * ```
    */
   export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken?: string) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
     // TODO: remove accessToken parameter in the next major release
     if (accessToken) {
       return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
     } 
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
-  };
+  }
 
   /**
    * to authenticate with multi factor auhentication, call **authenticateMFA()**. 
@@ -279,8 +279,8 @@ export namespace VerificationService {
    * ```
    */
   export function authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
-    var _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
+    const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-  };
+  }
 
 }

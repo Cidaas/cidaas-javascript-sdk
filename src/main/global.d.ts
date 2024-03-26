@@ -1,10 +1,14 @@
+import { UserManager, UserManagerSettings } from "oidc-client-ts";
+import { Authentication } from "./authentication";
+
 /**
  * all the global variables are declared in this file
  */
-
-interface Window {
-  webAuthSettings: any;
-  usermanager: any;
-  localeSettings: string;
-  authentication: any;
+declare global {
+  interface Window {
+    webAuthSettings: UserManagerSettings;
+    usermanager: UserManager;
+    localeSettings: string;
+    authentication: Authentication;
+  }
 }

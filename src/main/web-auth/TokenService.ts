@@ -30,7 +30,7 @@ export namespace TokenService {
     options.grant_type = 'refresh_token';
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-  };
+  }
 
   /**
    * To get a new token with the grant type authorization_code, call **getAccessToken()** with code to create a new token.
@@ -58,12 +58,12 @@ export namespace TokenService {
     options.redirect_uri = window.webAuthSettings.redirect_uri;
     options.grant_type = "authorization_code";
     if (!window.webAuthSettings.disablePKCE) {
-      var signInRequest = await window.usermanager._client.createSigninRequest(window.webAuthSettings);
+      const signInRequest = await (<any>window).usermanager._client.createSigninRequest(window.webAuthSettings);
       options.code_verifier = signInRequest.state?.code_verifier;
     }
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-  };
+  }
 
   /**
    * To validate an access token, call **validateAccessToken()**.
@@ -90,7 +90,7 @@ export namespace TokenService {
     }
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.token);
-  };
+  }
 
   /**
    * To get precheck result after login, call **loginPrecheck()**. If there is missing information, user will be redirected to either accepting consent, changing password, continuing MFA process, or do progressive registration
@@ -117,7 +117,7 @@ export namespace TokenService {
   }) {
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id + "?acceptLanguage=" + options.locale;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
-  };
+  }
 
   /**
    * To get the missing fields after login, call **getMissingFields()**.
@@ -137,7 +137,7 @@ export namespace TokenService {
   export function getMissingFields(trackId: string) {
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + trackId;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
-  };
+  }
 
   /**
    * To initiate device code, call **initiateDeviceCode()**.
@@ -175,13 +175,13 @@ export namespace TokenService {
    * ```
    */
   export function deviceCodeVerify(code: string) {
-    var params = `user_code=${encodeURI(code)}`;
-    var url = `${window.webAuthSettings.authority}/token-srv/device/verify?${params}`;
+    const params = `user_code=${encodeURI(code)}`;
+    const url = `${window.webAuthSettings.authority}/token-srv/device/verify?${params}`;
     try {
       const options = {
         user_code: encodeURI(code)
       }
-      let form = Helper.createForm(url, options, 'GET');
+      const form = Helper.createForm(url, options, 'GET');
       document.body.appendChild(form);
       form.submit();
     } catch (ex) {
@@ -197,7 +197,7 @@ export namespace TokenService {
    * ```
    */
   export function offlineTokenCheck(accessToken: string) {
-    let result = {
+    const result = {
       isExpiryDateValid: false,
       isScopesValid: false,
       isIssuerValid: false,

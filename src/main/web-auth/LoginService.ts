@@ -24,13 +24,13 @@ export namespace LoginService {
   export function loginWithCredentials(options: LoginFormRequestEntity) {
     try {
       const url = window.webAuthSettings.authority + "/login-srv/login";
-      let form = Helper.createForm(url, options)
+      const form = Helper.createForm(url, options)
       document.body.appendChild(form);
       form.submit();
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
    * To login with social providers, call **loginWithSocial()**. This will redirect you to the facebook login page.
@@ -48,7 +48,7 @@ export namespace LoginService {
     queryParams: { dc: string; device_fp: string }
   ) {
     try {
-      var _serviceURL = window.webAuthSettings.authority + "/login-srv/social/login/" + options.provider.toLowerCase() + "/" + options.requestId;
+      let _serviceURL = window.webAuthSettings.authority + "/login-srv/social/login/" + options.provider.toLowerCase() + "/" + options.requestId;
       if (queryParams && queryParams.dc && queryParams.device_fp) {
         _serviceURL = _serviceURL + "?dc=" + queryParams.dc + "&device_fp=" + queryParams.device_fp;
       }
@@ -56,7 +56,7 @@ export namespace LoginService {
     } catch (ex) {
       console.log(ex);
     }
-  };
+  }
 
   /**
    * To register with social providers, call **registerWithSocial()**. This will redirect you to the facebook login page.
@@ -77,7 +77,7 @@ export namespace LoginService {
     options: { provider: string; requestId: string; },
     queryParams: { dc: string; device_fp: string }) {
     try {
-      var _serviceURL = window.webAuthSettings.authority + "/login-srv/social/register/" + options.provider.toLowerCase() + "/" + options.requestId;
+      let _serviceURL = window.webAuthSettings.authority + "/login-srv/social/register/" + options.provider.toLowerCase() + "/" + options.requestId;
       if (queryParams && queryParams.dc && queryParams.device_fp) {
         _serviceURL = _serviceURL + "?dc=" + queryParams.dc + "&device_fp=" + queryParams.device_fp;
       }
@@ -85,7 +85,7 @@ export namespace LoginService {
     } catch (ex) {
       console.log(ex);
     }
-  };
+  }
 
   /** 
   * To authenticate without using password, call **passwordlessLogin()**.
@@ -103,13 +103,13 @@ export namespace LoginService {
   export function passwordlessLogin(options: PhysicalVerificationLoginRequest) {
     try {
       const url = window.webAuthSettings.authority + "/login-srv/verification/login";
-      let form = Helper.createForm(url, options)
+      const form = Helper.createForm(url, options)
       document.body.appendChild(form);
       form.submit();
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
   * To continue after Consent acceptance, call **consentContinue()**.
@@ -127,13 +127,13 @@ export namespace LoginService {
   export function consentContinue(options: {track_id: string}) {
     try {
       const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
-      let form = Helper.createForm(url, options)
+      const form = Helper.createForm(url, options)
       document.body.appendChild(form);
       form.submit();
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
    * To continue after MFA completion, call **mfaContinue()**.
@@ -150,13 +150,13 @@ export namespace LoginService {
   export function mfaContinue(options: PhysicalVerificationLoginRequest & { track_id: string }) {
     try {
       const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
-      let form = Helper.createForm(url, options)
+      const form = Helper.createForm(url, options)
       document.body.appendChild(form);
       form.submit();
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
    * to handle changing password by first login attempt after registration, call **firstTimeChangePassword()**.
@@ -175,13 +175,13 @@ export namespace LoginService {
   export function firstTimeChangePassword(options: IChangePasswordEntity) {
     try {
       const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.loginSettingsId;
-      let form = Helper.createForm(url, options)
+      const form = Helper.createForm(url, options)
       document.body.appendChild(form);
       form.submit();
     } catch (ex) {
       throw new CustomException(ex, 417);
     }
-  };
+  }
 
   /**
    * For progressive registration, call **progressiveRegistration()**. While logging in If the API returns 417 with the error message MissingRequiredFields, call the **getMissingFields** to get the list of missing fileds and proceed with progressive registration. In the sample request only the required fields are added, however you must provide the missing fields along with the required fields.
@@ -210,7 +210,7 @@ export namespace LoginService {
     trackId: string;
     acceptlanguage: string;
   }) {
-    var serviceURL = window.webAuthSettings.authority + "/login-srv/progressive/update/user";
+    const serviceURL = window.webAuthSettings.authority + "/login-srv/progressive/update/user";
     return Helper.createHttpPromise(options, serviceURL, undefined, "POST", undefined, headers);
-  };
+  }
 }

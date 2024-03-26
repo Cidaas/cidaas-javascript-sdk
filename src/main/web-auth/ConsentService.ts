@@ -29,9 +29,9 @@ export namespace ConsentService {
     consent_version_id: string;
     sub: string;
   }) {
-    var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
+    const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
-  };
+  }
 
   /**
    * To accept consent, call **acceptConsent()**.
@@ -50,9 +50,9 @@ export namespace ConsentService {
    * ```
    */
   export function acceptConsent(options: IConsentAcceptEntity) {
-    var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
+    const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
-  };
+  }
 
   /**
    * To get version details of consent, call **getConsentVersionDetails()**.
@@ -77,7 +77,7 @@ export namespace ConsentService {
   }) {
     const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.consentid + "?locale=" + options.locale;
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", options.access_token);
-  };
+  }
 
   /**
    * To accept scope consent, call **acceptScopeConsent()**.
@@ -95,9 +95,9 @@ export namespace ConsentService {
     sub: string;
     scopes: string[];
   }) {
-    var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
+    const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
-  };
+  }
 
   /**
    * To accept claim consent, call **acceptClaimConsent()**.
@@ -111,9 +111,9 @@ export namespace ConsentService {
    * ```
    */
   export function acceptClaimConsent(options: { client_id: string; sub: string; accepted_claims: string[]; }) {
-    var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
+    const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST");
-  };
+  }
 
   /**
    * To revoke claim consent, call **revokeClaimConsent()**.
@@ -133,7 +133,7 @@ export namespace ConsentService {
    * ```
    */
   export function revokeClaimConsent(options: { access_token?: string; client_id: string; sub: string; revoked_claims: string[]; }) {
-    var _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
+    const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.access_token);
-  };
+  }
 }

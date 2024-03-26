@@ -32,7 +32,7 @@ export class Authentication {
             extraQueryParams: this.webAuthSettings.extraQueryParams,
             redirect_uri: this.webAuthSettings.redirect_uri
         });
-    };
+    }
 
     /**
      * Once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
@@ -74,7 +74,7 @@ export class Authentication {
      */
     logoutCallback() {
         return this.userManager.signoutRedirectCallback();
-    };
+    }
 
     /**
      * **popupSignIn()** will open the hosted login page in pop up window.
@@ -89,7 +89,7 @@ export class Authentication {
      */
     popupSignIn() {
         return this.userManager.signinPopup();
-    };
+    }
 
     /**
      * To complete the popup login process, call **popupSignInCallback()** from the popup login window. 
@@ -101,7 +101,7 @@ export class Authentication {
      */
     popupSignInCallback() {
         return this.userManager.signinPopupCallback();
-    };
+    }
 
     /**
      * **popupSignOut()** will open the hosted logout page in pop up window.
@@ -116,7 +116,7 @@ export class Authentication {
      */
     popupSignOut() {
         return this.userManager.signoutPopup({ state: this.webAuthSettings });
-    };
+    }
 
     /**
      * calling **popupSignOutCallback()** from the popup window complete popup logout process. 
@@ -132,7 +132,7 @@ export class Authentication {
      */
     popupSignOutCallback() {
         return this.userManager.signoutPopupCallback(this.webAuthSettings.post_logout_redirect_uri, true);
-    };
+    }
 
     /**
      * **silentSignIn()** will open the hosted login page in an iframe. 
@@ -151,7 +151,7 @@ export class Authentication {
             state: this.webAuthSettings,
             silentRequestTimeoutInSeconds: 60
         });
-    };
+    }
 
     /**
      * To complete the silent login process, call **silentSignInCallback()** from the iframe. This will complete the login process in iframe.
@@ -162,5 +162,5 @@ export class Authentication {
      */
     silentSignInCallback(callbackurl?: string) {
         return this.userManager.signinSilentCallback(callbackurl);
-    };
+    }
 }
