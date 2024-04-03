@@ -1,5 +1,3 @@
-import { UserManagerSettings } from "oidc-client-ts";
-
 export interface AcceptResetPasswordEntity {
   resetRequestId: string ;
   exchangeId: string;

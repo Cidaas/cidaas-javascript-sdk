@@ -1,6 +1,6 @@
-import { LoginService } from '../../src/main/web-auth/LoginService';
+import * as LoginService from '../../src/main/web-auth/LoginService';
 import { Helper } from "../../src/main/web-auth/Helper";
-import { IChangePasswordEntity, IConsentContinue, IUserEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
+import { IChangePasswordEntity, IUserEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;
@@ -74,10 +74,10 @@ test('passwordlessLogin', () => {
 test('consentContinue', () => {
   const option = {
     client_id: 'client_id',
-    consent_refs: [],
+    consent_refs: [''],
     sub: 'sub',
-    scopes: [],
-    matcher: null,
+    scopes: [''],
+    matcher: '',
     track_id: 'track_id',
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;

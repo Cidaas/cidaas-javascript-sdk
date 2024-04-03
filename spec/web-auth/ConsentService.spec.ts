@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { ConsentService } from '../../src/main/web-auth/ConsentService';
+import * as ConsentService from '../../src/main/web-auth/ConsentService';
 import { Helper } from '../../src/main/web-auth/Helper';
 import { IConsentAcceptEntity } from '../../src/main/web-auth/Entities';
 

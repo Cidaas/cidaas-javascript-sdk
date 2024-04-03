@@ -1,6 +1,6 @@
 import { AccessTokenRequest, TokenIntrospectionEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/web-auth/Helper';
-import { TokenService } from '../../src/main/web-auth/TokenService';
+import * as TokenService from '../../src/main/web-auth/TokenService';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/token-srv`;

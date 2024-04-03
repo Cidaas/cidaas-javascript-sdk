@@ -58,10 +58,10 @@ export class JwtHelper {
 		return this.b64DecodeUnicode(output);
 	}
 	
-	static b64DecodeUnicode(str: any): string {
+	static b64DecodeUnicode(str: string): string {
 		return decodeURIComponent(
 			Array.prototype.map
-				.call(this.b64decode(str), (c: any) => {
+				.call(this.b64decode(str), (c: string) => {
 					return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
 				})
 				.join('')
@@ -69,7 +69,7 @@ export class JwtHelper {
 	}
 
 	// credits for decoder goes to https://github.com/atk
-	static b64decode(str: any): any {
+	static b64decode(str: string): string {
 		const chars =
 				'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 			let output: string = '';
@@ -84,12 +84,12 @@ export class JwtHelper {
 	
 			for (
 				// initialize result and counters
-				let bc = 0, bs: any, buffer: any, idx = 0;
+				let bc = 0, bs: number, bufferAsNumber: number, bufferAsString: string, idx = 0;
 				// get next character
-				(buffer = str.charAt(idx++));
+				(bufferAsString = str.charAt(idx++));
 				// character found in table? initialize bit storage and add its ascii value;
-				~buffer &&
-					((bs = bc % 4 ? bs * 64 + buffer : buffer),
+				~bufferAsNumber &&
+					((bs = bc % 4 ? bs * 64 + bufferAsNumber : bufferAsNumber),
 						// and if not first of each 4 characters,
 						// convert the first 8 bits to one ascii character
 						bc++ % 4)
@@ -97,7 +97,7 @@ export class JwtHelper {
 					: 0
 			) {
 				// try to find character in table (0-63, not found => -1)
-				buffer = chars.indexOf(buffer);
+				bufferAsNumber = chars.indexOf(bufferAsString);
 			}
 			return output;
 	}

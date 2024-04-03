@@ -1,12 +1,12 @@
-import { SigninRequest, SigninState, UserManager, UserManagerSettings } from "oidc-client-ts";
+import { OidcClient, SigninRequest, SigninState, UserManager, UserManagerSettings } from "oidc-client-ts";
 
 import { Authentication } from "../authentication";
 import { Helper, CustomException } from "./Helper";
-import { LoginService } from "./LoginService";
-import { UserService } from "./UserService";
-import { TokenService } from "./TokenService";
-import { VerificationService } from "./VerificationService";
-import { ConsentService } from "./ConsentService";
+import * as LoginService from "./LoginService";
+import * as UserService from "./UserService";
+import * as TokenService from "./TokenService";
+import * as VerificationService from "./VerificationService";
+import * as ConsentService from "./ConsentService";
 
 import {
   AccessTokenRequest,
@@ -50,6 +50,7 @@ export class WebAuth {
       }
       window.webAuthSettings = settings;
       window.usermanager = new UserManager(settings);
+      window.oidcClient = new OidcClient(settings);
       window.localeSettings = null;
       window.authentication = new Authentication(window.webAuthSettings, window.usermanager);
       window.usermanager.events.addSilentRenewError(function () {
@@ -209,13 +210,11 @@ export class WebAuth {
    */
   getLoginURL(state?: SigninState) {
     return new Promise((resolve, reject) => {
-      try {
-        (<any>window).usermanager._client.createSigninRequest({state:state}).then((signinRequest: SigninRequest) => {
-          resolve(signinRequest.url);
-        }); 
-      } catch (e) {
+      window.oidcClient.createSigninRequest({state:state}).then((signinRequest: SigninRequest) => {
+        resolve(signinRequest.url);
+      }).catch((e) => {
         reject(e);
-      }
+      });
     });
   }
 
@@ -777,7 +776,7 @@ export class WebAuth {
    * });
    * ```
    */
-  updateProfileImage(options: { image_key: string, photo: any; filename: string }, access_token: string) {
+  updateProfileImage(options: { image_key: string, photo: Blob; filename: string }, access_token: string) {
     const serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
 
     const form = document.createElement('form');

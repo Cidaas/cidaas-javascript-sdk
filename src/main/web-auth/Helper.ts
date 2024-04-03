@@ -10,7 +10,7 @@ export class Helper {
     form.action = url;
     form.method = method;
     for (const key in options) {
-      if (options.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(options, key)) {
         const hiddenField = document.createElement("input");
         hiddenField.setAttribute("type", "hidden");
         hiddenField.setAttribute("name", key);
@@ -49,7 +49,7 @@ export class Helper {
         }
         if (headers) {
           for (const key in headers) {
-            if (headers.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(headers, key)) {
               http.setRequestHeader(key, headers[key]);
             }
           }
@@ -57,7 +57,7 @@ export class Helper {
         if (access_token) {
           http.setRequestHeader("Authorization", `Bearer ${access_token}`);
         }
-        let acceptlanguage;
+        let acceptlanguage: string;
         if (headers?.acceptlanguage) {
           acceptlanguage = headers.acceptlanguage
         } else if (options?.acceptlanguage) {

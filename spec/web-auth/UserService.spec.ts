@@ -1,6 +1,6 @@
 import { AcceptResetPasswordEntity, ChangePasswordEntity, FindUserEntity, IUserLinkEntity, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/web-auth/Helper';
-import { UserService } from '../../src/main/web-auth/UserService';
+import * as UserService from '../../src/main/web-auth/UserService';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
@@ -175,7 +175,6 @@ test('changePassword', () => {
     old_password: 'old_password',
     new_password: 'new_password',
     confirm_password: 'confirm_password',
-    accessToken: 'accessToken'
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/changepassword`;

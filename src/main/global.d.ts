@@ -1,4 +1,4 @@
-import { UserManager, UserManagerSettings } from "oidc-client-ts";
+import { OidcClient, UserManager, UserManagerSettings } from "oidc-client-ts";
 import { Authentication } from "./authentication";
 
 /**
@@ -8,6 +8,7 @@ declare global {
   interface Window {
     webAuthSettings: UserManagerSettings;
     usermanager: UserManager;
+    oidcClient: OidcClient;
     localeSettings: string;
     authentication: Authentication;
   }
