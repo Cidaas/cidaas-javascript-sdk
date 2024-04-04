@@ -638,11 +638,6 @@ describe('Login service functions', () => {
 	test('consentContinue', () => {
 		const consentContinueSpy = jest.spyOn(LoginService, 'consentContinue').mockImplementation();
 		const options = {
-			client_id: '',
-			consent_refs: [''],
-			sub: '',
-			scopes: [''],
-			matcher: '',
 			track_id: ''
 		};
 		webAuth.consentContinue(options);

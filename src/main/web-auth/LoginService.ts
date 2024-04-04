@@ -114,11 +114,7 @@ export function passwordlessLogin(options: PhysicalVerificationLoginRequest) {
 * @example
 * ```js
 * cidaas.consentContinue({
-*   name: 'your consent name',
-*   version: 'your consent version',
-*   client_id: 'your client id',
-*   track_id: 'your track id', 
-*   sub: 'your sub'
+*   track_id: 'your track id'
 * });
 * ```
 */

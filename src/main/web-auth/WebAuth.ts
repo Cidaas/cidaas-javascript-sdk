@@ -633,16 +633,10 @@ export class WebAuth {
   }
 
   /**
-   * accepts any as the request
    * consent continue login
    * @param options 
    */
   consentContinue(options: {
-    client_id: string;
-    consent_refs: string[];
-    sub: string;
-    scopes: string[];
-    matcher: any;
     track_id: string;
   }) {
     LoginService.consentContinue(options)

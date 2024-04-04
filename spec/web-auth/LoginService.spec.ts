@@ -73,12 +73,7 @@ test('passwordlessLogin', () => {
 
 test('consentContinue', () => {
   const option = {
-    client_id: 'client_id',
-    consent_refs: [''],
-    sub: 'sub',
-    scopes: [''],
-    matcher: '',
-    track_id: 'track_id',
+    track_id: 'track_id'
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
   LoginService.consentContinue(option);
