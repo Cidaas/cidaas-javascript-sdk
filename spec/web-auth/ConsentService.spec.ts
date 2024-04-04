@@ -9,7 +9,7 @@ const serviceBaseUrlV1: string = `${authority}/consent-management-srv/consent`;
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
 beforeAll(() => {
-  (window as any).webAuthSettings = { authority: authority }
+  window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
 });
 
 test('getConsentDetails', () => {
@@ -19,7 +19,7 @@ test('getConsentDetails', () => {
     sub: 'sub'
   };
   const serviceURL = `${serviceBaseUrl}/usage/public/info`;
-  ConsentService.getConsentDetails(option);
+  void ConsentService.getConsentDetails(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
@@ -42,7 +42,7 @@ test('acceptConsent', () => {
     revoked: false
   };
   const serviceURL = `${serviceBaseUrl}/usage/accept`;
-  ConsentService.acceptConsent(option);
+  void ConsentService.acceptConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
@@ -53,7 +53,7 @@ test('getConsentVersionDetails', () => {
     access_token: 'access_token'
   };
   const serviceURL = `${serviceBaseUrl}/versions/details/${option.consentid}?locale=${option.locale}`;
-  ConsentService.getConsentVersionDetails(option);
+  void ConsentService.getConsentVersionDetails(option);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', option.access_token);
 });
 
@@ -64,7 +64,7 @@ test('acceptScopeConsent', () => {
     scopes: ['scopes']
   };
   const serviceURL = `${serviceBaseUrlV1}/scope/accept`;
-  ConsentService.acceptScopeConsent(option);
+  void ConsentService.acceptScopeConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
@@ -75,7 +75,7 @@ test('acceptClaimConsent', () => {
     accepted_claims: ['accepted_claims']
   };
   const serviceURL = `${serviceBaseUrlV1}/claim/accept`;
-  ConsentService.acceptClaimConsent(option);
+  void ConsentService.acceptClaimConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
@@ -87,6 +87,6 @@ test('revokeClaimConsent', () => {
     revoked_claims: ['revoked_claims']
   };
   const serviceURL = `${serviceBaseUrlV1}/claim/revoke`;
-  ConsentService.revokeClaimConsent(option);
+  void ConsentService.revokeClaimConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', option.access_token);
 });

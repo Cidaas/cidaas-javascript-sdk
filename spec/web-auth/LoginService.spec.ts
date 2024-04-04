@@ -9,7 +9,7 @@ const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplem
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
 beforeAll(() => {
-  (window as any).webAuthSettings = { authority: authority }
+  window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
 });
 
 test('loginWithCredentials', () => {
@@ -149,6 +149,6 @@ test('progressiveRegistration', () => {
     acceptlanguage: 'acceptlanguage'
   }
   const serviceURL = `${serviceBaseUrl}/progressive/update/user`;
-  LoginService.progressiveRegistration(options, headers);
+  void LoginService.progressiveRegistration(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', undefined, headers);
 });

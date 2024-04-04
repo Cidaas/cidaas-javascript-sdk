@@ -208,10 +208,10 @@ export class WebAuth {
    * });
    * ``` 
    */
-  getLoginURL(state?: SigninState) {
+  getLoginURL(state?: SigninState): Promise<string> {
     return new Promise((resolve, reject) => {
       window.oidcClient.createSigninRequest({state:state}).then((signinRequest: SigninRequest) => {
-        resolve(signinRequest.url);
+        resolve(signinRequest?.url);
       }).catch((e) => {
         reject(e);
       });

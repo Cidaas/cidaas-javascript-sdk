@@ -51,14 +51,14 @@ describe('Webauth functions without module or services', () => {
 
 	test('getUserInfo', () => {
 		const getUserSpy = jest.spyOn(window.usermanager, 'getUser');
-		webAuth.getUserInfo();
+		void webAuth.getUserInfo();
 		expect(getUserSpy).toHaveBeenCalled();
 	});
 	
 	test('getLoginURL', () => {
-		const createSigninRequestSpy = jest.spyOn((window as any).oidcClient, 'createSigninRequest').mockResolvedValue({});
-		webAuth.getLoginURL();
-		expect(createSigninRequestSpy).toHaveBeenCalled;
+		const createSigninRequestSpy = jest.spyOn(window.oidcClient, 'createSigninRequest').mockResolvedValue(null);
+		void webAuth.getLoginURL();
+		expect(createSigninRequestSpy).toHaveBeenCalled();
 	});
 	
 	test('getRequestId', () => {
@@ -73,14 +73,14 @@ describe('Webauth functions without module or services', () => {
 			"nonce": mockDate.getTime().toString()
 		};
 		const serviceURL = `${authority}/authz-srv/authrequest/authz/generate`;
-		webAuth.getRequestId();
+		void webAuth.getRequestId();
 		jest.useRealTimers();
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
 	});
 	
 	test('getTenantInfo', () => {
 		const serviceURL = `${authority}/public-srv/tenantinfo/basic`;
-		webAuth.getTenantInfo();
+		void webAuth.getTenantInfo();
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 	});
 	
@@ -103,7 +103,7 @@ describe('Webauth functions without module or services', () => {
 			requestId: 'requestId'
 		};
 		const serviceURL = `${authority}/public-srv/public/${options.requestId}`;
-		webAuth.getClientInfo(options);
+		void webAuth.getClientInfo(options);
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 	});
 	
@@ -111,7 +111,7 @@ describe('Webauth functions without module or services', () => {
 		const options = {};
 		const acccessToken = 'accessToken';
 		const serviceURL = `${authority}/device-srv/devices`;
-		webAuth.getDevicesInfo(options, acccessToken);
+		void webAuth.getDevicesInfo(options, acccessToken);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'GET', acccessToken);
 	});
 	
@@ -121,7 +121,7 @@ describe('Webauth functions without module or services', () => {
 		};
 		const acccessToken = 'accessToken';
 		const serviceURL = `${authority}/device-srv/device/${options.device_id}`;
-		webAuth.deleteDevice(options, acccessToken);
+		void webAuth.deleteDevice(options, acccessToken);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'DELETE', acccessToken);
 	});
 	
@@ -131,7 +131,7 @@ describe('Webauth functions without module or services', () => {
 			requestId: 'requestId'
 		};
 		const serviceURL = `${authority}/registration-setup-srv/public/list?acceptlanguage=${options.acceptlanguage}&requestId=${options.requestId}`;
-		webAuth.getRegistrationSetup(options);
+		void webAuth.getRegistrationSetup(options);
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 	});
 	
@@ -140,7 +140,7 @@ describe('Webauth functions without module or services', () => {
 			userAgent: window.navigator.userAgent
 		};
 		const serviceURL = `${authority}/device-srv/deviceinfo`;
-		webAuth.createDeviceInfo();
+		void webAuth.createDeviceInfo();
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
 	});
 
@@ -154,7 +154,7 @@ describe('Webauth functions without module or services', () => {
 		};
 		const accessToken = '';
 		const serviceURL = `${authority}/activity-streams-srv/user-activities`;
-		webAuth.getUserActivities(options, accessToken);
+		void webAuth.getUserActivities(options, accessToken);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 	});
 	
@@ -183,7 +183,7 @@ describe('Webauth functions without module or services', () => {
 		formdata.set('image_key', options.image_key);
 		formdata.set('photo', options.photo, options.filename);
 	
-		webAuth.updateProfileImage(options, accessToken);
+		void webAuth.updateProfileImage(options, accessToken);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', accessToken, null, formdata);
 	});
 	
@@ -198,67 +198,67 @@ describe('Webauth functions without module or services', () => {
 describe('Authentication module functions', () => {
 	test('loginWithBrowser', () => {
 		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
-		webAuth.loginWithBrowser();
+		void webAuth.loginWithBrowser();
 		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('login');
 	});
 	
 	test('popupSignIn', () => {
 		const popupSignInSpy = jest.spyOn(window.authentication, 'popupSignIn').mockImplementation();
-		webAuth.popupSignIn();
+		void webAuth.popupSignIn();
 		expect(popupSignInSpy).toHaveBeenCalled();
 	});
 	
 	test('silentSignIn', () => {
 		const silentSignInSpy = jest.spyOn(window.authentication, 'silentSignIn').mockResolvedValue(null);
-		webAuth.silentSignIn();
+		void webAuth.silentSignIn();
 		expect(silentSignInSpy).toHaveBeenCalled();
 	});
 	
 	test('registerWithBrowser', () => {
 		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
-		webAuth.registerWithBrowser();
+		void webAuth.registerWithBrowser();
 		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register');
 	});
 	
 	test('loginCallback', () => {
 		const loginCallbackSpy = jest.spyOn(window.authentication, 'loginCallback').mockResolvedValue(null);
-		webAuth.loginCallback();
+		void webAuth.loginCallback();
 		expect(loginCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignInCallback', () => {
 		const popupSignInCallbackSpy = jest.spyOn(window.authentication, 'popupSignInCallback').mockResolvedValue(null);
-		webAuth.popupSignInCallback();
+		void webAuth.popupSignInCallback();
 		expect(popupSignInCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('silentSignInCallback', () => {
 		const silentSignInCallbackSpy = jest.spyOn(window.authentication, 'silentSignInCallback').mockResolvedValue(null);
-		webAuth.silentSignInCallback();
+		void webAuth.silentSignInCallback();
 		expect(silentSignInCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('logout', () => {
 		const logoutSpy = jest.spyOn(window.authentication, 'logout').mockResolvedValue(null);
-		webAuth.logout();
+		void webAuth.logout();
 		expect(logoutSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignOut', () => {
 		const popupSignOutSpy = jest.spyOn(window.authentication, 'popupSignOut').mockImplementation();
-		webAuth.popupSignOut();
+		void webAuth.popupSignOut();
 		expect(popupSignOutSpy).toHaveBeenCalled();
 	});
 	
 	test('logoutCallback', () => {
 		const logoutCallbackSpy = jest.spyOn(window.authentication, 'logoutCallback').mockResolvedValue(null);
-		webAuth.logoutCallback();
+		void webAuth.logoutCallback();
 		expect(logoutCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignOutCallback', () => {
 		const popupSignOutCallbackSpy = jest.spyOn(window.authentication, 'popupSignOutCallback').mockImplementation();
-		webAuth.popupSignOutCallback();
+		void webAuth.popupSignOutCallback();
 		expect(popupSignOutCallbackSpy).toHaveBeenCalled();
 	});
 
@@ -271,7 +271,7 @@ describe('User service functions', () => {
 		const options = {
 			access_token: ''
 		}
-		webAuth.getUserProfile(options);
+		void webAuth.getUserProfile(options);
 		expect(getUserProfileSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -287,7 +287,7 @@ describe('User service functions', () => {
 		const headers = {
 			requestId: ''
 		}
-		webAuth.register(options, headers);
+		void webAuth.register(options, headers);
 		expect(registerSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
@@ -297,7 +297,7 @@ describe('User service functions', () => {
 			invite_id: '',
 			callLatestAPI: true
 		};
-		webAuth.getInviteUserDetails(options);
+		void webAuth.getInviteUserDetails(options);
 		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);
 	});
 
@@ -306,7 +306,7 @@ describe('User service functions', () => {
 		const options = {
 			invite_id: '',
 		};
-		webAuth.getInviteUserDetails(options);
+		void webAuth.getInviteUserDetails(options);
 		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -318,7 +318,7 @@ describe('User service functions', () => {
 		const headers = {
 			requestId: ''
 		}
-		webAuth.getCommunicationStatus(options, headers);
+		void webAuth.getCommunicationStatus(options, headers);
 		expect(getCommunicationStatusSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
@@ -330,7 +330,7 @@ describe('User service functions', () => {
 			processingType: 'CODE',
 			requestId: ''
 		};
-		webAuth.initiateResetPassword(options);
+		void webAuth.initiateResetPassword(options);
 		expect(initiateResetPasswordSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -340,7 +340,7 @@ describe('User service functions', () => {
 			resetRequestId: '',
 			code: ''
 		};
-		webAuth.handleResetPassword(options);
+		void webAuth.handleResetPassword(options);
 		expect(handleResetPasswordSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -352,7 +352,7 @@ describe('User service functions', () => {
 			password: '',
 			confirmPassword: ''
 		};
-		webAuth.resetPassword(options);
+		void webAuth.resetPassword(options);
 		expect(resetPasswordSpy).toHaveBeenCalledWith(options);
 	});
 
@@ -361,7 +361,7 @@ describe('User service functions', () => {
 		const options = {
 			trackId: ''
 		};
-		webAuth.getDeduplicationDetails(options);
+		void webAuth.getDeduplicationDetails(options);
 		expect(getDeduplicationDetailsSpy).toHaveBeenCalledWith(options);
 	});
 
@@ -381,7 +381,7 @@ describe('User service functions', () => {
 		const options = {
 			trackId: ''
 		};
-		webAuth.registerDeduplication(options);
+		void webAuth.registerDeduplication(options);
 		expect(registerDeduplicationSpy).toHaveBeenCalledWith(options);
 	});
 
@@ -395,7 +395,7 @@ describe('User service functions', () => {
 			confirm_password: '',
 		};
 		const accessToken = '';
-		webAuth.changePassword(options, accessToken);
+		void webAuth.changePassword(options, accessToken);
 		expect(changePasswordSpy).toHaveBeenCalledWith(options, accessToken);
 	});
 
@@ -410,7 +410,7 @@ describe('User service functions', () => {
 		};
 		const accessToken = '';
 		const sub = '';
-		webAuth.updateProfile(options, accessToken, sub);
+		void webAuth.updateProfile(options, accessToken, sub);
 		expect(updateProfileSpy).toHaveBeenCalledWith(options, accessToken, sub);
 	});
 
@@ -429,7 +429,7 @@ describe('User service functions', () => {
 			status: ''
 		};
 		const accessToken = '';
-		webAuth.initiateLinkAccount(options, accessToken);
+		void webAuth.initiateLinkAccount(options, accessToken);
 		expect(initiateLinkAccountSpy).toHaveBeenCalledWith(options, accessToken);
 	});
 
@@ -437,7 +437,7 @@ describe('User service functions', () => {
 		const completeLinkAccountSpy = jest.spyOn(UserService, 'completeLinkAccount').mockImplementation();
 		const options = {};
 		const accessToken = '';
-		webAuth.completeLinkAccount(options, accessToken);
+		void webAuth.completeLinkAccount(options, accessToken);
 		expect(completeLinkAccountSpy).toHaveBeenCalledWith(options, accessToken);
 	});
 
@@ -445,7 +445,7 @@ describe('User service functions', () => {
 		const getLinkedUsersSpy = jest.spyOn(UserService, 'getLinkedUsers').mockImplementation();
 		const accessToken = '';
 		const sub = '';
-		webAuth.getLinkedUsers(accessToken, sub);
+		void webAuth.getLinkedUsers(accessToken, sub);
 		expect(getLinkedUsersSpy).toHaveBeenCalledWith(accessToken, sub);
 	});
 
@@ -453,7 +453,7 @@ describe('User service functions', () => {
 		const unlinkAccountSpy = jest.spyOn(UserService, 'unlinkAccount').mockImplementation();
 		const accessToken = '';
 		const identityId = '';
-		webAuth.unlinkAccount(accessToken, identityId);
+		void webAuth.unlinkAccount(accessToken, identityId);
 		expect(unlinkAccountSpy).toHaveBeenCalledWith(accessToken, identityId);
 	});
 
@@ -463,7 +463,7 @@ describe('User service functions', () => {
 			access_token: '',
 			sub: ''
 		};
-		webAuth.deleteUserAccount(options);
+		void webAuth.deleteUserAccount(options);
 		expect(deleteUserAccountSpy).toHaveBeenCalledWith(options);
 	});
 
@@ -482,7 +482,7 @@ describe('User service functions', () => {
 			sub_not: '',
 			requestId: ''
 		};
-		webAuth.userCheckExists(options);
+		void webAuth.userCheckExists(options);
 		expect(userCheckExistsSpy).toHaveBeenCalledWith(options);
 	});
 
@@ -504,7 +504,7 @@ describe('Token service functions', () => {
 			login_type: '',
 			device_code: ''
 		}
-		webAuth.renewToken(options);
+		void webAuth.renewToken(options);
 		expect(renewTokenSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -522,7 +522,7 @@ describe('Token service functions', () => {
 			login_type: '',
 			device_code: ''
 		}
-		webAuth.getAccessToken(options);
+		void webAuth.getAccessToken(options);
 		expect(getAccessTokenSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -535,7 +535,7 @@ describe('Token service functions', () => {
 			strictRoleValidation: false,
 			strictValidation: false
 		}
-		webAuth.validateAccessToken(options);
+		void webAuth.validateAccessToken(options);
 		expect(validateAccessTokenSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -545,14 +545,14 @@ describe('Token service functions', () => {
 			track_id: '',
 			locale: ''
 		};
-		webAuth.loginPrecheck(options);
+		void webAuth.loginPrecheck(options);
 		expect(loginPrecheckSpy).toHaveBeenCalledWith(options);
 	});
 
 	test('getMissingFieldsFromDefaultProvider', () => {
 		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
 		const	trackId = '';
-		webAuth.getMissingFields(trackId);
+		void webAuth.getMissingFields(trackId);
 		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId);
 	});
 
@@ -560,14 +560,14 @@ describe('Token service functions', () => {
 		const trackId = '';
 		const useSocialProvider = {requestId: ''};
 		const serviceURL = `${authority}/public-srv/public/trackinfo/${useSocialProvider.requestId}/${trackId}`;
-		webAuth.getMissingFields(trackId, useSocialProvider);
+		void webAuth.getMissingFields(trackId, useSocialProvider);
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL,false, "GET");
 	});
 
 	test('initiateDeviceCode', () => {
 		const initiateDeviceCodeSpy = jest.spyOn(TokenService, 'initiateDeviceCode').mockImplementation();
 		const	clientId = '';
-		webAuth.initiateDeviceCode(clientId);
+		void webAuth.initiateDeviceCode(clientId);
 		expect(initiateDeviceCodeSpy).toHaveBeenCalledWith(clientId);
 	});
 
@@ -707,7 +707,7 @@ describe('Login service functions', () => {
 			trackId: '',
 			acceptlanguage: ''
 		}
-		webAuth.progressiveRegistration(options, headers);
+		void webAuth.progressiveRegistration(options, headers);
 		expect(progressiveRegistrationSpy).toHaveBeenCalledWith(options, headers);
 	});
 
@@ -730,7 +730,7 @@ describe('Verification service functions', () => {
 			accvid: '',
 			code: ''
 		};
-		webAuth.verifyAccount(options);
+		void webAuth.verifyAccount(options);
 		expect(verifyAccountSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -749,7 +749,7 @@ describe('Verification service functions', () => {
 			device_id: '',
 			verification_type: ''
 		};
-		webAuth.getMFAList(options);
+		void webAuth.getMFAList(options);
 		expect(getMFAListSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -760,14 +760,14 @@ describe('Verification service functions', () => {
 			reason: '',
 			type: ''
 		};
-		webAuth.cancelMFA(options);
+		void webAuth.cancelMFA(options);
 		expect(cancelMFASpy).toHaveBeenCalledWith(options);
 	});
 
 	test('getAllVerificationList', () => {
 		const getAllVerificationListSpy = jest.spyOn(VerificationService, 'getAllVerificationList').mockImplementation();
 		const accessToken = '';
-		webAuth.getAllVerificationList(accessToken);
+		void webAuth.getAllVerificationList(accessToken);
 		expect(getAllVerificationListSpy).toHaveBeenCalledWith(accessToken);
 	});
 
@@ -777,7 +777,7 @@ describe('Verification service functions', () => {
 			verification_type: ''
 		};
 		const accessToken = '';
-		webAuth.initiateEnrollment(options, accessToken);
+		void webAuth.initiateEnrollment(options, accessToken);
 		expect(initiateEnrollmentSpy).toHaveBeenCalledWith(options, accessToken);
 	});
 
@@ -785,7 +785,7 @@ describe('Verification service functions', () => {
 		const getEnrollmentStatusSpy = jest.spyOn(VerificationService, 'getEnrollmentStatus').mockImplementation();
 		const statusId = '';
 		const accessToken = '';
-		webAuth.getEnrollmentStatus(statusId, accessToken);
+		void webAuth.getEnrollmentStatus(statusId, accessToken);
 		expect(getEnrollmentStatusSpy).toHaveBeenCalledWith(statusId, accessToken);
 	});
 
@@ -804,7 +804,7 @@ describe('Verification service functions', () => {
 			fido2_client_response: {} ,
 			verification_type: ''
 		};
-		webAuth.enrollVerification(options);
+		void webAuth.enrollVerification(options);
 		expect(enrollVerificationSpy).toHaveBeenCalledWith(options);
 	});
 
@@ -823,7 +823,7 @@ describe('Verification service functions', () => {
 			device_id: '',
 			verification_type: ''
 		};
-		webAuth.checkVerificationTypeConfigured(options);
+		void webAuth.checkVerificationTypeConfigured(options);
 		expect(checkVerificationTypeConfiguredSpy).toHaveBeenCalledWith(options);
 	});
 
@@ -834,7 +834,7 @@ describe('Verification service functions', () => {
 			processingType: '',
 			request_id: ''
 		};
-		webAuth.initiateMFA(options);
+		void webAuth.initiateMFA(options);
 		expect(initiateMFASpy).toHaveBeenCalledWith(options);
 	});
 
@@ -846,7 +846,7 @@ describe('Verification service functions', () => {
 			request_id: ''
 		};
 		const accessToken = 'accessToken';
-		webAuth.initiateMFA(options, accessToken);
+		void webAuth.initiateMFA(options, accessToken);
 		expect(initiateMFASpy).toHaveBeenCalledWith(options, accessToken);
 	});
 
@@ -857,7 +857,7 @@ describe('Verification service functions', () => {
 			exchange_id: '',
 			client_id: ''
 		};
-		webAuth.authenticateMFA(options);
+		void webAuth.authenticateMFA(options);
 		expect(authenticateMFASpy).toHaveBeenCalledWith(options);
 	});
 
@@ -872,7 +872,7 @@ describe('Consent service functions', () => {
 			consent_version_id: '',
 			sub: ''
 		};
-		webAuth.getConsentDetails(options);
+		void webAuth.getConsentDetails(options);
 		expect(getConsentDetailsSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -895,7 +895,7 @@ describe('Consent service functions', () => {
 			q: '',
 			revoked: false
 		};
-		webAuth.acceptConsent(options);
+		void webAuth.acceptConsent(options);
 		expect(acceptConsentSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -906,7 +906,7 @@ describe('Consent service functions', () => {
 			locale: '',
 			access_token: ''
 		};
-		webAuth.getConsentVersionDetails(options);
+		void webAuth.getConsentVersionDetails(options);
 		expect(getConsentVersionDetailsSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -917,7 +917,7 @@ describe('Consent service functions', () => {
 			sub: '',
 			scopes: ['']
 		};
-		webAuth.acceptScopeConsent(options);
+		void webAuth.acceptScopeConsent(options);
 		expect(acceptScopeConsentSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -928,7 +928,7 @@ describe('Consent service functions', () => {
 			sub: '',
 			accepted_claims: ['']
 		};
-		webAuth.acceptClaimConsent(options);
+		void webAuth.acceptClaimConsent(options);
 		expect(acceptClaimConsentSpy).toHaveBeenCalledWith(options);
 	});
 	
@@ -939,7 +939,7 @@ describe('Consent service functions', () => {
 			sub: '',
 			revoked_claims: ['']
 		};
-		webAuth.revokeClaimConsent(options);
+		void webAuth.revokeClaimConsent(options);
 		expect(revokeClaimConsentSpy).toHaveBeenCalledWith(options);
 	});
 

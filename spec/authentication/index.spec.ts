@@ -35,7 +35,7 @@ const user: User = {
 test('loginOrRegisterWithBrowser', () => {
     const signinRedirectSpy = jest.spyOn(userManager, 'signinRedirect').mockResolvedValue();
     const viewType = 'view_type';
-	authentication.loginOrRegisterWithBrowser(viewType);
+	void authentication.loginOrRegisterWithBrowser(viewType);
 	expect(signinRedirectSpy).toHaveBeenCalledWith({
         extraQueryParams: { view_type: viewType}, 
         redirect_uri: options.redirect_uri
@@ -44,14 +44,13 @@ test('loginOrRegisterWithBrowser', () => {
 
 test('loginCallback', () => {
     const loginCallbackSpy = jest.spyOn(userManager, 'signinRedirectCallback').mockResolvedValue(user);
-	authentication.loginCallback();
+	void authentication.loginCallback();
 	expect(loginCallbackSpy).toHaveBeenCalled();
 });
 
 test('logout', () => {
-    (window as any).authentication = { logoutCallback: () => Promise.resolve({})};
     const logoutSpy = jest.spyOn(userManager, 'signoutRedirect').mockResolvedValue();
-	authentication.logout();
+	void authentication.logout();
 	expect(logoutSpy).toHaveBeenCalled();
 });
 
@@ -64,44 +63,44 @@ test('logoutCallback', () => {
         userState: undefined
     };
     const logoutCallbackSpy = jest.spyOn(userManager, 'signoutRedirectCallback').mockResolvedValue(response);
-	authentication.logoutCallback();
+	void authentication.logoutCallback();
 	expect(logoutCallbackSpy).toHaveBeenCalled();
 });
 
 test('popupSignIn', () => {
     jest.spyOn(window, 'open').mockImplementation();
     const popupSignInSpy = jest.spyOn(userManager, 'signinPopup').mockResolvedValue(user);
-	authentication.popupSignIn();
+	void authentication.popupSignIn();
 	expect(popupSignInSpy).toHaveBeenCalled();
 });
 
 test('popupSignInCallback', () => {
     const popupSignInCallbackSpy = jest.spyOn(userManager, 'signinPopupCallback').mockResolvedValue();
-	authentication.popupSignInCallback();
+	void authentication.popupSignInCallback();
 	expect(popupSignInCallbackSpy).toHaveBeenCalled();
 });
 
 test('popupSignOut', () => {
     jest.spyOn(window, 'open').mockImplementation();
     const popupSignOutSpy = jest.spyOn(userManager, 'signoutPopup').mockResolvedValue();
-	authentication.popupSignOut();
+	void authentication.popupSignOut();
 	expect(popupSignOutSpy).toHaveBeenCalled();
 });
 
 test('popupSignOutCallback', () => {
     const popupSignOutCallbackSpy = jest.spyOn(userManager, 'signoutPopupCallback').mockResolvedValue();
-	authentication.popupSignOutCallback();
+	void authentication.popupSignOutCallback();
 	expect(popupSignOutCallbackSpy).toHaveBeenCalled();
 });
 
 test('silentSignIn', () => {
     const silentSignInSpy = jest.spyOn(userManager, 'signinSilent').mockResolvedValue(user);
-	authentication.silentSignIn();
+	void authentication.silentSignIn();
 	expect(silentSignInSpy).toHaveBeenCalled();
 });
 
 test('silentSignInCallback', () => {
     const silentSignInCallbackSpy = jest.spyOn(userManager, 'signinSilentCallback').mockResolvedValue();
-	authentication.silentSignInCallback();
+	void authentication.silentSignInCallback();
 	expect(silentSignInCallbackSpy).toHaveBeenCalled();
 });

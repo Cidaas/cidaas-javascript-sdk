@@ -10,7 +10,7 @@ const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplem
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
 beforeAll(() => {
-	(window as any).webAuthSettings = { authority: authority }
+	window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
 });
 
 test('getUserProfile', () => {
@@ -18,7 +18,7 @@ test('getUserProfile', () => {
     access_token: 'access_token',
   };
   const serviceURL = `${serviceBaseUrl}/userinfo`;
-  UserService.getUserProfile(options);
+  void UserService.getUserProfile(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, 'GET', options.access_token);
 });
 
@@ -34,7 +34,7 @@ test('register', () => {
 		requestId: 'requestId'
 	}
   const serviceURL = `${serviceBaseUrl}/register`;
-  UserService.register(options, headers);
+  void UserService.register(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
@@ -43,7 +43,7 @@ test('getInviteUserDetails: to use older api, if no callLatestApi is present', (
         invite_id: 'invite_id',
     };
     const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
-    UserService.getInviteUserDetails(options);
+    void UserService.getInviteUserDetails(options);
     expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
@@ -53,7 +53,7 @@ test('getInviteUserDetails using latest api', () => {
     callLatestAPI: true
   };
   const serviceURL = `${serviceBaseUrlUsersActions}/invitations/${options.invite_id}`;
-  UserService.getInviteUserDetails(options);
+  void UserService.getInviteUserDetails(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
@@ -63,7 +63,7 @@ test('getInviteUserDetails using older api', () => {
     callLatestAPI: false
   };
   const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
-  UserService.getInviteUserDetails(options);
+  void UserService.getInviteUserDetails(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
@@ -76,7 +76,7 @@ test('getCommunicationStatus', () => {
 		requestId: 'requestId'
 	}
   const serviceURL = `${serviceBaseUrl}/user/communication/status/${options.sub}`;
-  UserService.getCommunicationStatus(options, headers);
+  void UserService.getCommunicationStatus(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, headers);
 });
 
@@ -88,7 +88,7 @@ test('initiateResetPassword', () => {
 		requestId: 'requestId'
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/initiate`;
-  UserService.initiateResetPassword(options);
+  void UserService.initiateResetPassword(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
 });
 
@@ -98,7 +98,7 @@ test('handleResetPassword', () => {
 		code: 'code'
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/validatecode`;
-  UserService.handleResetPassword(options);
+  void UserService.handleResetPassword(options);
 	expect(createFormSpy).toHaveBeenCalledWith(serviceURL, options);
 	expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -109,7 +109,7 @@ test('handleResetPassword with json response', () => {
 		code: 'code'
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/validatecode`;
-  UserService.handleResetPassword(options, true);
+  void UserService.handleResetPassword(options, true);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
 });
 
@@ -121,7 +121,7 @@ test('resetPassword', () => {
 		confirmPassword: 'confirmPassword'
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/accept`;
-  UserService.resetPassword(options);
+  void UserService.resetPassword(options);
 	expect(createFormSpy).toHaveBeenCalledWith(serviceURL, options);
 	expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -134,7 +134,7 @@ test('resetPassword with json response', () => {
 		confirmPassword: 'confirmPassword'
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/accept`;
-  UserService.resetPassword(options, true);
+  void UserService.resetPassword(options, true);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
 });
 
@@ -143,7 +143,7 @@ test('getDeduplicationDetails', () => {
 		trackId: 'trackId'
 	};
   const serviceURL = `${serviceBaseUrl}/deduplication/info/${options.trackId}`;
-  UserService.getDeduplicationDetails(options);
+  void UserService.getDeduplicationDetails(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'GET');
 });
 
@@ -164,7 +164,7 @@ test('registerDeduplication', () => {
 		trackId: 'trackId'
 	};
   const serviceURL = `${serviceBaseUrl}/deduplication/register/${options.trackId}`;
-  UserService.registerDeduplication(options);
+  void UserService.registerDeduplication(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, 'POST');
 });
 
@@ -178,7 +178,7 @@ test('changePassword', () => {
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/changepassword`;
-  UserService.changePassword(options, accessToken);
+  void UserService.changePassword(options, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 });
 
@@ -193,7 +193,7 @@ test('updateProfile', () => {
   const accessToken = 'accessToken';
   const sub = 'sub';
   const serviceURL = `${serviceBaseUrl}/user/profile/${sub}`;
-  UserService.updateProfile(options, accessToken, sub);
+  void UserService.updateProfile(options, accessToken, sub);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'PUT', accessToken);
 });
 
@@ -213,7 +213,7 @@ test('initiateLinkAccount', () => {
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/user/link/initiate`;
-  UserService.initiateLinkAccount(options, accessToken);
+  void UserService.initiateLinkAccount(options, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 });
 
@@ -224,7 +224,7 @@ test('completeLinkAccount', () => {
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/user/link/complete`;
-  UserService.completeLinkAccount(options, accessToken);
+  void UserService.completeLinkAccount(options, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 });
 
@@ -232,7 +232,7 @@ test('getLinkedUsers', () => {
   const accessToken = 'accessToken';
   const sub = 'sub';
   const serviceURL = `${serviceBaseUrl}/userinfo/social/${sub}`;
-  UserService.getLinkedUsers(accessToken, sub);
+  void UserService.getLinkedUsers(accessToken, sub);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', accessToken);
 });
 
@@ -240,7 +240,7 @@ test('unlinkAccount', () => {
   const accessToken = 'accessToken';
   const identityId = 'identityId';
   const serviceURL = `${serviceBaseUrl}/user/unlink/${identityId}`;
-  UserService.unlinkAccount(accessToken, identityId);
+  void UserService.unlinkAccount(accessToken, identityId);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'POST', accessToken);
 });
 
@@ -250,7 +250,7 @@ test('deleteUserAccount', () => {
     sub: 'sub'
   };
   const serviceURL = `${serviceBaseUrl}/user/unregister/scheduler/schedule/${options.sub}`;
-  UserService.deleteUserAccount(options);
+  void UserService.deleteUserAccount(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', options.access_token);
 });
 
@@ -270,6 +270,6 @@ test('userCheckExists', () => {
   };
   const queryParameter = `?webfinger=${options.webfinger}&rememberMe=${options.rememberMe}`
   const serviceURL = `${authority}/useractions-srv/userexistence/${options.requestId}${queryParameter}`;
-  UserService.userCheckExists(options);
+  void UserService.userCheckExists(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
 });
