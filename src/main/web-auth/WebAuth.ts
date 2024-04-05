@@ -298,7 +298,7 @@ export class WebAuth {
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2a2feed70303c-get-device-by-user for more details.
    * @example
    * ```js
-   * const options = {};
+   * const options = null; // the payload is deprecated and will be removed in the next major release
    * const accessToken = 'your access token';
    * cidaas.getDevicesInfo(options, accessToken).then(function (resp) {
    *   // the response will give you devices informations.
@@ -307,13 +307,10 @@ export class WebAuth {
    * });
    * ```
    */
-  getDevicesInfo(options: any, accessToken: string) {
-    options.userAgent = window.navigator.userAgent;
+  getDevicesInfo(options: void, accessToken: string) {
+    options = undefined;
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
-    if (window.navigator.userAgent) {
-      return Helper.createHttpPromise(options, _serviceURL,false, "GET", accessToken);
-    }
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", accessToken);
+    return Helper.createHttpPromise(options, _serviceURL,false, "GET", accessToken);
   }
 
   /**

@@ -108,11 +108,10 @@ describe('Webauth functions without module or services', () => {
 	});
 	
 	test('getDevicesInfo', () => {
-		const options = {};
 		const acccessToken = 'accessToken';
 		const serviceURL = `${authority}/device-srv/devices`;
-		void webAuth.getDevicesInfo(options, acccessToken);
-		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'GET', acccessToken);
+		void webAuth.getDevicesInfo(undefined, acccessToken);
+		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', acccessToken);
 	});
 	
 	test('deleteDevice', () => {
