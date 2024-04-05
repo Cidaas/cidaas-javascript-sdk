@@ -58,7 +58,7 @@ export namespace TokenService {
     options.redirect_uri = window.webAuthSettings.redirect_uri;
     options.grant_type = "authorization_code";
     if (!window.webAuthSettings.disablePKCE) {
-      var signInRequest = await window.usermanager._client.createSigninRequest(window.webAuthSettings);
+      var signInRequest = await window.usermanager.getClient().createSigninRequest(window.webAuthSettings);
       options.code_verifier = signInRequest.state?.code_verifier;
     }
     const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";

@@ -204,7 +204,7 @@ describe('Authentication module functions', () => {
 	test('loginWithBrowser', () => {
 		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});
 		webAuth.loginWithBrowser();
-		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('login');
+		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('login', undefined);
 	});
 	
 	test('popupSignIn', () => {
@@ -222,7 +222,7 @@ describe('Authentication module functions', () => {
 	test('registerWithBrowser', () => {
 		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});
 		webAuth.registerWithBrowser();
-		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register');
+		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register', undefined);
 	});
 	
 	test('loginCallback', () => {
