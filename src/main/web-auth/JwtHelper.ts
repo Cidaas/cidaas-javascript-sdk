@@ -1,5 +1,7 @@
+import { TokenClaim, TokenHeader } from "../models/TokenServiceEntities";
+
 export class JwtHelper {
-	static decodeTokenHeader(token: string) {
+	static decodeTokenHeader(token: string): TokenHeader {
 		if (token === null) {
       return null;
     }
@@ -15,11 +17,11 @@ export class JwtHelper {
       throw new Error('Cannot decode the token.');
     }
 
-    return JSON.parse(decoded);
+    return JSON.parse(decoded) as TokenHeader;
 
 	}
 
-	static decodeToken(token: string) {
+	static decodeToken(token: string): TokenClaim {
 		if (token === null) {
 			return null;
 		}
@@ -34,7 +36,7 @@ export class JwtHelper {
 			throw new Error('Cannot decode the token.');
 		}
 
-		return JSON.parse(decoded);
+		return JSON.parse(decoded) as TokenClaim;
 	}
 
 	static urlBase64Decode(str: string): string {

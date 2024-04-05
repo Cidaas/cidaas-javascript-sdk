@@ -1,3 +1,4 @@
+import { TokenClaim, TokenHeader } from "../models/TokenServiceEntities";
 import { AccessTokenRequest, TokenIntrospectionEntity } from "./Entities"
 import { Helper, CustomException } from "./Helper";
 import { JwtHelper } from "./JwtHelper";
@@ -200,8 +201,8 @@ export function offlineTokenCheck(accessToken: string) {
     isScopesValid: false,
     isIssuerValid: false,
   }
-  const accessTokenHeaderAsJson = JwtHelper.decodeTokenHeader(accessToken);
-  const accessTokenAsJson = JwtHelper.decodeToken(accessToken);
+  const accessTokenHeaderAsJson: TokenHeader = JwtHelper.decodeTokenHeader(accessToken);
+  const accessTokenAsJson: TokenClaim = JwtHelper.decodeToken(accessToken);
   if (!accessTokenAsJson || !accessTokenHeaderAsJson) {
     return result;
   } else {
