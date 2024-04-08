@@ -6,6 +6,7 @@ import * as LoginService from '../../src/main/web-auth/LoginService';
 import * as TokenService from '../../src/main/web-auth/TokenService';
 import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
+import { SigninRequest } from 'oidc-client-ts';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -56,7 +57,7 @@ describe('Webauth functions without module or services', () => {
 	});
 	
 	test('getLoginURL', () => {
-		const createSigninRequestSpy = jest.spyOn(window.oidcClient, 'createSigninRequest').mockResolvedValue(null);
+		const createSigninRequestSpy = jest.spyOn(window.usermanager.getClient(), 'createSigninRequest').mockResolvedValue({ url: 'empty' } as SigninRequest);
 		void webAuth.getLoginURL();
 		expect(createSigninRequestSpy).toHaveBeenCalled();
 	});
