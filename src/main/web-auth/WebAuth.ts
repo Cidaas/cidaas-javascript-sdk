@@ -221,6 +221,8 @@ export class WebAuth {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
+    url = url || window.webAuthSettings.post_logout_redirect_uri;
+
     return window.authentication.popupSignOutCallback(url, keepOpen);
   };  
 
