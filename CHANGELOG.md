@@ -1,5 +1,10 @@
 # Changelog
 
+## V4.2.2
+
+### Fixed
+- Fix build failing on es2016 and above versions
+
 ## V4.2.1
 
 ### Added
