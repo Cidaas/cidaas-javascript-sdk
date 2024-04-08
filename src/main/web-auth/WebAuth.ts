@@ -5,7 +5,7 @@ import {
   PopupSignInOptions,
   PopupSignOutOptions,
   SilentSignInOptions,
-  OidcManager, LoginRequestOptions, User, LogoutResponse,
+  OidcManager, LoginRequestOptions, User, LogoutResponse
 } from '../authentication';
 import { Helper, CustomException } from "./Helper";
 import { LoginService } from "./LoginService";
@@ -237,7 +237,7 @@ export class WebAuth {
    * @param {LoginRequestOptions} options login options to override {@link window.webAuthSettings} provided
    * @return {Promise<string>} authz url for login
    */
-  getLoginURL(options?: LoginRequestOptions) {
+  getLoginURL(options?: LoginRequestOptions): Promise<string> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
@@ -246,7 +246,7 @@ export class WebAuth {
         window.usermanager.getClient().createSigninRequest({
           ...window.webAuthSettings,
           ...( options && { options } || {})
-        }).then((signinRequest) => {
+        }).then((signinRequest: { url: string }) => {
           resolve(signinRequest.url);
         }); 
       } catch (e) {
@@ -504,7 +504,7 @@ export class WebAuth {
 
   /**
    * get Communication status
-   * @param options 
+   * @param options
    * @returns 
    */
   getCommunicationStatus(options: { sub: string }, headers: {requestId: string }) {
