@@ -1,5 +1,5 @@
-import { IdTokenClaims, SignoutResponse, User, UserManager } from 'oidc-client-ts';
-import { Authentication } from '../../src/main/authentication';
+import { IdTokenClaims, SignoutResponse, User } from 'oidc-client-ts';
+import { Authentication, OidcManager } from '../../src/main/authentication';
 
 const options = {
 	authority: 'baseURL',
@@ -9,7 +9,7 @@ const options = {
 	response_type: 'code',
 	scope: 'scope'
 };
-const userManager = new UserManager(options);
+const userManager = new OidcManager(options);
 const authentication = new Authentication(options, userManager);
 const profile: IdTokenClaims = {
     sub: '',

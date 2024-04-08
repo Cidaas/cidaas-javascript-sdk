@@ -1,5 +1,24 @@
 # Changelog
 
+## V4.2.1
+
+### Added
+- Add authentication type
+
+### Changed
+- loginWithBrowser can be over-ridden with LoginRedirectOptions 
+- popupSignIn can be over-ridden with PopupSignInOptions
+- silentSignIn can be over-ridden with SilentSignInOptions
+- registerWithBrowser can be over-ridden with LoginRedirectOptions
+- loginCallback accepts url location option
+- popupSignInCallback accepts url and keepOpen option
+- silentSignInCallback accepts url location option
+- logout can be over-ridden with LogoutRedirectOptions
+- popupSignOut can be over-ridden with PopupSignOutOptions
+- logoutCallback accepts url location option
+- popupSignOutCallback accepts url location option
+- getLoginURL can be over-ridden with LoginRequestOptions
+
 ## V4.2.0
 
 ### Added

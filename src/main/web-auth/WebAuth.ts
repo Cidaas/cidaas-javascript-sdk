@@ -1,6 +1,12 @@
-import { OidcClient, SigninRequest, SigninState, UserManager, UserManagerSettings } from "oidc-client-ts";
-
-import { Authentication } from "../authentication";
+import {
+  Authentication, OidcSettings,
+  LoginRedirectOptions,
+  LogoutRedirectOptions,
+  PopupSignInOptions,
+  PopupSignOutOptions,
+  SilentSignInOptions,
+  OidcManager, LoginRequestOptions, User, LogoutResponse,
+} from '../authentication';
 import { Helper, CustomException } from "./Helper";
 import * as LoginService from "./LoginService";
 import * as UserService from "./UserService";
@@ -32,12 +38,12 @@ import {
 } from "./Entities"
 
 export const createPreloginWebauth = (authority: string) => {
-  return new WebAuth({'authority': authority} as UserManagerSettings);
+  return new WebAuth({'authority': authority} as OidcSettings);
 }
 
 export class WebAuth {
 
-  constructor(settings: UserManagerSettings) {
+  constructor(settings: OidcSettings) {
     try {
       if (!settings.response_type) {
         settings.response_type = "code";
@@ -48,9 +54,9 @@ export class WebAuth {
       if (settings.authority && settings.authority.charAt(settings.authority.length - 1) === '/' ) {
         settings.authority = settings.authority.slice(0, settings.authority.length - 1);
       }
+      var usermanager = new OidcManager(settings);
       window.webAuthSettings = settings;
-      window.usermanager = new UserManager(settings);
-      window.oidcClient = new OidcClient(settings);
+      window.usermanager = usermanager;
       window.localeSettings = null;
       window.authentication = new Authentication(window.webAuthSettings, window.usermanager);
       window.usermanager.events.addSilentRenewError(function () {
@@ -63,77 +69,96 @@ export class WebAuth {
 
   // prototype methods 
   /**
-   * login
+   * Generate and redirect to authz url in same window for logging in.
+   * @param {LoginRedirectOptions} options options options to over-ride the client config for redirect login
    */
-  loginWithBrowser() {
+  loginWithBrowser(options?: LoginRedirectOptions) {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.loginOrRegisterWithBrowser('login');  
-  }
+    return window.authentication.loginOrRegisterWithBrowser('login', options);
+  };
 
   /**
-   * popupSignIn
+   * Generate and open authz url in a popup window.
+   * On successful sign in, authenticated user is returned.
+   *
+   * @param {PopupSignInOptions} options options to over-ride the client config for popup sign in
+   * @returns {Promise<User>} Authenticated user
+   * @throws error if unable to get the parse and get user
    */
-  popupSignIn() {
+  popupSignIn(options?: PopupSignInOptions): Promise<User> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.popupSignIn();
-  }
+    return window.authentication.popupSignIn(options);
+  };
 
   /**
-   * silentSignIn
+   * Generate and navigate to authz url in an iFrame.
+   * On successful sign in, authenticated user is returned
+   *
+   * @param {SilentSignInOptions} options options to over-ride the client config for silent sign in
+   * @returns {Promise<User>} Authenticated user
+   * @throws error if unable to get the parse and get user
    */
-  silentSignIn() {
+  silentSignIn(options?: SilentSignInOptions): Promise<User> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.silentSignIn();
-  }
+    return window.authentication.silentSignIn(options);
+  };
 
   /**
-   * register
+   * Generate and redirect to authz url in same window for register view.
+   * @param {LoginRedirectOptions} options options options to over-ride the client config for redirect login
    */
-  registerWithBrowser() {
+  registerWithBrowser(options?: LoginRedirectOptions): Promise<void> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.loginOrRegisterWithBrowser('register');
-  }
+    return window.authentication.loginOrRegisterWithBrowser('register', options);
+  };
 
   /**
-   * login callback
-   * @returns 
+   * Once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
+   * To complete the login process, call **loginCallback()**. This will parses the access_token, id_token and whatever in hash in the redirect url.
+   *
+   * @param {string} url optional url from where to process the login state
+   * @returns {Promise<User>} Authenticated user
+   * @throws error if unable to get the parse and get user
    */
-  loginCallback() {
+  loginCallback(url?: string): Promise<User> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.loginCallback();
-  }
+    return window.authentication.loginCallback(url);
+  };
 
   /**
-   * popup signin callback
-   * @returns 
+   * To complete the popup login process, call **popupSignInCallback()** from the popup login window.
+   * Popup window will be closed after doing callback
+   *
+   * @param {string} url optional url to read sign-in callback state from
+   * @param {boolean} keepOpen true to keep the popup open even after sign in, else false
    */
-  popupSignInCallback() {
+  popupSignInCallback(url?: string, keepOpen?: boolean) {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.popupSignInCallback();
-  }
+    return window.authentication.popupSignInCallback(url, keepOpen);
+  };
 
   /**
-   * silent signin callback
-   * @returns 
+   * Returns a promise to notify the parent window of response from authz service
+   * @param {string} url optional url to check authz response, if none window.location is used
    */
-  silentSignInCallback() {
+  silentSignInCallback(url?: string) {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.silentSignInCallback();
-  }
+    return window.authentication.silentSignInCallback(url);
+  };
 
   /**
    * To get the user profile information by using oidc-client-ts library, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
@@ -144,9 +169,10 @@ export class WebAuth {
    * }).catch(function(ex) {
    *   // your failure code here
    * });
-   * ``` 
+   * ```
+   * @return {Promise<User|null>} returns authenticated user if present, else null
    */
-  async getUserInfo() {
+  async getUserInfo(): Promise<User | null> {
     if (!window.usermanager) {
       return Promise.reject(new CustomException("UserManager cannot be empty", 417));
     }
@@ -155,47 +181,48 @@ export class WebAuth {
 
   /**
    * logout by using oidc-client-ts library
-   * @returns 
+   * @param {LogoutRedirectOptions} options optional options to over-ride logout options on redirect
    */
-  logout() {
+  logout(options?: LogoutRedirectOptions) {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.logout();
-  }
+    return window.authentication.logout(options);
+  };
 
   /**
-   * popup signout
-   * @returns 
+   * logout by using oidc-client-ts library
+   * @param {PopupSignOutOptions} options optional options to over-ride logout options using popup window
    */
-  popupSignOut() {
+  popupSignOut(options?: PopupSignOutOptions) {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.popupSignOut();
-  }
+    return window.authentication.popupSignOut(options);
+  };
 
   /**
-   * logout callback
-   * @returns 
+   * get the logout call state from the url provided, if none is provided current window url is used
+   * @returns {Promise<LogoutResponse>} logout response from auth service
    */
-  logoutCallback() {
+  logoutCallback(url?: string): Promise<LogoutResponse> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.logoutCallback();
-  }
+    return window.authentication.logoutCallback(url);
+  };
 
   /**
-   * popup signout callback
-   * @returns 
+   * listen to popup sign out event
+   * @param {string} url optional url to override to check for sign out state
+   * @param {boolean} keepOpen true to keep the popup open even after sign out, else false
    */
-  popupSignOutCallback() {
+  popupSignOutCallback(url?: string, keepOpen?: boolean) {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.popupSignOutCallback();
-  }  
+    return window.authentication.popupSignOutCallback(url, keepOpen);
+  };  
 
   /**
    * To get the generated login url, call **getLoginURL()**. This will call authz service and generate login url to be used.
@@ -206,17 +233,27 @@ export class WebAuth {
    * }).catch(function(ex) {
    *   // your failure code here
    * });
-   * ``` 
+   * ```
+   * @param {LoginRequestOptions} options login options to override {@link window.webAuthSettings} provided
+   * @return {Promise<string>} authz url for login
    */
-  getLoginURL(state?: SigninState): Promise<string> {
-    return new Promise((resolve, reject) => {
-      window.oidcClient.createSigninRequest({state:state}).then((signinRequest: SigninRequest) => {
-        resolve(signinRequest?.url);
-      }).catch((e) => {
+  getLoginURL(options?: LoginRequestOptions) {
+    if (!window.webAuthSettings || !window.authentication) {
+      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
+    }
+    return new Promise<string>((resolve, reject) => {
+      try {
+        window.usermanager.getClient().createSigninRequest({
+          ...window.webAuthSettings,
+          ...( options && { options } || {})
+        }).then((signinRequest) => {
+          resolve(signinRequest.url);
+        }); 
+      } catch (e) {
         reject(e);
-      });
+      }
     });
-  }
+  };
 
   /**
    * Each and every proccesses starts with requestId, it is an entry point to login or register. For getting the requestId, call **getRequestId()**.
@@ -865,6 +902,7 @@ export class WebAuth {
    */
   getMissingFields(trackId: string, useSocialProvider?: {requestId: string}) {
     if (useSocialProvider) {
+      console.log("webAuthSettings: " + window.webAuthSettings.authority);
       const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + useSocialProvider.requestId + "/" + trackId;
       return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
     } else {

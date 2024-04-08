@@ -1,8 +1,18 @@
-import { UserManager, UserManagerSettings } from "oidc-client-ts";
+import {
+    OidcManager,
+    OidcSettings,
+    LoginRedirectOptions,
+    LogoutRedirectOptions,
+    PopupSignInOptions,
+    PopupSignOutOptions,
+    SilentSignInOptions, LogoutResponse,
+} from './authentication.model';
+
+export * from './authentication.model';
 
 export class Authentication {
 
-    constructor(public webAuthSettings: UserManagerSettings, public userManager: UserManager) { }
+    constructor(public webAuthSettings: OidcSettings, public userManager: OidcManager) { }
 
     /**
      * To login through cidaas sdk, call **loginWithBrowser()**. This will redirect you to the hosted login page.
@@ -19,8 +29,9 @@ export class Authentication {
      * ```
      * 
      * @param view_type: either 'login' or 'register'
+     * @param {LoginRedirectOptions} options optional login options to override the webauth configuration
      */
-    loginOrRegisterWithBrowser(view_type: string) {
+    loginOrRegisterWithBrowser(view_type: string, options?: LoginRedirectOptions) {
         if (!this.webAuthSettings.extraQueryParams) {
             this.webAuthSettings.extraQueryParams = {};
         }
@@ -30,7 +41,8 @@ export class Authentication {
         }
         return this.userManager.signinRedirect({
             extraQueryParams: this.webAuthSettings.extraQueryParams,
-            redirect_uri: this.webAuthSettings.redirect_uri
+            redirect_uri: this.webAuthSettings.redirect_uri,
+            ...(options && { options } || {})
         });
     }
 
@@ -45,9 +57,10 @@ export class Authentication {
      *  // your failure code here
      * });
      * ```
+     * @param {string} url optional url to read sign in state from
      */
-    loginCallback() {
-        return this.userManager.signinRedirectCallback();
+    loginCallback(url?: string) {
+        return this.userManager.signinRedirectCallback(url);
     }
 
     /**
@@ -56,9 +69,10 @@ export class Authentication {
      * ```js
      * cidaas.logout();
      * ```
+     * @param {LogoutRedirectOptions} options optional logout options to override webauth configurations
      */
-    logout() {
-        return this.userManager.signoutRedirect({ state: this.webAuthSettings });
+    logout(options?: LogoutRedirectOptions) {
+        return this.userManager.signoutRedirect(options);
     }
 
     /**
@@ -71,10 +85,11 @@ export class Authentication {
      *  // your failure code here
      * });
      * ```
+     * @param {string} url optional url to read signout state from,
      */
-    logoutCallback() {
-        return this.userManager.signoutRedirectCallback();
-    }
+    logoutCallback(url?: string): Promise<LogoutResponse> {
+        return this.userManager.signoutRedirectCallback(url);
+    };
 
     /**
      * **popupSignIn()** will open the hosted login page in pop up window.
@@ -86,10 +101,11 @@ export class Authentication {
      *  // your failure code here
      * });
      * ```
+     * @param {LogoutRedirectOptions} options optional popup sign-in options to override webauth configurations
      */
-    popupSignIn() {
-        return this.userManager.signinPopup();
-    }
+    popupSignIn(options?: PopupSignInOptions) {
+        return this.userManager.signinPopup(options);
+    };
 
     /**
      * To complete the popup login process, call **popupSignInCallback()** from the popup login window. 
@@ -98,10 +114,12 @@ export class Authentication {
      * ```js
      * cidaas.popupSignInCallback();
      * ```
+     * @param {string} url optional url to read sign-in callback state from
+     * @param {boolean} keepOpen true to keep the popup open even after sign in, else false
      */
-    popupSignInCallback() {
-        return this.userManager.signinPopupCallback();
-    }
+    popupSignInCallback(url?: string, keepOpen?: boolean) {
+        return this.userManager.signinPopupCallback(url, keepOpen);
+    };
 
     /**
      * **popupSignOut()** will open the hosted logout page in pop up window.
@@ -113,10 +131,12 @@ export class Authentication {
      *   // your failure code here
      * });
      * ```
+     *
+     * @param {PopupSignOutOptions} options optional options to over-ride logout options using popup window
      */
-    popupSignOut() {
-        return this.userManager.signoutPopup({ state: this.webAuthSettings });
-    }
+    popupSignOut(options?: PopupSignOutOptions) {
+        return this.userManager.signoutPopup(options);
+    };
 
     /**
      * calling **popupSignOutCallback()** from the popup window complete popup logout process. 
@@ -129,10 +149,14 @@ export class Authentication {
      *   // your failure code here
      * });
      * ```
+     *
+     * @param {string} url optional url to override to check for sign out state
+     * @param {boolean} keepOpen true to keep the popup open even after sign out, else false
      */
-    popupSignOutCallback() {
-        return this.userManager.signoutPopupCallback(this.webAuthSettings.post_logout_redirect_uri, true);
-    }
+    popupSignOutCallback(url?: string, keepOpen: boolean = true) {
+        url = url ?? this.webAuthSettings.post_logout_redirect_uri;
+        return this.userManager.signoutPopupCallback(url, keepOpen);
+    };
 
     /**
      * **silentSignIn()** will open the hosted login page in an iframe. 
@@ -145,11 +169,12 @@ export class Authentication {
      *  // your failure code here
      * });
      * ```
+     * @param {SilentSignInOptions} options options to over-ride the client config for silent sign in
      */
-    silentSignIn() {
+    silentSignIn(options?: SilentSignInOptions) {
         return this.userManager.signinSilent({
-            state: this.webAuthSettings,
-            silentRequestTimeoutInSeconds: 60
+            silentRequestTimeoutInSeconds: 60,
+            ...( options && { options } || {})
         });
     }
 
@@ -158,9 +183,11 @@ export class Authentication {
      * @example
      * ```js
      * cidaas.silentSignInCallback();
+     *
      * ```
+     * @param {string} url optional url to read sign in state from
      */
-    silentSignInCallback(callbackurl?: string) {
-        return this.userManager.signinSilentCallback(callbackurl);
-    }
+    silentSignInCallback(url?: string) {
+        return this.userManager.signinSilentCallback(url);
+    };
 }

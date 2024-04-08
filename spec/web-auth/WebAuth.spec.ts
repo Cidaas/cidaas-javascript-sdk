@@ -198,7 +198,7 @@ describe('Authentication module functions', () => {
 	test('loginWithBrowser', () => {
 		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
 		void webAuth.loginWithBrowser();
-		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('login');
+		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('login', undefined);
 	});
 	
 	test('popupSignIn', () => {
@@ -216,7 +216,7 @@ describe('Authentication module functions', () => {
 	test('registerWithBrowser', () => {
 		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
 		void webAuth.registerWithBrowser();
-		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register');
+		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register', undefined);
 	});
 	
 	test('loginCallback', () => {
@@ -555,9 +555,10 @@ describe('Token service functions', () => {
 		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId);
 	});
 
-	test('getMissingFieldsFromSocialProvider', () => {
+	test('getMissingFieldsFromSocialProvider', async() => {
 		const trackId = '';
 		const useSocialProvider = {requestId: ''};
+		console.log("oidc setting: " + authority);
 		const serviceURL = `${authority}/public-srv/public/trackinfo/${useSocialProvider.requestId}/${trackId}`;
 		void webAuth.getMissingFields(trackId, useSocialProvider);
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL,false, "GET");

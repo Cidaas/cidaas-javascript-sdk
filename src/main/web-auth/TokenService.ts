@@ -57,7 +57,7 @@ export async function getAccessToken(options: AccessTokenRequest) {
   options.redirect_uri = window.webAuthSettings.redirect_uri;
   options.grant_type = "authorization_code";
   if (!window.webAuthSettings.disablePKCE) {
-    const signInRequest = await window.oidcClient.createSigninRequest(window.webAuthSettings);
+    const signInRequest = await window.usermanager.getClient().createSigninRequest(window.webAuthSettings);
     options.code_verifier = signInRequest.state?.code_verifier;
   }
   const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
