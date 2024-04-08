@@ -20,5 +20,8 @@
     // It will skip the type checking of libraries in the node_modules
     "skipLibCheck": true,
     "noImplicitAny": true,
+    "target": "ES2016",
+    "module": "ES6",
+    "moduleResolution": "node"
   }
 }

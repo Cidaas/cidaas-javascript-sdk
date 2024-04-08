@@ -28,7 +28,7 @@ export class Authentication {
      * cidaas.registerWithBrowser();
      * ```
      * 
-     * @param view_type: either 'login' or 'register'
+     * @param {string} view_type either 'login' or 'register'
      * @param {LoginRedirectOptions} options optional login options to override the webauth configuration
      */
     loginOrRegisterWithBrowser(view_type: string, options?: LoginRedirectOptions) {
@@ -42,7 +42,7 @@ export class Authentication {
         return this.userManager.signinRedirect({
             extraQueryParams: this.webAuthSettings.extraQueryParams,
             redirect_uri: this.webAuthSettings.redirect_uri,
-            ...(options && { options } || {})
+            ...(options && { ...options } || {})
         });
     }
 
@@ -174,7 +174,7 @@ export class Authentication {
     silentSignIn(options?: SilentSignInOptions) {
         return this.userManager.signinSilent({
             silentRequestTimeoutInSeconds: 60,
-            ...( options && { options } || {})
+            ...( options && { ...options } || {})
         });
     }
 

@@ -6,7 +6,7 @@ import {
     SignoutRedirectArgs,
     UserManagerSettings,
     UserManager, OidcClient, CreateSigninRequestArgs,
-    User as OidcUser, SignoutResponse,
+    User as OidcUser, SignoutResponse
 } from 'oidc-client-ts';
 
 /**
@@ -21,6 +21,9 @@ export interface OidcSettings extends UserManagerSettings {
  * @augments UserManager
  * */
 export class OidcManager extends UserManager {
+    constructor(settings: OidcSettings) {
+        super(settings);
+    }
     getClient(): OidcClient {
         return this._client;
     }
