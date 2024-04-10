@@ -15,8 +15,6 @@ import * as VerificationService from "./VerificationService";
 import * as ConsentService from "./ConsentService";
 
 import {
-  AccessTokenRequest,
-  TokenIntrospectionEntity,
   UserEntity,
   ResetPasswordEntity,
   IConfiguredListRequestEntity,
@@ -36,6 +34,7 @@ import {
   IChangePasswordEntity,
   IUserActivityPayloadEntity,
 } from "./Entities"
+import { AccessTokenRequest, TokenIntrospectionEntity } from '../token/token.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);

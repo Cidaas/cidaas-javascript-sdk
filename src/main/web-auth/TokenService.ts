@@ -1,5 +1,4 @@
-import { TokenClaim, TokenHeader } from "../models/TokenServiceEntities";
-import { AccessTokenRequest, TokenIntrospectionEntity } from "./Entities"
+import { AccessTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionEntity } from "../token/token.model";
 import { Helper, CustomException } from "./Helper";
 import { JwtHelper } from "./JwtHelper";
 

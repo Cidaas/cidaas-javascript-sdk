@@ -1,4 +1,4 @@
-import { AccessTokenRequest, TokenIntrospectionEntity } from '../../src/main/web-auth/Entities';
+import { AccessTokenRequest, TokenIntrospectionEntity } from '../../src/main/token/token.model';
 import { Helper } from '../../src/main/web-auth/Helper';
 import * as TokenService from '../../src/main/web-auth/TokenService';
 

@@ -1,4 +1,4 @@
-import { TokenClaim, TokenHeader } from "../models/TokenServiceEntities";
+import { TokenClaim, TokenHeader } from "../token/token.model";
 
 export class JwtHelper {
 	static decodeTokenHeader(token: string): TokenHeader {

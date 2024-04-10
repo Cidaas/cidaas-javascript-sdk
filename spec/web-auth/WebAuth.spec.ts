@@ -1,6 +1,7 @@
 import { WebAuth } from '../../src/main';
+import { AccessTokenRequest, TokenIntrospectionEntity } from '../../src/main/token/token.model';
 import * as ConsentService from '../../src/main/web-auth/ConsentService';
-import { AcceptResetPasswordEntity, AccessTokenRequest, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IConsentAcceptEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, TokenIntrospectionEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
+import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IConsentAcceptEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/web-auth/Helper';
 import * as LoginService from '../../src/main/web-auth/LoginService';
 import * as TokenService from '../../src/main/web-auth/TokenService';
