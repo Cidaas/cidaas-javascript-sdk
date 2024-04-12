@@ -202,3 +202,4 @@ The SDK will throws Custom Exception if something went wrong during the operatio
 |----------------- | ----------------------- |
 |  500 | during creation of WebAuth instance |
 |  417 | if there are any other failure |
+
