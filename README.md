@@ -131,6 +131,7 @@ The login functions could be found [here](https://github.com/Cidaas/cidaas-javas
 | passwordlessLogin, loginWithCredentials, loginWithSocial | User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform                        |
 | loginPrecheck, consentContinue, firstTimeChangePassword, mfaContinue    | Depending on the missing information from loginPrecheck, user will be redirected to another page after login to either  accepting consent, changing password, continuing MFA process, or do progressive registration  |
 | getMissingFields, progressiveRegistration                                  | In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login |
+| loginAfterRegister                                  | By calling this sdk function, user could directly login to the app after successful registration |
 
 #### User Management
 

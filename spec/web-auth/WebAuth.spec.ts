@@ -722,6 +722,19 @@ describe('Login service functions', () => {
 		expect(progressiveRegistrationSpy).toHaveBeenCalledWith(options, headers);
 	});
 
+	test('loginAfterRegister', () => {
+		const loginAfterRegisterSpy = jest.spyOn(LoginService, 'loginAfterRegister').mockImplementation();
+		const options = {
+			device_id: 'deviceId',
+			dc: 'dc',
+			rememberMe: false,
+			trackId: 'trackId',
+			device_fp: 'device_fp'
+		};
+		webAuth.loginAfterRegister(options);
+		expect(loginAfterRegisterSpy).toHaveBeenCalledWith(options);
+	});
+
 });
 
 // Verification Service

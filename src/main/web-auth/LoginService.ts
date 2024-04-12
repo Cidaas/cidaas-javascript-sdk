@@ -213,4 +213,35 @@ export namespace LoginService {
     var serviceURL = window.webAuthSettings.authority + "/login-srv/progressive/update/user";
     return Helper.createHttpPromise(options, serviceURL, undefined, "POST", undefined, headers);
   };
+
+  /**
+   * To automatically do user login after successful registration, call **loginAfterRegister()**. Make sure to turn on  "auto login after register" switch on the admin ui to activate loginAfterRegister flow.
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/qwwamc2f378wi-auto-login-after-register for more details.
+   * @example
+   * ```js
+   * cidaas.loginAfterRegister({
+   *   device_id: 'your device id',
+   *   dc: 'device capacity'
+   *   rememberMe: false,
+   *   trackId: 'your track id',
+   *   device_fp: 'device fingerprint'
+   * });
+   * ```
+   */
+  export function loginAfterRegister(options: {
+    device_id?: string;
+    dc?: string;
+    rememberMe?: boolean;
+    trackId?: string;
+    device_fp?: string;
+  }) {
+    try {
+      const url = window.webAuthSettings.authority + "/login-srv/login/handle/afterregister/" + options.trackId;
+      let form = Helper.createForm(url, options)
+      document.body.appendChild(form);
+      form.submit();
+    } catch (ex) {
+      throw new CustomException(ex, 417);
+    }
+  };
 }
