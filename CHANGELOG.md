@@ -1,5 +1,10 @@
 # Changelog
 
+## V4.2.4
+
+### Fix
+- Fix unable to import into bundler module
+
 ## V4.2.3
 
 ### Added
