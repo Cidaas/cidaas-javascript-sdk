@@ -1,6 +1,6 @@
 {
   "name": "cidaas-javascript-sdk",
-  "version": "4.2.2",
+  "version": "4.2.4",
   "author": "cidaas by Widas ID GmbH",
   "description": "Cidaas native javascript sdk",
   "license": "MIT",
@@ -27,7 +27,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@fingerprintjs/fingerprintjs": "^3.4.0",
     "@toolz/is-a-regular-object": "^1.0.1",
     "oidc-client-ts": "^2.4.0"
   },

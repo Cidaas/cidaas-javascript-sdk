@@ -152,3 +152,16 @@ test('progressiveRegistration', () => {
   void LoginService.progressiveRegistration(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', undefined, headers);
 });
+
+test('loginAfterRegister', () => {
+  const option = {
+    device_id: 'deviceId',
+    dc: 'dc',
+    rememberMe: false,
+    trackId: 'trackId',
+    device_fp: 'device_fp'
+  };
+  const serviceURL = `${serviceBaseUrl}/login/handle/afterregister/${option.trackId}`;
+  LoginService.loginAfterRegister(option);
+  expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
+});

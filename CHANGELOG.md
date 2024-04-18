@@ -1,5 +1,15 @@
 # Changelog
 
+## V4.2.4
+
+### Fix
+- Fix unable to import into bundler module
+
+## V4.2.3
+
+### Added
+- Add back loginAfterRegister functionality
+
 ## V4.2.2
 
 ### Fixed

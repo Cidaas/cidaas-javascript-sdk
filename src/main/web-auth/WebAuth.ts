@@ -922,6 +922,14 @@ export class WebAuth {
   }
 
   /**
+   * loginAfterRegister
+   * @param options
+   */
+  loginAfterRegister(options: { device_id: string; dc?: string; rememberMe: boolean; trackId: string; }) {
+    LoginService.loginAfterRegister(options);
+  };
+
+  /**
    * device code flow - initiate
    */
   initiateDeviceCode(clientId?: string) {
