@@ -89,7 +89,7 @@ export class Authentication {
      */
     logoutCallback(url?: string): Promise<LogoutResponse> {
         return this.userManager.signoutRedirectCallback(url);
-    };
+    }
 
     /**
      * **popupSignIn()** will open the hosted login page in pop up window.
@@ -105,7 +105,7 @@ export class Authentication {
      */
     popupSignIn(options?: PopupSignInOptions) {
         return this.userManager.signinPopup(options);
-    };
+    }
 
     /**
      * To complete the popup login process, call **popupSignInCallback()** from the popup login window. 
@@ -119,7 +119,7 @@ export class Authentication {
      */
     popupSignInCallback(url?: string, keepOpen?: boolean) {
         return this.userManager.signinPopupCallback(url, keepOpen);
-    };
+    }
 
     /**
      * **popupSignOut()** will open the hosted logout page in pop up window.
@@ -136,7 +136,7 @@ export class Authentication {
      */
     popupSignOut(options?: PopupSignOutOptions) {
         return this.userManager.signoutPopup(options);
-    };
+    }
 
     /**
      * calling **popupSignOutCallback()** from the popup window complete popup logout process. 
@@ -156,7 +156,7 @@ export class Authentication {
     popupSignOutCallback(url?: string, keepOpen: boolean = true) {
         url = url ?? this.webAuthSettings.post_logout_redirect_uri;
         return this.userManager.signoutPopupCallback(url, keepOpen);
-    };
+    }
 
     /**
      * **silentSignIn()** will open the hosted login page in an iframe. 
@@ -189,5 +189,5 @@ export class Authentication {
      */
     silentSignInCallback(url?: string) {
         return this.userManager.signinSilentCallback(url);
-    };
+    }
 }

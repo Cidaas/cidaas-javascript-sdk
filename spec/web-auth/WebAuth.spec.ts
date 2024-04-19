@@ -552,15 +552,14 @@ describe('Token service functions', () => {
 
 	test('getMissingFieldsFromDefaultProvider', () => {
 		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
-		const	trackId = '';
+		const trackId = '';
 		void webAuth.getMissingFields(trackId);
 		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId);
 	});
 
-	test('getMissingFieldsFromSocialProvider', async() => {
+	test('getMissingFieldsFromSocialProvider', () => {
 		const trackId = '';
 		const useSocialProvider = {requestId: ''};
-		console.log("oidc setting: " + authority);
 		const serviceURL = `${authority}/public-srv/public/trackinfo/${useSocialProvider.requestId}/${trackId}`;
 		void webAuth.getMissingFields(trackId, useSocialProvider);
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL,false, "GET");
@@ -568,7 +567,7 @@ describe('Token service functions', () => {
 
 	test('initiateDeviceCode', () => {
 		const initiateDeviceCodeSpy = jest.spyOn(TokenService, 'initiateDeviceCode').mockImplementation();
-		const	clientId = '';
+		const clientId = '';
 		void webAuth.initiateDeviceCode(clientId);
 		expect(initiateDeviceCodeSpy).toHaveBeenCalledWith(clientId);
 	});
@@ -582,7 +581,7 @@ describe('Token service functions', () => {
 
 	test('offlineTokenCheck', () => {
 		const offlineTokenCheckSpy = jest.spyOn(TokenService, 'offlineTokenCheck').mockImplementation();
-		const	accessToken = '';
+		const accessToken = '';
 		webAuth.offlineTokenCheck(accessToken);
 		expect(offlineTokenCheckSpy).toHaveBeenCalledWith(accessToken);
 	});

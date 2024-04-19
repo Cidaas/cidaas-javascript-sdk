@@ -1,5 +1,4 @@
-import { OidcClient, UserManager, UserManagerSettings } from "oidc-client-ts";
-import { Authentication } from "./authentication";
+import { OidcClient } from "oidc-client-ts";
 
 /**
  * all the global variables are declared in this file

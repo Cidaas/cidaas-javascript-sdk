@@ -53,7 +53,7 @@ export class WebAuth {
       if (settings.authority && settings.authority.charAt(settings.authority.length - 1) === '/' ) {
         settings.authority = settings.authority.slice(0, settings.authority.length - 1);
       }
-      var usermanager = new OidcManager(settings);
+      const usermanager = new OidcManager(settings);
       window.webAuthSettings = settings;
       window.usermanager = usermanager;
       window.localeSettings = null;
@@ -76,7 +76,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginOrRegisterWithBrowser('login', options);
-  };
+  }
 
   /**
    * Generate and open authz url in a popup window.
@@ -91,7 +91,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignIn(options);
-  };
+  }
 
   /**
    * Generate and navigate to authz url in an iFrame.
@@ -106,7 +106,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.silentSignIn(options);
-  };
+  }
 
   /**
    * Generate and redirect to authz url in same window for register view.
@@ -117,7 +117,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginOrRegisterWithBrowser('register', options);
-  };
+  }
 
   /**
    * Once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
@@ -132,7 +132,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginCallback(url);
-  };
+  }
 
   /**
    * To complete the popup login process, call **popupSignInCallback()** from the popup login window.
@@ -146,7 +146,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignInCallback(url, keepOpen);
-  };
+  }
 
   /**
    * Returns a promise to notify the parent window of response from authz service
@@ -157,7 +157,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.silentSignInCallback(url);
-  };
+  }
 
   /**
    * To get the user profile information by using oidc-client-ts library, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
@@ -187,7 +187,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.logout(options);
-  };
+  }
 
   /**
    * logout by using oidc-client-ts library
@@ -198,7 +198,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignOut(options);
-  };
+  }
 
   /**
    * get the logout call state from the url provided, if none is provided current window url is used
@@ -209,7 +209,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.logoutCallback(url);
-  };
+  }
 
   /**
    * listen to popup sign out event
@@ -223,7 +223,7 @@ export class WebAuth {
     url = url || window.webAuthSettings.post_logout_redirect_uri;
 
     return window.authentication.popupSignOutCallback(url, keepOpen);
-  };  
+  }  
 
   /**
    * To get the generated login url, call **getLoginURL()**. This will call authz service and generate login url to be used.
@@ -243,18 +243,16 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return new Promise<string>((resolve, reject) => {
-      try {
-        window.usermanager.getClient().createSigninRequest({
-          ...window.webAuthSettings,
-          ...( options && { options } || {})
-        }).then((signinRequest: { url: string }) => {
-          resolve(signinRequest.url);
-        }); 
-      } catch (e) {
+      window.usermanager.getClient().createSigninRequest({
+        ...window.webAuthSettings,
+        ...( options && { options } || {})
+      }).then((signinRequest: { url: string }) => {
+        resolve(signinRequest.url);
+      }).catch(e => {
         reject(e);
-      }
+      }); 
     });
-  };
+  }
 
   /**
    * Each and every proccesses starts with requestId, it is an entry point to login or register. For getting the requestId, call **getRequestId()**.
@@ -927,7 +925,7 @@ export class WebAuth {
    */
   loginAfterRegister(options: { device_id: string; dc?: string; rememberMe: boolean; trackId: string; }) {
     LoginService.loginAfterRegister(options);
-  };
+  }
 
   /**
    * device code flow - initiate
