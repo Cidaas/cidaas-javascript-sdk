@@ -1,10 +1,10 @@
 import { WebAuth } from '../../src/main';
-import { AccessTokenRequest, TokenIntrospectionEntity } from '../../src/main/token/token.model';
+import { AccessTokenRequest, GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionEntity } from '../../src/main/token/token.model';
 import * as ConsentService from '../../src/main/web-auth/ConsentService';
 import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IConsentAcceptEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/web-auth/Helper';
 import * as LoginService from '../../src/main/web-auth/LoginService';
-import * as TokenService from '../../src/main/web-auth/TokenService';
+import * as TokenService from '../../src/main/token/TokenService';
 import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
@@ -493,17 +493,10 @@ describe('User service functions', () => {
 describe('Token service functions', () => {
 	test('renewToken', () => {
 		const renewTokenSpy = jest.spyOn(TokenService, 'renewToken').mockImplementation();
-		const options: AccessTokenRequest = {
-			user_agent: '',
-			ip_address: '',
-			accept_language: '',
-			lat: '',
-			lng: '',
-			finger_print: '',
-			referrer: '',
-			pre_login_id: '',
-			login_type: '',
-			device_code: ''
+		const options: RenewTokenRequest = {
+			client_id: '',
+			grant_type: '',
+			refresh_token: ''
 		}
 		void webAuth.renewToken(options);
 		expect(renewTokenSpy).toHaveBeenCalledWith(options);
@@ -511,17 +504,12 @@ describe('Token service functions', () => {
 	
 	test('getAccessToken', () => {
 		const getAccessTokenSpy = jest.spyOn(TokenService, 'getAccessToken').mockImplementation();
-		const options: AccessTokenRequest = {
-			user_agent: '',
-			ip_address: '',
-			accept_language: '',
-			lat: '',
-			lng: '',
-			finger_print: '',
-			referrer: '',
-			pre_login_id: '',
-			login_type: '',
-			device_code: ''
+		const options: GetAccessTokenRequest = {
+			code: '',
+			code_verifier: '',
+			client_id: '',
+			grant_type: '',
+			redirect_uri: ''
 		}
 		void webAuth.getAccessToken(options);
 		expect(getAccessTokenSpy).toHaveBeenCalledWith(options);

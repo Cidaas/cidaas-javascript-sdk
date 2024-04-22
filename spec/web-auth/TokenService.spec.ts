@@ -1,6 +1,6 @@
-import { AccessTokenRequest, TokenIntrospectionEntity } from '../../src/main/token/token.model';
+import { AccessTokenRequest, GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionEntity } from '../../src/main/token/token.model';
 import { Helper } from '../../src/main/web-auth/Helper';
-import * as TokenService from '../../src/main/web-auth/TokenService';
+import * as TokenService from '../../src/main/token/TokenService';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/token-srv`;
@@ -13,17 +13,9 @@ beforeAll(() => {
 });
 
 test('renewToken', () => {
-	const options: AccessTokenRequest = {
-		user_agent: 'user_agent',
-		ip_address: 'ip_address',
-		accept_language: 'accept_language',
-		lat: 'lat',
-		lng: 'lng',
-		finger_print: 'finger_print',
-		referrer: 'referrer',
-		pre_login_id: 'pre_login_id',
-		login_type: 'login_type',
-		device_code: 'device_code',
+	const options: RenewTokenRequest = {
+		client_id: 'client_id',
+		grant_type: 'authorization_code',
 		refresh_token: 'refresh_token'
 	};
 	const serviceURL = `${serviceBaseUrl}/token`;
@@ -33,23 +25,12 @@ test('renewToken', () => {
 
 test('getAccessToken', () => {
 	window.webAuthSettings.disablePKCE = true;
-	const options: AccessTokenRequest = {
-		user_agent: 'user_agent',
-		ip_address: 'ip_address',
-		accept_language: 'accept_language',
-		lat: 'lat',
-		lng: 'lng',
-		finger_print: 'finger_print',
-		referrer: 'referrer',
-		pre_login_id: 'pre_login_id',
-		login_type: 'login_type',
-		device_code: 'device_code',
-		refresh_token: 'refresh_token',
+	const options: GetAccessTokenRequest = {
 		code: 'code',
+		code_verifier: 'code_verifier',
 		client_id: 'client_id',
-		redirect_uri: 'redirect_uri',
 		grant_type: 'authorization_code',
-		code_verifier: 'code_verifier'
+		redirect_uri: 'redirect_uri'
 	}
 	const serviceURL = `${serviceBaseUrl}/token`;
 	void TokenService.getAccessToken(options);

@@ -1,6 +1,6 @@
-import { AccessTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionEntity } from "../token/token.model";
-import { Helper, CustomException } from "./Helper";
-import { JwtHelper } from "./JwtHelper";
+import { AccessTokenRequest, GetAccessTokenRequest, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionEntity } from "./token.model";
+import { Helper, CustomException } from "../web-auth/Helper";
+import { JwtHelper } from "../web-auth/JwtHelper";
 
 /**
  * To get a new token with the grant type refresh_token, call **renewToken()**.
@@ -20,7 +20,7 @@ import { JwtHelper } from "./JwtHelper";
  *   });
  * ```
  */
-export function renewToken(options: AccessTokenRequest) {
+export function renewToken(options: RenewTokenRequest) {
   if (!options.refresh_token) {
     throw new CustomException("refresh_token cannot be empty", 417);
   }
@@ -48,7 +48,7 @@ export function renewToken(options: AccessTokenRequest) {
  *   });
  * ```
  */
-export async function getAccessToken(options: AccessTokenRequest) {
+export async function getAccessToken(options: GetAccessTokenRequest) {
   if (!options.code) {
     throw new CustomException("code cannot be empty", 417);
   }

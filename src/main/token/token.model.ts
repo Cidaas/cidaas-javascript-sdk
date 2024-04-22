@@ -80,6 +80,20 @@ export interface Consent {
     creation_time: string
 }
 
+export interface RenewTokenRequest {
+  client_id: string;
+  grant_type: string;
+  refresh_token: string;
+}
+
+export interface GetAccessTokenRequest {
+  code: string;
+  code_verifier?: string;
+  client_id: string;
+  grant_type: string;
+  redirect_uri: string;
+}
+
 export class AccessTokenRequest {
     grant_type?: string;
     code?: string;

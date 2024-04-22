@@ -10,7 +10,7 @@ import {
 import { Helper, CustomException } from "./Helper";
 import * as LoginService from "./LoginService";
 import * as UserService from "./UserService";
-import * as TokenService from "./TokenService";
+import * as TokenService from "../token/TokenService";
 import * as VerificationService from "./VerificationService";
 import * as ConsentService from "./ConsentService";
 
@@ -34,7 +34,7 @@ import {
   IChangePasswordEntity,
   IUserActivityPayloadEntity,
 } from "./Entities"
-import { AccessTokenRequest, TokenIntrospectionEntity } from '../token/token.model';
+import { AccessTokenRequest, GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionEntity } from '../token/token.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -431,7 +431,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  renewToken(options: AccessTokenRequest) {
+  renewToken(options: RenewTokenRequest) {
     return TokenService.renewToken(options);
   }
 
@@ -440,7 +440,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getAccessToken(options: AccessTokenRequest) {
+  getAccessToken(options: GetAccessTokenRequest) {
     return TokenService.getAccessToken(options);
   }
 
