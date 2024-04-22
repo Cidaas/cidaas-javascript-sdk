@@ -34,7 +34,7 @@ import {
   IChangePasswordEntity,
   IUserActivityPayloadEntity,
 } from "./Entities"
-import { AccessTokenRequest, GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionEntity } from '../token/token.model';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionEntity } from '../token/token.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);

@@ -1,4 +1,4 @@
-import { AccessTokenRequest, GetAccessTokenRequest, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionEntity } from "./token.model";
+import { GetAccessTokenRequest, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionEntity } from "./token.model";
 import { Helper, CustomException } from "../web-auth/Helper";
 import { JwtHelper } from "../web-auth/JwtHelper";
 
