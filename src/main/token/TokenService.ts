@@ -1,4 +1,4 @@
-import { GetAccessTokenRequest, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionEntity } from "./token.model";
+import { GetAccessTokenRequest, LoginPrecheckRequest, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./token.model";
 import { Helper, CustomException } from "../web-auth/Helper";
 import { JwtHelper } from "../web-auth/JwtHelper";
 
@@ -82,9 +82,9 @@ export async function getAccessToken(options: GetAccessTokenRequest) {
  * });
  * ```
  */
-export function validateAccessToken(options: TokenIntrospectionEntity) {
-  if (!options.token || !options.token_type_hint) {
-    throw new CustomException("token or token_type_hint cannot be empty", 417);
+export function validateAccessToken(options: TokenIntrospectionRequest) {
+  if (!options.token) {
+    throw new CustomException("token cannot be empty", 417);
   }
   const _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.token);
@@ -97,7 +97,7 @@ export function validateAccessToken(options: TokenIntrospectionEntity) {
  * ```js
  * const options = {
  *   trackId: "your track id from login",
- *   locale: "your preferred locale",
+ *   locale: "your preferred locale. DEPRECATED as it is not supported anymore. Will be removed in next major release",
  * }
  * 
  * cidaas.loginPrecheck(options)
@@ -109,11 +109,8 @@ export function validateAccessToken(options: TokenIntrospectionEntity) {
  * });
  * ```
  */
-export function loginPrecheck(options: {
-  track_id: string;
-  locale: string;
-}) {
-  const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id + "?acceptLanguage=" + options.locale;
+export function loginPrecheck(options: LoginPrecheckRequest) {
+  const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id;
   return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
 }
 

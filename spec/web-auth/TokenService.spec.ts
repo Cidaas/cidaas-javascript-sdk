@@ -1,4 +1,4 @@
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionEntity } from '../../src/main/token/token.model';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token/token.model';
 import { Helper } from '../../src/main/web-auth/Helper';
 import * as TokenService from '../../src/main/token/TokenService';
 
@@ -38,9 +38,9 @@ test('getAccessToken', () => {
 });
 
 test('validateAccessToken', () => {
-	const options: TokenIntrospectionEntity = {
+	const options: TokenIntrospectionRequest = {
 		token: 'token',
-		token_type_hint: 'token_type_hint',
+		tokenTypeHint: 'token_type_hint',
 		strictGroupValidation: false,
 		strictScopeValidation: false,
 		strictRoleValidation: false,
@@ -54,9 +54,8 @@ test('validateAccessToken', () => {
 test('loginPrecheck', () => {
 	const options = {
 		track_id: 'track_id',
-		locale: 'locale'
 	};
-	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${options.track_id}?acceptLanguage=${options.locale}`;
+	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${options.track_id}`;
 	void TokenService.loginPrecheck(options);
 	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });

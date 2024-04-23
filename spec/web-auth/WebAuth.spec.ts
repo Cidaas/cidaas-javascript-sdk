@@ -1,5 +1,5 @@
 import { WebAuth } from '../../src/main';
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionEntity } from '../../src/main/token/token.model';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token/token.model';
 import * as ConsentService from '../../src/main/web-auth/ConsentService';
 import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IConsentAcceptEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/web-auth/Helper';
@@ -517,7 +517,7 @@ describe('Token service functions', () => {
 	
 	test('validateAccessToken', () => {
 		const validateAccessTokenSpy = jest.spyOn(TokenService, 'validateAccessToken').mockImplementation();
-		const options: TokenIntrospectionEntity = {
+		const options: TokenIntrospectionRequest = {
 			token: '',
 			strictGroupValidation: false,
 			strictScopeValidation: false,
@@ -531,8 +531,7 @@ describe('Token service functions', () => {
 	test('loginPrecheck', () => {
 		const loginPrecheckSpy = jest.spyOn(TokenService, 'loginPrecheck').mockImplementation();
 		const options = {
-			track_id: '',
-			locale: ''
+			track_id: ''
 		};
 		void webAuth.loginPrecheck(options);
 		expect(loginPrecheckSpy).toHaveBeenCalledWith(options);

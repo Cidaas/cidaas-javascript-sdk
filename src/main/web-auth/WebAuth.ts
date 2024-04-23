@@ -34,7 +34,7 @@ import {
   IChangePasswordEntity,
   IUserActivityPayloadEntity,
 } from "./Entities"
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionEntity } from '../token/token.model';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token/token.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -449,7 +449,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  validateAccessToken(options: TokenIntrospectionEntity) {
+  validateAccessToken(options: TokenIntrospectionRequest) {
     return TokenService.validateAccessToken(options);
   }
 
@@ -599,7 +599,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  loginPrecheck(options: { track_id: string; locale: string; }) {
+  loginPrecheck(options: { track_id: string; locale?: string; }) {
     return TokenService.loginPrecheck(options);
   }
 
