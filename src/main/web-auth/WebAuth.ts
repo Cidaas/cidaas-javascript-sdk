@@ -10,7 +10,7 @@ import {
 import { Helper, CustomException } from "./Helper";
 import * as LoginService from "./LoginService";
 import * as UserService from "./UserService";
-import * as TokenService from "../token/TokenService";
+import * as TokenService from "../token-service/TokenService";
 import * as VerificationService from "./VerificationService";
 import * as ConsentService from "./ConsentService";
 
@@ -34,7 +34,7 @@ import {
   IChangePasswordEntity,
   IUserActivityPayloadEntity,
 } from "./Entities"
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token/token.model';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/token.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
