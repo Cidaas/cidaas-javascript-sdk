@@ -1,13 +1,14 @@
 import { WebAuth } from '../../src/main';
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token/token.model';
-import * as ConsentService from '../../src/main/web-auth/ConsentService';
-import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IConsentAcceptEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token-service/token.model';
+import * as ConsentService from '../../src/main/consent-service/ConsentService';
+import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/web-auth/Helper';
 import * as LoginService from '../../src/main/web-auth/LoginService';
-import * as TokenService from '../../src/main/token/TokenService';
+import * as TokenService from '../../src/main/token-service/TokenService';
 import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
+import { AcceptConsentRequest } from '../../src/main/consent-service/consent.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -879,14 +880,13 @@ describe('Consent service functions', () => {
 	
 	test('acceptConsent', () => {
 		const acceptConsentSpy = jest.spyOn(ConsentService, 'acceptConsent').mockImplementation();
-		const options: IConsentAcceptEntity = {
+		const options: AcceptConsentRequest = {
 			client_id: '',
 			consent_id: '',
 			consent_version_id: '',
 			sub: '',
 			scopes: [],
 			url: '',
-			matcher: undefined,
 			field_key: '',
 			accepted_fields: [],
 			accepted_by: '',

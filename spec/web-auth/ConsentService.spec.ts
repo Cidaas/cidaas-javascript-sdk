@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
-import * as ConsentService from '../../src/main/web-auth/ConsentService';
+import * as ConsentService from '../../src/main/consent-service/ConsentService';
 import { Helper } from '../../src/main/web-auth/Helper';
-import { IConsentAcceptEntity } from '../../src/main/web-auth/Entities';
+import { AcceptConsentRequest } from '../../src/main/consent-service/consent.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/consent-management-srv/v2/consent`;
@@ -24,14 +24,13 @@ test('getConsentDetails', () => {
 });
 
 test('acceptConsent', () => {
-  const option: IConsentAcceptEntity = {
+  const option: AcceptConsentRequest = {
     client_id: 'client_id',
     consent_id: 'consent_id',
     consent_version_id: 'consent_id',
     sub: 'sub',
     scopes: ['scopes'],
     url: 'url',
-    matcher: null,
     field_key: 'field_key',
     accepted_fields: ['accepted_fields'],
     accepted_by: 'accepted_by',

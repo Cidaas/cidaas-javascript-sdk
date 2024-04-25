@@ -1,5 +1,5 @@
-import { IConsentAcceptEntity } from "./Entities"
-import { Helper } from "./Helper";
+import { Helper } from "../web-auth/Helper";
+import { AcceptConsentRequest, GetConsentDetailsRequest } from "./consent.model";
 
 /**
  * To get consent details , call **getConsentDetails()**.
@@ -19,11 +19,7 @@ import { Helper } from "./Helper";
  * });
  * ```
  */
-export function getConsentDetails(options: {
-  consent_id: string;
-  consent_version_id: string;
-  sub: string;
-}) {
+export function getConsentDetails(options: GetConsentDetailsRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST");
 }
@@ -44,7 +40,7 @@ export function getConsentDetails(options: {
  * });
  * ```
  */
-export function acceptConsent(options: IConsentAcceptEntity) {
+export function acceptConsent(options: AcceptConsentRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST");
 }
