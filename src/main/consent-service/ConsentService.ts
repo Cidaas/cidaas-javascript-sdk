@@ -1,5 +1,5 @@
 import { Helper } from "../web-auth/Helper";
-import { AcceptConsentRequest, GetConsentDetailsRequest } from "./consent.model";
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest } from "./consent.model";
 
 /**
  * To get consent details , call **getConsentDetails()**.
@@ -81,11 +81,7 @@ export function getConsentVersionDetails(options: {
  *  });
  * ```
  */
-export function acceptScopeConsent(options: {
-  client_id: string;
-  sub: string;
-  scopes: string[];
-}) {
+export function acceptScopeConsent(options: AcceptScopeConsentRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST");
 }
@@ -101,7 +97,7 @@ export function acceptScopeConsent(options: {
  *  });
  * ```
  */
-export function acceptClaimConsent(options: { client_id: string; sub: string; accepted_claims: string[]; }) {
+export function acceptClaimConsent(options: AcceptClaimConsentRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST");
 }

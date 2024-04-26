@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import * as ConsentService from '../../src/main/consent-service/ConsentService';
 import { Helper } from '../../src/main/web-auth/Helper';
-import { AcceptConsentRequest } from '../../src/main/consent-service/consent.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest } from '../../src/main/consent-service/consent.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/consent-management-srv/v2/consent`;
@@ -57,7 +57,7 @@ test('getConsentVersionDetails', () => {
 });
 
 test('acceptScopeConsent', () => {
-  const option = {
+  const option: AcceptScopeConsentRequest = {
     client_id: 'client_id',
     sub: 'sub',
     scopes: ['scopes']
@@ -68,7 +68,7 @@ test('acceptScopeConsent', () => {
 });
 
 test('acceptClaimConsent', () => {
-  const option = {
+  const option: AcceptClaimConsentRequest = {
     client_id: 'client_id',
     sub: 'sub',
     accepted_claims: ['accepted_claims']

@@ -8,7 +8,7 @@ import * as TokenService from '../../src/main/token-service/TokenService';
 import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
-import { AcceptConsentRequest } from '../../src/main/consent-service/consent.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest } from '../../src/main/consent-service/consent.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -913,7 +913,7 @@ describe('Consent service functions', () => {
 	
 	test('acceptScopeConsent', () => {
 		const acceptScopeConsentSpy = jest.spyOn(ConsentService, 'acceptScopeConsent').mockImplementation();
-		const options = {
+		const options: AcceptScopeConsentRequest = {
 			client_id: '',
 			sub: '',
 			scopes: ['']
@@ -924,7 +924,7 @@ describe('Consent service functions', () => {
 	
 	test('acceptClaimConsent', () => {
 		const acceptClaimConsentSpy = jest.spyOn(ConsentService, 'acceptClaimConsent').mockImplementation();
-		const options = {
+		const options: AcceptClaimConsentRequest = {
 			client_id: '',
 			sub: '',
 			accepted_claims: ['']

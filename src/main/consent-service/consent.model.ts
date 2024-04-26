@@ -21,3 +21,16 @@ export interface AcceptConsentRequest {
     action_id?: string;
     revoked?: boolean;
   }
+
+  export interface AcceptScopeConsentRequest {
+    client_id: string;
+    sub: string;
+    scopes: string[];
+  }
+
+  export interface AcceptClaimConsentRequest {
+    client_id: string;
+    sub: string;
+    accepted_claims: string[];
+  }
+  
