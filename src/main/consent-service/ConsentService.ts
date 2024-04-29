@@ -1,5 +1,5 @@
 import { Helper } from "../web-auth/Helper";
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest } from "./consent.model";
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from "./consent.model";
 
 /**
  * To get consent details , call **getConsentDetails()**.
@@ -61,12 +61,11 @@ export function acceptConsent(options: AcceptConsentRequest) {
  * });
  * ```
  */
-export function getConsentVersionDetails(options: {
-  consentid: string;
-  locale: string;
-  access_token: string;
-}) {
-  const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.consentid + "?locale=" + options.locale;
+export function getConsentVersionDetails(options: GetConsentVersionDetailsRequest) {
+  let _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.consentid;
+  if (options.locale) {
+    _serviceURL += "?locale=" + options.locale;
+  }
   return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", options.access_token);
 }
 
@@ -119,7 +118,7 @@ export function acceptClaimConsent(options: AcceptClaimConsentRequest) {
  *  }); 
  * ```
  */
-export function revokeClaimConsent(options: { access_token?: string; client_id: string; sub: string; revoked_claims: string[]; }) {
+export function revokeClaimConsent(options: RevokeClaimConsentRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.access_token);
 }

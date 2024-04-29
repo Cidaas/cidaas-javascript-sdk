@@ -8,7 +8,7 @@ import * as TokenService from '../../src/main/token-service/TokenService';
 import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest } from '../../src/main/consent-service/consent.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/consent.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -902,7 +902,7 @@ describe('Consent service functions', () => {
 	
 	test('getConsentVersionDetails', () => {
 		const getConsentVersionDetailsSpy = jest.spyOn(ConsentService, 'getConsentVersionDetails').mockImplementation();
-		const options = {
+		const options: GetConsentVersionDetailsRequest = {
 			consentid: '',
 			locale: '',
 			access_token: ''
@@ -935,7 +935,8 @@ describe('Consent service functions', () => {
 	
 	test('revokeClaimConsent', () => {
 		const revokeClaimConsentSpy = jest.spyOn(ConsentService, 'revokeClaimConsent').mockImplementation();
-		const options = {
+		const options: RevokeClaimConsentRequest = {
+			access_token: '',
 			client_id: '',
 			sub: '',
 			revoked_claims: ['']

@@ -34,7 +34,7 @@ import {
   IUserActivityPayloadEntity,
 } from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/token.model';
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest } from '../consent-service/consent.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/consent.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -608,7 +608,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getConsentVersionDetails(options: { consentid: string; locale: string; access_token: string; }) {
+  getConsentVersionDetails(options: GetConsentVersionDetailsRequest) {
     return ConsentService.getConsentVersionDetails(options);
   }
 
@@ -635,7 +635,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  revokeClaimConsent(options: { client_id: string; sub: string; revoked_claims: string[]; }) {
+  revokeClaimConsent(options: RevokeClaimConsentRequest) {
     return ConsentService.revokeClaimConsent(options);
   }
 

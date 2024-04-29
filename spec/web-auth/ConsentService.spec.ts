@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import * as ConsentService from '../../src/main/consent-service/ConsentService';
 import { Helper } from '../../src/main/web-auth/Helper';
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest } from '../../src/main/consent-service/consent.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/consent.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/consent-management-srv/v2/consent`;
@@ -46,10 +46,9 @@ test('acceptConsent', () => {
 });
 
 test('getConsentVersionDetails', () => {
-  const option = {
+  const option: GetConsentVersionDetailsRequest = {
     consentid: 'consentid',
-    locale: 'locale',
-    access_token: 'access_token'
+    locale: 'locale'
   };
   const serviceURL = `${serviceBaseUrl}/versions/details/${option.consentid}?locale=${option.locale}`;
   void ConsentService.getConsentVersionDetails(option);
@@ -79,7 +78,7 @@ test('acceptClaimConsent', () => {
 });
 
 test('revokeClaimConsent', () => {
-  const option = {
+  const option: RevokeClaimConsentRequest = {
     access_token: 'access_token',
     client_id: 'client_id',
     sub: 'sub',
