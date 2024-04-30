@@ -1,6 +1,7 @@
-import * as LoginService from '../../src/main/web-auth/LoginService';
+import * as LoginService from '../../src/main/login-service/LoginService';
 import { Helper } from "../../src/main/web-auth/Helper";
-import { IChangePasswordEntity, IUserEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
+import { IChangePasswordEntity, IUserEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
+import { LoginWithCredentialsRequest } from '../../src/main/login-service/login.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;
@@ -13,7 +14,7 @@ beforeAll(() => {
 });
 
 test('loginWithCredentials', () => {
-  const option: LoginFormRequestEntity = {
+  const option: LoginWithCredentialsRequest = {
     username: 'username',
     password: 'password',
     requestId: 'requestId'

@@ -1,10 +1,10 @@
-import { Helper, CustomException } from "./Helper";
+import { Helper, CustomException } from "../web-auth/Helper";
 import {
   IUserEntity,
-  LoginFormRequestEntity,
   PhysicalVerificationLoginRequest,
   IChangePasswordEntity
-} from "./Entities"
+} from "../web-auth/Entities"
+import { LoginWithCredentialsRequest } from "./login.model";
 
 /**
  * To login with your credentials, call **loginWithCredentials()**. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk.
@@ -19,7 +19,7 @@ import {
  * });
  * ```
  */
-export function loginWithCredentials(options: LoginFormRequestEntity) {
+export function loginWithCredentials(options: LoginWithCredentialsRequest) {
   try {
     const url = window.webAuthSettings.authority + "/login-srv/login";
     const form = Helper.createForm(url, options)

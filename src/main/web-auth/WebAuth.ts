@@ -8,7 +8,7 @@ import {
   OidcManager, LoginRequestOptions, User, LogoutResponse
 } from '../authentication';
 import { Helper, CustomException } from "./Helper";
-import * as LoginService from "./LoginService";
+import * as LoginService from "../login-service/LoginService";
 import * as UserService from "./UserService";
 import * as TokenService from "../token-service/TokenService";
 import * as VerificationService from "./VerificationService";
@@ -25,7 +25,6 @@ import {
   IUserLinkEntity,
   ChangePasswordEntity,
   IAuthVerificationAuthenticationRequestEntity,
-  LoginFormRequestEntity,
   AccountVerificationRequestEntity,
   ValidateResetPasswordEntity,
   AcceptResetPasswordEntity,
@@ -35,6 +34,7 @@ import {
 } from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/token.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/consent.model';
+import { LoginWithCredentialsRequest } from '../login-service/login.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -457,7 +457,7 @@ export class WebAuth {
    * login with username and password
    * @param options 
    */
-  loginWithCredentials(options: LoginFormRequestEntity) {
+  loginWithCredentials(options: LoginWithCredentialsRequest) {
     LoginService.loginWithCredentials(options);
   }
 

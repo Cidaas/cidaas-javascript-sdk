@@ -1,14 +1,15 @@
 import { WebAuth } from '../../src/main';
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token-service/token.model';
 import * as ConsentService from '../../src/main/consent-service/ConsentService';
-import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
+import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/web-auth/Helper';
-import * as LoginService from '../../src/main/web-auth/LoginService';
+import * as LoginService from '../../src/main/login-service/LoginService';
 import * as TokenService from '../../src/main/token-service/TokenService';
 import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/consent.model';
+import { LoginWithCredentialsRequest } from '../../src/main/login-service/login.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -580,7 +581,7 @@ describe('Token service functions', () => {
 describe('Login service functions', () => {
 	test('loginWithCredentials', () => {
 		const loginWithCredentialsSpy = jest.spyOn(LoginService, 'loginWithCredentials').mockImplementation();
-		const options: LoginFormRequestEntity = {
+		const options: LoginWithCredentialsRequest = {
 			username: '',
 			password: '',
 			requestId: ''
