@@ -4,7 +4,7 @@ import {
   PhysicalVerificationLoginRequest,
   IChangePasswordEntity
 } from "../web-auth/Entities"
-import { LoginWithCredentialsRequest } from "./login.model";
+import { LoginWithCredentialsRequest, socialProviderPathParameter, socialProviderQueryParameter } from "./login.model";
 
 /**
  * To login with your credentials, call **loginWithCredentials()**. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk.
@@ -41,10 +41,7 @@ export function loginWithCredentials(options: LoginWithCredentialsRequest) {
  * });
  * ```
  */
-export function loginWithSocial(
-  options: { provider: string; requestId: string; },
-  queryParams: { dc: string; device_fp: string }
-) {
+export function loginWithSocial(options: socialProviderPathParameter, queryParams?: socialProviderQueryParameter) {
   try {
     let _serviceURL = window.webAuthSettings.authority + "/login-srv/social/login/" + options.provider.toLowerCase() + "/" + options.requestId;
     if (queryParams && queryParams.dc && queryParams.device_fp) {
@@ -62,18 +59,16 @@ export function loginWithSocial(
  * Note: giving the queryParams is not required.
  * ```js
  * queryParams = {
- *   dc: dc,
- *   device_fp: device_fp
- * 
+ *   dc: 'dc',
+ *   device_fp: 'device_fp'
+ * }
  * cidaas.registerWithSocial({
  *   provider: 'facebook',
  *   requestId: 'your requestId',
  * }, queryParams);
  * ```
  */
-export function registerWithSocial(
-  options: { provider: string; requestId: string; },
-  queryParams: { dc: string; device_fp: string }) {
+export function registerWithSocial(options: socialProviderPathParameter, queryParams?: socialProviderQueryParameter) {
   try {
     let _serviceURL = window.webAuthSettings.authority + "/login-srv/social/register/" + options.provider.toLowerCase() + "/" + options.requestId;
     if (queryParams && queryParams.dc && queryParams.device_fp) {

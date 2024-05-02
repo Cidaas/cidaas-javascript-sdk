@@ -1,7 +1,7 @@
 import * as LoginService from '../../src/main/login-service/LoginService';
 import { Helper } from "../../src/main/web-auth/Helper";
 import { IChangePasswordEntity, IUserEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
-import { LoginWithCredentialsRequest } from '../../src/main/login-service/login.model';
+import { LoginWithCredentialsRequest, socialProviderPathParameter, socialProviderQueryParameter } from '../../src/main/login-service/login.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;
@@ -29,11 +29,11 @@ test('loginWithSocial', () => {
   Object.defineProperty(window, 'location', {
     value: {},
   });
-  const options = { 
+  const options: socialProviderPathParameter = { 
     provider: 'provider',
     requestId: 'requestId' 
   };
-  const queryParams = { 
+  const queryParams: socialProviderQueryParameter = { 
     dc: 'dc',
     device_fp: 'device_fp' 
   };
@@ -46,11 +46,11 @@ test('registerWithSocial', () => {
   Object.defineProperty(window, 'location', {
     value: {},
   });
-  const options = { 
+  const options: socialProviderPathParameter = { 
     provider: 'provider',
     requestId: 'requestId' 
   };
-  const queryParams = { 
+  const queryParams: socialProviderQueryParameter = { 
     dc: 'dc',
     device_fp: 'device_fp' 
   };

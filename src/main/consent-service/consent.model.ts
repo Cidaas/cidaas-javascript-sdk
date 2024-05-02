@@ -48,7 +48,7 @@ export interface AcceptConsentRequest {
   export interface GetConsentVersionDetailsRequest {
     /** Unique identifier for requested consent */
     consentid: string;
-    /** Response language, which will be delivered if exist (configured in admin ui) */
+    /** Response language, which is configured in cidaas admin ui */
     locale?: string;
     /** DEPRECATED: Access Token is not needed for Getting ConsentVersionDetailsRequest in the current cidaas service. It will be removed in the next Major release */
     access_token?: string;

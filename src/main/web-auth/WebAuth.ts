@@ -34,7 +34,7 @@ import {
 } from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/token.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/consent.model';
-import { LoginWithCredentialsRequest } from '../login-service/login.model';
+import { LoginWithCredentialsRequest, socialProviderPathParameter, socialProviderQueryParameter } from '../login-service/login.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -466,7 +466,7 @@ export class WebAuth {
    * @param options 
    * @param queryParams 
    */
-  loginWithSocial(options: { provider: string; requestId: string; }, queryParams: { dc: string; device_fp: string }) {
+  loginWithSocial(options: socialProviderPathParameter, queryParams?: socialProviderQueryParameter) {
     LoginService.loginWithSocial(options, queryParams)
   }
 
@@ -475,7 +475,7 @@ export class WebAuth {
    * @param options 
    * @param queryParams 
    */
-  registerWithSocial(options: { provider: string; requestId: string; }, queryParams: { dc: string; device_fp: string }) {
+  registerWithSocial(options: socialProviderPathParameter, queryParams?: socialProviderQueryParameter) {
     LoginService.registerWithSocial(options, queryParams)
   }
 

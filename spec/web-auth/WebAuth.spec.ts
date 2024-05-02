@@ -9,7 +9,7 @@ import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/consent.model';
-import { LoginWithCredentialsRequest } from '../../src/main/login-service/login.model';
+import { LoginWithCredentialsRequest, socialProviderPathParameter, socialProviderQueryParameter } from '../../src/main/login-service/login.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -592,11 +592,11 @@ describe('Login service functions', () => {
 	
 	test('loginWithSocial', () => {
 		const loginWithSocialSpy = jest.spyOn(LoginService, 'loginWithSocial').mockImplementation();
-		const options = {
+		const options: socialProviderPathParameter = {
 			provider: '',
 			requestId: ''
 		}
-		const queryParams = {
+		const queryParams: socialProviderQueryParameter = {
 			dc: '',
 			device_fp: ''
 		}
@@ -606,11 +606,11 @@ describe('Login service functions', () => {
 	
 	test('registerWithSocial', () => {
 		const registerWithSocialSpy = jest.spyOn(LoginService, 'registerWithSocial').mockImplementation();
-		const options = {
+		const options: socialProviderPathParameter = {
 			provider: '',
 			requestId: ''
 		}
-		const queryParams = {
+		const queryParams: socialProviderQueryParameter = {
 			dc: '',
 			device_fp: ''
 		}
