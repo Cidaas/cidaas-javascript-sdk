@@ -1,4 +1,4 @@
-import { Helper } from "../web-auth/Helper";
+import { Helper } from "../common/Helper";
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from "./consent.model";
 
 /**

@@ -1,7 +1,8 @@
 import * as LoginService from '../../src/main/login-service/LoginService';
-import { Helper } from "../../src/main/web-auth/Helper";
-import { IChangePasswordEntity, IUserEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
-import { LoginWithCredentialsRequest, socialProviderPathParameter, socialProviderQueryParameter } from '../../src/main/login-service/login.model';
+import { Helper } from "../../src/main/common/Helper";
+import { IChangePasswordEntity, IUserEntity } from '../../src/main/web-auth/Entities';
+import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/login.model';
+import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/common.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;
@@ -29,11 +30,11 @@ test('loginWithSocial', () => {
   Object.defineProperty(window, 'location', {
     value: {},
   });
-  const options: socialProviderPathParameter = { 
+  const options: SocialProviderPathParameter = { 
     provider: 'provider',
     requestId: 'requestId' 
   };
-  const queryParams: socialProviderQueryParameter = { 
+  const queryParams: SocialProviderQueryParameter = { 
     dc: 'dc',
     device_fp: 'device_fp' 
   };
@@ -46,11 +47,11 @@ test('registerWithSocial', () => {
   Object.defineProperty(window, 'location', {
     value: {},
   });
-  const options: socialProviderPathParameter = { 
+  const options: SocialProviderPathParameter = { 
     provider: 'provider',
     requestId: 'requestId' 
   };
-  const queryParams: socialProviderQueryParameter = { 
+  const queryParams: SocialProviderQueryParameter = { 
     dc: 'dc',
     device_fp: 'device_fp' 
   };
@@ -60,11 +61,11 @@ test('registerWithSocial', () => {
 });
 
 test('passwordlessLogin', () => {
-  const option: PhysicalVerificationLoginRequest = {
+  const option: PasswordlessLoginRequest = {
     requestId: 'requestId',
     sub: 'sub',
     status_id: 'statusId',
-    verificationType: 'verificationType'
+    verificationType: VerificationType.EMAIL
   };
   const serviceURL = `${serviceBaseUrl}/verification/login`;
   LoginService.passwordlessLogin(option);
@@ -73,7 +74,7 @@ test('passwordlessLogin', () => {
 });
 
 test('consentContinue', () => {
-  const option = {
+  const option: LoginPrecheckRequest = {
     track_id: 'track_id'
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
@@ -83,9 +84,7 @@ test('consentContinue', () => {
 });
 
 test('mfaContinue', () => {
-  const option = {
-    sub: 'sub',
-    requestId: 'requestID',
+  const option: LoginPrecheckRequest = {
     track_id: 'track_id',
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;

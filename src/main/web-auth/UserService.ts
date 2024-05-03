@@ -7,7 +7,7 @@ import {
   ValidateResetPasswordEntity,
   AcceptResetPasswordEntity
 } from "./Entities"
-import { Helper, CustomException } from "./Helper";
+import { Helper, CustomException } from "../common/Helper";
 
 /**
  * To get the user profile information by using cidaas internal api, call **getUserProfile()**.

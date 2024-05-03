@@ -1,5 +1,5 @@
 import { AcceptResetPasswordEntity, ChangePasswordEntity, FindUserEntity, IUserLinkEntity, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
-import { Helper } from '../../src/main/web-auth/Helper';
+import { Helper } from '../../src/main/common/Helper';
 import * as UserService from '../../src/main/web-auth/UserService';
 
 const authority = 'baseURL';

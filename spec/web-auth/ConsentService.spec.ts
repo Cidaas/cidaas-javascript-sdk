@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import * as ConsentService from '../../src/main/consent-service/ConsentService';
-import { Helper } from '../../src/main/web-auth/Helper';
+import { Helper } from '../../src/main/common/Helper';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/consent.model';
 
 const authority = 'baseURL';

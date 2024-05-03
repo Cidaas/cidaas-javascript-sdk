@@ -94,10 +94,6 @@ export interface GetAccessTokenRequest {
   redirect_uri: string;
 }
 
-export interface LoginPrecheckRequest {
-  track_id: string;
-}
-
 export class TokenIntrospectionRequest {
   token: string;
   tokenTypeHint?: string;

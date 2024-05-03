@@ -5,7 +5,7 @@ import {
   IAuthVerificationAuthenticationRequestEntity,
   AccountVerificationRequestEntity,
 } from "./Entities"
-import { Helper, CustomException } from "./Helper";
+import { Helper, CustomException } from "../common/Helper";
 
 /**
    * To initiate the account verification, call **initiateAccountVerification()**. This will send verification code  email or sms or ivr based on the verificationMedium you mentioned.

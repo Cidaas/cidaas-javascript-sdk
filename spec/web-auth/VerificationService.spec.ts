@@ -1,5 +1,5 @@
 import * as VerificationService  from '../../src/main/web-auth/VerificationService';
-import { Helper } from "../../src/main/web-auth/Helper";
+import { Helper } from "../../src/main/common/Helper";
 import { AccountVerificationRequestEntity, IAuthVerificationAuthenticationRequestEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity } from '../../src/main/web-auth/Entities';
 
 

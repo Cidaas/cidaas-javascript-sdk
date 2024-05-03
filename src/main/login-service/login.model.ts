@@ -1,3 +1,5 @@
+import { VerificationType } from "../common/common.model";
+
 export interface LoginWithCredentialsRequest {
     /** User identifier used to login e.g. username, email or mobile number */
     username: string;
@@ -41,16 +43,35 @@ export enum UsernameType {
     Custom = 'custom'
 }
 
-export interface socialProviderPathParameter {
+export interface SocialProviderPathParameter {
     /** Request id returned from the authorization call */
     requestId: string;
     /** Social login provider configured in cidaas admin ui */
     provider: string;
 }
 
-export interface socialProviderQueryParameter {
+export interface SocialProviderQueryParameter {
     /** Device capacity */
     dc?: string;
     /** Device finger print */
     device_fp?: string;
+}
+
+export interface PasswordlessLoginRequest {
+    /** Request id returned from the authorization call */
+    requestId: string;
+    /** Status id returned from MFA authentication */
+    status_id: string;
+    /** Type of verification to be used to authenticate user */
+    verificationType: VerificationType;
+    /** 
+     * Masked sub (id of user), who will accept the consent. 
+     * Either sub or q have to be provided, depends on what is given from the query parameter. 
+     * */
+    sub?: string;
+    /** 
+     * Masked sub (id of user), who will accept the consent. 
+     * Either sub or q have to be provided, depends on what is given from the query parameter. 
+     * */
+    q?: string;
 }

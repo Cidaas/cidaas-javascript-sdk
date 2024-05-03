@@ -7,7 +7,7 @@ import {
   SilentSignInOptions,
   OidcManager, LoginRequestOptions, User, LogoutResponse
 } from '../authentication';
-import { Helper, CustomException } from "./Helper";
+import { Helper, CustomException } from "../common/Helper";
 import * as LoginService from "../login-service/LoginService";
 import * as UserService from "./UserService";
 import * as TokenService from "../token-service/TokenService";
@@ -34,7 +34,8 @@ import {
 } from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/token.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/consent.model';
-import { LoginWithCredentialsRequest, socialProviderPathParameter, socialProviderQueryParameter } from '../login-service/login.model';
+import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/login.model';
+import { LoginPrecheckRequest } from '../common/common.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -466,7 +467,7 @@ export class WebAuth {
    * @param options 
    * @param queryParams 
    */
-  loginWithSocial(options: socialProviderPathParameter, queryParams?: socialProviderQueryParameter) {
+  loginWithSocial(options: SocialProviderPathParameter, queryParams?: SocialProviderQueryParameter) {
     LoginService.loginWithSocial(options, queryParams)
   }
 
@@ -475,7 +476,7 @@ export class WebAuth {
    * @param options 
    * @param queryParams 
    */
-  registerWithSocial(options: socialProviderPathParameter, queryParams?: socialProviderQueryParameter) {
+  registerWithSocial(options: SocialProviderPathParameter, queryParams?: SocialProviderQueryParameter) {
     LoginService.registerWithSocial(options, queryParams)
   }
 
@@ -572,7 +573,7 @@ export class WebAuth {
    * passwordless login
    * @param options 
    */
-  passwordlessLogin(options: PhysicalVerificationLoginRequest) {
+  passwordlessLogin(options: PasswordlessLoginRequest) {
     LoginService.passwordlessLogin(options);
   }
 
@@ -669,17 +670,16 @@ export class WebAuth {
    * consent continue login
    * @param options 
    */
-  consentContinue(options: {
-    track_id: string;
-  }) {
+  consentContinue(options: LoginPrecheckRequest) {
     LoginService.consentContinue(options)
   }
 
   /**
    * mfa continue login
+   * options: PhysicalVerificationLoginRequest is not needed anymore. It is now DEPRECATED and will be removed in the next major release
    * @param options 
    */
-  mfaContinue(options: PhysicalVerificationLoginRequest & { track_id: string }) {
+  mfaContinue(options: PhysicalVerificationLoginRequest & LoginPrecheckRequest) {
     LoginService.mfaContinue(options);
   }
 

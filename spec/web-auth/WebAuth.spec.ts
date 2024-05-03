@@ -2,14 +2,15 @@ import { WebAuth } from '../../src/main';
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token-service/token.model';
 import * as ConsentService from '../../src/main/consent-service/ConsentService';
 import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
-import { Helper } from '../../src/main/web-auth/Helper';
+import { Helper } from '../../src/main/common/Helper';
 import * as LoginService from '../../src/main/login-service/LoginService';
 import * as TokenService from '../../src/main/token-service/TokenService';
 import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/consent.model';
-import { LoginWithCredentialsRequest, socialProviderPathParameter, socialProviderQueryParameter } from '../../src/main/login-service/login.model';
+import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/login.model';
+import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/common.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -592,11 +593,11 @@ describe('Login service functions', () => {
 	
 	test('loginWithSocial', () => {
 		const loginWithSocialSpy = jest.spyOn(LoginService, 'loginWithSocial').mockImplementation();
-		const options: socialProviderPathParameter = {
+		const options: SocialProviderPathParameter = {
 			provider: '',
 			requestId: ''
 		}
-		const queryParams: socialProviderQueryParameter = {
+		const queryParams: SocialProviderQueryParameter = {
 			dc: '',
 			device_fp: ''
 		}
@@ -606,11 +607,11 @@ describe('Login service functions', () => {
 	
 	test('registerWithSocial', () => {
 		const registerWithSocialSpy = jest.spyOn(LoginService, 'registerWithSocial').mockImplementation();
-		const options: socialProviderPathParameter = {
+		const options: SocialProviderPathParameter = {
 			provider: '',
 			requestId: ''
 		}
-		const queryParams: socialProviderQueryParameter = {
+		const queryParams: SocialProviderQueryParameter = {
 			dc: '',
 			device_fp: ''
 		}
@@ -620,27 +621,32 @@ describe('Login service functions', () => {
 	
 	test('passwordlessLogin', () => {
 		const passwordlessLoginSpy = jest.spyOn(LoginService, 'passwordlessLogin').mockImplementation();
-		const options: PhysicalVerificationLoginRequest = {};
+		const options: PasswordlessLoginRequest = {
+			requestId: 'requestId',
+			sub: 'sub',
+			status_id: 'statusId',
+			verificationType: VerificationType.EMAIL
+		};
 		webAuth.passwordlessLogin(options);
 		expect(passwordlessLoginSpy).toHaveBeenCalledWith(options);
 	});
 
 	test('consentContinue', () => {
 		const consentContinueSpy = jest.spyOn(LoginService, 'consentContinue').mockImplementation();
-		const options = {
+		const option: LoginPrecheckRequest = {
 			track_id: ''
 		};
-		webAuth.consentContinue(options);
-		expect(consentContinueSpy).toHaveBeenCalledWith(options);
+		webAuth.consentContinue(option);
+		expect(consentContinueSpy).toHaveBeenCalledWith(option);
 	});
 
 	test('mfaContinue', () => {
 		const mfaContinueSpy = jest.spyOn(LoginService, 'mfaContinue').mockImplementation();
-		const options = {
+		const option: LoginPrecheckRequest = {
 			track_id: ''
 		};
-		webAuth.mfaContinue(options);
-		expect(mfaContinueSpy).toHaveBeenCalledWith(options);
+		webAuth.mfaContinue(option);
+		expect(mfaContinueSpy).toHaveBeenCalledWith(option);
 	});
 
 	test('firstTimeChangePassword', () => {

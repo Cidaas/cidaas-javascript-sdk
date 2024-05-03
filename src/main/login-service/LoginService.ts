@@ -1,10 +1,11 @@
-import { Helper, CustomException } from "../web-auth/Helper";
+import { Helper, CustomException } from "../common/Helper";
+import { LoginPrecheckRequest } from "../common/common.model";
 import {
   IUserEntity,
   PhysicalVerificationLoginRequest,
   IChangePasswordEntity
 } from "../web-auth/Entities"
-import { LoginWithCredentialsRequest, socialProviderPathParameter, socialProviderQueryParameter } from "./login.model";
+import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from "./login.model";
 
 /**
  * To login with your credentials, call **loginWithCredentials()**. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk.
@@ -41,7 +42,7 @@ export function loginWithCredentials(options: LoginWithCredentialsRequest) {
  * });
  * ```
  */
-export function loginWithSocial(options: socialProviderPathParameter, queryParams?: socialProviderQueryParameter) {
+export function loginWithSocial(options: SocialProviderPathParameter, queryParams?: SocialProviderQueryParameter) {
   try {
     let _serviceURL = window.webAuthSettings.authority + "/login-srv/social/login/" + options.provider.toLowerCase() + "/" + options.requestId;
     if (queryParams && queryParams.dc && queryParams.device_fp) {
@@ -68,7 +69,7 @@ export function loginWithSocial(options: socialProviderPathParameter, queryParam
  * }, queryParams);
  * ```
  */
-export function registerWithSocial(options: socialProviderPathParameter, queryParams?: socialProviderQueryParameter) {
+export function registerWithSocial(options: SocialProviderPathParameter, queryParams?: SocialProviderQueryParameter) {
   try {
     let _serviceURL = window.webAuthSettings.authority + "/login-srv/social/register/" + options.provider.toLowerCase() + "/" + options.requestId;
     if (queryParams && queryParams.dc && queryParams.device_fp) {
@@ -93,7 +94,7 @@ export function registerWithSocial(options: socialProviderPathParameter, queryPa
 * });
 * ```
 */
-export function passwordlessLogin(options: PhysicalVerificationLoginRequest) {
+export function passwordlessLogin(options: PasswordlessLoginRequest) {
   try {
     const url = window.webAuthSettings.authority + "/login-srv/verification/login";
     const form = Helper.createForm(url, options)
@@ -109,15 +110,11 @@ export function passwordlessLogin(options: PhysicalVerificationLoginRequest) {
 * @example
 * ```js
 * cidaas.consentContinue({
-*   name: 'your consent name',
-*   version: 'your consent version',
-*   client_id: 'your client id',
-*   track_id: 'your track id', 
-*   sub: 'your sub'
+*   track_id: 'your track id'
 * });
 * ```
 */
-export function consentContinue(options: {track_id: string}) {
+export function consentContinue(options: LoginPrecheckRequest) {
   try {
     const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
     const form = Helper.createForm(url, options)
@@ -130,17 +127,16 @@ export function consentContinue(options: {track_id: string}) {
 
 /**
  * To continue after MFA completion, call **mfaContinue()**.
+ * options: PhysicalVerificationLoginRequest is not needed anymore. It is now DEPRECATED and will be removed in the next major release
+ * 
  * @example
  * ```js
  * cidaas.mfaContinue({
- *   trackingCode: 'your tracking Code',
- *   track_id: 'your track id', 
- *   sub: 'your sub',
- *   requestId: 'your request id'
+ *   track_id: 'your track id'
  * });
  * ```
  */
-export function mfaContinue(options: PhysicalVerificationLoginRequest & { track_id: string }) {
+export function mfaContinue(options: PhysicalVerificationLoginRequest & LoginPrecheckRequest) {
   try {
     const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
     const form = Helper.createForm(url, options)
