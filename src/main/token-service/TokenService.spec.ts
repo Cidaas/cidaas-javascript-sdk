@@ -1,6 +1,6 @@
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token-service/token.model';
-import { Helper } from '../../src/main/common/Helper';
-import * as TokenService from '../../src/main/token-service/TokenService';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from './TokenService.model';
+import { Helper } from '../common/Helper';
+import * as TokenService from './TokenService';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/token-srv`;

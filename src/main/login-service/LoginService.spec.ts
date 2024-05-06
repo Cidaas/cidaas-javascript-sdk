@@ -1,8 +1,8 @@
-import * as LoginService from '../../src/main/login-service/LoginService';
-import { Helper } from "../../src/main/common/Helper";
-import { IChangePasswordEntity, IUserEntity } from '../../src/main/web-auth/Entities';
-import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/login.model';
-import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/common.model';
+import * as LoginService from './LoginService';
+import { Helper } from "../common/Helper";
+import { IChangePasswordEntity, IUserEntity } from '../web-auth/Entities';
+import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
+import { LoginPrecheckRequest, VerificationType } from '../common/Common.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;

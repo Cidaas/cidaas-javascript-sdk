@@ -1,5 +1,5 @@
 import { WebAuth } from '../../src/main';
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token-service/token.model';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token-service/TokenService.model';
 import * as ConsentService from '../../src/main/consent-service/ConsentService';
 import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/common/Helper';
@@ -8,9 +8,9 @@ import * as TokenService from '../../src/main/token-service/TokenService';
 import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/consent.model';
-import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/login.model';
-import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/common.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/ConsentService.model';
+import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
+import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');

@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
-import * as ConsentService from '../../src/main/consent-service/ConsentService';
-import { Helper } from '../../src/main/common/Helper';
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/consent.model';
+import * as ConsentService from './ConsentService';
+import { Helper } from '../common/Helper';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from './ConsentService.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/consent-management-srv/v2/consent`;

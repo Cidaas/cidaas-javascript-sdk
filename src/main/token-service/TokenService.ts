@@ -1,7 +1,7 @@
-import { GetAccessTokenRequest, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./token.model";
+import { GetAccessTokenRequest, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./TokenService.model";
 import { Helper, CustomException } from "../common/Helper";
 import { JwtHelper } from "../web-auth/JwtHelper";
-import { LoginPrecheckRequest } from "../common/common.model";
+import { LoginPrecheckRequest } from "../common/Common.model";
 
 /**
  * To get a new token with the grant type refresh_token, call **renewToken()**.

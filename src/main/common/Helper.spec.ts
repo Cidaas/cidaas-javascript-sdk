@@ -1,4 +1,4 @@
-import { Helper } from '../../src/main/common/Helper';
+import { Helper } from './Helper';
 import { expect } from '@jest/globals';
 
 

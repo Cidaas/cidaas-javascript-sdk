@@ -6,9 +6,9 @@ import {
     PopupSignInOptions,
     PopupSignOutOptions,
     SilentSignInOptions, LogoutResponse,
-} from './authentication.model';
+} from './Authentication.model';
 
-export * from './authentication.model';
+export * from './Authentication.model';
 
 export class Authentication {
 

@@ -3,7 +3,7 @@ import { OidcClient } from "oidc-client-ts";
 /**
  * all the global variables are declared in this file
  */
-import { Authentication, OidcManager, OidcSettings } from './authentication';
+import { Authentication, OidcManager, OidcSettings } from './authentication/Authentication';
 
 declare global {
   interface Window {

@@ -6,7 +6,7 @@ import {
   PopupSignOutOptions,
   SilentSignInOptions,
   OidcManager, LoginRequestOptions, User, LogoutResponse
-} from '../authentication';
+} from '../authentication/Authentication';
 import { Helper, CustomException } from "../common/Helper";
 import * as LoginService from "../login-service/LoginService";
 import * as UserService from "./UserService";
@@ -32,10 +32,10 @@ import {
   IChangePasswordEntity,
   IUserActivityPayloadEntity,
 } from "./Entities"
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/token.model';
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/consent.model';
-import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/login.model';
-import { LoginPrecheckRequest } from '../common/common.model';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
+import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
+import { LoginPrecheckRequest } from '../common/Common.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);

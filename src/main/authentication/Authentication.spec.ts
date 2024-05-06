@@ -1,5 +1,5 @@
 import { IdTokenClaims, SignoutResponse, User } from 'oidc-client-ts';
-import { Authentication, OidcManager } from '../../src/main/authentication';
+import { Authentication, OidcManager } from './Authentication';
 
 const options = {
 	authority: 'baseURL',

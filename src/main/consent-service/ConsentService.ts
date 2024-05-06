@@ -1,5 +1,5 @@
 import { Helper } from "../common/Helper";
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from "./consent.model";
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from "./ConsentService.model";
 
 /**
  * To get consent details , call **getConsentDetails()**.

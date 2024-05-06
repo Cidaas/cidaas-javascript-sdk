@@ -1,11 +1,11 @@
 import { Helper, CustomException } from "../common/Helper";
-import { LoginPrecheckRequest } from "../common/common.model";
+import { LoginPrecheckRequest } from "../common/Common.model";
 import {
   IUserEntity,
   PhysicalVerificationLoginRequest,
   IChangePasswordEntity
 } from "../web-auth/Entities"
-import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from "./login.model";
+import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from "./LoginService.model";
 
 /**
  * To login with your credentials, call **loginWithCredentials()**. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk.

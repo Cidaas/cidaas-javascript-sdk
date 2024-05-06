@@ -1,4 +1,4 @@
-import { VerificationType } from "../common/common.model";
+import { VerificationType } from "../common/Common.model";
 
 export interface LoginWithCredentialsRequest {
     /** User identifier used to login e.g. username, email or mobile number */
