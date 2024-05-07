@@ -1,4 +1,4 @@
-import { GetAccessTokenRequest, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./TokenService.model";
+import { GetAccessTokenRequest, GrantType, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./TokenService.model";
 import { Helper, CustomException } from "../common/Helper";
 import { JwtHelper } from "../web-auth/JwtHelper";
 import { LoginPrecheckRequest } from "../common/Common.model";
@@ -26,7 +26,7 @@ export function renewToken(options: RenewTokenRequest) {
     throw new CustomException("refresh_token cannot be empty", 417);
   }
   options.client_id = window.webAuthSettings.client_id;
-  options.grant_type = 'refresh_token';
+  options.grant_type = GrantType.RefreshToken;
   const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
 }
@@ -55,7 +55,7 @@ export async function getAccessToken(options: GetAccessTokenRequest) {
   }
   options.client_id = window.webAuthSettings.client_id;
   options.redirect_uri = window.webAuthSettings.redirect_uri;
-  options.grant_type = "authorization_code";
+  options.grant_type = GrantType.AuthorizationCode;
   if (!window.webAuthSettings.disablePKCE) {
     const signInRequest = await window.usermanager.getClient().createSigninRequest(window.webAuthSettings);
     options.code_verifier = signInRequest.state?.code_verifier;

@@ -24,13 +24,9 @@ export interface TokenClaim {
     nonce?: string,
     /** String specifying an Authentication Context Class Reference value */
     acr?: string,
-    /** Authentication Methods References. 
-     * JSON array of strings that are identifiers for authentication methods used in the authentication 
-     * */
+    /** Authentication Methods References. JSON array of strings that are identifiers for authentication methods used in the authentication */
     amr?: string[],
-    /** Authorized party 
-     * The party to which the ID Token was issued
-     * */
+    /** Authorized party. The party to which the ID Token was issued */
     azp?: string,
     /** Access token hash value */
     at_hash?: string,
@@ -81,34 +77,83 @@ export interface Consent {
 }
 
 export interface RenewTokenRequest {
+  /** Unique identifier of client app, can be found in app setting under admin ui */
   client_id: string;
-  grant_type: string;
+  /** 
+   * Type of grant used in token request 
+   * BREAKING TODO: change type to GrantType only in next major version
+  */
+  grant_type: GrantType | string;
+  /** One time valid code that is used for issuing a new token */
   refresh_token: string;
 }
 
+/** Type of grant used in token request */
+export enum GrantType {
+  AuthorizationCode = 'authorization_code',
+  Implicit = 'implicit',
+  RefreshToken = 'refresh_token',
+  Password = 'password',
+  ClientCredentials = 'client_credentials',
+  Internal = 'internal',
+  DeviceCode = 'urn:ietf:params:oauth:grant-type:device_code'
+}
+
 export interface GetAccessTokenRequest {
+  /** The code which you receive while using authorization code flow */
   code: string;
+  /** When we choose PKCE method to generate token, we need to pass code_verifier which is a cryptographically random string */
   code_verifier?: string;
+  /** Unique identifier of client app, can be found in app setting under admin ui */
   client_id: string;
-  grant_type: string;
+  /** 
+   * Type of grant used in token request 
+   * BREAKING TODO: change type to GrantType only in next major version
+   * */
+  grant_type: GrantType | string;
+  /** Specify the url where the user needs to be redirected after successful login */
   redirect_uri: string;
 }
 
 export class TokenIntrospectionRequest {
+  /** access token to be inspected */
   token: string;
-  tokenTypeHint?: string;
+  /** 
+   * Optional hint about the type of the submitted token. 
+   * BREAKING TODO: change type to TokenTypeHint only in next major version
+   * */
+  tokenTypeHint?: TokenTypeHint | string;
+  /** List of roles to match */
   roles?: string[];
+  /** List of scopes to match */
   scopes?: string[];
+  /** List of groups to match */
   groups?: GroupAllowed[];
 
+  /** If true, all roles have to be included. If false, only 1 role from the list is needed */
   strictRoleValidation: boolean = false;
+  /** If true, all group have to be included. If false, only 1 group from the list is needed */
   strictGroupValidation: boolean = false;
+  /** If true, all scopes have to be included. If false, only 1 scope from the list is needed */
   strictScopeValidation: boolean = false;
+  /** If true, all defined roles and/or groups and/or scopes validation has to be succesful. If false, only 1 of them is needed */
   strictValidation: boolean = false;
 }
 
+/** Optional hint about the type of the submitted token. */
+export enum TokenTypeHint {
+  AccessToken = 'access_token',
+  RefreshToken = 'refresh_token',
+  IdToken = 'id_token',
+  Sid = 'sid',
+  Sso = 'sso'
+}
+
 export class GroupAllowed {
+  /** Unique group id */
   id: string;
+  /** List of grouproles to match */
   roles: string[];
+  /** If true, all roles have to be included. If false, only 1 role from the list is needed */
   strictRoleValidation: boolean = false;
 }

@@ -1,7 +1,7 @@
 export interface GetConsentDetailsRequest {
     /** Unique identifier for consent to be accepted */
     consent_id: string;
-    /** Unique identifier for  version of the consent to be accepted */
+    /** Unique identifier for version of the consent to be accepted */
     consent_version_id: string;
     /** Masked sub (id of user), who will accept the consent */
     sub: string;
@@ -14,7 +14,6 @@ export interface AcceptConsentRequest {
     consent_id: string;
     /** Unique identifier for version of the consent to be accepted */
     consent_version_id: string;
-    
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
