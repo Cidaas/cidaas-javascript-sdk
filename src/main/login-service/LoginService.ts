@@ -2,10 +2,9 @@ import { Helper, CustomException } from "../common/Helper";
 import { LoginPrecheckRequest } from "../common/Common.model";
 import {
   IUserEntity,
-  PhysicalVerificationLoginRequest,
   IChangePasswordEntity
 } from "../web-auth/Entities"
-import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from "./LoginService.model";
+import { FirstTimeChangePasswordRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from "./LoginService.model";
 
 /**
  * To login with your credentials, call **loginWithCredentials()**. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk.
@@ -136,7 +135,7 @@ export function consentContinue(options: LoginPrecheckRequest) {
  * });
  * ```
  */
-export function mfaContinue(options: PhysicalVerificationLoginRequest & LoginPrecheckRequest) {
+export function mfaContinue(options: MfaContinueRequest) {
   try {
     const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.track_id;
     const form = Helper.createForm(url, options)
@@ -161,8 +160,10 @@ export function mfaContinue(options: PhysicalVerificationLoginRequest & LoginPre
  * });
  * ```
  */
-export function firstTimeChangePassword(options: IChangePasswordEntity) {
+// BREAKING TODO: separate path parameter trackId (from LoginPrecheckRequest) from payload FirstTimeChangePasswordRequest in model
+export function firstTimeChangePassword(options: FirstTimeChangePasswordRequest) {
   try {
+    // BREAKING TODO: use trackId instead of loginSettingsId for precheck
     const url = window.webAuthSettings.authority + "/login-srv/precheck/continue/" + options.loginSettingsId;
     const form = Helper.createForm(url, options)
     document.body.appendChild(form);

@@ -1,7 +1,7 @@
 import * as LoginService from './LoginService';
 import { Helper } from "../common/Helper";
 import { IChangePasswordEntity, IUserEntity } from '../web-auth/Entities';
-import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
+import { FirstTimeChangePasswordRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../common/Common.model';
 
 const authority = 'baseURL';
@@ -84,7 +84,7 @@ test('consentContinue', () => {
 });
 
 test('mfaContinue', () => {
-  const option: LoginPrecheckRequest = {
+  const option: MfaContinueRequest = {
     track_id: 'track_id',
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
@@ -94,7 +94,7 @@ test('mfaContinue', () => {
 });
 
 test('firstTimeChangePassword', () => {
-  const option: IChangePasswordEntity = {
+  const option: FirstTimeChangePasswordRequest = {
     sub: 'sub',
     old_password: 'old',
     new_password: 'new',

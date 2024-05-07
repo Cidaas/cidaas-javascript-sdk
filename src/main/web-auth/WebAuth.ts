@@ -34,7 +34,7 @@ import {
 } from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
-import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
+import { FirstTimeChangePasswordRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
 
 export const createPreloginWebauth = (authority: string) => {
@@ -679,7 +679,7 @@ export class WebAuth {
    * options: PhysicalVerificationLoginRequest is not needed anymore. It is now DEPRECATED and will be removed in the next major release
    * @param options 
    */
-  mfaContinue(options: PhysicalVerificationLoginRequest & LoginPrecheckRequest) {
+  mfaContinue(options: MfaContinueRequest) {
     LoginService.mfaContinue(options);
   }
 
@@ -687,7 +687,7 @@ export class WebAuth {
    * change password continue
    * @param options 
    */
-  firstTimeChangePassword(options: IChangePasswordEntity) {
+  firstTimeChangePassword(options: FirstTimeChangePasswordRequest) {
     LoginService.firstTimeChangePassword(options);
   }
 

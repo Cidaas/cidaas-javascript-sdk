@@ -1,4 +1,4 @@
-import { VerificationType } from "../common/Common.model";
+import { LoginPrecheckRequest, VerificationType } from "../common/Common.model";
 
 export interface LoginWithCredentialsRequest {
     /** User identifier used to login e.g. username, email or mobile number */
@@ -7,8 +7,11 @@ export interface LoginWithCredentialsRequest {
     password: string;
     /** Request id returned from the authorization call */
     requestId: string;
-    /** Type of username used in login */
-    username_type?: UsernameType;
+    /** 
+     * Type of username used in login 
+     * BREAKING TODO: change type to UsernameType only in next major version
+     * */
+    username_type?: UsernameType | string;
     /** Field identifier to tell service, where to look for in case of custom username type */
     field_key?: string;
     /** Login provider configured in cidaas admin ui */
@@ -62,8 +65,11 @@ export interface PasswordlessLoginRequest {
     requestId: string;
     /** Status id returned from MFA authentication */
     status_id: string;
-    /** Type of verification to be used to authenticate user */
-    verificationType: VerificationType;
+    /** 
+     * Type of verification to be used to authenticate user
+     *  BREAKING TODO: change type to VerificationType only in next major version
+     *  */
+    verificationType: VerificationType | string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
@@ -75,3 +81,51 @@ export interface PasswordlessLoginRequest {
      * */
     q?: string;
 }
+
+/** DEPRECATED: MfaContinue should only need LoginPrecheckRequest. The change will be implemented in the next major version */
+export interface MfaContinueRequest extends LoginPrecheckRequest {
+    q?: string;
+    sub?: string;
+    requestId?: string;
+    status_id?: string;
+    verificationType?: string;
+    deviceInfo?: DeviceInfo;
+    device_fp?: string;
+}
+
+/** DEPRECATED: DeviceInfo is only used in MfaContinueRequest, which will be removed in the next major version */
+export interface DeviceInfo {
+    userAgent?: string;
+    ipAddress?: string;
+    lat?: string;
+    lon?: string;
+    deviceId?: string;
+    usedTime?: Date;
+    purpose?: string;
+    requestId?: string;
+    sub?: string;
+    pushNotificationId?: string;
+    deviceMake?: string;
+    deviceModel?: string;
+    deviceType?: string;
+  }
+
+  export interface FirstTimeChangePasswordRequest {
+    /** Id of "force change password setting" returned from the login call, which redirect to change password page */
+    loginSettingsId: string;
+    /** Old password to be changed */
+    old_password: string;
+    /** New password to replaced old password */
+    new_password: string;
+    /** Needed to confirm new password */
+    confirm_password: string;
+    // DEPRECATED, should be removed in the next major version
+    sub?: string;
+    // DEPRECATED, should be removed in the next major version
+    identityId?: string;
+    // DEPRECATED, should be removed in the next major version
+    accessToken?: string;
+    // DEPRECATED, should be removed in the next major version
+    client_id?: string;
+  }
+

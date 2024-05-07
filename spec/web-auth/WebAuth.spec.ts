@@ -9,7 +9,7 @@ import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/ConsentService.model';
-import { LoginWithCredentialsRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
+import { FirstTimeChangePasswordRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 
 const authority = 'baseURL';
@@ -642,7 +642,7 @@ describe('Login service functions', () => {
 
 	test('mfaContinue', () => {
 		const mfaContinueSpy = jest.spyOn(LoginService, 'mfaContinue').mockImplementation();
-		const option: LoginPrecheckRequest = {
+		const option: MfaContinueRequest = {
 			track_id: ''
 		};
 		webAuth.mfaContinue(option);
@@ -651,7 +651,7 @@ describe('Login service functions', () => {
 
 	test('firstTimeChangePassword', () => {
 		const firstTimeChangePasswordSpy = jest.spyOn(LoginService, 'firstTimeChangePassword').mockImplementation();
-		const options: IChangePasswordEntity = {
+		const options: FirstTimeChangePasswordRequest = {
 			old_password: '',
 			new_password: '',
 			confirm_password: '',
