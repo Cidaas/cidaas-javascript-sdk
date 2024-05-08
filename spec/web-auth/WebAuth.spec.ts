@@ -9,8 +9,9 @@ import * as UserService from '../../src/main/web-auth/UserService';
 import * as VerificationService from '../../src/main/web-auth/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/ConsentService.model';
-import { FirstTimeChangePasswordRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
+import { CidaasUser } from '../../src/main/common/User.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -663,7 +664,7 @@ describe('Login service functions', () => {
 
 	test('progressiveRegistration', () => {
 		const progressiveRegistrationSpy = jest.spyOn(LoginService, 'progressiveRegistration').mockImplementation();
-		const options: IUserEntity = {
+		const options: CidaasUser = {
 			userStatus: '',
 			user_status: '',
 			user_status_reason: '',
@@ -698,7 +699,7 @@ describe('Login service functions', () => {
 			trackId: '',
 			need_reset_password: false
 		};
-		const headers = {
+		const headers: ProgressiveRegistrationHeader = {
 			requestId: '',
 			trackId: '',
 			acceptlanguage: ''
@@ -709,7 +710,7 @@ describe('Login service functions', () => {
 
 	test('loginAfterRegister', () => {
 		const loginAfterRegisterSpy = jest.spyOn(LoginService, 'loginAfterRegister').mockImplementation();
-		const options = {
+		const options: LoginAfterRegisterRequest = {
 			device_id: 'deviceId',
 			dc: 'dc',
 			rememberMe: false,

@@ -110,7 +110,7 @@ export interface DeviceInfo {
     deviceType?: string;
   }
 
-  export interface FirstTimeChangePasswordRequest {
+export interface FirstTimeChangePasswordRequest {
     /** Id of "force change password setting" returned from the login call, which redirect to change password page */
     loginSettingsId: string;
     /** Old password to be changed */
@@ -127,5 +127,26 @@ export interface DeviceInfo {
     accessToken?: string;
     // DEPRECATED, should be removed in the next major version
     client_id?: string;
-  }
+}
 
+export interface ProgressiveRegistrationHeader {
+    /** Request id returned from the authorization call */
+    requestId: string;
+    /** Identifier generated after successful authentication but unfulfilled prechecks */
+    trackId: string;
+    /** Response language, which is configured in cidaas admin ui */
+    acceptlanguage?: string;
+}
+
+export interface LoginAfterRegisterRequest {
+    /** Deprecated: will be removed in the next major release */
+    device_id?: string;
+    /** Device capacity */
+    dc?: string;
+    /** If true, will keep user logged in */
+    rememberMe?: boolean;
+    /** Identifier generated after successful registration */
+    trackId?: string;
+    /** Device fingerprint */
+    device_fp?: string;
+}

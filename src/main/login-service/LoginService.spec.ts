@@ -1,8 +1,9 @@
 import * as LoginService from './LoginService';
 import { Helper } from "../common/Helper";
 import { IChangePasswordEntity, IUserEntity } from '../web-auth/Entities';
-import { FirstTimeChangePasswordRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../common/Common.model';
+import { CidaasUser } from '../common/User.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;
@@ -108,7 +109,7 @@ test('firstTimeChangePassword', () => {
 });
 
 test('progressiveRegistration', () => {
-  const options: IUserEntity = {
+  const options: CidaasUser = {
     userStatus: 'userStatus',
     user_status: 'user_status',
     user_status_reason: 'user_status_reason',
@@ -143,7 +144,7 @@ test('progressiveRegistration', () => {
     trackId: 'trackId',
     need_reset_password: false
   };
-  const headers = {
+  const headers: ProgressiveRegistrationHeader = {
     requestId: 'requestId',
     trackId: 'trackId',
     acceptlanguage: 'acceptlanguage'
@@ -154,7 +155,7 @@ test('progressiveRegistration', () => {
 });
 
 test('loginAfterRegister', () => {
-  const option = {
+  const option: LoginAfterRegisterRequest = {
     device_id: 'deviceId',
     dc: 'dc',
     rememberMe: false,

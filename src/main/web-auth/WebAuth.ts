@@ -34,8 +34,9 @@ import {
 } from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
-import { FirstTimeChangePasswordRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
+import { CidaasUser } from '../common/User.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -915,7 +916,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  progressiveRegistration(options: IUserEntity, headers: { requestId: string; trackId: string; acceptlanguage: string; }) {
+  progressiveRegistration(options: CidaasUser, headers: ProgressiveRegistrationHeader) {
     return LoginService.progressiveRegistration(options, headers);
   }
 
@@ -923,7 +924,7 @@ export class WebAuth {
    * loginAfterRegister
    * @param options
    */
-  loginAfterRegister(options: { device_id: string; dc?: string; rememberMe: boolean; trackId: string; }) {
+  loginAfterRegister(options: LoginAfterRegisterRequest) {
     LoginService.loginAfterRegister(options);
   }
 

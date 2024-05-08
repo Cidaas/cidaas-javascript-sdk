@@ -4,7 +4,8 @@ import {
   IUserEntity,
   IChangePasswordEntity
 } from "../web-auth/Entities"
-import { FirstTimeChangePasswordRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, SocialProviderPathParameter, SocialProviderQueryParameter } from "./LoginService.model";
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from "./LoginService.model";
+import { CidaasUser } from "../common/User.model";
 
 /**
  * To login with your credentials, call **loginWithCredentials()**. After successful login, this will redirect you to the redirect_url that you mentioned earlier while initialising the sdk.
@@ -195,11 +196,7 @@ export function firstTimeChangePassword(options: FirstTimeChangePasswordRequest)
  * });
  * ```
  */
-export function progressiveRegistration(options: IUserEntity, headers: {
-  requestId: string;
-  trackId: string;
-  acceptlanguage: string;
-}) {
+export function progressiveRegistration(options: CidaasUser, headers: ProgressiveRegistrationHeader) {
   const serviceURL = window.webAuthSettings.authority + "/login-srv/progressive/update/user";
   return Helper.createHttpPromise(options, serviceURL, undefined, "POST", undefined, headers);
 }
@@ -218,13 +215,7 @@ export function progressiveRegistration(options: IUserEntity, headers: {
  * });
  * ```
  */
-export function loginAfterRegister(options: {
-  device_id?: string;
-  dc?: string;
-  rememberMe?: boolean;
-  trackId?: string;
-  device_fp?: string;
-}) {
+export function loginAfterRegister(options: LoginAfterRegisterRequest) {
   try {
     const url = window.webAuthSettings.authority + "/login-srv/login/handle/afterregister/" + options.trackId;
     const form = Helper.createForm(url, options)
