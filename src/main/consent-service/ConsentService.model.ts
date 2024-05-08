@@ -3,8 +3,16 @@ export interface GetConsentDetailsRequest {
     consent_id: string;
     /** Unique identifier for version of the consent to be accepted */
     consent_version_id: string;
-    /** Masked sub (id of user), who will accept the consent */
-    sub: string;
+    /** 
+     * Masked sub (id of user), who will accept the consent. 
+     * Either sub or q have to be provided, depends on what is given from the query parameter. 
+     * */
+    sub?: string;
+    /** 
+     * Masked sub (id of user), who will accept the consent. 
+     * Either sub or q have to be provided, depends on what is given from the query parameter. 
+     * */
+    q?: string;
 }
 
 export interface AcceptConsentRequest {
@@ -56,8 +64,16 @@ export interface AcceptConsentRequest {
   export interface AcceptScopeConsentRequest {
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;
-    /** Masked sub (id of user), who will accept the consent */
-    sub: string;
+    /** 
+     * Masked sub (id of user), who will accept the consent. 
+     * Either sub or q have to be provided, depends on what is given from the query parameter. 
+     * */
+    sub?: string;
+    /** 
+     * Masked sub (id of user), who will accept the consent. 
+     * Either sub or q have to be provided, depends on what is given from the query parameter. 
+     * */
+    q?: string;
     /** List of scopes, which is included in the scope consent to be accepted */
     scopes: string[];
   }
@@ -65,8 +81,16 @@ export interface AcceptConsentRequest {
   export interface AcceptClaimConsentRequest {
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;
-    /** Masked sub (id of user), who will accept the consent */
-    sub: string;
+    /** 
+     * Masked sub (id of user), who will accept the consent. 
+     * Either sub or q have to be provided, depends on what is given from the query parameter. 
+     * */
+    sub?: string;
+    /** 
+     * Masked sub (id of user), who will accept the consent. 
+     * Either sub or q have to be provided, depends on what is given from the query parameter. 
+     * */
+    q?: string;
     /** List of claims, which is included in the claim consent to be accepted */
     accepted_claims: string[];
   }

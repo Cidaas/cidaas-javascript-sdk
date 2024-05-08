@@ -66,6 +66,7 @@ export function getConsentVersionDetails(options: GetConsentVersionDetailsReques
   if (options.locale) {
     _serviceURL += "?locale=" + options.locale;
   }
+  // TODO: remove access token as it is not needed to get consent version details
   return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", options.access_token);
 }
 
