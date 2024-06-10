@@ -6,7 +6,7 @@ import {
   ChangePasswordEntity,
   ValidateResetPasswordEntity,
   AcceptResetPasswordEntity
-} from "./Entities"
+} from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
 
 /**
