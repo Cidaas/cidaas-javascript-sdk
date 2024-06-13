@@ -28,13 +28,13 @@ export interface CidaasUser {
     /** Mobile number of the user in string format */
     mobile_number?: string;
     /** Mobile number of the user as object */
-    mobile_number_obj?: IMobileEntity | null;
+    // mobile_number_obj?: IMobileEntity | null;
     /** Described whether user mobile number has been verified */
     mobile_number_verified?: boolean;
     /** Phone number of the user in string format */
     phone_number?: string;
     /** Phone number of the user as object */
-    phone_number_obj?: IMobileEntity | null;
+    // phone_number_obj?: IMobileEntity | null;
     /** Described whether user phone number has been verified */
     phone_number_verified?: boolean;
     /** URL of the user's profile page */
@@ -52,7 +52,7 @@ export interface CidaasUser {
     /** User's birthdate in the format 'YYYY-MM-DD' */
     birthdate?: Date | string;
     /** Address of the user */
-    address?: AddressEntity;
+    // address?: AddressEntity;
     /** Represents custom-specific fields that need to be configured in the system */
     customFields?: any;
     identityCustomFields?: any;
@@ -77,9 +77,9 @@ export interface CidaasUser {
     /** List of roles of a user */
     roles?: string[];
     /** List of groups of a user */
-    groups?: IUserGroupMap[];
+    // groups?: IUserGroupMap[];
     /** DEPRECATED: use groups instead */
-    userGroups?: IUserGroupMap[];
+    // userGroups?: IUserGroupMap[];
     /** Identifier generated after successful authentication but unfulfilled prechecks */
     trackId?: string;
     /** User information Json Object in String format */
@@ -89,12 +89,12 @@ export interface CidaasUser {
 
     no_event?: boolean;
     /** List of user consents */
-    consents?: IConsentField[] | IConsentTrackingEntity[];
+    // consents?: IConsentField[] | IConsentTrackingEntity[];
 
     consent_track_ids?: string[];
     ignore_default_roles?: string[];
     createdTime?: Date;
-    identities?: IIdentity[];
+    // identities?: IIdentity[];
 
     _id?: string;
 
