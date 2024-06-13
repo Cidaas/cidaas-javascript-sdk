@@ -677,10 +677,8 @@ describe('Login service functions', () => {
 			email: '',
 			email_verified: false,
 			mobile_number: '',
-			mobile_number_obj: null,
 			mobile_number_verified: false,
 			phone_number: '',
-			phone_number_obj: null,
 			phone_number_verified: false,
 			profile: '',
 			picture: '',
@@ -694,7 +692,6 @@ describe('Login service functions', () => {
 			providerUserId: '',
 			identityId: '',
 			roles: [],
-			userGroups: [],
 			rawJSON: '',
 			trackId: '',
 			need_reset_password: false
