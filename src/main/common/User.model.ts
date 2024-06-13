@@ -1,3 +1,4 @@
+// TODO: add object properties which hasn't been defined yet
 export interface CidaasUser {
     /** Status of User */
     userStatus?: string;
