@@ -8,6 +8,7 @@ import {
   AcceptResetPasswordEntity
 } from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
+import { GetUserProfileRequest, RegisterRequest } from "./UserService.model";
 
 /**
  * To get the user profile information by using cidaas internal api, call **getUserProfile()**.
@@ -25,7 +26,7 @@ import { Helper, CustomException } from "../common/Helper";
  * });
  * ```
  */
-export function getUserProfile(options: { access_token: string }) {
+export function getUserProfile(options: GetUserProfileRequest) {
   if (!options.access_token) {
     throw new CustomException("access_token cannot be empty", 417);
   }
@@ -61,13 +62,8 @@ export function getUserProfile(options: { access_token: string }) {
  * });
  *```
   */
-export function register(options: UserEntity, headers: {
-  requestId: string;
-  captcha?: string;
-  acceptlanguage?: string;
-  bot_captcha_response?: string;
-  trackId?: string;
-}) {
+// TODO: update type for option parameter (Cidaas User model for public usage)
+export function register(options: any, headers: RegisterRequest) {
   let _serviceURL = window.webAuthSettings.authority + "/users-srv/register";
   if (options.invite_id) {
     _serviceURL = _serviceURL + "?invite_id=" + options.invite_id;

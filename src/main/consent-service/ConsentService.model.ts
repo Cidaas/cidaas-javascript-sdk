@@ -96,7 +96,7 @@ export interface AcceptConsentRequest {
   }
   
   export interface RevokeClaimConsentRequest {
-    /** access token needed to authorized api call */
+    /** Access token needed to authorized api call */
     access_token: string;
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;

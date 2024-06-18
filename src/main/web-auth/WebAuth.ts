@@ -37,6 +37,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
+import { GetUserProfileRequest, RegisterRequest } from '../user-service/UserService.model';
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -424,7 +425,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getUserProfile(options: { access_token: string }) {
+  getUserProfile(options: GetUserProfileRequest) {
     return UserService.getUserProfile(options);
   }
 
@@ -487,7 +488,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  register(options: UserEntity, headers: { requestId: string; captcha?: string; acceptlanguage?: string; bot_captcha_response?: string; trackId?: string; }) {
+  register(options: any, headers: RegisterRequest) {
     return UserService.register(options, headers);
   }
 
@@ -916,7 +917,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  progressiveRegistration(options: CidaasUser, headers: ProgressiveRegistrationHeader) {
+  progressiveRegistration(options: any, headers: ProgressiveRegistrationHeader) {
     return LoginService.progressiveRegistration(options, headers);
   }
 

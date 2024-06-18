@@ -196,7 +196,8 @@ export function firstTimeChangePassword(options: FirstTimeChangePasswordRequest)
  * });
  * ```
  */
-export function progressiveRegistration(options: CidaasUser, headers: ProgressiveRegistrationHeader) {
+// TODO: update type for option parameter (Cidaas User model for public usage)
+export function progressiveRegistration(options: any, headers: ProgressiveRegistrationHeader) {
   const serviceURL = window.webAuthSettings.authority + "/login-srv/progressive/update/user";
   return Helper.createHttpPromise(options, serviceURL, undefined, "POST", undefined, headers);
 }
