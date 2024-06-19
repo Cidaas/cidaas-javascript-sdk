@@ -8,7 +8,8 @@ import {
   AcceptResetPasswordEntity
 } from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
-import { GetUserProfileRequest, RegisterRequest } from "./UserService.model";
+import { GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, ResetPasswordRequest, getCommunicationStatusRequest } from "./UserService.model";
+import { HTTPRequestHeader } from "../common/Common.model";
 
 /**
  * To get the user profile information by using cidaas internal api, call **getUserProfile()**.
@@ -63,7 +64,7 @@ export function getUserProfile(options: GetUserProfileRequest) {
  *```
   */
 // TODO: update type for option parameter (Cidaas User model for public usage)
-export function register(options: any, headers: RegisterRequest) {
+export function register(options: any, headers: HTTPRequestHeader) {
   let _serviceURL = window.webAuthSettings.authority + "/users-srv/register";
   if (options.invite_id) {
     _serviceURL = _serviceURL + "?invite_id=" + options.invite_id;
@@ -89,7 +90,7 @@ export function register(options: any, headers: RegisterRequest) {
  * });
  * ```
  */
-export function getInviteUserDetails(options: { invite_id: string, callLatestAPI?: boolean }) {
+export function getInviteUserDetails(options: GetInviteUserDetailsRequest) {
   let _serviceURL: string = "";
   if(options.callLatestAPI){
     _serviceURL = window.webAuthSettings.authority + "/useractions-srv/invitations/" + options.invite_id;
@@ -112,7 +113,7 @@ export function getInviteUserDetails(options: { invite_id: string, callLatestAPI
  * });
  * ```
  */
-export function getCommunicationStatus(options: { sub: string }, headers?: {requestId: string }) {
+export function getCommunicationStatus(options: getCommunicationStatusRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/communication/status/" + options.sub;
   return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
 }
@@ -134,7 +135,7 @@ export function getCommunicationStatus(options: { sub: string }, headers?: {requ
  * });
  * ```
  */
-export function initiateResetPassword(options: ResetPasswordEntity) {
+export function initiateResetPassword(options: InitiateResetPasswordRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST");
 }
@@ -155,7 +156,7 @@ export function initiateResetPassword(options: ResetPasswordEntity) {
  * });
  * ```
  */
-export function handleResetPassword(options: ValidateResetPasswordEntity, handleResponseAsJson?: boolean) {
+export function handleResetPassword(options: HandleResetPasswordRequest, handleResponseAsJson?: boolean) {
   try {
     const url = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
     if (!handleResponseAsJson) {
@@ -190,7 +191,7 @@ export function handleResetPassword(options: ValidateResetPasswordEntity, handle
  * });
  * ```
  */
-export function resetPassword(options: AcceptResetPasswordEntity, handleResponseAsJson?: boolean) {
+export function resetPassword(options: ResetPasswordRequest, handleResponseAsJson?: boolean) {
   const url = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
   try {
     if (!handleResponseAsJson) {

@@ -37,7 +37,8 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
-import { GetUserProfileRequest, RegisterRequest } from '../user-service/UserService.model';
+import { GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, ResetPasswordRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
+import { HTTPRequestHeader } from "../common/Common.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -488,7 +489,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  register(options: any, headers: RegisterRequest) {
+  register(options: any, headers: HTTPRequestHeader) {
     return UserService.register(options, headers);
   }
 
@@ -497,7 +498,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getInviteUserDetails(options: { invite_id: string, callLatestAPI?: boolean }) {
+  getInviteUserDetails(options: GetInviteUserDetailsRequest) {
     return UserService.getInviteUserDetails(options);
   }
 
@@ -506,7 +507,7 @@ export class WebAuth {
    * @param options
    * @returns 
    */
-  getCommunicationStatus(options: { sub: string }, headers: {requestId: string }) {
+  getCommunicationStatus(options: getCommunicationStatusRequest, headers: HTTPRequestHeader) {
     return UserService.getCommunicationStatus(options, headers);
   }
 
@@ -533,7 +534,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  initiateResetPassword(options: ResetPasswordEntity) {
+  initiateResetPassword(options: InitiateResetPasswordRequest) {
     return UserService.initiateResetPassword(options);
   }
 
@@ -541,7 +542,7 @@ export class WebAuth {
    * handle reset password
    * @param options 
    */
-  handleResetPassword(options: ValidateResetPasswordEntity) {
+  handleResetPassword(options: HandleResetPasswordRequest) {
     return UserService.handleResetPassword(options);
   }
 
@@ -549,7 +550,7 @@ export class WebAuth {
   * reset password
   * @param options 
   */
-  resetPassword(options: AcceptResetPasswordEntity) {
+  resetPassword(options: ResetPasswordRequest) {
     return UserService.resetPassword(options);
   }
 

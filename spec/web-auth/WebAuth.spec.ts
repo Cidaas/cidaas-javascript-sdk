@@ -12,6 +12,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 import { CidaasUser } from '../../src/main/common/User.model';
+import { InitiateResetPasswordRequest, ProcessingType, ResetMedium } from '../../src/main/user-service/UserService.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -329,10 +330,10 @@ describe('User service functions', () => {
 	
 	test('initiateResetPassword', () => {
 		const initiateResetPasswordSpy = jest.spyOn(UserService, 'initiateResetPassword').mockImplementation();
-		const options: ResetPasswordEntity = {
+		const options: InitiateResetPasswordRequest = {
 			email: '',
-			resetMedium: 'SMS',
-			processingType: 'CODE',
+			resetMedium: ResetMedium.SMS,
+			processingType: ProcessingType.CODE,
 			requestId: ''
 		};
 		void webAuth.initiateResetPassword(options);
