@@ -37,7 +37,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
-import { GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, ResetPasswordRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
+import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, ResetPasswordRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
 import { HTTPRequestHeader } from "../common/Common.model";
 
 export const createPreloginWebauth = (authority: string) => {
@@ -648,7 +648,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getDeduplicationDetails(options: { trackId: string }) {
+  getDeduplicationDetails(options: GetDeduplicationDetailsRequest) {
     return UserService.getDeduplicationDetails(options);
   }
 
@@ -656,7 +656,7 @@ export class WebAuth {
    * deduplication login
    * @param options 
    */
-  deduplicationLogin(options: { trackId: string, requestId: string, sub: string }) {
+  deduplicationLogin(options: DeduplicationLoginRequest) {
     UserService.deduplicationLogin(options);
   }
 
@@ -665,7 +665,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  registerDeduplication(options: { trackId: string }) {
+  registerDeduplication(options: RegisterDeduplicationRequest) {
     return UserService.registerDeduplication(options);
   }
 
@@ -700,7 +700,7 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  changePassword(options: ChangePasswordEntity, access_token: string) {
+  changePassword(options: ChangePasswordRequest, access_token: string) {
     return UserService.changePassword(options, access_token);
   }
 
@@ -712,7 +712,7 @@ export class WebAuth {
    * @param sub 
    * @returns 
    */
-  updateProfile(options: UserEntity, access_token: string, sub: string) {
+  updateProfile(options: any, access_token: string, sub: string) {
     return UserService.updateProfile(options, access_token, sub);
   }
 

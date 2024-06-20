@@ -8,7 +8,7 @@ import {
   AcceptResetPasswordEntity
 } from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
-import { GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, ResetPasswordRequest, getCommunicationStatusRequest } from "./UserService.model";
+import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, ResetPasswordRequest, getCommunicationStatusRequest } from "./UserService.model";
 import { HTTPRequestHeader } from "../common/Common.model";
 
 /**
@@ -221,7 +221,7 @@ export function resetPassword(options: ResetPasswordRequest, handleResponseAsJso
  * });
  * ```
  */
-export function getDeduplicationDetails(options: { trackId: string }) {
+export function getDeduplicationDetails(options: GetDeduplicationDetailsRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
   return Helper.createHttpPromise(options, _serviceURL, false, "GET");
 }
@@ -237,7 +237,7 @@ export function getDeduplicationDetails(options: { trackId: string }) {
  * })
  * ```
  */
-export function deduplicationLogin(options: { trackId: string, requestId: string, sub: string }) {
+export function deduplicationLogin(options: DeduplicationLoginRequest) {
   try {
     const url = window.webAuthSettings.authority + "/users-srv/deduplication/login/redirection?trackId=" + options.trackId + "&requestId=" + options.requestId + "&sub=" + options.sub;
     const form = Helper.createForm(url, {});
@@ -261,7 +261,7 @@ export function deduplicationLogin(options: { trackId: string, requestId: string
  * });
  * ```
  */
-export function registerDeduplication(options: { trackId: string }) {
+export function registerDeduplication(options: RegisterDeduplicationRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
   return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST");
 }
@@ -284,7 +284,7 @@ export function registerDeduplication(options: { trackId: string }) {
  * });
  * ```
  */
-export function changePassword(options: ChangePasswordEntity, access_token: string) {
+export function changePassword(options: ChangePasswordRequest, access_token: string) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/changepassword";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
 }
@@ -306,7 +306,8 @@ export function changePassword(options: ChangePasswordEntity, access_token: stri
  * });
  * ```
  */
-export function updateProfile(options: UserEntity, access_token: string, sub: string) {
+// TODO: update type for option parameter (Cidaas User model for public usage)
+export function updateProfile(options: any, access_token: string, sub: string) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
   return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
 }

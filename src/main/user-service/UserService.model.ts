@@ -60,6 +60,40 @@ export interface ResetPasswordRequest {
     requestId?: string;
 }
 
+export interface GetDeduplicationDetailsRequest {
+    /** Identifier generated after successful authentication but unfulfilled prechecks */
+    trackId: string
+}
+
+export interface RegisterDeduplicationRequest {
+    /** Identifier generated after successful authentication but unfulfilled prechecks */
+    trackId: string
+}
+
+export interface DeduplicationLoginRequest {
+    /** Identifier generated after successful authentication but unfulfilled prechecks */
+    trackId: string,
+    /** Request id returned from the authorization call */
+    requestId: string,
+    /** Subject (User) identifier */
+    sub: string,
+    /** Password of a user */
+    password?: string
+}
+
+export interface ChangePasswordRequest {
+    /** Subject (User) identifier */
+    sub: string;
+    /** Unique id of the users identity */
+    identityId?: string;
+    /** Old password of user */
+    old_password: string;
+    /** New password for user */
+    new_password: string;
+    /** Confirmation of user's new password */
+    confirm_password: string;
+}
+
 /** Type of medium to be used to reset password */
 export enum ResetMedium {
     'SMS',
