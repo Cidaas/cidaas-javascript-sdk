@@ -105,7 +105,12 @@ export interface InitiateLinkAccountRequest {
     verification_status_id: string;
     type: string;
     status: string;
-  }
+}
+
+export interface completeLinkAccountRequest {
+    code?: string; 
+    link_request_id?: string;
+}
 
 /** Type of medium to be used to reset password */
 export enum ResetMedium {

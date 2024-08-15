@@ -8,7 +8,7 @@ import {
   AcceptResetPasswordEntity
 } from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
-import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, ResetPasswordRequest, getCommunicationStatusRequest } from "./UserService.model";
+import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, ResetPasswordRequest, completeLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
 import { HTTPRequestHeader } from "../common/Common.model";
 
 /**
@@ -329,7 +329,7 @@ export function updateProfile(options: any, access_token: string, sub: string) {
  * });
  * ```
  */
-export function initiateLinkAccount(options: IUserLinkEntity, access_token: string) {
+export function initiateLinkAccount(options: InitiateLinkAccountRequest, access_token: string) {
   options.user_name_type = 'email';
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/initiate";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
@@ -351,7 +351,7 @@ export function initiateLinkAccount(options: IUserLinkEntity, access_token: stri
  * });
  * ```
  */
-export function completeLinkAccount(options: { code?: string; link_request_id?: string; }, access_token: string) {
+export function completeLinkAccount(options: completeLinkAccountRequest, access_token: string) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
 }
