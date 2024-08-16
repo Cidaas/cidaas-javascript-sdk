@@ -29,13 +29,13 @@ export interface CidaasUser {
     /** Mobile number of the user in string format */
     mobile_number?: string;
     /** Mobile number of the user as object */
-    // mobile_number_obj?: IMobileEntity | null;
+    mobile_number_obj?: UserMobile;
     /** Described whether user mobile number has been verified */
     mobile_number_verified?: boolean;
     /** Phone number of the user in string format */
     phone_number?: string;
     /** Phone number of the user as object */
-    // phone_number_obj?: IMobileEntity | null;
+    phone_number_obj?: UserMobile;
     /** Described whether user phone number has been verified */
     phone_number_verified?: boolean;
     /** URL of the user's profile page */
@@ -53,9 +53,10 @@ export interface CidaasUser {
     /** User's birthdate in the format 'YYYY-MM-DD' */
     birthdate?: Date | string;
     /** Address of the user */
-    // address?: AddressEntity;
+    address?: UserAddress;
     /** Represents custom-specific fields that need to be configured in the system */
     customFields?: any;
+    /** Custom fileds for identity */
     identityCustomFields?: any;
     /** Password of a user */
     password?: string;
@@ -67,8 +68,11 @@ export interface CidaasUser {
     generate_password?: boolean;
     /** Provider name indicating the origin of the social identity */
     provider?: string;
+    /** the identityId identifying the useraccount and identity uniquely */
     identityId?: string;
+    /** User Id of provider */
     providerUserId?: string;
+    /** List of BusinessId of provider */
     providerBusinessIds?: string[];
     /** Street Address of a user */
     street_address?: string;
@@ -76,11 +80,11 @@ export interface CidaasUser {
     mfa_enabled?: boolean;
 
     /** List of roles of a user */
-    roles?: string[];
+    roles?: string[];  
     /** List of groups of a user */
-    // groups?: IUserGroupMap[];
+    groups?: UserGroup[];
     /** DEPRECATED: use groups instead */
-    // userGroups?: IUserGroupMap[];
+    userGroups?: UserGroup[];
     /** Identifier generated after successful authentication but unfulfilled prechecks */
     trackId?: string;
     /** User information Json Object in String format */
@@ -89,17 +93,13 @@ export interface CidaasUser {
     need_reset_password?: boolean;
 
     no_event?: boolean;
+
     /** List of user consents */
     // consents?: IConsentField[] | IConsentTrackingEntity[];
-
     consent_track_ids?: string[];
     ignore_default_roles?: string[];
-    createdTime?: Date;
     // identities?: IIdentity[];
 
-    _id?: string;
-
-    id?: string;
 }
 
 // TODO: found out which one is required & which one is optionals
