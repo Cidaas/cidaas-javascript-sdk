@@ -11,7 +11,7 @@ export interface CidaasUser {
     /** Subject (User) identifier */
     sub?: string;
 
-    /** UserId from original provider */
+    /** UserId from original provider. The value comes from custom/social provider to be referenced */
     originalProviderUserId?: string[];
 
     /** Given/first name of the user */
@@ -70,9 +70,9 @@ export interface CidaasUser {
     provider?: string;
     /** the identityId identifying the useraccount and identity uniquely */
     identityId?: string;
-    /** User Id of provider */
+    /** User Id of provider. The value comes from custom/social provider to be referenced */
     providerUserId?: string;
-    /** List of BusinessId of provider */
+    /** List of BusinessId of provider. The value comes from custom/social provider to be referenced */
     providerBusinessIds?: string[];
     /** Street Address of a user */
     street_address?: string;
@@ -127,8 +127,11 @@ export interface UserMobile {
 
 // TODO: found out which one is required & which one is optionals
 export interface UserGroup {
+    /** Subject identifier */
     sub: string;
+    /** Id of user group */
     groupId: string;
+    /** List of user roles inside the user group */
     roles: string[];
     appendRole?: boolean;
 }
