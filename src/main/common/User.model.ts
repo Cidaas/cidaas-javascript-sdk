@@ -102,26 +102,39 @@ export interface CidaasUser {
 
 }
 
-// TODO: found out which one is required & which one is optionals
 export interface UserAddress {
+    /** Address in custom format */
     formatted?: string;
+    /** Street name and house number part of user address */
     street_address?: string;
+    /** City part of user address */
     locality?: string;
+    /** State part of user address */
     region?: string;
+    /** Postcode part of user address */
     postal_code?: string;
+    /** Country part of user address */
     country?: string;
 }
 
-// TODO: found out which one is required & which one is optionals
 export interface UserMobile {
+    /** Phone number as provided by caller or user */
     given_phone?: string,
+    /** Phone number */
     phone?: string,
+    /** country where phone number is registered */
     country?: string,
+    /** International pre dial code */
     dail_code?: string,
+    /** Type of carrier */
     carrier_type?: string,
+    /** Name of carrier */
     carrier_name?: string,
+    /** National phone number format */
     national_format?: string,
+    /** International phone number format e.g. + dial number + phone number without leading 0 but with spaces */
     international_format?: string,
+    /** E164 is a compact international format without any spaces */
     E164_format?: string
 }
 
