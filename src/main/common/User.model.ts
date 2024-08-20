@@ -78,7 +78,6 @@ export interface CidaasUser {
     street_address?: string;
     /** Described whether multi factor authentication is enabled for the user */
     mfa_enabled?: boolean;
-
     /** List of roles of a user */
     roles?: string[];  
     /** List of groups of a user */
@@ -91,15 +90,8 @@ export interface CidaasUser {
     rawJSON?: string;
     /** Described whether password reset is needed */
     need_reset_password?: boolean;
-
-    no_event?: boolean;
-
-    /** List of user consents */
-    // consents?: IConsentField[] | IConsentTrackingEntity[];
-    consent_track_ids?: string[];
-    ignore_default_roles?: string[];
-    // identities?: IIdentity[];
-
+    /** required if it's present in data for update. */
+    _id: string;
 }
 
 export interface UserAddress {
