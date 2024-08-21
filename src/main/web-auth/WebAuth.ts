@@ -37,7 +37,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
-import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, ResetPasswordRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
+import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
 import { HTTPRequestHeader } from "../common/Common.model";
 
 export const createPreloginWebauth = (authority: string) => {
@@ -489,7 +489,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  register(options: any, headers: HTTPRequestHeader) {
+  register(options: RegisterRequest, headers: HTTPRequestHeader) {
     return UserService.register(options, headers);
   }
 
@@ -712,7 +712,7 @@ export class WebAuth {
    * @param sub 
    * @returns 
    */
-  updateProfile(options: any, access_token: string, sub: string) {
+  updateProfile(options: CidaasUser, access_token: string, sub: string) {
     return UserService.updateProfile(options, access_token, sub);
   }
 

@@ -81,9 +81,9 @@ export interface CidaasUser {
     /** List of roles of a user */
     roles?: string[];  
     /** List of groups of a user */
-    groups?: UserGroup[];
+    groups?: UserGroupMap[];
     /** DEPRECATED: use groups instead */
-    userGroups?: UserGroup[];
+    userGroups?: UserGroupMap[];
     /** Identifier generated after successful authentication but unfulfilled prechecks */
     trackId?: string;
     /** User information Json Object in String format */
@@ -91,7 +91,7 @@ export interface CidaasUser {
     /** Described whether password reset is needed */
     need_reset_password?: boolean;
     /** required if it's present in data for update. */
-    _id: string;
+    _id?: string;
 }
 
 export interface UserAddress {
@@ -130,8 +130,7 @@ export interface UserMobile {
     E164_format?: string
 }
 
-// TODO: found out which one is required & which one is optionals
-export interface UserGroup {
+export interface UserGroupMap {
     /** Subject identifier */
     sub: string;
     /** Id of user group */

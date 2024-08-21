@@ -1,6 +1,13 @@
+import { CidaasUser } from "../common/User.model";
+
 export interface GetUserProfileRequest {
     /** Access token needed to authorized api call */
     access_token: string
+}
+
+export interface RegisterRequest extends CidaasUser {
+    /** id which is generated during user invitation process */
+    invite_id?: string;
 }
 
 export interface GetInviteUserDetailsRequest {

@@ -1,15 +1,10 @@
 import {
-  UserEntity,
-  ResetPasswordEntity,
   FindUserEntity,
-  IUserLinkEntity,
-  ChangePasswordEntity,
-  ValidateResetPasswordEntity,
-  AcceptResetPasswordEntity
 } from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
-import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, ResetPasswordRequest, completeLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
+import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, completeLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
 import { HTTPRequestHeader } from "../common/Common.model";
+import { CidaasUser } from "../common/User.model";
 
 /**
  * To get the user profile information by using cidaas internal api, call **getUserProfile()**.
@@ -63,8 +58,7 @@ export function getUserProfile(options: GetUserProfileRequest) {
  * });
  *```
   */
-// TODO: update type for option parameter (Cidaas User model for public usage)
-export function register(options: any, headers: HTTPRequestHeader) {
+export function register(options: RegisterRequest, headers: HTTPRequestHeader) {
   let _serviceURL = window.webAuthSettings.authority + "/users-srv/register";
   if (options.invite_id) {
     _serviceURL = _serviceURL + "?invite_id=" + options.invite_id;
@@ -306,8 +300,7 @@ export function changePassword(options: ChangePasswordRequest, access_token: str
  * });
  * ```
  */
-// TODO: update type for option parameter (Cidaas User model for public usage)
-export function updateProfile(options: any, access_token: string, sub: string) {
+export function updateProfile(options: CidaasUser, access_token: string, sub: string) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
   return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
 }
