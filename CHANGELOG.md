@@ -1,5 +1,15 @@
 # Changelog
 
+## V4.x.x
+
+### Changed
+- Update project structure
+- Update data model to mirror current cidaas api call
+- Improve documentation
+
+### Fix
+- Fix vulnerabilities from `npm audit`
+
 ## V4.2.4
 
 ### Fix
