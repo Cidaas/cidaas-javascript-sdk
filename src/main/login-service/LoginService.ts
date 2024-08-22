@@ -1,9 +1,5 @@
 import { Helper, CustomException } from "../common/Helper";
 import { LoginPrecheckRequest } from "../common/Common.model";
-import {
-  IUserEntity,
-  IChangePasswordEntity
-} from "../web-auth/Entities"
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from "./LoginService.model";
 import { CidaasUser } from "../common/User.model";
 
@@ -196,8 +192,7 @@ export function firstTimeChangePassword(options: FirstTimeChangePasswordRequest)
  * });
  * ```
  */
-// TODO: update type for option parameter (Cidaas User model for public usage)
-export function progressiveRegistration(options: any, headers: ProgressiveRegistrationHeader) {
+export function progressiveRegistration(options: CidaasUser, headers: ProgressiveRegistrationHeader) {
   const serviceURL = window.webAuthSettings.authority + "/login-srv/progressive/update/user";
   return Helper.createHttpPromise(options, serviceURL, undefined, "POST", undefined, headers);
 }

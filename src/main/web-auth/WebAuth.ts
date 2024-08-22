@@ -918,7 +918,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  progressiveRegistration(options: any, headers: ProgressiveRegistrationHeader) {
+  progressiveRegistration(options: CidaasUser, headers: ProgressiveRegistrationHeader) {
     return LoginService.progressiveRegistration(options, headers);
   }
 
