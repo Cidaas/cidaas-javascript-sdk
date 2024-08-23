@@ -12,7 +12,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 import { CidaasUser } from '../../src/main/common/User.model';
-import { InitiateResetPasswordRequest, ProcessingType, ResetMedium } from '../../src/main/user-service/UserService.model';
+import { DeleteUserAccountRequest, InitiateResetPasswordRequest, ProcessingType, ResetMedium } from '../../src/main/user-service/UserService.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -465,7 +465,7 @@ describe('User service functions', () => {
 
 	test('deleteUserAccount', () => {
 		const deleteUserAccountSpy = jest.spyOn(UserService, 'deleteUserAccount').mockImplementation();
-		const options = {
+		const options: DeleteUserAccountRequest = {
 			access_token: '',
 			sub: ''
 		};

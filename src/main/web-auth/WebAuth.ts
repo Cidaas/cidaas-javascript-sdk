@@ -37,7 +37,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
-import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
+import { ChangePasswordRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
 import { HTTPRequestHeader } from "../common/Common.model";
 
 export const createPreloginWebauth = (authority: string) => {
@@ -879,7 +879,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  deleteUserAccount(options: { access_token: string, sub: string }) {
+  deleteUserAccount(options: DeleteUserAccountRequest) {
     return UserService.deleteUserAccount(options);
   }
 

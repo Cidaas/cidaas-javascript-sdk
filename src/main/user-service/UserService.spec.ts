@@ -1,6 +1,7 @@
 import { AcceptResetPasswordEntity, ChangePasswordEntity, FindUserEntity, IUserLinkEntity, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../common/Helper';
 import * as UserService from './UserService';
+import { DeleteUserAccountRequest } from './UserService.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
@@ -245,7 +246,7 @@ test('unlinkAccount', () => {
 });
 
 test('deleteUserAccount', () => {
-  const options = {
+  const options: DeleteUserAccountRequest = {
     access_token: 'access_token',
     sub: 'sub'
   };

@@ -114,6 +114,13 @@ export interface InitiateLinkAccountRequest {
     status: string;
 }
 
+export interface DeleteUserAccountRequest {
+    /** Access token needed to authorized api call */
+    access_token?: string;
+    /** Subject (User) identifier */
+    sub: string;
+}
+
 export interface completeLinkAccountRequest {
     code?: string; 
     link_request_id?: string;

@@ -2,7 +2,7 @@ import {
   FindUserEntity,
 } from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
-import { ChangePasswordRequest, DeduplicationLoginRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, completeLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
+import { ChangePasswordRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, completeLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
 import { HTTPRequestHeader } from "../common/Common.model";
 import { CidaasUser } from "../common/User.model";
 
@@ -408,7 +408,7 @@ export function unlinkAccount(access_token: string, identityId: string) {
  * });
  * ```
  */
-export function deleteUserAccount(options: { access_token: string, sub: string }) {
+export function deleteUserAccount(options: DeleteUserAccountRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", options.access_token);
 }
