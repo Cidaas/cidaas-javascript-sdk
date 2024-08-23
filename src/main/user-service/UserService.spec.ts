@@ -1,7 +1,7 @@
 import { AcceptResetPasswordEntity, ChangePasswordEntity, FindUserEntity, IUserLinkEntity, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../common/Helper';
 import * as UserService from './UserService';
-import { DeleteUserAccountRequest } from './UserService.model';
+import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest } from './UserService.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
@@ -200,17 +200,10 @@ test('updateProfile', () => {
 
 test('initiateLinkAccount', () => {
   const mockDate = new Date('1970-01-01T00:00:00Z');
-  const options: IUserLinkEntity = {
+  const options: InitiateLinkAccountRequest = {
     master_sub: 'master_sub',
     user_name_type: 'email',
-    user_name_to_link: 'user_name_to_link',
-    link_accepted_by: 'link_accepted_by',
-    link_response_time: mockDate,
-    link_accepted: false,
-    communication_type: 'communication_type',
-    verification_status_id: 'verification_status_id',
-    type: 'type',
-    status: 'status'
+    user_name_to_link: 'user_name_to_link'
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/user/link/initiate`;
@@ -219,7 +212,7 @@ test('initiateLinkAccount', () => {
 });
 
 test('completeLinkAccount', () => {
-  const options = {
+  const options: CompleteLinkAccountRequest = {
     code: 'code',
     link_request_id: 'link_request_id'
   };

@@ -102,16 +102,12 @@ export interface ChangePasswordRequest {
 }
 
 export interface InitiateLinkAccountRequest {
+    /** sub of the user who initiates the user link */
     master_sub: string;
+    /** type of user name to link. E.g. email */
     user_name_type: string;
+    /** username of the user which should get linked */
     user_name_to_link: string;
-    link_accepted_by: string;
-    link_response_time: Date;
-    link_accepted: boolean;
-    communication_type: string;
-    verification_status_id: string;
-    type: string;
-    status: string;
 }
 
 export interface DeleteUserAccountRequest {
@@ -121,8 +117,10 @@ export interface DeleteUserAccountRequest {
     sub: string;
 }
 
-export interface completeLinkAccountRequest {
+export interface CompleteLinkAccountRequest {
+    /** code will be sent to account to be linked */
     code?: string; 
+    /** value comes from initiateLinkAccount */
     link_request_id?: string;
 }
 

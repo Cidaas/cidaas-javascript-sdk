@@ -12,7 +12,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 import { CidaasUser } from '../../src/main/common/User.model';
-import { DeleteUserAccountRequest, InitiateResetPasswordRequest, ProcessingType, ResetMedium } from '../../src/main/user-service/UserService.model';
+import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, ProcessingType, ResetMedium } from '../../src/main/user-service/UserService.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -422,17 +422,10 @@ describe('User service functions', () => {
 
 	test('initiateLinkAccount', () => {
 		const initiateLinkAccountSpy = jest.spyOn(UserService, 'initiateLinkAccount').mockImplementation();
-		const options: IUserLinkEntity = {
+		const options: InitiateLinkAccountRequest = {
 			master_sub: '',
 			user_name_type: '',
-			user_name_to_link: '',
-			link_accepted_by: '',
-			link_response_time: mockDate,
-			link_accepted: false,
-			communication_type: '',
-			verification_status_id: '',
-			type: '',
-			status: ''
+			user_name_to_link: ''
 		};
 		const accessToken = '';
 		void webAuth.initiateLinkAccount(options, accessToken);
@@ -441,7 +434,7 @@ describe('User service functions', () => {
 
 	test('completeLinkAccount', () => {
 		const completeLinkAccountSpy = jest.spyOn(UserService, 'completeLinkAccount').mockImplementation();
-		const options = {};
+		const options: CompleteLinkAccountRequest = {};
 		const accessToken = '';
 		void webAuth.completeLinkAccount(options, accessToken);
 		expect(completeLinkAccountSpy).toHaveBeenCalledWith(options, accessToken);

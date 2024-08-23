@@ -2,7 +2,7 @@ import {
   FindUserEntity,
 } from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
-import { ChangePasswordRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, completeLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
+import { ChangePasswordRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, CompleteLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
 import { HTTPRequestHeader } from "../common/Common.model";
 import { CidaasUser } from "../common/User.model";
 
@@ -344,7 +344,7 @@ export function initiateLinkAccount(options: InitiateLinkAccountRequest, access_
  * });
  * ```
  */
-export function completeLinkAccount(options: completeLinkAccountRequest, access_token: string) {
+export function completeLinkAccount(options: CompleteLinkAccountRequest, access_token: string) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
 }
