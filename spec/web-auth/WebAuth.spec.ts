@@ -12,7 +12,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 import { CidaasUser } from '../../src/main/common/User.model';
-import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, ProcessingType, ResetMedium } from '../../src/main/user-service/UserService.model';
+import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, ProcessingType, ResetMedium, UserCheckExistsRequest } from '../../src/main/user-service/UserService.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -468,17 +468,14 @@ describe('User service functions', () => {
 
 	test('userCheckExists', () => {
 		const userCheckExistsSpy = jest.spyOn(UserService, 'userCheckExists').mockImplementation();
-		const options: FindUserEntity = {
+		const options: UserCheckExistsRequest = {
 			sub: '',
 			email: '',
 			mobile: '',
 			username: '',
-			customFields: undefined,
 			provider: '',
-			providerUserId: '',
 			rememberMe: '',
 			webfinger: '',
-			sub_not: '',
 			requestId: ''
 		};
 		void webAuth.userCheckExists(options);

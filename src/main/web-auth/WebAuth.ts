@@ -37,7 +37,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
-import { ChangePasswordRequest, CompleteLinkAccountRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
+import { ChangePasswordRequest, CompleteLinkAccountRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
 import { HTTPRequestHeader } from "../common/Common.model";
 
 export const createPreloginWebauth = (authority: string) => {
@@ -950,7 +950,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  userCheckExists(options: FindUserEntity) {
+  userCheckExists(options: UserCheckExistsRequest) {
     return UserService.userCheckExists(options);
   }
 

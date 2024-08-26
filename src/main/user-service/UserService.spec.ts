@@ -1,7 +1,7 @@
 import { AcceptResetPasswordEntity, ChangePasswordEntity, FindUserEntity, IUserLinkEntity, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../common/Helper';
 import * as UserService from './UserService';
-import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest } from './UserService.model';
+import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest, UserCheckExistsRequest } from './UserService.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
@@ -249,17 +249,14 @@ test('deleteUserAccount', () => {
 });
 
 test('userCheckExists', () => {
-  const options: FindUserEntity = {
+  const options: UserCheckExistsRequest = {
     sub: 'sub',
     email: 'email',
     mobile: 'mobile',
     username: 'username',
-    customFields: undefined,
     provider: 'provider',
-    providerUserId: 'providerUserId',
     rememberMe: 'rememberMe',
     webfinger: 'webfinger',
-    sub_not: 'sub_not',
     requestId: 'requestId'
   };
   const queryParameter = `?webfinger=${options.webfinger}&rememberMe=${options.rememberMe}`

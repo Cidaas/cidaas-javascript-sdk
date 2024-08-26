@@ -124,6 +124,24 @@ export interface CompleteLinkAccountRequest {
     link_request_id?: string;
 }
 
+export interface UserCheckExistsRequest {
+    /** Request id returned from the authorization call */
+    requestId?: string;
+    /** Email of user */
+    email?: string;
+    /** Username of user */
+    username?: string;
+    /** Provider which is used for authenticating user */
+    provider?: string;
+    /** Mobile number of user */
+    mobile: string;
+    /** Subject (User) identifier */
+    sub?: string
+    /** If filled, will be sent as query parameter */
+    rememberMe?: string;
+    /** If filled, will be sent as query parameter */
+    webfinger?: string;
+}
 /** Type of medium to be used to reset password */
 export enum ResetMedium {
     'SMS',

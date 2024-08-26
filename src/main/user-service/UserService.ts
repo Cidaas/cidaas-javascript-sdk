@@ -1,8 +1,5 @@
-import {
-  FindUserEntity,
-} from "../web-auth/Entities"
 import { Helper, CustomException } from "../common/Helper";
-import { ChangePasswordRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, CompleteLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
+import { ChangePasswordRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest, CompleteLinkAccountRequest, getCommunicationStatusRequest } from "./UserService.model";
 import { HTTPRequestHeader } from "../common/Common.model";
 import { CidaasUser } from "../common/User.model";
 
@@ -416,6 +413,7 @@ export function deleteUserAccount(options: DeleteUserAccountRequest) {
 
 /**
  * To check if user exists, call **userCheckExists()**.
+ * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/4yh82qism78xf-find-user-by-identifier for more details.
  * @example
  * options = {
  *   requestId: "your request id",
@@ -429,7 +427,7 @@ export function deleteUserAccount(options: DeleteUserAccountRequest) {
  * });
  * ```
  */
-export function userCheckExists(options: FindUserEntity) {
+export function userCheckExists(options: UserCheckExistsRequest) {
   let queryParameter = ''
   if (options.webfinger || options.rememberMe) {
     queryParameter += '?';
