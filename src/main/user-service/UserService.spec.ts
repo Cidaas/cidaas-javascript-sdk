@@ -199,7 +199,6 @@ test('updateProfile', () => {
 });
 
 test('initiateLinkAccount', () => {
-  const mockDate = new Date('1970-01-01T00:00:00Z');
   const options: InitiateLinkAccountRequest = {
     master_sub: 'master_sub',
     user_name_type: 'email',
