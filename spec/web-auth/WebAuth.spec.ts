@@ -469,11 +469,9 @@ describe('User service functions', () => {
 	test('userCheckExists', () => {
 		const userCheckExistsSpy = jest.spyOn(UserService, 'userCheckExists').mockImplementation();
 		const options: UserCheckExistsRequest = {
-			sub: '',
 			email: '',
 			mobile: '',
 			username: '',
-			provider: '',
 			rememberMe: '',
 			webfinger: '',
 			requestId: ''

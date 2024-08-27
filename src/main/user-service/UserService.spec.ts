@@ -249,11 +249,9 @@ test('deleteUserAccount', () => {
 
 test('userCheckExists', () => {
   const options: UserCheckExistsRequest = {
-    sub: 'sub',
     email: 'email',
     mobile: 'mobile',
     username: 'username',
-    provider: 'provider',
     rememberMe: 'rememberMe',
     webfinger: 'webfinger',
     requestId: 'requestId'

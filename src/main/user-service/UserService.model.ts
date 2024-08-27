@@ -131,12 +131,10 @@ export interface UserCheckExistsRequest {
     email?: string;
     /** Username of user */
     username?: string;
-    /** Provider which is used for authenticating user */
-    provider?: string;
     /** Mobile number of user */
     mobile: string;
-    /** Subject (User) identifier */
-    sub?: string
+    /** Custom predefined property to identify user */
+    customFields?: { [key: string]: string };
     /** If filled, will be sent as query parameter */
     rememberMe?: string;
     /** If filled, will be sent as query parameter */
