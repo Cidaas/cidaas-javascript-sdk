@@ -1,12 +1,3 @@
-import {
-  Authentication, OidcSettings,
-  LoginRedirectOptions,
-  LogoutRedirectOptions,
-  PopupSignInOptions,
-  PopupSignOutOptions,
-  SilentSignInOptions,
-  OidcManager, LoginRequestOptions, User, LogoutResponse
-} from '../authentication/Authentication';
 import { Helper, CustomException } from "../common/Helper";
 import * as LoginService from "../login-service/LoginService";
 import * as UserService from "../user-service/UserService";
@@ -29,6 +20,9 @@ import { LoginPrecheckRequest } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
 import { ChangePasswordRequest, CompleteLinkAccountRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
 import { HTTPRequestHeader } from "../common/Common.model";
+import { User } from "oidc-client-ts";
+import { Authentication } from "../authentication/Authentication";
+import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
