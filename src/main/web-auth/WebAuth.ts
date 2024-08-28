@@ -15,21 +15,11 @@ import * as VerificationService from "./VerificationService";
 import * as ConsentService from "../consent-service/ConsentService";
 
 import {
-  UserEntity,
-  ResetPasswordEntity,
   IConfiguredListRequestEntity,
   IInitVerificationAuthenticationRequestEntity,
-  FindUserEntity,
-  IUserEntity,
   IEnrollVerificationSetupRequestEntity,
-  IUserLinkEntity,
-  ChangePasswordEntity,
   IAuthVerificationAuthenticationRequestEntity,
   AccountVerificationRequestEntity,
-  ValidateResetPasswordEntity,
-  AcceptResetPasswordEntity,
-  PhysicalVerificationLoginRequest,
-  IChangePasswordEntity,
   IUserActivityPayloadEntity,
 } from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
