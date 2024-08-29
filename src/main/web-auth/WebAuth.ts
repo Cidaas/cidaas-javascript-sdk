@@ -2,7 +2,7 @@ import { Helper, CustomException } from "../common/Helper";
 import * as LoginService from "../login-service/LoginService";
 import * as UserService from "../user-service/UserService";
 import * as TokenService from "../token-service/TokenService";
-import * as VerificationService from "./VerificationService";
+import * as VerificationService from "../verification-service/VerificationService";
 import * as ConsentService from "../consent-service/ConsentService";
 
 import {

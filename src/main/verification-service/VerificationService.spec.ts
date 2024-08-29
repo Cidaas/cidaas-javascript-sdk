@@ -1,6 +1,6 @@
-import * as VerificationService  from '../../src/main/web-auth/VerificationService';
-import { Helper } from "../../src/main/common/Helper";
-import { AccountVerificationRequestEntity, IAuthVerificationAuthenticationRequestEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity } from '../../src/main/web-auth/Entities';
+import * as VerificationService  from './VerificationService';
+import { Helper } from "../common/Helper";
+import { AccountVerificationRequestEntity, IAuthVerificationAuthenticationRequestEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity } from '../web-auth/Entities';
 
 
 const authority = 'baseURL';

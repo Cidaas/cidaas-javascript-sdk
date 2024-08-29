@@ -1,11 +1,6 @@
-import {
-  IConfiguredListRequestEntity,
-  IInitVerificationAuthenticationRequestEntity,
-  IEnrollVerificationSetupRequestEntity,
-  IAuthVerificationAuthenticationRequestEntity,
-  AccountVerificationRequestEntity,
-} from "./Entities"
+
 import { Helper, CustomException } from "../common/Helper";
+import { AccountVerificationRequestEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IAuthVerificationAuthenticationRequestEntity } from "../web-auth/Entities";
 
 /**
    * To initiate the account verification, call **initiateAccountVerification()**. This will send verification code  email or sms or ivr based on the verificationMedium you mentioned.

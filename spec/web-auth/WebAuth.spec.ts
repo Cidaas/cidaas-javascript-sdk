@@ -6,7 +6,7 @@ import { Helper } from '../../src/main/common/Helper';
 import * as LoginService from '../../src/main/login-service/LoginService';
 import * as TokenService from '../../src/main/token-service/TokenService';
 import * as UserService from '../../src/main/user-service/UserService';
-import * as VerificationService from '../../src/main/web-auth/VerificationService';
+import * as VerificationService from '../../src/main/verification-service/VerificationService';
 import { SigninRequest } from 'oidc-client-ts';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/ConsentService.model';
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
