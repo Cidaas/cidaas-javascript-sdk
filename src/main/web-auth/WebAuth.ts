@@ -23,6 +23,7 @@ import { HTTPRequestHeader } from "../common/Common.model";
 import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
+import { InitiateAccountVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -500,7 +501,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  initiateAccountVerification(options: AccountVerificationRequestEntity) {
+  initiateAccountVerification(options: InitiateAccountVerificationRequest) {
     VerificationService.initiateAccountVerification(options);
   }
 
@@ -509,7 +510,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  verifyAccount(options: { accvid: string; code: string; }) {
+  verifyAccount(options: VerifyAccountRequest) {
     return VerificationService.verifyAccount(options)
   }
 

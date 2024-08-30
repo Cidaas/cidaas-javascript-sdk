@@ -1,6 +1,7 @@
 import * as VerificationService  from './VerificationService';
 import { Helper } from "../common/Helper";
 import { AccountVerificationRequestEntity, IAuthVerificationAuthenticationRequestEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity } from '../web-auth/Entities';
+import { InitiateAccountVerificationRequest, VerifyAccountRequest } from './VerificationService.model';
 
 
 const authority = 'baseURL';
@@ -14,7 +15,7 @@ beforeAll(() => {
 });
 
 test('initiateAccountVerification', () => {
-  const options: AccountVerificationRequestEntity = {
+  const options: InitiateAccountVerificationRequest = {
     sub: '123'
   };
   const serviceURL = `${serviceBaseUrl}/account/initiate`;
@@ -24,7 +25,7 @@ test('initiateAccountVerification', () => {
 });
 
 test('verifyAccount', () => {
-  const options = {
+  const options: VerifyAccountRequest = {
     accvid: 'accvid',
     code: 'code'
   };

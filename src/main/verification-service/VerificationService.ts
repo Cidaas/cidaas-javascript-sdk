@@ -1,6 +1,7 @@
 
 import { Helper, CustomException } from "../common/Helper";
-import { AccountVerificationRequestEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IAuthVerificationAuthenticationRequestEntity } from "../web-auth/Entities";
+import { IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IAuthVerificationAuthenticationRequestEntity } from "../web-auth/Entities";
+import { InitiateAccountVerificationRequest, VerifyAccountRequest } from "./VerificationService.model";
 
 /**
    * To initiate the account verification, call **initiateAccountVerification()**. This will send verification code  email or sms or ivr based on the verificationMedium you mentioned.
@@ -19,7 +20,7 @@ import { AccountVerificationRequestEntity, IConfiguredListRequestEntity, IEnroll
    * });
    * ```
    */
-export function initiateAccountVerification(options: AccountVerificationRequestEntity) {
+export function initiateAccountVerification(options: InitiateAccountVerificationRequest) {
   try {
     const url = window.webAuthSettings.authority + "/verification-srv/account/initiate";
     const form = Helper.createForm(url, options)
@@ -45,10 +46,7 @@ export function initiateAccountVerification(options: AccountVerificationRequestE
  * });
  * ```
  */
-export function verifyAccount(options: {
-  accvid: string;
-  code: string;
-}) {
+export function verifyAccount(options: VerifyAccountRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST");
 }

@@ -13,6 +13,7 @@ import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCre
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 import { CidaasUser } from '../../src/main/common/User.model';
 import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, ProcessingType, ResetMedium, UserCheckExistsRequest } from '../../src/main/user-service/UserService.model';
+import { InitiateAccountVerificationRequest, VerifyAccountRequest } from '../../src/main/verification-service/VerificationService.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -713,7 +714,7 @@ describe('Login service functions', () => {
 describe('Verification service functions', () => {
 	test('initiateAccountVerification', () => {
 		const initiateAccountVerificationSpy = jest.spyOn(VerificationService, 'initiateAccountVerification').mockImplementation();
-		const options: AccountVerificationRequestEntity = {
+		const options: InitiateAccountVerificationRequest = {
 			sub: ''
 		};
 		webAuth.initiateAccountVerification(options);
@@ -722,7 +723,7 @@ describe('Verification service functions', () => {
 	
 	test('verifyAccount', () => {
 		const verifyAccountSpy = jest.spyOn(VerificationService, 'verifyAccount').mockImplementation();
-		const options = {
+		const options: VerifyAccountRequest = {
 			accvid: '',
 			code: ''
 		};
