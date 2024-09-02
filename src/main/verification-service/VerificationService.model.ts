@@ -35,4 +35,10 @@ export interface VerifyAccountRequest {
   /** code which has been sent to predetermined verification medium */
   code: string;
 }
+
+export interface GetMFAListRequest {
+  /** email of user */
+  email: string;
+  /** Request id returned from the authorization call */
+  request_id: string;
 }
