@@ -889,7 +889,6 @@ export class WebAuth {
    */
   getMissingFields(trackId: string, useSocialProvider?: {requestId: string}) {
     if (useSocialProvider) {
-      console.log("webAuthSettings: " + window.webAuthSettings.authority);
       const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + useSocialProvider.requestId + "/" + trackId;
       return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
     } else {
