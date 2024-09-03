@@ -36,7 +36,7 @@ export interface VerifyAccountRequest {
   code: string;
 }
 
-export interface MFARequest {
+export interface GetMFAListRequest {
   /** email of user */
   email: string;
   /** Request id returned from the authorization call */
@@ -66,6 +66,10 @@ export interface EnrollVerificationRequest {
   attempt?: number;
   fido2_client_response?: FIDO2EnrollEntity;
   verification_type?: string;
+}
+
+export interface CheckVerificationTypeConfiguredRequest extends GetMFAListRequest {
+  verification_type: string;
 }
 
 export interface InitiateMFARequest {

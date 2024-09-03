@@ -1,6 +1,6 @@
 
 import { Helper, CustomException } from "../common/Helper";
-import { authenticateMFARequest, CancelMFARequest, EnrollVerificationRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, MFARequest, VerifyAccountRequest } from "./VerificationService.model";
+import { authenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from "./VerificationService.model";
 
 /**
    * To initiate the account verification, call **initiateAccountVerification()**. This will send verification code  email or sms or ivr based on the verificationMedium you mentioned.
@@ -65,7 +65,7 @@ export function verifyAccount(options: VerifyAccountRequest) {
  * });
  * ```
  */
-export function getMFAList(options: MFARequest) {
+export function getMFAList(options: GetMFAListRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST");
 }
@@ -201,7 +201,7 @@ export function enrollVerification(options: EnrollVerificationRequest) {
  * });
  * ```
  */
-export function checkVerificationTypeConfigured(options: MFARequest) {
+export function checkVerificationTypeConfigured(options: CheckVerificationTypeConfiguredRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
 }
