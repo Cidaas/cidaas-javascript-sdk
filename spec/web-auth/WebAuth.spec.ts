@@ -1,7 +1,7 @@
 import { WebAuth } from '../../src/main';
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token-service/TokenService.model';
 import * as ConsentService from '../../src/main/consent-service/ConsentService';
-import { AcceptResetPasswordEntity, ChangePasswordEntity, IUserActivityPayloadEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
+import { IUserActivityPayloadEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/common/Helper';
 import * as LoginService from '../../src/main/login-service/LoginService';
 import * as TokenService from '../../src/main/token-service/TokenService';
@@ -12,7 +12,7 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 import { CidaasUser } from '../../src/main/common/User.model';
-import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, ProcessingType, ResetMedium, UserCheckExistsRequest } from '../../src/main/user-service/UserService.model';
+import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, ProcessingType, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../../src/main/user-service/UserService.model';
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from '../../src/main/verification-service/VerificationService.model';
 
 const authority = 'baseURL';
@@ -284,7 +284,7 @@ describe('User service functions', () => {
 	
 	test('register', () => {
 		const registerSpy = jest.spyOn(UserService, 'register').mockImplementation();
-		const options: UserEntity = {
+		const options: RegisterRequest = {
 			given_name: '',
 			family_name: '',
 			email: '',
@@ -343,7 +343,7 @@ describe('User service functions', () => {
 	
 	test('handleResetPassword', () => {
 		const handleResetPasswordSpy = jest.spyOn(UserService, 'handleResetPassword').mockImplementation();
-		const options: ValidateResetPasswordEntity = {
+		const options: HandleResetPasswordRequest = {
 			resetRequestId: '',
 			code: ''
 		};
@@ -353,7 +353,7 @@ describe('User service functions', () => {
 	
 	test('resetPassword', () => {
 		const resetPasswordSpy = jest.spyOn(UserService, 'resetPassword').mockImplementation();
-		const options: AcceptResetPasswordEntity = {
+		const options: ResetPasswordRequest = {
 			resetRequestId: '',
 			exchangeId: '',
 			password: '',
@@ -394,7 +394,7 @@ describe('User service functions', () => {
 
 	test('changePassword', () => {
 		const changePasswordSpy = jest.spyOn(UserService, 'changePassword').mockImplementation();
-		const options: ChangePasswordEntity = {
+		const options: ChangePasswordRequest = {
 			sub: '',
 			identityId: '',
 			old_password: '',
@@ -408,7 +408,7 @@ describe('User service functions', () => {
 
 	test('updateProfile', () => {
 		const updateProfileSpy = jest.spyOn(UserService, 'updateProfile').mockImplementation();
-		const options: UserEntity = {
+		const options: CidaasUser = {
 			given_name: '',
 			family_name: '',
 			email: '',
