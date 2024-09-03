@@ -1,7 +1,6 @@
 import * as VerificationService  from './VerificationService';
 import { Helper } from "../common/Helper";
-import { AccountVerificationRequestEntity, IAuthVerificationAuthenticationRequestEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity } from '../web-auth/Entities';
-import { InitiateAccountVerificationRequest, VerifyAccountRequest } from './VerificationService.model';
+import { AuthenticateMFARequest,  CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from './VerificationService.model';
 
 
 const authority = 'baseURL';
@@ -35,18 +34,9 @@ test('verifyAccount', () => {
 });
 
 test('getMFAList', () => {
-  const options: IConfiguredListRequestEntity = {
-    sub: 'sub',
+  const options: GetMFAListRequest = {
     email: 'email',
-    mobile_number: 'mobile_number',
-    username: 'username',
-    request_id: 'request_id',
-    verification_types: [],
-    single_factor_sub_ref: 'single_factor_sub_ref',
-    device_fp: 'device_fp',
-    provider: 'provider',
-    device_id: 'device_id',
-    verification_type: 'verification_type'
+    request_id: 'request_id'
   };
   const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
   void VerificationService.getMFAList(options);
@@ -54,7 +44,7 @@ test('getMFAList', () => {
 });
 
 test('cancelMFA', () => {
-  const options = {
+  const options: CancelMFARequest = {
     exchange_id: 'exchange_id',
     reason: 'reason',
     type: 'type'
@@ -72,7 +62,7 @@ test('getAllVerificationList', () => {
 });
 
 test('initiateEnrollment', () => {
-  const options = {
+  const options: InitiateEnrollmentRequest = {
     verification_type: 'verification_type',
     deviceInfo: {
       deviceId: 'deviceId', 
@@ -97,7 +87,7 @@ test('getEnrollmentStatus', () => {
 });
 
 test('enrollVerification', () => {
-  const options: IEnrollVerificationSetupRequestEntity = {
+  const options: EnrollVerificationRequest = {
     exchange_id: 'exchange_id',
     device_id: 'device_id',
     finger_print: 'finger_print',
@@ -116,17 +106,9 @@ test('enrollVerification', () => {
 });
 
 test('checkVerificationTypeConfigured', () => {
-  const options: IConfiguredListRequestEntity = {
-    sub: 'sub',
+  const options: CheckVerificationTypeConfiguredRequest = {
     email: 'email',
-    mobile_number: 'mobile_number',
-    username: 'username',
     request_id: 'request_id',
-    verification_types: [],
-    single_factor_sub_ref: 'single_factor_sub_ref',
-    device_fp: 'device_fp',
-    provider: 'provider',
-    device_id: 'device_id',
     verification_type: 'verification_type'
   };
   const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/check/${options.verification_type}`;
@@ -135,7 +117,7 @@ test('checkVerificationTypeConfigured', () => {
 });
 
 test('initiateMFA', () => {
-  const options: IInitVerificationAuthenticationRequestEntity = {
+  const options: InitiateMFARequest = {
     usage_type: 'usage_type',
     processingType: 'processingType',
     request_id: 'request_id',
@@ -147,7 +129,7 @@ test('initiateMFA', () => {
 });
 
 test('initiateMFA with access token', () => {
-  const options: IInitVerificationAuthenticationRequestEntity = {
+  const options: InitiateMFARequest = {
     usage_type: 'usage_type',
     processingType: 'processingType',
     request_id: 'request_id',
@@ -160,7 +142,7 @@ test('initiateMFA with access token', () => {
 });
 
 test('authenticateMFA', () => {
-  const options: IAuthVerificationAuthenticationRequestEntity = {
+  const options: AuthenticateMFARequest = {
     type: 'type',
     exchange_id: 'exchange_id',
     client_id: 'client_id'

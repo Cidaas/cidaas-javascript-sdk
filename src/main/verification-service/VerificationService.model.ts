@@ -91,7 +91,7 @@ export interface InitiateMFARequest {
   trackId?: string;
 }
 
-export interface authenticateMFARequest {
+export interface AuthenticateMFARequest {
   exchange_id: string;
   pass_code?: string;
   client_id: string;
