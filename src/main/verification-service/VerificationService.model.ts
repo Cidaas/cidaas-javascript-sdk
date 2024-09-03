@@ -36,7 +36,7 @@ export interface VerifyAccountRequest {
   code: string;
 }
 
-export interface GetMFAListRequest {
+export interface MFARequest {
   /** email of user */
   email: string;
   /** Request id returned from the authorization call */
@@ -55,30 +55,30 @@ export interface InitiateEnrollmentRequest {
 }
 
 export interface EnrollVerificationRequest {
-  exchange_id: string;
-  device_id: string;
-  finger_print: string;
-  client_id: string;
-  push_id: string;
-  pass_code: string;
-  pkce_key: string;
-  face_attempt: number;
-  attempt: number;
-  fido2_client_response: FIDO2EnrollEntity;
-  verification_type: string;
+  exchange_id?: string;
+  device_id?: string;
+  finger_print?: string;
+  client_id?: string;
+  push_id?: string;
+  pass_code?: string;
+  pkce_key?: string;
+  face_attempt?: number;
+  attempt?: number;
+  fido2_client_response?: FIDO2EnrollEntity;
+  verification_type?: string;
 }
 
 export interface InitiateMFARequest {
+  request_id: string;
   usage_type: string;
-  processingType: string;
+  type?: string
+  email?: string;
+  processingType?: string;
   q?: string;
   sub?: string;
-  email?: string;
   mobile_number?: string;
   username?: string;
   client_id?: string;
-  request_id: string;
-  type?: string
   medium_id?: string;
   push_id?: string;
   device_id?: string;
@@ -101,8 +101,8 @@ export interface authenticateMFARequest {
   captcha_ref?: string;
   bot_captcha_response?: string;
   csrf_token?: string;
-  client_response?: any;
-  fidoRequestId?: string;
+  type: string;
+  verification_type?: string;
 }
 
 export interface DeviceInfo {

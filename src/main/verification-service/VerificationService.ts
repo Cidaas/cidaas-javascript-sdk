@@ -1,7 +1,6 @@
 
 import { Helper, CustomException } from "../common/Helper";
-import { IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IAuthVerificationAuthenticationRequestEntity } from "../web-auth/Entities";
-import { InitiateAccountVerificationRequest, VerifyAccountRequest } from "./VerificationService.model";
+import { authenticateMFARequest, CancelMFARequest, EnrollVerificationRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, MFARequest, VerifyAccountRequest } from "./VerificationService.model";
 
 /**
    * To initiate the account verification, call **initiateAccountVerification()**. This will send verification code  email or sms or ivr based on the verificationMedium you mentioned.
@@ -66,7 +65,7 @@ export function verifyAccount(options: VerifyAccountRequest) {
  * });
  * ```
  */
-export function getMFAList(options: IConfiguredListRequestEntity) {
+export function getMFAList(options: MFARequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
   return Helper.createHttpPromise(options, _serviceURL, false, "POST");
 }
@@ -86,11 +85,7 @@ export function getMFAList(options: IConfiguredListRequestEntity) {
  * });
  * ```
  */
-export function cancelMFA(options: {
-  exchange_id: string;
-  reason: string;
-  type: string;
-}) {
+export function cancelMFA(options: CancelMFARequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/cancel/" + options.type;
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
 }
@@ -138,16 +133,7 @@ export function getAllVerificationList(access_token: string) {
  * });
  * ```
  */
-export function initiateEnrollment(options: {
-  verification_type: string,
-  deviceInfo?: {
-    deviceId: string,
-    location: {
-      lat: string,
-      lon: string
-    }
-  }
-}, accessToken: string) {
+export function initiateEnrollment(options: InitiateEnrollmentRequest, accessToken: string) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/" + options.verification_type;
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", accessToken);
 }
@@ -194,7 +180,7 @@ export function getEnrollmentStatus(status_id: string, accessToken: string) {
  * });
  * ```
  */
-export function enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
+export function enrollVerification(options: EnrollVerificationRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/enroll/" + options.verification_type;
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
 }
@@ -215,7 +201,7 @@ export function enrollVerification(options: IEnrollVerificationSetupRequestEntit
  * });
  * ```
  */
-export function checkVerificationTypeConfigured(options: IConfiguredListRequestEntity) {
+export function checkVerificationTypeConfigured(options: MFARequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/check/" + options.verification_type;
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
 }
@@ -243,7 +229,7 @@ export function checkVerificationTypeConfigured(options: IConfiguredListRequestE
  * });
  * ```
  */
-export function initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken?: string) {
+export function initiateMFA(options: InitiateMFARequest, accessToken?: string) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
   // TODO: remove accessToken parameter in the next major release
   if (accessToken) {
@@ -270,7 +256,7 @@ export function initiateMFA(options: IInitVerificationAuthenticationRequestEntit
   * });
   * ```
   */
-export function authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
+export function authenticateMFA(options: authenticateMFARequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
 }
