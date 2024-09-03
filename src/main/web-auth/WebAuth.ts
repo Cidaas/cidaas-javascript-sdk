@@ -6,11 +6,6 @@ import * as VerificationService from "../verification-service/VerificationServic
 import * as ConsentService from "../consent-service/ConsentService";
 
 import {
-  IConfiguredListRequestEntity,
-  IInitVerificationAuthenticationRequestEntity,
-  IEnrollVerificationSetupRequestEntity,
-  IAuthVerificationAuthenticationRequestEntity,
-  AccountVerificationRequestEntity,
   IUserActivityPayloadEntity,
 } from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
@@ -23,7 +18,7 @@ import { HTTPRequestHeader } from "../common/Common.model";
 import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
-import { InitiateAccountVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
+import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -544,7 +539,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getMFAList(options: IConfiguredListRequestEntity) {
+  getMFAList(options: GetMFAListRequest) {
     return VerificationService.getMFAList(options);
   }
 
@@ -553,7 +548,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  cancelMFA(options: { exchange_id: string; reason: string; type: string; }) {
+  cancelMFA(options: CancelMFARequest) {
     return VerificationService.cancelMFA(options);
   }
 
@@ -822,13 +817,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  initiateEnrollment(options: {
-    verification_type: string,
-    deviceInfo?: {
-      deviceId: string, 
-      location: {lat: string, lon: string}
-    }
-  }, accessToken: string) {
+  initiateEnrollment(options: InitiateEnrollmentRequest, accessToken: string) {
     return VerificationService.initiateEnrollment(options, accessToken);
   }
 
@@ -846,7 +835,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-    enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
+    enrollVerification(options: EnrollVerificationRequest) {
       return VerificationService.enrollVerification(options);
     }
 
@@ -855,7 +844,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  checkVerificationTypeConfigured(options: IConfiguredListRequestEntity) {
+  checkVerificationTypeConfigured(options: CheckVerificationTypeConfiguredRequest) {
     return VerificationService.checkVerificationTypeConfigured(options);
   }
 
@@ -951,7 +940,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken?: string) {
+  initiateMFA(options: InitiateMFARequest, accessToken?: string) {
     // TODO: remove accessToken parameter in the next major release
     if (accessToken) {
       return VerificationService.initiateMFA(options, accessToken);
@@ -964,7 +953,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
+  authenticateMFA(options: AuthenticateMFARequest) {
     return VerificationService.authenticateMFA(options);
   }
 

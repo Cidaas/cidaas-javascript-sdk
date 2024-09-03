@@ -1,7 +1,7 @@
 import { WebAuth } from '../../src/main';
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../../src/main/token-service/TokenService.model';
 import * as ConsentService from '../../src/main/consent-service/ConsentService';
-import { AcceptResetPasswordEntity, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
+import { AcceptResetPasswordEntity, ChangePasswordEntity, IUserActivityPayloadEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../../src/main/common/Helper';
 import * as LoginService from '../../src/main/login-service/LoginService';
 import * as TokenService from '../../src/main/token-service/TokenService';
@@ -13,7 +13,7 @@ import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCre
 import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
 import { CidaasUser } from '../../src/main/common/User.model';
 import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, ProcessingType, ResetMedium, UserCheckExistsRequest } from '../../src/main/user-service/UserService.model';
-import { InitiateAccountVerificationRequest, VerifyAccountRequest } from '../../src/main/verification-service/VerificationService.model';
+import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from '../../src/main/verification-service/VerificationService.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -733,18 +733,9 @@ describe('Verification service functions', () => {
 	
 	test('getMFAList', () => {
 		const getMFAListSpy = jest.spyOn(VerificationService, 'getMFAList').mockImplementation();
-		const options: IConfiguredListRequestEntity = {
-			sub: '',
+		const options: GetMFAListRequest = {
 			email: '',
-			mobile_number: '',
-			username: '',
-			request_id: '',
-			verification_types: [],
-			single_factor_sub_ref: '',
-			device_fp: '',
-			provider: '',
-			device_id: '',
-			verification_type: ''
+			request_id: ''
 		};
 		void webAuth.getMFAList(options);
 		expect(getMFAListSpy).toHaveBeenCalledWith(options);
@@ -752,7 +743,7 @@ describe('Verification service functions', () => {
 	
 	test('cancelMFA', () => {
 		const cancelMFASpy = jest.spyOn(VerificationService, 'cancelMFA').mockImplementation();
-		const options = {
+		const options: CancelMFARequest = {
 			exchange_id: '',
 			reason: '',
 			type: ''
@@ -770,7 +761,7 @@ describe('Verification service functions', () => {
 
 	test('initiateEnrollment', () => {
 		const initiateEnrollmentSpy = jest.spyOn(VerificationService, 'initiateEnrollment').mockImplementation();
-		const options = {
+		const options: InitiateEnrollmentRequest = {
 			verification_type: ''
 		};
 		const accessToken = '';
@@ -788,7 +779,7 @@ describe('Verification service functions', () => {
 
 	test('enrollVerification', () => {
 		const enrollVerificationSpy = jest.spyOn(VerificationService, 'enrollVerification').mockImplementation();
-		const options: IEnrollVerificationSetupRequestEntity = {
+		const options: EnrollVerificationRequest = {
 			exchange_id: '',
 			device_id: '',
 			finger_print: '',
@@ -807,17 +798,9 @@ describe('Verification service functions', () => {
 
 	test('checkVerificationTypeConfigured', () => {
 		const checkVerificationTypeConfiguredSpy = jest.spyOn(VerificationService, 'checkVerificationTypeConfigured').mockImplementation();
-		const options: IConfiguredListRequestEntity = {
-			sub: '',
+		const options: CheckVerificationTypeConfiguredRequest = {
 			email: '',
-			mobile_number: '',
-			username: '',
 			request_id: '',
-			verification_types: [],
-			single_factor_sub_ref: '',
-			device_fp: '',
-			provider: '',
-			device_id: '',
 			verification_type: ''
 		};
 		void webAuth.checkVerificationTypeConfigured(options);
@@ -826,7 +809,7 @@ describe('Verification service functions', () => {
 
 	test('initiateMFA', () => {
 		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
-		const options: IInitVerificationAuthenticationRequestEntity = {
+		const options: InitiateMFARequest = {
 			usage_type: '',
 			processingType: '',
 			request_id: ''
@@ -837,7 +820,7 @@ describe('Verification service functions', () => {
 
 	test('initiateMFA with access token', () => {
 		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
-		const options: IInitVerificationAuthenticationRequestEntity = {
+		const options: InitiateMFARequest = {
 			usage_type: '',
 			processingType: '',
 			request_id: ''
@@ -849,7 +832,7 @@ describe('Verification service functions', () => {
 
 	test('authenticateMFA', () => {
 		const authenticateMFASpy = jest.spyOn(VerificationService, 'authenticateMFA').mockImplementation();
-		const options: IAuthVerificationAuthenticationRequestEntity = {
+		const options: AuthenticateMFARequest = {
 			type: '',
 			exchange_id: '',
 			client_id: ''
