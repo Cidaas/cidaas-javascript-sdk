@@ -42,3 +42,80 @@ export interface GetMFAListRequest {
   /** Request id returned from the authorization call */
   request_id: string;
 }
+
+export interface CancelMFARequest {
+  exchange_id: string;
+  reason: string;
+  type: string;
+}
+
+export interface InitiateEnrollmentRequest {
+  verification_type: string;
+  deviceInfo?: DeviceInfo;
+}
+
+export interface EnrollVerificationRequest {
+  exchange_id: string;
+  device_id: string;
+  finger_print: string;
+  client_id: string;
+  push_id: string;
+  pass_code: string;
+  pkce_key: string;
+  face_attempt: number;
+  attempt: number;
+  fido2_client_response: FIDO2EnrollEntity;
+  verification_type: string;
+}
+
+export interface InitiateMFARequest {
+  usage_type: string;
+  processingType: string;
+  q?: string;
+  sub?: string;
+  email?: string;
+  mobile_number?: string;
+  username?: string;
+  client_id?: string;
+  request_id: string;
+  type?: string
+  medium_id?: string;
+  push_id?: string;
+  device_id?: string;
+  single_factor_auth?: boolean;
+  single_factor_sub_ref?: string;
+  trackId?: string;
+}
+
+export interface authenticateMFARequest {
+  exchange_id: string;
+  pass_code?: string;
+  client_id: string;
+  device_id?: string;
+  push_id?: string;
+  password?: string;
+  upload_attempt?: number;
+  fido2_client_response?: FIDO2EnrollEntity;
+  single_factor_auth?: boolean;
+  captcha?: string;
+  captcha_ref?: string;
+  bot_captcha_response?: string;
+  csrf_token?: string;
+  client_response?: any;
+  fidoRequestId?: string;
+}
+
+export interface DeviceInfo {
+  deviceId: string;
+  location: Location;
+}
+
+export interface Location {
+  lat: string;
+  lon: string;
+}
+
+export interface FIDO2EnrollEntity {
+  client_response?: any;
+  fidoRequestId?: string;
+}
