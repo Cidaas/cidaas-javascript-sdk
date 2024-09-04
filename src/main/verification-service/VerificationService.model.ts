@@ -79,7 +79,7 @@ export interface InitiateMFARequest {
   usage_type: string;
   type?: string
   email?: string;
-  processingType?: string;
+  processingType?: ProcessingType;
   q?: string;
   sub?: string;
   mobile_number?: string;
