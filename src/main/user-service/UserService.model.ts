@@ -1,3 +1,4 @@
+import { ProcessingType } from "../common/Common.model";
 import { CidaasUser } from "../common/User.model";
 
 export interface GetUserProfileRequest {
@@ -145,10 +146,4 @@ export enum ResetMedium {
     'SMS',
     'EMAIL',
     'IVR'
-}
-
-/** defines whether the password can be resetted via email link or whether the user needs to enter a code to complete the reset password process. */
-export enum ProcessingType {
-    'CODE',
-    'LINK'
 }

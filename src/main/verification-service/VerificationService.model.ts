@@ -1,3 +1,5 @@
+import { ProcessingType } from "../common/Common.model";
+
 export interface InitiateAccountVerificationRequest {
   /** email of user */
   email?: string;
@@ -10,7 +12,7 @@ export interface InitiateAccountVerificationRequest {
   /** described which medium (email, mobile, username) to be used for verifying user */
   verificationMedium?: string;
   /** can be either CODE, LINK, or GENERAL */
-  processingType?: string;
+  processingType?: ProcessingType;
   /** Request id returned from the authorization call */
   requestId?: string;
   /** Unique identifier of client app, can be found in app setting under admin ui */

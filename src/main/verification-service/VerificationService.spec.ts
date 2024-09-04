@@ -1,6 +1,7 @@
 import * as VerificationService  from './VerificationService';
 import { Helper } from "../common/Helper";
 import { AuthenticateMFARequest,  CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from './VerificationService.model';
+import { ProcessingType } from '../common/Common.model';
 
 
 const authority = 'baseURL';
@@ -119,7 +120,7 @@ test('checkVerificationTypeConfigured', () => {
 test('initiateMFA', () => {
   const options: InitiateMFARequest = {
     usage_type: 'usage_type',
-    processingType: 'processingType',
+    processingType: ProcessingType.CODE,
     request_id: 'request_id',
     type: 'type'
   };

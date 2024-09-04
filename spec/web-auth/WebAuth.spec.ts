@@ -10,9 +10,9 @@ import * as VerificationService from '../../src/main/verification-service/Verifi
 import { SigninRequest } from 'oidc-client-ts';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../../src/main/consent-service/ConsentService.model';
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../../src/main/login-service/LoginService.model';
-import { LoginPrecheckRequest, VerificationType } from '../../src/main/common/Common.model';
+import { LoginPrecheckRequest, ProcessingType, VerificationType } from '../../src/main/common/Common.model';
 import { CidaasUser } from '../../src/main/common/User.model';
-import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, ProcessingType, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../../src/main/user-service/UserService.model';
+import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../../src/main/user-service/UserService.model';
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from '../../src/main/verification-service/VerificationService.model';
 
 const authority = 'baseURL';
@@ -811,7 +811,7 @@ describe('Verification service functions', () => {
 		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
 		const options: InitiateMFARequest = {
 			usage_type: '',
-			processingType: '',
+			processingType: ProcessingType.CODE,
 			request_id: ''
 		};
 		void webAuth.initiateMFA(options);
@@ -822,7 +822,7 @@ describe('Verification service functions', () => {
 		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
 		const options: InitiateMFARequest = {
 			usage_type: '',
-			processingType: '',
+			processingType: ProcessingType.CODE,
 			request_id: ''
 		};
 		const accessToken = 'accessToken';

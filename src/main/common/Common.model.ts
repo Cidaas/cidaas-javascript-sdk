@@ -31,3 +31,9 @@ export interface HTTPRequestHeader {
     /** Identifier generated after successful authentication but unfulfilled prechecks */
     trackId?: string;
 }
+
+/** defines whether the the process will be done via email link or whether the user needs to enter a code to complete the process. */
+export enum ProcessingType {
+    'CODE',
+    'LINK'
+}

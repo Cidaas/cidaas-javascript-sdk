@@ -1,3 +1,5 @@
+import { ProcessingType } from "../common/Common.model";
+
 export interface AcceptResetPasswordEntity {
   resetRequestId: string ;
   exchangeId: string;
@@ -38,7 +40,7 @@ export type AccountVerificationRequestEntity = {
   phone?: string;
   username?: string;
   verificationMedium?: string;
-  processingType?: string;
+  processingType?: ProcessingType;
   requestId?: string;
   client_id?: string;
   redirect_uri?: string;
