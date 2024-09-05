@@ -117,20 +117,13 @@ export interface InitiateMFARequest {
 }
 
 export interface AuthenticateMFARequest {
+  /** comes from initiate MFA process */
   exchange_id: string;
+  /** Subject (User) identifier */
+  sub: string;
+  /** code which has been sent to predetermined verification type */
   pass_code?: string;
-  client_id: string;
-  device_id?: string;
-  push_id?: string;
-  password?: string;
-  upload_attempt?: number;
-  fido2_client_response?: FIDO2EnrollEntity;
-  single_factor_auth?: boolean;
-  captcha?: string;
-  captcha_ref?: string;
-  bot_captcha_response?: string;
-  csrf_token?: string;
-  type: string;
+  /** type of MFA to be used for verification */
   verification_type?: string;
 }
 
