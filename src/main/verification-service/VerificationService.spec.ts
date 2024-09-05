@@ -146,7 +146,7 @@ test('authenticateMFA', () => {
   const options: AuthenticateMFARequest = {
     type: 'type',
     exchange_id: 'exchange_id',
-    client_id: 'client_id'
+    pass_code: 'pass_code',
   };
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/authenticate/${options.type}`;
   void VerificationService.authenticateMFA(options);

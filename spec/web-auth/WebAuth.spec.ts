@@ -835,7 +835,7 @@ describe('Verification service functions', () => {
 		const options: AuthenticateMFARequest = {
 			type: '',
 			exchange_id: '',
-			client_id: ''
+			pass_code: ''
 		};
 		void webAuth.authenticateMFA(options);
 		expect(authenticateMFASpy).toHaveBeenCalledWith(options);

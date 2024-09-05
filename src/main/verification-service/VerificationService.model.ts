@@ -119,12 +119,12 @@ export interface InitiateMFARequest {
 export interface AuthenticateMFARequest {
   /** comes from initiate MFA process */
   exchange_id: string;
-  /** Subject (User) identifier */
-  sub: string;
   /** code which has been sent to predetermined verification type */
-  pass_code?: string;
+  pass_code: string;
   /** type of MFA to be used for verification */
-  verification_type?: string;
+  type: string;
+  /** Subject (User) identifier */
+  sub?: string;
 }
 
 export interface DeviceInfo {
