@@ -782,13 +782,8 @@ describe('Verification service functions', () => {
 		const options: EnrollVerificationRequest = {
 			exchange_id: '',
 			device_id: '',
-			finger_print: '',
 			client_id: '',
-			push_id: '',
 			pass_code: '',
-			pkce_key: '',
-			face_attempt: 0,
-			attempt: 0,
 			fido2_client_response: {} ,
 			verification_type: ''
 		};
@@ -811,7 +806,6 @@ describe('Verification service functions', () => {
 		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
 		const options: InitiateMFARequest = {
 			usage_type: '',
-			processingType: ProcessingType.CODE,
 			request_id: ''
 		};
 		void webAuth.initiateMFA(options);
@@ -822,7 +816,6 @@ describe('Verification service functions', () => {
 		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
 		const options: InitiateMFARequest = {
 			usage_type: '',
-			processingType: ProcessingType.CODE,
 			request_id: ''
 		};
 		const accessToken = 'accessToken';

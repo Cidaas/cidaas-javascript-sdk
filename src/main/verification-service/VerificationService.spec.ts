@@ -1,8 +1,6 @@
 import * as VerificationService  from './VerificationService';
 import { Helper } from "../common/Helper";
 import { AuthenticateMFARequest,  CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from './VerificationService.model';
-import { ProcessingType } from '../common/Common.model';
-
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/verification-srv`;
@@ -91,13 +89,8 @@ test('enrollVerification', () => {
   const options: EnrollVerificationRequest = {
     exchange_id: 'exchange_id',
     device_id: 'device_id',
-    finger_print: 'finger_print',
     client_id: 'client_id',
-    push_id: 'push_id',
     pass_code: 'pass_code',
-    pkce_key: 'pkce_key',
-    face_attempt: 0,
-    attempt: 0,
     fido2_client_response: {},
     verification_type: 'verification_type'
   };
@@ -120,7 +113,6 @@ test('checkVerificationTypeConfigured', () => {
 test('initiateMFA', () => {
   const options: InitiateMFARequest = {
     usage_type: 'usage_type',
-    processingType: ProcessingType.CODE,
     request_id: 'request_id',
     type: 'type'
   };
@@ -132,7 +124,6 @@ test('initiateMFA', () => {
 test('initiateMFA with access token', () => {
   const options: InitiateMFARequest = {
     usage_type: 'usage_type',
-    processingType: 'processingType',
     request_id: 'request_id',
     type: 'type'
   };
