@@ -894,7 +894,7 @@ export class WebAuth {
 
   /**
    * getMissingFields
-   * @param trackId - required. If only trackId is given, it will get missing fields from cidaas after succesfull registration using default provider
+   * @param trackId - required. If only trackId is given, it will get missing fields from cidaas after succesful registration using default provider
    * @param useSocialProvider - optional. If given, it will get missing fields from social provider after successful registration using social provider
    * 
    * @example
