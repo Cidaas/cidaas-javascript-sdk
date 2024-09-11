@@ -19,6 +19,7 @@ import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
+import { GetClientInfoRequest, LogoutUserRequest } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -290,7 +291,7 @@ export class WebAuth {
    * });
    * ```
    */
-  logoutUser(options: { access_token: string }) {
+  logoutUser(options: LogoutUserRequest) {
     window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
   }
 
@@ -308,7 +309,7 @@ export class WebAuth {
    * });
    * ```
    */
-  getClientInfo(options: { requestId: string }) {
+  getClientInfo(options: GetClientInfoRequest) {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
     return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
   }
