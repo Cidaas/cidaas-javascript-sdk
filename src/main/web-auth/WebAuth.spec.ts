@@ -14,6 +14,7 @@ import { LoginPrecheckRequest, ProcessingType, VerificationType } from '../commo
 import { CidaasUser } from '../common/User.model';
 import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../user-service/UserService.model';
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from '../verification-service/VerificationService.model';
+import { GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest } from './webauth.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -133,7 +134,7 @@ describe('Webauth functions without module or services', () => {
 	});
 	
 	test('getRegistrationSetup', () => {
-		const options = {
+		const options: GetRegistrationSetupRequest = {
 			acceptlanguage: 'acceptlanguage',
 			requestId: 'requestId'
 		};
@@ -152,7 +153,7 @@ describe('Webauth functions without module or services', () => {
 	});
 
 	test('getUserActivities', () => {
-		const options: IUserActivityPayloadEntity = {
+		const options: GetUserActivitiesRequest = {
 			sub: '',
 			dateFilter: {
 				from_date: '',
@@ -166,7 +167,7 @@ describe('Webauth functions without module or services', () => {
 	});
 	
 	test('updateProfileImage', () => {
-		const options = {
+		const options: UpdateProfileImageRequest = {
 			image_key: 'imageKey',
 			photo: new Blob(),
 			filename: 'filename'

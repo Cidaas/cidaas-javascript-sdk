@@ -19,7 +19,7 @@ import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
-import { GetClientInfoRequest, LogoutUserRequest } from "./webauth.model";
+import { GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -374,7 +374,7 @@ export class WebAuth {
    * });
    * ```
    */
-  getRegistrationSetup(options: { acceptlanguage?: string; requestId: string }) {
+  getRegistrationSetup(options: GetRegistrationSetupRequest) {
     const serviceURL = window.webAuthSettings.authority + '/registration-setup-srv/public/list?acceptlanguage=' + options.acceptlanguage + '&requestId=' + options.requestId;
     return Helper.createHttpPromise(undefined, serviceURL, false, 'GET');
   }
@@ -717,7 +717,7 @@ export class WebAuth {
    * });
    * ```
    */
-  getUserActivities(options: IUserActivityPayloadEntity, accessToken: string) {
+  getUserActivities(options: GetUserActivitiesRequest, accessToken: string) {
     const serviceURL = window.webAuthSettings.authority + '/activity-streams-srv/user-activities';
     return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
   }
@@ -787,7 +787,7 @@ export class WebAuth {
    * });
    * ```
    */
-  updateProfileImage(options: { image_key: string, photo: Blob; filename: string }, access_token: string) {
+  updateProfileImage(options: UpdateProfileImageRequest, access_token: string) {
     const serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
 
     const form = document.createElement('form');
