@@ -1,6 +1,5 @@
 import * as LoginService from './LoginService';
 import { Helper } from "../common/Helper";
-import { IChangePasswordEntity, IUserEntity } from '../web-auth/Entities';
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';

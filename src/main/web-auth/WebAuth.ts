@@ -5,9 +5,6 @@ import * as TokenService from "../token-service/TokenService";
 import * as VerificationService from "../verification-service/VerificationService";
 import * as ConsentService from "../consent-service/ConsentService";
 
-import {
-  IUserActivityPayloadEntity,
-} from "./Entities"
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';

@@ -1,7 +1,6 @@
 import { WebAuth } from './WebAuth';
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
 import * as ConsentService from '../consent-service/ConsentService';
-import { IUserActivityPayloadEntity } from './Entities';
 import { Helper } from '../common/Helper';
 import * as LoginService from '../login-service/LoginService';
 import * as TokenService from '../token-service/TokenService';

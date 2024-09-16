@@ -1,7 +1,7 @@
-import { AcceptResetPasswordEntity, ChangePasswordEntity, FindUserEntity, IUserLinkEntity, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
 import { Helper } from '../common/Helper';
+import { CidaasUser } from '../common/User.model';
 import * as UserService from './UserService';
-import { CompleteLinkAccountRequest, DeleteUserAccountRequest, InitiateLinkAccountRequest, UserCheckExistsRequest } from './UserService.model';
+import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest } from './UserService.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
@@ -24,7 +24,7 @@ test('getUserProfile', () => {
 });
 
 test('register', () => {
-  const options: UserEntity = {
+  const options: RegisterRequest = {
 		given_name: 'given_name',
 		family_name: 'family_name',
 		email: 'email',
@@ -82,7 +82,7 @@ test('getCommunicationStatus', () => {
 });
 
 test('initiateResetPassword', () => {
-  const options: ResetPasswordEntity = {
+  const options: InitiateResetPasswordRequest = {
 		email: 'email',
 		resetMedium: 'EMAIL',
 		processingType: 'CODE',
@@ -94,7 +94,7 @@ test('initiateResetPassword', () => {
 });
 
 test('handleResetPassword', () => {
-  const options: ValidateResetPasswordEntity = {
+  const options: HandleResetPasswordRequest = {
 		resetRequestId: 'resetRequestId',
 		code: 'code'
 	};
@@ -105,7 +105,7 @@ test('handleResetPassword', () => {
 });
 
 test('handleResetPassword with json response', () => {
-  const options: ValidateResetPasswordEntity = {
+  const options: HandleResetPasswordRequest = {
 		resetRequestId: 'resetRequestId',
 		code: 'code'
 	};
@@ -115,7 +115,7 @@ test('handleResetPassword with json response', () => {
 });
 
 test('resetPassword', () => {
-  const options: AcceptResetPasswordEntity = {
+  const options: ResetPasswordRequest = {
 		resetRequestId: 'resetRequestId',
 		exchangeId: 'exchangeId',
 		password: 'password',
@@ -128,7 +128,7 @@ test('resetPassword', () => {
 });
 
 test('resetPassword with json response', () => {
-  const options: AcceptResetPasswordEntity = {
+  const options: ResetPasswordRequest = {
 		resetRequestId: 'resetRequestId',
 		exchangeId: 'exchangeId',
 		password: 'password',
@@ -170,7 +170,7 @@ test('registerDeduplication', () => {
 });
 
 test('changePassword', () => {
-  const options: ChangePasswordEntity = {
+  const options: ChangePasswordRequest = {
     sub: 'sub',
     identityId: 'identityId',
     old_password: 'old_password',
@@ -184,7 +184,7 @@ test('changePassword', () => {
 });
 
 test('updateProfile', () => {
-  const options: UserEntity = {
+  const options: CidaasUser = {
     given_name: 'given_name',
 		family_name: 'family_name',
 		email: 'email',
