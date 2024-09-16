@@ -1,6 +1,6 @@
 import { GetAccessTokenRequest, GrantType, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./TokenService.model";
 import { Helper, CustomException } from "../common/Helper";
-import { JwtHelper } from "../web-auth/JwtHelper";
+import { JwtHelper } from "../common/JwtHelper";
 import { LoginPrecheckRequest } from "../common/Common.model";
 
 /**
