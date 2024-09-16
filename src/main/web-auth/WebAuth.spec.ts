@@ -14,7 +14,7 @@ import { LoginPrecheckRequest, ProcessingType, VerificationType } from '../commo
 import { CidaasUser } from '../common/User.model';
 import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../user-service/UserService.model';
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from '../verification-service/VerificationService.model';
-import { GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest } from './webauth.model';
+import { DeleteDeviceRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest } from './webauth.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -124,7 +124,7 @@ describe('Webauth functions without module or services', () => {
 	});
 	
 	test('deleteDevice', () => {
-		const options = {
+		const options: DeleteDeviceRequest = {
 			device_id: 'device_id'
 		};
 		const acccessToken = 'accessToken';

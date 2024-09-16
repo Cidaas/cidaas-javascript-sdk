@@ -37,6 +37,13 @@ export interface UpdateProfileImageRequest {
     photo: Blob;
 }
 
+export interface DeleteDeviceRequest {
+    /** id of device associated to the client */
+    device_id: string;
+    /** user-agent information from the browser */
+    userAgent?: string;
+}
+
 export interface DateFilter {
     /** earliest time to show activities */
     from_date: string;
