@@ -16,7 +16,7 @@ import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
-import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest } from "./webauth.model";
+import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -719,6 +719,11 @@ export class WebAuth {
     return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
   }
 
+  userActionOnEnrollment(options: UserActionOnEnrollmentRequest, trackId: string) {
+    const serviceURL = window.webAuthSettings.authority + '/auth-actions-srv/validation/' + trackId;
+    return Helper.createHttpPromise(options, serviceURL, false, 'POST');
+  }
+  
   /**
    * @param access_token 
    * @returns 

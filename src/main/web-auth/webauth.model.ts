@@ -50,3 +50,7 @@ export interface DateFilter {
     /** latest time to show activities */
     to_date: string;
 }
+
+export interface UserActionOnEnrollmentRequest {
+    action: string;
+}
