@@ -719,6 +719,17 @@ export class WebAuth {
     return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
   }
 
+  /**
+   * To run predefined action after enrollment, call userActionOnEnrollment()
+   * @param options 
+   * @param trackId 
+   * @example
+   * ```js
+   * const options = {
+   *   action: 'predefined action'
+   * };
+   * cidaas.userActionOnEnrollment(options, 'trackId');
+   */
   userActionOnEnrollment(options: UserActionOnEnrollmentRequest, trackId: string) {
     const serviceURL = window.webAuthSettings.authority + '/auth-actions-srv/validation/' + trackId;
     return Helper.createHttpPromise(options, serviceURL, false, 'POST');
