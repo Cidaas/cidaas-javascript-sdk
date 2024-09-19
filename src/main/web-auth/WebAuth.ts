@@ -972,6 +972,15 @@ export class WebAuth {
   }
 
   /**
+   * login as guest
+   * @param requestId 
+   * @returns 
+   */
+  actionGuestLogin(requestId: string) {
+    return LoginService.actionGuestLogin(requestId);
+  }
+
+  /**
    * offline token check
    */
   offlineTokenCheck(accessToken: string) {

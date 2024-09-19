@@ -221,3 +221,19 @@ export function loginAfterRegister(options: LoginAfterRegisterRequest) {
     throw new CustomException(String(ex), 417);
   }
 }
+
+/**
+ * To do guest login after activating the feature from admin ui, call **actionGuestLogin()**
+ * Please refer to https://docs.cidaas.com/docs/cidaas-iam/95fd8492a64fe-guest-login for more details
+ * @example
+ * ```js
+ * cidaas.actionGuestLogin('your request id');
+ * ```
+ */
+export function actionGuestLogin(requestId: string) {
+  const url = window.webAuthSettings.authority + '/login-srv/login/guest/' + requestId
+  const loginFormElement = document.getElementsByName('guestLoginForm')[0] as HTMLFormElement;
+  loginFormElement.action = url;
+  loginFormElement.method = 'post';
+  loginFormElement.submit();
+}
