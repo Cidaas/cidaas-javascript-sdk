@@ -137,3 +137,23 @@ export interface FIDO2EnrollEntity {
   /** unique identifier assigned to a FIDO2 authentication request. The value comes from initiate enrollment process */
   fidoRequestId?: string;
 }
+
+export interface InitiateVerificationRequest {
+  mobile_number?: string;
+  phone?: string;
+  email?: string;
+}
+
+export interface ConfigureVerificationRequest {
+  exchange_id: string;
+  sub: string;
+  pass_code: string;
+}
+
+export interface ConfigureFriendlyNameRequest {
+  id?: string;
+  ph_id?: string;
+  device_id?: string;
+  friendly_name?: string;
+  sub?: string;
+}

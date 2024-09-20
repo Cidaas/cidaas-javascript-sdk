@@ -1,6 +1,6 @@
 
 import { Helper, CustomException } from "../common/Helper";
-import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from "./VerificationService.model";
+import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "./VerificationService.model";
 
 /**
    * To initiate the account verification, call **initiateAccountVerification()**. This will send verification code  email or sms or ivr based on the verificationMedium you mentioned.
@@ -259,4 +259,19 @@ export function initiateMFA(options: InitiateMFARequest, accessToken?: string) {
 export function authenticateMFA(options: AuthenticateMFARequest) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
+}
+
+export function initiateVerification(options: InitiateVerificationRequest, trackId: string, method: string) {
+  const serviceURL = window.webAuthSettings.authority + '/verification-actions-srv/setup/' + method + '/initiate/' + trackId;
+  return Helper.createHttpPromise(options, serviceURL, undefined, 'POST');
+}
+
+export function configureVerification(options: ConfigureVerificationRequest, method: string) {
+  const serviceURL = window.webAuthSettings.authority + '/verification-actions-srv/setup/' + method + '/verification/' ;
+  return Helper.createHttpPromise(options, serviceURL, undefined, 'POST');
+}
+
+export function configureFriendlyName(options: ConfigureFriendlyNameRequest, trackId: string, method: string) {
+  const serviceURL = window.webAuthSettings.authority + '/verification-actions-srv/setup/users/friendlyname/' + method.toUpperCase() + '/' + trackId ;
+  return Helper.createHttpPromise(options, serviceURL, undefined, 'PUT');
 }
