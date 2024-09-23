@@ -261,16 +261,25 @@ export function authenticateMFA(options: AuthenticateMFARequest) {
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
 }
 
+/**
+ * to initiate verification process, call **initiateVerification**
+ */
 export function initiateVerification(options: InitiateVerificationRequest, trackId: string, method: string) {
   const serviceURL = window.webAuthSettings.authority + '/verification-actions-srv/setup/' + method + '/initiate/' + trackId;
   return Helper.createHttpPromise(options, serviceURL, undefined, 'POST');
 }
 
+/**
+ * to finish configuring verification process, call **configureVerification**
+ */
 export function configureVerification(options: ConfigureVerificationRequest, method: string) {
-  const serviceURL = window.webAuthSettings.authority + '/verification-actions-srv/setup/' + method + '/verification/' ;
+  const serviceURL = window.webAuthSettings.authority + '/verification-actions-srv/setup/' + method + '/verification' ;
   return Helper.createHttpPromise(options, serviceURL, undefined, 'POST');
 }
 
+/**
+ * to configure friendly name, call **configureFriendlyName**
+ */
 export function configureFriendlyName(options: ConfigureFriendlyNameRequest, trackId: string, method: string) {
   const serviceURL = window.webAuthSettings.authority + '/verification-actions-srv/setup/users/friendlyname/' + method.toUpperCase() + '/' + trackId ;
   return Helper.createHttpPromise(options, serviceURL, undefined, 'PUT');
