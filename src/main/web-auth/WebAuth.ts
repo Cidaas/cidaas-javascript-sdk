@@ -15,7 +15,7 @@ import { HTTPRequestHeader } from "../common/Common.model";
 import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
-import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
+import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
 import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
@@ -969,6 +969,33 @@ export class WebAuth {
    */
   authenticateMFA(options: AuthenticateMFARequest) {
     return VerificationService.authenticateMFA(options);
+  }
+
+  /**
+   * initiate verification
+   * @param options 
+   * @returns 
+   */
+  initiateVerification(options: InitiateVerificationRequest, trackId: string, method: string) {
+    return VerificationService.initiateVerification(options, trackId, method);
+  }
+
+  /**
+   * configure verification
+   * @param options 
+   * @returns 
+   */
+  configureVerification(options: ConfigureVerificationRequest, method: string) {
+    return VerificationService.configureVerification(options, method);
+  }
+
+  /**
+   * configure friendly name
+   * @param options 
+   * @returns 
+   */
+  configureFriendlyName(options: ConfigureFriendlyNameRequest, trackId: string, method: string) {
+    return VerificationService.configureFriendlyName(options, trackId, method);
   }
 
   /**
