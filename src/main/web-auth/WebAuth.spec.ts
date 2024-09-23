@@ -12,8 +12,8 @@ import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCre
 import { LoginPrecheckRequest, ProcessingType, VerificationType } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
 import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../user-service/UserService.model';
-import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from '../verification-service/VerificationService.model';
-import { DeleteDeviceRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest } from './webauth.model';
+import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from '../verification-service/VerificationService.model';
+import { DeleteDeviceRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from './webauth.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -193,12 +193,23 @@ describe('Webauth functions without module or services', () => {
 		void webAuth.updateProfileImage(options, accessToken);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', accessToken, null, formdata);
 	});
+
+	test('userActionOnEnrollment', () => {
+		const options: UserActionOnEnrollmentRequest = {
+			action: 'action'
+		};
+		const trackId = 'trackId';
+		const serviceURL = `${authority}/auth-actions-srv/validation/${trackId}`;
+		void webAuth.userActionOnEnrollment(options, trackId);
+		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
+	});
 	
 	test('setAcceptLanguageHeader', () => {
 		const locale = 'en-gb'
 		webAuth.setAcceptLanguageHeader(locale);
 		expect(window.localeSettings).toBe(locale);
 	});
+	
 });
 
 // Authentication Module
@@ -708,6 +719,13 @@ describe('Login service functions', () => {
 		expect(loginAfterRegisterSpy).toHaveBeenCalledWith(options);
 	});
 
+	test('actionGuestLogin', () => {
+		const actionGuestLoginSpy = jest.spyOn(LoginService, 'actionGuestLogin').mockImplementation();
+		const requestId = '';
+		webAuth.actionGuestLogin(requestId);
+		expect(actionGuestLoginSpy).toHaveBeenCalledWith(requestId);
+	});
+
 });
 
 // Verification Service
@@ -832,6 +850,41 @@ describe('Verification service functions', () => {
 		};
 		void webAuth.authenticateMFA(options);
 		expect(authenticateMFASpy).toHaveBeenCalledWith(options);
+	});
+
+	test('initiateVerification', () => {
+		const initiateVerificationSpy = jest.spyOn(VerificationService, 'initiateVerification').mockImplementation();
+		const options: InitiateVerificationRequest = {
+			email: ''
+		};
+		const trackId = '';
+  		const method = '';
+		void webAuth.initiateVerification(options, trackId, method);
+		expect(initiateVerificationSpy).toHaveBeenCalledWith(options, trackId, method);
+	});
+
+	test('configureVerification', () => {
+		const configureVerificationSpy = jest.spyOn(VerificationService, 'configureVerification').mockImplementation();
+		const options: ConfigureVerificationRequest = {
+			exchange_id: '',
+			sub: '',
+			pass_code: ''
+		};
+  		const method = '';
+		void webAuth.configureVerification(options, method);
+		expect(configureVerificationSpy).toHaveBeenCalledWith(options, method);
+	});
+
+	test('configureFriendlyName', () => {
+		const configureFriendlyNameSpy = jest.spyOn(VerificationService, 'configureFriendlyName').mockImplementation();
+		const options: ConfigureFriendlyNameRequest = {
+			sub: '',
+    		friendly_name: ''
+		};
+		const trackId = '';
+  		const method = '';
+		void webAuth.configureFriendlyName(options, trackId, method);
+		expect(configureFriendlyNameSpy).toHaveBeenCalledWith(options, trackId, method);
 	});
 
 });

@@ -1,9 +1,10 @@
 import * as VerificationService  from './VerificationService';
 import { Helper } from "../common/Helper";
-import { AuthenticateMFARequest,  CancelMFARequest, CheckVerificationTypeConfiguredRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, VerifyAccountRequest } from './VerificationService.model';
+import { AuthenticateMFARequest,  CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from './VerificationService.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/verification-srv`;
+const actionsServiceBaseUrl: string = `${authority}/verification-actions-srv`;
 const createFormSpy = jest.spyOn(Helper, 'createForm');
 const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -142,4 +143,39 @@ test('authenticateMFA', () => {
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/authenticate/${options.type}`;
   void VerificationService.authenticateMFA(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
+});
+
+test('initiateVerification', () => {
+  const options: InitiateVerificationRequest = {
+    email: 'email'
+  };
+  const trackId = 'trackId';
+  const method = 'method';
+  const serviceURL = `${actionsServiceBaseUrl}/setup/${method}/initiate/${trackId}`;
+  void VerificationService.initiateVerification(options, trackId, method);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
+});
+
+test('configureVerification', () => {
+  const options: ConfigureVerificationRequest = {
+    exchange_id: 'exchangeId',
+    sub: 'sub',
+    pass_code: 'passCode'
+  };
+  const method = 'method';
+  const serviceURL = `${actionsServiceBaseUrl}/setup/${method}/verification`;
+  void VerificationService.configureVerification(options, method);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
+});
+
+test('configureFriendlyName', () => {
+  const options: ConfigureFriendlyNameRequest = {
+    sub: 'sub',
+    friendly_name: 'friendly name'
+  };
+  const trackId = 'trackId';
+  const method = 'method';
+  const serviceURL = `${actionsServiceBaseUrl}/setup/users/friendlyname/${method.toUpperCase()}/${trackId}`;
+  void VerificationService.configureFriendlyName(options, trackId, method);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'PUT');
 });
