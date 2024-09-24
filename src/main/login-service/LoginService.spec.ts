@@ -165,3 +165,16 @@ test('loginAfterRegister', () => {
   LoginService.loginAfterRegister(option);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
 });
+
+test('actionGuestLogin', () => {
+  const requestId = 'requestId';
+  const authority = 'http://localhost/baseURL';
+  const serviceURL = `${authority}/login-srv/login/guest/${requestId}`;
+  const form = document.createElement('form');
+  form.setAttribute('name', 'guestLoginForm');
+  document.body.appendChild(form);
+  LoginService.actionGuestLogin(requestId);
+  expect(submitFormSpy).toHaveBeenCalled();
+  expect(form.action).toEqual(serviceURL);
+  expect(form.method).toEqual('post');
+});
