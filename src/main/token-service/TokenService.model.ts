@@ -77,15 +77,15 @@ export interface Consent {
 }
 
 export interface RenewTokenRequest {
+  /** One time valid code that is used for issuing a new token */
+  refresh_token: string;
   /** Unique identifier of client app, can be found in app setting under admin ui */
-  client_id: string;
+  client_id?: string;
   /** 
    * Type of grant used in token request 
    * BREAKING TODO: change type to GrantType only in next major version
   */
-  grant_type: GrantType | string;
-  /** One time valid code that is used for issuing a new token */
-  refresh_token: string;
+  grant_type?: GrantType | string;
 }
 
 /** Type of grant used in token request */
@@ -105,14 +105,14 @@ export interface GetAccessTokenRequest {
   /** When we choose PKCE method to generate token, we need to pass code_verifier which is a cryptographically random string */
   code_verifier?: string;
   /** Unique identifier of client app, can be found in app setting under admin ui */
-  client_id: string;
+  client_id?: string;
   /** 
    * Type of grant used in token request 
    * BREAKING TODO: change type to GrantType only in next major version
    * */
-  grant_type: GrantType | string;
+  grant_type?: GrantType | string;
   /** Specify the url where the user needs to be redirected after successful login */
-  redirect_uri: string;
+  redirect_uri?: string;
 }
 
 export class TokenIntrospectionRequest {
@@ -122,7 +122,7 @@ export class TokenIntrospectionRequest {
    * Optional hint about the type of the submitted token. 
    * BREAKING TODO: change type to TokenTypeHint only in next major version
    * */
-  tokenTypeHint?: TokenTypeHint | string;
+  token_type_hint?: TokenTypeHint | string;
   /** List of roles to match */
   roles?: string[];
   /** List of scopes to match */
@@ -131,13 +131,13 @@ export class TokenIntrospectionRequest {
   groups?: GroupAllowed[];
 
   /** If true, all roles have to be included. If false, only 1 role from the list is needed */
-  strictRoleValidation: boolean = false;
+  strictRoleValidation?: boolean = false;
   /** If true, all group have to be included. If false, only 1 group from the list is needed */
-  strictGroupValidation: boolean = false;
+  strictGroupValidation?: boolean = false;
   /** If true, all scopes have to be included. If false, only 1 scope from the list is needed */
-  strictScopeValidation: boolean = false;
+  strictScopeValidation?: boolean = false;
   /** If true, all defined roles and/or groups and/or scopes validation has to be succesful. If false, only 1 of them is needed */
-  strictValidation: boolean = false;
+  strictValidation?: boolean = false;
 }
 
 /** Optional hint about the type of the submitted token. */

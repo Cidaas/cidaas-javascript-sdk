@@ -67,8 +67,8 @@ export interface PasswordlessLoginRequest {
     status_id: string;
     /** 
      * Type of verification to be used to authenticate user
-     *  BREAKING TODO: change type to VerificationType only in next major version
-     *  */
+     * BREAKING TODO: change type to VerificationType only in next major version
+     * */
     verificationType: VerificationType | string;
     /** 
      * Masked sub (id of user), who will accept the consent. 

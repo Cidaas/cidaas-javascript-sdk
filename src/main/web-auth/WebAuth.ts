@@ -6,7 +6,7 @@ import * as VerificationService from "../verification-service/VerificationServic
 import * as ConsentService from "../consent-service/ConsentService";
 
 import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
-import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
@@ -563,7 +563,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getConsentDetails(options: { consent_id: string; consent_version_id: string; sub: string; }) {
+  getConsentDetails(options: GetConsentDetailsRequest) {
     return ConsentService.getConsentDetails(options);
   }
 
@@ -581,7 +581,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  loginPrecheck(options: { track_id: string; locale?: string; }) {
+  loginPrecheck(options: LoginPrecheckRequest) {
     return TokenService.loginPrecheck(options);
   }
 

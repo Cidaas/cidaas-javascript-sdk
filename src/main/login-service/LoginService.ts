@@ -86,7 +86,7 @@ export function registerWithSocial(options: SocialProviderPathParameter, queryPa
 *   requestId: 'your requestId',
 *   sub: 'your user sub',
 *   statusId: 'status id from authenticateMFA()'
-*   verificationType: 'your verificationType. e.g. email'
+*   verificationType: 'your verificationType. e.g. VerificationType.EMAIL'
 * });
 * ```
 */
