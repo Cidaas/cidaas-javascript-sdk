@@ -485,7 +485,7 @@ export class WebAuth {
    * @param options
    * @returns 
    */
-  getCommunicationStatus(options: getCommunicationStatusRequest, headers: HTTPRequestHeader) {
+  getCommunicationStatus(options: getCommunicationStatusRequest, headers?: HTTPRequestHeader) {
     return UserService.getCommunicationStatus(options, headers);
   }
 
