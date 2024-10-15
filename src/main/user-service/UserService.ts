@@ -116,9 +116,9 @@ export function getCommunicationStatus(options: getCommunicationStatusRequest, h
  * ```js
  * cidaas.initiateResetPassword({
  *   email: 'xxxxxx@xxx.com',
- *   processingType: 'CODE',
+ *   processingType: ProcessingType.CODE,
  *   requestId: 'your requestId',
- *   resetMedium: 'email'
+ *   resetMedium: ResetMedium.EMAIL
  * }).then(function (response) {
  *   // the response will give you password reset details.
  * }).catch(function(ex) {

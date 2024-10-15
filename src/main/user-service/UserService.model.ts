@@ -24,10 +24,16 @@ export interface getCommunicationStatusRequest {
 }
 
 export interface InitiateResetPasswordRequest {
-    /** Type of medium to be used to reset password */
-    resetMedium: ResetMedium;
-    /** defines whether the password can be resetted via email link or whether the user needs to enter a code to complete the reset password process. */
-    processingType: ProcessingType;
+    /** 
+     * Type of medium to be used to reset password 
+     * BREAKING TODO: change type to ResetMedium only in next major version
+     * */
+    resetMedium: ResetMedium | string;
+    /** 
+     * defines whether the password can be resetted via email link or whether the user needs to enter a code to complete the reset password process.
+     * BREAKING TODO: change type to ProcessingType only in next major version
+     * */
+    processingType: ProcessingType | string;
     /** Email of the user */
     email?: string;
     /** Mobile number of the user */
@@ -133,7 +139,7 @@ export interface UserCheckExistsRequest {
     /** Username of user */
     username?: string;
     /** Mobile number of user */
-    mobile: string;
+    mobile?: string;
     /** Custom predefined property to identify user */
     customFields?: { [key: string]: string };
     /** If filled, will be sent as query parameter */
