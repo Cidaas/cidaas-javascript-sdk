@@ -10,7 +10,7 @@ import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfigur
    * cidaas.initiateAccountVerification({
    *   verificationMedium: 'email',
    *   requestId: 'your requestId',
-   *   processingType: 'CODE', 
+   *   processingType: ProcessingType.CODE, 
    *   email: 'your email'
    * }).then(function (response) {
    *   // the response will give you account verification details.

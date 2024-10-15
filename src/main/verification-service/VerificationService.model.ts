@@ -11,8 +11,11 @@ export interface InitiateAccountVerificationRequest {
   username?: string;
   /** described which medium (email, mobile, username) to be used for verifying user */
   verificationMedium?: string;
-  /** can be either CODE, LINK, or GENERAL */
-  processingType?: ProcessingType;
+  /**
+   * can be either CODE, LINK, or GENERAL
+   * BREAKING TODO: change type to ProcessingType only in next major version
+   * */
+  processingType?: ProcessingType | string;
   /** Request id returned from the authorization call */
   requestId?: string;
   /** Unique identifier of client app, can be found in app setting under admin ui */
