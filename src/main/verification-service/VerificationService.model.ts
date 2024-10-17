@@ -142,21 +142,32 @@ export interface FIDO2EnrollEntity {
 }
 
 export interface InitiateVerificationRequest {
+  /** mobile number */
   mobile_number?: string;
+  /** phone number */
   phone?: string;
+  /** email address */
   email?: string;
 }
 
 export interface ConfigureVerificationRequest {
+  /** comes from initiate MFA process */
   exchange_id: string;
+  /** subject (User) identifier */
   sub: string;
+  /** code which has been sent to predetermined verification type */
   pass_code: string;
 }
 
 export interface ConfigureFriendlyNameRequest {
+  /** id received from status verification API */
   id?: string;
+  /** physical verification id received from status verification api */
   ph_id?: string;
+  /** id recevied from enrollment API */
   device_id?: string;
+  /** friendly name for the device */
   friendly_name?: string;
+  /** subject (User) identifier */
   sub?: string;
 }

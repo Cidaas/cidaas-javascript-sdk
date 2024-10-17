@@ -52,5 +52,6 @@ export interface DateFilter {
 }
 
 export interface UserActionOnEnrollmentRequest {
+    /** action to be executed */
     action: string;
 }
