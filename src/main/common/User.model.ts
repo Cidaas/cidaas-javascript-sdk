@@ -137,6 +137,5 @@ export interface UserGroupMap {
     groupId: string;
     /** List of user roles inside the user group */
     roles: string[];
-    appendRole?: boolean;
 }
 

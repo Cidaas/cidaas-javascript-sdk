@@ -29,7 +29,7 @@ test('verifyAccount', () => {
     code: 'code'
   };
   const serviceURL = `${serviceBaseUrl}/account/verify`;
-  void VerificationService.verifyAccount(options);
+  VerificationService.verifyAccount(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
 });
 
@@ -39,7 +39,7 @@ test('getMFAList', () => {
     request_id: 'request_id'
   };
   const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
-  void VerificationService.getMFAList(options);
+  VerificationService.getMFAList(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
 });
 
@@ -50,14 +50,14 @@ test('cancelMFA', () => {
     type: 'type'
   };
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/cancel/${options.type}`;
-  void VerificationService.cancelMFA(options);
+  VerificationService.cancelMFA(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
 });
 
 test('getAllVerificationList', () => {
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/config/list`;
-  void VerificationService.getAllVerificationList(accessToken);
+  VerificationService.getAllVerificationList(accessToken);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, "GET", accessToken);
 });
 
@@ -74,7 +74,7 @@ test('initiateEnrollment', () => {
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/v2/setup/initiate/${options.verification_type}`;
-  void VerificationService.initiateEnrollment(options, accessToken);
+  VerificationService.initiateEnrollment(options, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST", accessToken);
 });
 
@@ -82,7 +82,7 @@ test('getEnrollmentStatus', () => {
   const status_id = 'status_id';
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/v2/notification/status/${status_id}`;
-  void VerificationService.getEnrollmentStatus(status_id, accessToken);
+  VerificationService.getEnrollmentStatus(status_id, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, "POST", accessToken);
 });
 
@@ -96,7 +96,7 @@ test('enrollVerification', () => {
     verification_type: 'verification_type'
   };
   const serviceURL = `${serviceBaseUrl}/v2/setup/enroll/${options.verification_type}`;
-  void VerificationService.enrollVerification(options);
+  VerificationService.enrollVerification(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
 });
 
@@ -107,7 +107,7 @@ test('checkVerificationTypeConfigured', () => {
     verification_type: 'verification_type'
   };
   const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/check/${options.verification_type}`;
-  void VerificationService.checkVerificationTypeConfigured(options);
+  VerificationService.checkVerificationTypeConfigured(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
 });
 
@@ -118,7 +118,7 @@ test('initiateMFA', () => {
     type: 'type'
   };
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
-  void VerificationService.initiateMFA(options);
+  VerificationService.initiateMFA(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
 });
 
@@ -130,7 +130,7 @@ test('initiateMFA with access token', () => {
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
-  void VerificationService.initiateMFA(options, accessToken);
+  VerificationService.initiateMFA(options, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", accessToken);
 });
 
@@ -141,7 +141,7 @@ test('authenticateMFA', () => {
     pass_code: 'pass_code',
   };
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/authenticate/${options.type}`;
-  void VerificationService.authenticateMFA(options);
+  VerificationService.authenticateMFA(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
 });
 
@@ -152,7 +152,7 @@ test('initiateVerification', () => {
   const trackId = 'trackId';
   const method = 'method';
   const serviceURL = `${actionsServiceBaseUrl}/setup/${method}/initiate/${trackId}`;
-  void VerificationService.initiateVerification(options, trackId, method);
+  VerificationService.initiateVerification(options, trackId, method);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
 });
 
@@ -164,7 +164,7 @@ test('configureVerification', () => {
   };
   const method = 'method';
   const serviceURL = `${actionsServiceBaseUrl}/setup/${method}/verification`;
-  void VerificationService.configureVerification(options, method);
+  VerificationService.configureVerification(options, method);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
 });
 
@@ -176,6 +176,6 @@ test('configureFriendlyName', () => {
   const trackId = 'trackId';
   const method = 'method';
   const serviceURL = `${actionsServiceBaseUrl}/setup/users/friendlyname/${method.toUpperCase()}/${trackId}`;
-  void VerificationService.configureFriendlyName(options, trackId, method);
+  VerificationService.configureFriendlyName(options, trackId, method);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'PUT');
 });

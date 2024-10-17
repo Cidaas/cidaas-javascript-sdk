@@ -19,7 +19,7 @@ test('renewToken', () => {
 		refresh_token: 'refresh_token'
 	};
 	const serviceURL = `${serviceBaseUrl}/token`;
-	void TokenService.renewToken(options);
+	TokenService.renewToken(options);
 	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
 });
 
@@ -33,21 +33,21 @@ test('getAccessToken', () => {
 		redirect_uri: 'redirect_uri'
 	}
 	const serviceURL = `${serviceBaseUrl}/token`;
-	void TokenService.getAccessToken(options);
+	TokenService.getAccessToken(options);
 	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
 });
 
 test('validateAccessToken', () => {
 	const options: TokenIntrospectionRequest = {
 		token: 'token',
-		tokenTypeHint: 'token_type_hint',
+		token_type_hint: 'token_type_hint',
 		strictGroupValidation: false,
 		strictScopeValidation: false,
 		strictRoleValidation: false,
 		strictValidation: false
 	};
 	const serviceURL = `${serviceBaseUrl}/introspect`;
-	void TokenService.validateAccessToken(options);
+	TokenService.validateAccessToken(options);
 	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', 'token');
 });
 
@@ -56,21 +56,21 @@ test('loginPrecheck', () => {
 		track_id: 'track_id',
 	};
 	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${options.track_id}`;
-	void TokenService.loginPrecheck(options);
+	TokenService.loginPrecheck(options);
 	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
 test('getMissingFields', () => {
 	const trackId = 'trackId';
 	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${trackId}`;
-	void TokenService.getMissingFields(trackId);
+	TokenService.getMissingFields(trackId);
 	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
 test('initiateDeviceCode', () => {
 	const clientId = 'clientId';
 	const serviceURL = `${authority}/authz-srv/device/authz?client_id=${clientId}`;
-	void TokenService.initiateDeviceCode(clientId);
+	TokenService.initiateDeviceCode(clientId);
 	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 

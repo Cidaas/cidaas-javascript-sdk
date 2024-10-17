@@ -19,7 +19,7 @@ test('getConsentDetails', () => {
     sub: 'sub'
   };
   const serviceURL = `${serviceBaseUrl}/usage/public/info`;
-  void ConsentService.getConsentDetails(option);
+  ConsentService.getConsentDetails(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
@@ -41,7 +41,7 @@ test('acceptConsent', () => {
     revoked: false
   };
   const serviceURL = `${serviceBaseUrl}/usage/accept`;
-  void ConsentService.acceptConsent(option);
+  ConsentService.acceptConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
@@ -51,7 +51,7 @@ test('getConsentVersionDetails', () => {
     locale: 'locale'
   };
   const serviceURL = `${serviceBaseUrl}/versions/details/${option.consentid}?locale=${option.locale}`;
-  void ConsentService.getConsentVersionDetails(option);
+  ConsentService.getConsentVersionDetails(option);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', option.access_token);
 });
 
@@ -62,7 +62,7 @@ test('acceptScopeConsent', () => {
     scopes: ['scopes']
   };
   const serviceURL = `${serviceBaseUrlV1}/scope/accept`;
-  void ConsentService.acceptScopeConsent(option);
+  ConsentService.acceptScopeConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
@@ -73,7 +73,7 @@ test('acceptClaimConsent', () => {
     accepted_claims: ['accepted_claims']
   };
   const serviceURL = `${serviceBaseUrlV1}/claim/accept`;
-  void ConsentService.acceptClaimConsent(option);
+  ConsentService.acceptClaimConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
 });
 
@@ -85,6 +85,6 @@ test('revokeClaimConsent', () => {
     revoked_claims: ['revoked_claims']
   };
   const serviceURL = `${serviceBaseUrlV1}/claim/revoke`;
-  void ConsentService.revokeClaimConsent(option);
+  ConsentService.revokeClaimConsent(option);
   expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', option.access_token);
 });

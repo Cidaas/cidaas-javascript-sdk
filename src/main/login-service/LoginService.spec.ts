@@ -149,7 +149,7 @@ test('progressiveRegistration', () => {
     acceptlanguage: 'acceptlanguage'
   }
   const serviceURL = `${serviceBaseUrl}/progressive/update/user`;
-  void LoginService.progressiveRegistration(options, headers);
+  LoginService.progressiveRegistration(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', undefined, headers);
 });
 

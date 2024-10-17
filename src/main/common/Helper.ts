@@ -10,7 +10,7 @@ export class Helper {
     form.action = url;
     form.method = method;
     for (const key in options) {
-      if (Object.prototype.hasOwnProperty.call(options, key)) {
+      if (options.hasOwnProperty(key)) {
         const hiddenField = document.createElement("input");
         hiddenField.setAttribute("type", "hidden");
         hiddenField.setAttribute("name", key);
@@ -49,7 +49,7 @@ export class Helper {
         }
         if (headers) {
           for (const key in headers) {
-            if (Object.prototype.hasOwnProperty.call(headers, key)) {
+            if (headers.hasOwnProperty(key)) {
               http.setRequestHeader(key, headers[key]);
             }
           }
