@@ -231,7 +231,7 @@ export function checkVerificationTypeConfigured(options: CheckVerificationTypeCo
  */
 export function initiateMFA(options: InitiateMFARequest, accessToken?: string) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
-  // TODO: remove accessToken parameter in the next major release
+  // BREAKING TODO: remove accessToken parameter in the next major release
   if (accessToken) {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
   } 

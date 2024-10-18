@@ -955,7 +955,7 @@ export class WebAuth {
    * @returns 
    */
   initiateMFA(options: InitiateMFARequest, accessToken?: string) {
-    // TODO: remove accessToken parameter in the next major release
+    // BREAKING TODO: remove accessToken parameter in the next major release
     if (accessToken) {
       return VerificationService.initiateMFA(options, accessToken);
     } 
