@@ -1,8 +1,7 @@
 {
   // Change this to match your project
   "include": [
-    "src/**/*",
-    "spec/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "src/**/*.spec.ts"
