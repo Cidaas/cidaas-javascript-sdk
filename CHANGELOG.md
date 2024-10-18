@@ -1,6 +1,6 @@
 # Changelog
 
-## V4.x.x
+## V4.3.0
 
 ### Changed
 - Update project structure
