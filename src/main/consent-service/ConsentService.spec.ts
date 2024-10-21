@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
-import { ConsentService } from '../../src/main/web-auth/ConsentService';
-import { Helper } from '../../src/main/web-auth/Helper';
-import { IConsentAcceptEntity } from '../../src/main/web-auth/Entities';
+import * as ConsentService from './ConsentService';
+import { Helper } from '../common/Helper';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from './ConsentService.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/consent-management-srv/v2/consent`;
@@ -9,7 +9,7 @@ const serviceBaseUrlV1: string = `${authority}/consent-management-srv/consent`;
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
 beforeAll(() => {
-  (window as any).webAuthSettings = { authority: authority }
+  window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
 });
 
 test('getConsentDetails', () => {
@@ -24,14 +24,13 @@ test('getConsentDetails', () => {
 });
 
 test('acceptConsent', () => {
-  const option: IConsentAcceptEntity = {
+  const option: AcceptConsentRequest = {
     client_id: 'client_id',
     consent_id: 'consent_id',
     consent_version_id: 'consent_id',
     sub: 'sub',
     scopes: ['scopes'],
     url: 'url',
-    matcher: null,
     field_key: 'field_key',
     accepted_fields: ['accepted_fields'],
     accepted_by: 'accepted_by',
@@ -47,10 +46,9 @@ test('acceptConsent', () => {
 });
 
 test('getConsentVersionDetails', () => {
-  const option = {
+  const option: GetConsentVersionDetailsRequest = {
     consentid: 'consentid',
-    locale: 'locale',
-    access_token: 'access_token'
+    locale: 'locale'
   };
   const serviceURL = `${serviceBaseUrl}/versions/details/${option.consentid}?locale=${option.locale}`;
   ConsentService.getConsentVersionDetails(option);
@@ -58,7 +56,7 @@ test('getConsentVersionDetails', () => {
 });
 
 test('acceptScopeConsent', () => {
-  const option = {
+  const option: AcceptScopeConsentRequest = {
     client_id: 'client_id',
     sub: 'sub',
     scopes: ['scopes']
@@ -69,7 +67,7 @@ test('acceptScopeConsent', () => {
 });
 
 test('acceptClaimConsent', () => {
-  const option = {
+  const option: AcceptClaimConsentRequest = {
     client_id: 'client_id',
     sub: 'sub',
     accepted_claims: ['accepted_claims']
@@ -80,7 +78,7 @@ test('acceptClaimConsent', () => {
 });
 
 test('revokeClaimConsent', () => {
-  const option = {
+  const option: RevokeClaimConsentRequest = {
     access_token: 'access_token',
     client_id: 'client_id',
     sub: 'sub',

@@ -1,5 +1,20 @@
 # Changelog
 
+## V4.3.0
+
+### Added
+- add initiateVerification(), configureVerification() & configureFriendlyName() functions to verification service
+- add actionGuestLogin() functions to login service
+- add userActionOnEnrollment() functions to general sdk functions
+
+### Changed
+- Update project structure
+- Update data model to mirror current cidaas api call
+- Improve documentation
+
+### Fix
+- Fix vulnerabilities from `npm audit`
+
 ## V4.2.4
 
 ### Fix

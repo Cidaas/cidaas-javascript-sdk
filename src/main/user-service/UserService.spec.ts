@@ -1,6 +1,7 @@
-import { AcceptResetPasswordEntity, ChangePasswordEntity, FindUserEntity, IUserLinkEntity, ResetPasswordEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
-import { Helper } from '../../src/main/web-auth/Helper';
-import { UserService } from '../../src/main/web-auth/UserService';
+import { Helper } from '../common/Helper';
+import { CidaasUser } from '../common/User.model';
+import * as UserService from './UserService';
+import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest } from './UserService.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
@@ -10,7 +11,7 @@ const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplem
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
 beforeAll(() => {
-	(window as any).webAuthSettings = { authority: authority }
+	window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
 });
 
 test('getUserProfile', () => {
@@ -23,7 +24,7 @@ test('getUserProfile', () => {
 });
 
 test('register', () => {
-  const options: UserEntity = {
+  const options: RegisterRequest = {
 		given_name: 'given_name',
 		family_name: 'family_name',
 		email: 'email',
@@ -81,7 +82,7 @@ test('getCommunicationStatus', () => {
 });
 
 test('initiateResetPassword', () => {
-  const options: ResetPasswordEntity = {
+  const options: InitiateResetPasswordRequest = {
 		email: 'email',
 		resetMedium: 'EMAIL',
 		processingType: 'CODE',
@@ -93,7 +94,7 @@ test('initiateResetPassword', () => {
 });
 
 test('handleResetPassword', () => {
-  const options: ValidateResetPasswordEntity = {
+  const options: HandleResetPasswordRequest = {
 		resetRequestId: 'resetRequestId',
 		code: 'code'
 	};
@@ -104,7 +105,7 @@ test('handleResetPassword', () => {
 });
 
 test('handleResetPassword with json response', () => {
-  const options: ValidateResetPasswordEntity = {
+  const options: HandleResetPasswordRequest = {
 		resetRequestId: 'resetRequestId',
 		code: 'code'
 	};
@@ -114,7 +115,7 @@ test('handleResetPassword with json response', () => {
 });
 
 test('resetPassword', () => {
-  const options: AcceptResetPasswordEntity = {
+  const options: ResetPasswordRequest = {
 		resetRequestId: 'resetRequestId',
 		exchangeId: 'exchangeId',
 		password: 'password',
@@ -127,7 +128,7 @@ test('resetPassword', () => {
 });
 
 test('resetPassword with json response', () => {
-  const options: AcceptResetPasswordEntity = {
+  const options: ResetPasswordRequest = {
 		resetRequestId: 'resetRequestId',
 		exchangeId: 'exchangeId',
 		password: 'password',
@@ -169,13 +170,12 @@ test('registerDeduplication', () => {
 });
 
 test('changePassword', () => {
-  const options: ChangePasswordEntity = {
+  const options: ChangePasswordRequest = {
     sub: 'sub',
     identityId: 'identityId',
     old_password: 'old_password',
     new_password: 'new_password',
     confirm_password: 'confirm_password',
-    accessToken: 'accessToken'
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/changepassword`;
@@ -184,7 +184,7 @@ test('changePassword', () => {
 });
 
 test('updateProfile', () => {
-  const options: UserEntity = {
+  const options: CidaasUser = {
     given_name: 'given_name',
 		family_name: 'family_name',
 		email: 'email',
@@ -199,18 +199,10 @@ test('updateProfile', () => {
 });
 
 test('initiateLinkAccount', () => {
-  const mockDate = new Date('1970-01-01T00:00:00Z');
-  const options: IUserLinkEntity = {
+  const options: InitiateLinkAccountRequest = {
     master_sub: 'master_sub',
     user_name_type: 'email',
-    user_name_to_link: 'user_name_to_link',
-    link_accepted_by: 'link_accepted_by',
-    link_response_time: mockDate,
-    link_accepted: false,
-    communication_type: 'communication_type',
-    verification_status_id: 'verification_status_id',
-    type: 'type',
-    status: 'status'
+    user_name_to_link: 'user_name_to_link'
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/user/link/initiate`;
@@ -219,7 +211,7 @@ test('initiateLinkAccount', () => {
 });
 
 test('completeLinkAccount', () => {
-  const options = {
+  const options: CompleteLinkAccountRequest = {
     code: 'code',
     link_request_id: 'link_request_id'
   };
@@ -246,7 +238,7 @@ test('unlinkAccount', () => {
 });
 
 test('deleteUserAccount', () => {
-  const options = {
+  const options: DeleteUserAccountRequest = {
     access_token: 'access_token',
     sub: 'sub'
   };
@@ -256,17 +248,12 @@ test('deleteUserAccount', () => {
 });
 
 test('userCheckExists', () => {
-  const options: FindUserEntity = {
-    sub: 'sub',
+  const options: UserCheckExistsRequest = {
     email: 'email',
     mobile: 'mobile',
     username: 'username',
-    customFields: undefined,
-    provider: 'provider',
-    providerUserId: 'providerUserId',
     rememberMe: 'rememberMe',
     webfinger: 'webfinger',
-    sub_not: 'sub_not',
     requestId: 'requestId'
   };
   const queryParameter = `?webfinger=${options.webfinger}&rememberMe=${options.rememberMe}`

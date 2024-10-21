@@ -6,9 +6,9 @@ import {
     PopupSignInOptions,
     PopupSignOutOptions,
     SilentSignInOptions, LogoutResponse,
-} from './authentication.model';
+} from './Authentication.model';
 
-export * from './authentication.model';
+export * from './Authentication.model';
 
 export class Authentication {
 
@@ -44,7 +44,7 @@ export class Authentication {
             redirect_uri: this.webAuthSettings.redirect_uri,
             ...(options && { ...options } || {})
         });
-    };
+    }
 
     /**
      * Once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
@@ -89,7 +89,7 @@ export class Authentication {
      */
     logoutCallback(url?: string): Promise<LogoutResponse> {
         return this.userManager.signoutRedirectCallback(url);
-    };
+    }
 
     /**
      * **popupSignIn()** will open the hosted login page in pop up window.
@@ -105,7 +105,7 @@ export class Authentication {
      */
     popupSignIn(options?: PopupSignInOptions) {
         return this.userManager.signinPopup(options);
-    };
+    }
 
     /**
      * To complete the popup login process, call **popupSignInCallback()** from the popup login window. 
@@ -119,7 +119,7 @@ export class Authentication {
      */
     popupSignInCallback(url?: string, keepOpen?: boolean) {
         return this.userManager.signinPopupCallback(url, keepOpen);
-    };
+    }
 
     /**
      * **popupSignOut()** will open the hosted logout page in pop up window.
@@ -136,7 +136,7 @@ export class Authentication {
      */
     popupSignOut(options?: PopupSignOutOptions) {
         return this.userManager.signoutPopup(options);
-    };
+    }
 
     /**
      * calling **popupSignOutCallback()** from the popup window complete popup logout process. 
@@ -154,8 +154,9 @@ export class Authentication {
      * @param {boolean} keepOpen true to keep the popup open even after sign out, else false
      */
     popupSignOutCallback(url?: string, keepOpen: boolean = true) {
+        url = url ?? this.webAuthSettings.post_logout_redirect_uri;
         return this.userManager.signoutPopupCallback(url, keepOpen);
-    };
+    }
 
     /**
      * **silentSignIn()** will open the hosted login page in an iframe. 
@@ -175,7 +176,7 @@ export class Authentication {
             silentRequestTimeoutInSeconds: 60,
             ...( options && { ...options } || {})
         });
-    };
+    }
 
     /**
      * To complete the silent login process, call **silentSignInCallback()** from the iframe. This will complete the login process in iframe.
@@ -188,5 +189,5 @@ export class Authentication {
      */
     silentSignInCallback(url?: string) {
         return this.userManager.signinSilentCallback(url);
-    };
+    }
 }

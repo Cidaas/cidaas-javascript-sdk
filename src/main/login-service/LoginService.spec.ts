@@ -1,6 +1,8 @@
-import { LoginService } from '../../src/main/web-auth/LoginService';
-import { Helper } from "../../src/main/web-auth/Helper";
-import { IChangePasswordEntity, IConsentContinue, IUserEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest } from '../../src/main/web-auth/Entities';
+import * as LoginService from './LoginService';
+import { Helper } from "../common/Helper";
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
+import { LoginPrecheckRequest, VerificationType } from '../common/Common.model';
+import { CidaasUser } from '../common/User.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;
@@ -9,11 +11,11 @@ const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplem
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
 beforeAll(() => {
-  (window as any).webAuthSettings = { authority: authority }
+  window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
 });
 
 test('loginWithCredentials', () => {
-  const option: LoginFormRequestEntity = {
+  const option: LoginWithCredentialsRequest = {
     username: 'username',
     password: 'password',
     requestId: 'requestId'
@@ -28,11 +30,11 @@ test('loginWithSocial', () => {
   Object.defineProperty(window, 'location', {
     value: {},
   });
-  const options = { 
+  const options: SocialProviderPathParameter = { 
     provider: 'provider',
     requestId: 'requestId' 
   };
-  const queryParams = { 
+  const queryParams: SocialProviderQueryParameter = { 
     dc: 'dc',
     device_fp: 'device_fp' 
   };
@@ -45,11 +47,11 @@ test('registerWithSocial', () => {
   Object.defineProperty(window, 'location', {
     value: {},
   });
-  const options = { 
+  const options: SocialProviderPathParameter = { 
     provider: 'provider',
     requestId: 'requestId' 
   };
-  const queryParams = { 
+  const queryParams: SocialProviderQueryParameter = { 
     dc: 'dc',
     device_fp: 'device_fp' 
   };
@@ -59,11 +61,11 @@ test('registerWithSocial', () => {
 });
 
 test('passwordlessLogin', () => {
-  const option: PhysicalVerificationLoginRequest = {
+  const option: PasswordlessLoginRequest = {
     requestId: 'requestId',
     sub: 'sub',
     status_id: 'statusId',
-    verificationType: 'verificationType'
+    verificationType: VerificationType.EMAIL
   };
   const serviceURL = `${serviceBaseUrl}/verification/login`;
   LoginService.passwordlessLogin(option);
@@ -72,13 +74,8 @@ test('passwordlessLogin', () => {
 });
 
 test('consentContinue', () => {
-  const option = {
-    client_id: 'client_id',
-    consent_refs: [],
-    sub: 'sub',
-    scopes: [],
-    matcher: null,
-    track_id: 'track_id',
+  const option: LoginPrecheckRequest = {
+    track_id: 'track_id'
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
   LoginService.consentContinue(option);
@@ -87,9 +84,7 @@ test('consentContinue', () => {
 });
 
 test('mfaContinue', () => {
-  const option = {
-    sub: 'sub',
-    requestId: 'requestID',
+  const option: MfaContinueRequest = {
     track_id: 'track_id',
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
@@ -99,7 +94,7 @@ test('mfaContinue', () => {
 });
 
 test('firstTimeChangePassword', () => {
-  const option: IChangePasswordEntity = {
+  const option: FirstTimeChangePasswordRequest = {
     sub: 'sub',
     old_password: 'old',
     new_password: 'new',
@@ -113,7 +108,7 @@ test('firstTimeChangePassword', () => {
 });
 
 test('progressiveRegistration', () => {
-  const options: IUserEntity = {
+  const options: CidaasUser = {
     userStatus: 'userStatus',
     user_status: 'user_status',
     user_status_reason: 'user_status_reason',
@@ -126,10 +121,10 @@ test('progressiveRegistration', () => {
     email: 'email',
     email_verified: false,
     mobile_number: 'mobile_number',
-    mobile_number_obj: null,
+    mobile_number_obj: {},
     mobile_number_verified: false,
     phone_number: 'phone_number',
-    phone_number_obj: null,
+    phone_number_obj: {},
     phone_number_verified: false,
     profile: 'profile',
     picture: 'picture',
@@ -137,7 +132,7 @@ test('progressiveRegistration', () => {
     gender: 'gender',
     zoneinfo: 'zoneinfo',
     locale: 'locale',
-    birthdate: null,
+    birthdate: 'birthdate',
     password: 'password',
     provider: 'provider',
     providerUserId: 'providerUserId',
@@ -148,7 +143,7 @@ test('progressiveRegistration', () => {
     trackId: 'trackId',
     need_reset_password: false
   };
-  const headers = {
+  const headers: ProgressiveRegistrationHeader = {
     requestId: 'requestId',
     trackId: 'trackId',
     acceptlanguage: 'acceptlanguage'
@@ -159,7 +154,7 @@ test('progressiveRegistration', () => {
 });
 
 test('loginAfterRegister', () => {
-  const option = {
+  const option: LoginAfterRegisterRequest = {
     device_id: 'deviceId',
     dc: 'dc',
     rememberMe: false,
@@ -169,4 +164,17 @@ test('loginAfterRegister', () => {
   const serviceURL = `${serviceBaseUrl}/login/handle/afterregister/${option.trackId}`;
   LoginService.loginAfterRegister(option);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
+});
+
+test('actionGuestLogin', () => {
+  const requestId = 'requestId';
+  const authority = 'http://localhost/baseURL';
+  const serviceURL = `${authority}/login-srv/login/guest/${requestId}`;
+  const form = document.createElement('form');
+  form.setAttribute('name', 'guestLoginForm');
+  document.body.appendChild(form);
+  LoginService.actionGuestLogin(requestId);
+  expect(submitFormSpy).toHaveBeenCalled();
+  expect(form.action).toEqual(serviceURL);
+  expect(form.method).toEqual('post');
 });

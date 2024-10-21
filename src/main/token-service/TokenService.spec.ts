@@ -1,6 +1,6 @@
-import { AccessTokenRequest, TokenIntrospectionEntity } from '../../src/main/web-auth/Entities';
-import { Helper } from '../../src/main/web-auth/Helper';
-import { TokenService } from '../../src/main/web-auth/TokenService';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from './TokenService.model';
+import { Helper } from '../common/Helper';
+import * as TokenService from './TokenService';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/token-srv`;
@@ -9,21 +9,13 @@ const createFormSpy = jest.spyOn(Helper, 'createForm');
 const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
 
 beforeAll(() => {
-	(window as any).webAuthSettings = { authority: authority }
+	window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
 });
 
 test('renewToken', () => {
-	const options: AccessTokenRequest = {
-		user_agent: 'user_agent',
-		ip_address: 'ip_address',
-		accept_language: 'accept_language',
-		lat: 'lat',
-		lng: 'lng',
-		finger_print: 'finger_print',
-		referrer: 'referrer',
-		pre_login_id: 'pre_login_id',
-		login_type: 'login_type',
-		device_code: 'device_code',
+	const options: RenewTokenRequest = {
+		client_id: 'client_id',
+		grant_type: 'authorization_code',
 		refresh_token: 'refresh_token'
 	};
 	const serviceURL = `${serviceBaseUrl}/token`;
@@ -32,24 +24,13 @@ test('renewToken', () => {
 });
 
 test('getAccessToken', () => {
-	(window as any).webAuthSettings.disablePKCE = true;
-	const options: AccessTokenRequest = {
-		user_agent: 'user_agent',
-		ip_address: 'ip_address',
-		accept_language: 'accept_language',
-		lat: 'lat',
-		lng: 'lng',
-		finger_print: 'finger_print',
-		referrer: 'referrer',
-		pre_login_id: 'pre_login_id',
-		login_type: 'login_type',
-		device_code: 'device_code',
-		refresh_token: 'refresh_token',
+	window.webAuthSettings.disablePKCE = true;
+	const options: GetAccessTokenRequest = {
 		code: 'code',
+		code_verifier: 'code_verifier',
 		client_id: 'client_id',
-		redirect_uri: 'redirect_uri',
 		grant_type: 'authorization_code',
-		code_verifier: 'code_verifier'
+		redirect_uri: 'redirect_uri'
 	}
 	const serviceURL = `${serviceBaseUrl}/token`;
 	TokenService.getAccessToken(options);
@@ -57,7 +38,7 @@ test('getAccessToken', () => {
 });
 
 test('validateAccessToken', () => {
-	const options: TokenIntrospectionEntity = {
+	const options: TokenIntrospectionRequest = {
 		token: 'token',
 		token_type_hint: 'token_type_hint',
 		strictGroupValidation: false,
@@ -73,9 +54,8 @@ test('validateAccessToken', () => {
 test('loginPrecheck', () => {
 	const options = {
 		track_id: 'track_id',
-		locale: 'locale'
 	};
-	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${options.track_id}?acceptLanguage=${options.locale}`;
+	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${options.track_id}`;
 	TokenService.loginPrecheck(options);
 	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
@@ -107,8 +87,8 @@ test('deviceCodeVerify', () => {
 });
 
 test('offlineTokenCheck', () => {
-	(window as any).webAuthSettings.scope = 'profile email openid cidaas:register javascript_sdk_example_scope_consent offline_access cidaas:users_write';
-	(window as any).webAuthSettings.authority = 'https://demo.cidaas.de';
+	window.webAuthSettings.scope = 'profile email openid cidaas:register javascript_sdk_example_scope_consent offline_access cidaas:users_write';
+	window.webAuthSettings.authority = 'https://demo.cidaas.de';
 	const accessToken = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjZlMmFkYzQ3LWE0OTMtNDM0Yi1hZTJiLTM4YzlkZjA0YzQ0OCJ9.eyJhbXIiOlsiMTAiXSwidWFfaGFzaCI6ImVlZGU4NWRiNGI0M2UwOTU4NThjYzYxM2Q5YzQ4ZTExIiwic2lkIjoiODFmYTBiZjMtNjliZC00MzY4LThiOWYtYWQ2NjE0ODczZGM2Iiwic3ViIjoiOGQyNGIwMDQtOTM0NS00Y2M5LTg4NWUtY2YyZDhiN2Q5ZmI1IiwiaXN1YiI6IjI1ZmMxZWY2LTdjMDItNDA4NS1iMjQyLWJlMTAzYmIxMjdhYSIsImF1ZCI6ImQ1NjExMjY3LTNhODgtNDI3Mi1iYjI0LWU5MDJkZGVkYjdiNCIsImlhdCI6MTcwMDU2NzAyMiwiYXV0aF90aW1lIjoxNzAwNTY3MDIxLCJpc3MiOiJodHRwczovL2RlbW8uY2lkYWFzLmRlIiwianRpIjoiMzIxMjhlNjQtNzczNi00ZmEwLTljMGUtMDVhNTg3NGQ2NzBjIiwibm9uY2UiOiIxNzAwNTY3MDEwOTU5Iiwic2NvcGVzIjpbInByb2ZpbGUiLCJlbWFpbCIsIm9wZW5pZCIsImNpZGFhczpyZWdpc3RlciIsImphdmFzY3JpcHRfc2RrX2V4YW1wbGVfc2NvcGVfY29uc2VudCIsIm9mZmxpbmVfYWNjZXNzIiwiY2lkYWFzOnVzZXJzX3dyaXRlIl0sInJvbGVzIjpbIlVTRVIiXSwiZXhwIjoxNzAwNjUzNDIyfQ.B6LWNNMuwgrbWjlKa6eHvNYwaA4eDLGpXIda1LAKREf5RAysZ3e4eAGnRoTIaNCCCSm46Cm_H4UmJv3IlBuBMD7sm88BPZHDiILTRGjK4xfZnbzf9R4IzajEpPGjwODip813AjoKlS0L7SMVz_7-xdH-sUSB8ecFNg8ImvMt14hf84rvIWgKe4CBeu9AuKs4d_-ChWdQ4PWxAl4s6ssG0F7uotLzgWOzZaFPTI9bQFlPSuQ5MpZurM5J60b9fiUhom7sJE2yVfyWeVn9vXX77LeSFuochA6whikb1l6tz5-s0VP-L1tZwGv4abpjM_PfeIi-xYoYjU6xsHawrmLxkA';
 	const result = {
 		isExpiryDateValid: false,

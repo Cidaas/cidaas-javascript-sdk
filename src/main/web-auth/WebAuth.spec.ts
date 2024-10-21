@@ -1,11 +1,19 @@
-import { WebAuth } from '../../src/main';
-import { ConsentService } from '../../src/main/web-auth/ConsentService';
-import { AcceptResetPasswordEntity, AccessTokenRequest, AccountVerificationRequestEntity, ChangePasswordEntity, FindUserEntity, IAuthVerificationAuthenticationRequestEntity, IChangePasswordEntity, IConfiguredListRequestEntity, IConsentAcceptEntity, IEnrollVerificationSetupRequestEntity, IInitVerificationAuthenticationRequestEntity, IUserActivityPayloadEntity, IUserEntity, IUserLinkEntity, LoginFormRequestEntity, PhysicalVerificationLoginRequest, ResetPasswordEntity, TokenIntrospectionEntity, UserEntity, ValidateResetPasswordEntity } from '../../src/main/web-auth/Entities';
-import { Helper } from '../../src/main/web-auth/Helper';
-import { LoginService } from '../../src/main/web-auth/LoginService';
-import { TokenService } from '../../src/main/web-auth/TokenService';
-import { UserService } from '../../src/main/web-auth/UserService';
-import { VerificationService } from '../../src/main/web-auth/VerificationService';
+import { WebAuth } from './WebAuth';
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import * as ConsentService from '../consent-service/ConsentService';
+import { Helper } from '../common/Helper';
+import * as LoginService from '../login-service/LoginService';
+import * as TokenService from '../token-service/TokenService';
+import * as UserService from '../user-service/UserService';
+import * as VerificationService from '../verification-service/VerificationService';
+import { SigninRequest } from 'oidc-client-ts';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
+import { LoginPrecheckRequest, ProcessingType, VerificationType } from '../common/Common.model';
+import { CidaasUser } from '../common/User.model';
+import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../user-service/UserService.model';
+import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from '../verification-service/VerificationService.model';
+import { DeleteDeviceRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from './webauth.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -20,11 +28,6 @@ const options = {
 const webAuth = new WebAuth(options);
 const mockDate = new Date('1970-01-01T00:00:00Z');
 
-
-beforeAll(() => {
-	(window as any).usermanager = { getUser: () => { }, _client: { createSigninRequest: () => { } } };
-});
-
 describe('Webauth functions without module or services', () => {
 	test('doNotRemoveAuthorityTrailingSlashIfNotExist', () => {
 		const optionsWithoutTrailingSlashAuthority = {
@@ -36,7 +39,7 @@ describe('Webauth functions without module or services', () => {
 			scope: 'scope'
 		};
 		new WebAuth(optionsWithoutTrailingSlashAuthority);
-		expect((window as any).webAuthSettings.authority).toEqual('https://domain/path');
+		expect(window.webAuthSettings.authority).toEqual('https://domain/path');
 		new WebAuth(options);
 	});
 	
@@ -50,31 +53,31 @@ describe('Webauth functions without module or services', () => {
 			scope: 'scope'
 		};
 		new WebAuth(optionsWithTrailingSlashAuthority);
-		expect((window as any).webAuthSettings.authority).toEqual('https://domain/path');
+		expect(window.webAuthSettings.authority).toEqual('https://domain/path');
 		new WebAuth(options);
 	});
 
 	test('getUserInfo', () => {
-		const getUserSpy = jest.spyOn((window as any).usermanager, 'getUser');
+		const getUserSpy = jest.spyOn(window.usermanager, 'getUser');
 		webAuth.getUserInfo();
 		expect(getUserSpy).toHaveBeenCalled();
 	});
 	
 	test('getLoginURL', () => {
-		const createSigninRequestSpy = jest.spyOn((window as any).usermanager._client, 'createSigninRequest').mockResolvedValue({});
+		const createSigninRequestSpy = jest.spyOn(window.usermanager.getClient(), 'createSigninRequest').mockResolvedValue({ url: 'empty' } as SigninRequest);
 		webAuth.getLoginURL();
-		expect(createSigninRequestSpy).toHaveBeenCalled;
+		expect(createSigninRequestSpy).toHaveBeenCalled();
 	});
 	
 	test('getRequestId', () => {
 		jest.useFakeTimers();
 		jest.setSystemTime(mockDate);
 		const options = {
-			'client_id': (window as any).webAuthSettings.client_id,
-			'redirect_uri': (window as any).webAuthSettings.redirect_uri,
-			'response_type': (window as any).webAuthSettings.response_type,
+			'client_id': window.webAuthSettings.client_id,
+			'redirect_uri': window.webAuthSettings.redirect_uri,
+			'response_type': window.webAuthSettings.response_type,
 			"response_mode": 'fragment',
-			"scope": (window as any).webAuthSettings.scope,
+			"scope": window.webAuthSettings.scope,
 			"nonce": mockDate.getTime().toString()
 		};
 		const serviceURL = `${authority}/authz-srv/authrequest/authz/generate`;
@@ -98,7 +101,7 @@ describe('Webauth functions without module or services', () => {
 		const options = {
 			access_token: 'accessToken'
 		};
-		const serviceURL = `${authority}/session/end_session?access_token_hint=${options.access_token}&post_logout_redirect_uri=${(window as any).webAuthSettings.post_logout_redirect_uri}`;
+		const serviceURL = `${authority}/session/end_session?access_token_hint=${options.access_token}&post_logout_redirect_uri=${window.webAuthSettings.post_logout_redirect_uri}`;
 		webAuth.logoutUser(options);
 		expect(window.location.href).toBe(serviceURL);
 	});
@@ -113,15 +116,14 @@ describe('Webauth functions without module or services', () => {
 	});
 	
 	test('getDevicesInfo', () => {
-		const options = {};
 		const acccessToken = 'accessToken';
 		const serviceURL = `${authority}/device-srv/devices`;
-		webAuth.getDevicesInfo(options, acccessToken);
-		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'GET', acccessToken);
+		webAuth.getDevicesInfo(undefined, acccessToken);
+		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', acccessToken);
 	});
 	
 	test('deleteDevice', () => {
-		const options = {
+		const options: DeleteDeviceRequest = {
 			device_id: 'device_id'
 		};
 		const acccessToken = 'accessToken';
@@ -131,7 +133,7 @@ describe('Webauth functions without module or services', () => {
 	});
 	
 	test('getRegistrationSetup', () => {
-		const options = {
+		const options: GetRegistrationSetupRequest = {
 			acceptlanguage: 'acceptlanguage',
 			requestId: 'requestId'
 		};
@@ -150,7 +152,7 @@ describe('Webauth functions without module or services', () => {
 	});
 
 	test('getUserActivities', () => {
-		const options: IUserActivityPayloadEntity = {
+		const options: GetUserActivitiesRequest = {
 			sub: '',
 			dateFilter: {
 				from_date: '',
@@ -164,7 +166,7 @@ describe('Webauth functions without module or services', () => {
 	});
 	
 	test('updateProfileImage', () => {
-		const options = {
+		const options: UpdateProfileImageRequest = {
 			image_key: 'imageKey',
 			photo: new Blob(),
 			filename: 'filename'
@@ -191,78 +193,89 @@ describe('Webauth functions without module or services', () => {
 		webAuth.updateProfileImage(options, accessToken);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', accessToken, null, formdata);
 	});
+
+	test('userActionOnEnrollment', () => {
+		const options: UserActionOnEnrollmentRequest = {
+			action: 'action'
+		};
+		const trackId = 'trackId';
+		const serviceURL = `${authority}/auth-actions-srv/validation/${trackId}`;
+		webAuth.userActionOnEnrollment(options, trackId);
+		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
+	});
 	
 	test('setAcceptLanguageHeader', () => {
 		const locale = 'en-gb'
 		webAuth.setAcceptLanguageHeader(locale);
-		expect((window as any).localeSettings).toBe(locale);
+		expect(window.localeSettings).toBe(locale);
 	});
+	
 });
 
 // Authentication Module
 describe('Authentication module functions', () => {
 	test('loginWithBrowser', () => {
-		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});
+		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
 		webAuth.loginWithBrowser();
 		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('login', undefined);
 	});
 	
 	test('popupSignIn', () => {
-		const popupSignInSpy = jest.spyOn((window as any).authentication, 'popupSignIn').mockImplementation();
+		const popupSignInSpy = jest.spyOn(window.authentication, 'popupSignIn').mockImplementation();
 		webAuth.popupSignIn();
 		expect(popupSignInSpy).toHaveBeenCalled();
 	});
 	
 	test('silentSignIn', () => {
-		const silentSignInSpy = jest.spyOn((window as any).authentication, 'silentSignIn').mockResolvedValue({});
+		const silentSignInSpy = jest.spyOn(window.authentication, 'silentSignIn').mockResolvedValue(null);
 		webAuth.silentSignIn();
 		expect(silentSignInSpy).toHaveBeenCalled();
 	});
 	
 	test('registerWithBrowser', () => {
-		const loginOrRegisterWithBrowserSpy = jest.spyOn((window as any).authentication, 'loginOrRegisterWithBrowser').mockResolvedValue({});
+		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
 		webAuth.registerWithBrowser();
 		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register', undefined);
 	});
 	
 	test('loginCallback', () => {
-		const loginCallbackSpy = jest.spyOn((window as any).authentication, 'loginCallback').mockResolvedValue({});
+		const loginCallbackSpy = jest.spyOn(window.authentication, 'loginCallback').mockResolvedValue(null);
 		webAuth.loginCallback();
 		expect(loginCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignInCallback', () => {
-		const popupSignInCallbackSpy = jest.spyOn((window as any).authentication, 'popupSignInCallback').mockResolvedValue({});
+		const popupSignInCallbackSpy = jest.spyOn(window.authentication, 'popupSignInCallback').mockResolvedValue(null);
 		webAuth.popupSignInCallback();
 		expect(popupSignInCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('silentSignInCallback', () => {
-		const silentSignInCallbackSpy = jest.spyOn((window as any).authentication, 'silentSignInCallback').mockResolvedValue({});
+		const silentSignInCallbackSpy = jest.spyOn(window.authentication, 'silentSignInCallback').mockResolvedValue(null);
 		webAuth.silentSignInCallback();
 		expect(silentSignInCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('logout', () => {
-		const logoutSpy = jest.spyOn((window as any).authentication, 'logout').mockResolvedValue({});
+		const logoutSpy = jest.spyOn(window.authentication, 'logout').mockResolvedValue(null);
 		webAuth.logout();
 		expect(logoutSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignOut', () => {
-		const popupSignOutSpy = jest.spyOn((window as any).authentication, 'popupSignOut').mockImplementation();
+		const popupSignOutSpy = jest.spyOn(window.authentication, 'popupSignOut').mockImplementation();
 		webAuth.popupSignOut();
 		expect(popupSignOutSpy).toHaveBeenCalled();
 	});
 	
 	test('logoutCallback', () => {
-		const logoutCallbackSpy = jest.spyOn((window as any).authentication, 'logoutCallback').mockResolvedValue({});
+		const logoutCallbackSpy = jest.spyOn(window.authentication, 'logoutCallback').mockResolvedValue(null);
 		webAuth.logoutCallback();
 		expect(logoutCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('popupSignOutCallback', () => {
-		const popupSignOutCallbackSpy = jest.spyOn((window as any).authentication, 'popupSignOutCallback').mockImplementation();
+		const popupSignOutCallbackSpy = jest.spyOn(window.authentication, 'popupSignOutCallback').mockImplementation();
 		webAuth.popupSignOutCallback();
 		expect(popupSignOutCallbackSpy).toHaveBeenCalled();
 	});
@@ -282,7 +295,7 @@ describe('User service functions', () => {
 	
 	test('register', () => {
 		const registerSpy = jest.spyOn(UserService, 'register').mockImplementation();
-		const options: UserEntity = {
+		const options: RegisterRequest = {
 			given_name: '',
 			family_name: '',
 			email: '',
@@ -329,10 +342,10 @@ describe('User service functions', () => {
 	
 	test('initiateResetPassword', () => {
 		const initiateResetPasswordSpy = jest.spyOn(UserService, 'initiateResetPassword').mockImplementation();
-		const options: ResetPasswordEntity = {
+		const options: InitiateResetPasswordRequest = {
 			email: '',
-			resetMedium: 'SMS',
-			processingType: 'CODE',
+			resetMedium: ResetMedium.SMS,
+			processingType: ProcessingType.CODE,
 			requestId: ''
 		};
 		webAuth.initiateResetPassword(options);
@@ -341,7 +354,7 @@ describe('User service functions', () => {
 	
 	test('handleResetPassword', () => {
 		const handleResetPasswordSpy = jest.spyOn(UserService, 'handleResetPassword').mockImplementation();
-		const options: ValidateResetPasswordEntity = {
+		const options: HandleResetPasswordRequest = {
 			resetRequestId: '',
 			code: ''
 		};
@@ -351,7 +364,7 @@ describe('User service functions', () => {
 	
 	test('resetPassword', () => {
 		const resetPasswordSpy = jest.spyOn(UserService, 'resetPassword').mockImplementation();
-		const options: AcceptResetPasswordEntity = {
+		const options: ResetPasswordRequest = {
 			resetRequestId: '',
 			exchangeId: '',
 			password: '',
@@ -392,13 +405,12 @@ describe('User service functions', () => {
 
 	test('changePassword', () => {
 		const changePasswordSpy = jest.spyOn(UserService, 'changePassword').mockImplementation();
-		const options: ChangePasswordEntity = {
+		const options: ChangePasswordRequest = {
 			sub: '',
 			identityId: '',
 			old_password: '',
 			new_password: '',
 			confirm_password: '',
-			accessToken: ''
 		};
 		const accessToken = '';
 		webAuth.changePassword(options, accessToken);
@@ -407,7 +419,7 @@ describe('User service functions', () => {
 
 	test('updateProfile', () => {
 		const updateProfileSpy = jest.spyOn(UserService, 'updateProfile').mockImplementation();
-		const options: UserEntity = {
+		const options: CidaasUser = {
 			given_name: '',
 			family_name: '',
 			email: '',
@@ -422,17 +434,10 @@ describe('User service functions', () => {
 
 	test('initiateLinkAccount', () => {
 		const initiateLinkAccountSpy = jest.spyOn(UserService, 'initiateLinkAccount').mockImplementation();
-		const options: IUserLinkEntity = {
+		const options: InitiateLinkAccountRequest = {
 			master_sub: '',
 			user_name_type: '',
-			user_name_to_link: '',
-			link_accepted_by: '',
-			link_response_time: mockDate,
-			link_accepted: false,
-			communication_type: '',
-			verification_status_id: '',
-			type: '',
-			status: ''
+			user_name_to_link: ''
 		};
 		const accessToken = '';
 		webAuth.initiateLinkAccount(options, accessToken);
@@ -441,7 +446,7 @@ describe('User service functions', () => {
 
 	test('completeLinkAccount', () => {
 		const completeLinkAccountSpy = jest.spyOn(UserService, 'completeLinkAccount').mockImplementation();
-		const options = {};
+		const options: CompleteLinkAccountRequest = {};
 		const accessToken = '';
 		webAuth.completeLinkAccount(options, accessToken);
 		expect(completeLinkAccountSpy).toHaveBeenCalledWith(options, accessToken);
@@ -465,7 +470,7 @@ describe('User service functions', () => {
 
 	test('deleteUserAccount', () => {
 		const deleteUserAccountSpy = jest.spyOn(UserService, 'deleteUserAccount').mockImplementation();
-		const options = {
+		const options: DeleteUserAccountRequest = {
 			access_token: '',
 			sub: ''
 		};
@@ -475,17 +480,12 @@ describe('User service functions', () => {
 
 	test('userCheckExists', () => {
 		const userCheckExistsSpy = jest.spyOn(UserService, 'userCheckExists').mockImplementation();
-		const options: FindUserEntity = {
-			sub: '',
+		const options: UserCheckExistsRequest = {
 			email: '',
 			mobile: '',
 			username: '',
-			customFields: undefined,
-			provider: '',
-			providerUserId: '',
 			rememberMe: '',
 			webfinger: '',
-			sub_not: '',
 			requestId: ''
 		};
 		webAuth.userCheckExists(options);
@@ -498,17 +498,10 @@ describe('User service functions', () => {
 describe('Token service functions', () => {
 	test('renewToken', () => {
 		const renewTokenSpy = jest.spyOn(TokenService, 'renewToken').mockImplementation();
-		const options: AccessTokenRequest = {
-			user_agent: '',
-			ip_address: '',
-			accept_language: '',
-			lat: '',
-			lng: '',
-			finger_print: '',
-			referrer: '',
-			pre_login_id: '',
-			login_type: '',
-			device_code: ''
+		const options: RenewTokenRequest = {
+			client_id: '',
+			grant_type: '',
+			refresh_token: ''
 		}
 		webAuth.renewToken(options);
 		expect(renewTokenSpy).toHaveBeenCalledWith(options);
@@ -516,17 +509,12 @@ describe('Token service functions', () => {
 	
 	test('getAccessToken', () => {
 		const getAccessTokenSpy = jest.spyOn(TokenService, 'getAccessToken').mockImplementation();
-		const options: AccessTokenRequest = {
-			user_agent: '',
-			ip_address: '',
-			accept_language: '',
-			lat: '',
-			lng: '',
-			finger_print: '',
-			referrer: '',
-			pre_login_id: '',
-			login_type: '',
-			device_code: ''
+		const options: GetAccessTokenRequest = {
+			code: '',
+			code_verifier: '',
+			client_id: '',
+			grant_type: '',
+			redirect_uri: ''
 		}
 		webAuth.getAccessToken(options);
 		expect(getAccessTokenSpy).toHaveBeenCalledWith(options);
@@ -534,7 +522,7 @@ describe('Token service functions', () => {
 	
 	test('validateAccessToken', () => {
 		const validateAccessTokenSpy = jest.spyOn(TokenService, 'validateAccessToken').mockImplementation();
-		const options: TokenIntrospectionEntity = {
+		const options: TokenIntrospectionRequest = {
 			token: '',
 			strictGroupValidation: false,
 			strictScopeValidation: false,
@@ -548,8 +536,7 @@ describe('Token service functions', () => {
 	test('loginPrecheck', () => {
 		const loginPrecheckSpy = jest.spyOn(TokenService, 'loginPrecheck').mockImplementation();
 		const options = {
-			track_id: '',
-			locale: ''
+			track_id: ''
 		};
 		webAuth.loginPrecheck(options);
 		expect(loginPrecheckSpy).toHaveBeenCalledWith(options);
@@ -557,7 +544,7 @@ describe('Token service functions', () => {
 
 	test('getMissingFieldsFromDefaultProvider', () => {
 		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
-		const	trackId = '';
+		const trackId = '';
 		webAuth.getMissingFields(trackId);
 		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId);
 	});
@@ -572,7 +559,7 @@ describe('Token service functions', () => {
 
 	test('initiateDeviceCode', () => {
 		const initiateDeviceCodeSpy = jest.spyOn(TokenService, 'initiateDeviceCode').mockImplementation();
-		const	clientId = '';
+		const clientId = '';
 		webAuth.initiateDeviceCode(clientId);
 		expect(initiateDeviceCodeSpy).toHaveBeenCalledWith(clientId);
 	});
@@ -586,7 +573,7 @@ describe('Token service functions', () => {
 
 	test('offlineTokenCheck', () => {
 		const offlineTokenCheckSpy = jest.spyOn(TokenService, 'offlineTokenCheck').mockImplementation();
-		const	accessToken = '';
+		const accessToken = '';
 		webAuth.offlineTokenCheck(accessToken);
 		expect(offlineTokenCheckSpy).toHaveBeenCalledWith(accessToken);
 	});
@@ -597,7 +584,7 @@ describe('Token service functions', () => {
 describe('Login service functions', () => {
 	test('loginWithCredentials', () => {
 		const loginWithCredentialsSpy = jest.spyOn(LoginService, 'loginWithCredentials').mockImplementation();
-		const options: LoginFormRequestEntity = {
+		const options: LoginWithCredentialsRequest = {
 			username: '',
 			password: '',
 			requestId: ''
@@ -608,11 +595,11 @@ describe('Login service functions', () => {
 	
 	test('loginWithSocial', () => {
 		const loginWithSocialSpy = jest.spyOn(LoginService, 'loginWithSocial').mockImplementation();
-		const options = {
+		const options: SocialProviderPathParameter = {
 			provider: '',
 			requestId: ''
 		}
-		const queryParams = {
+		const queryParams: SocialProviderQueryParameter = {
 			dc: '',
 			device_fp: ''
 		}
@@ -622,11 +609,11 @@ describe('Login service functions', () => {
 	
 	test('registerWithSocial', () => {
 		const registerWithSocialSpy = jest.spyOn(LoginService, 'registerWithSocial').mockImplementation();
-		const options = {
+		const options: SocialProviderPathParameter = {
 			provider: '',
 			requestId: ''
 		}
-		const queryParams = {
+		const queryParams: SocialProviderQueryParameter = {
 			dc: '',
 			device_fp: ''
 		}
@@ -636,37 +623,37 @@ describe('Login service functions', () => {
 	
 	test('passwordlessLogin', () => {
 		const passwordlessLoginSpy = jest.spyOn(LoginService, 'passwordlessLogin').mockImplementation();
-		const options: PhysicalVerificationLoginRequest = {};
+		const options: PasswordlessLoginRequest = {
+			requestId: 'requestId',
+			sub: 'sub',
+			status_id: 'statusId',
+			verificationType: VerificationType.EMAIL
+		};
 		webAuth.passwordlessLogin(options);
 		expect(passwordlessLoginSpy).toHaveBeenCalledWith(options);
 	});
 
 	test('consentContinue', () => {
 		const consentContinueSpy = jest.spyOn(LoginService, 'consentContinue').mockImplementation();
-		const options = {
-			client_id: '',
-			consent_refs: [],
-			sub: '',
-			scopes: [],
-			matcher: '',
+		const option: LoginPrecheckRequest = {
 			track_id: ''
 		};
-		webAuth.consentContinue(options);
-		expect(consentContinueSpy).toHaveBeenCalledWith(options);
+		webAuth.consentContinue(option);
+		expect(consentContinueSpy).toHaveBeenCalledWith(option);
 	});
 
 	test('mfaContinue', () => {
 		const mfaContinueSpy = jest.spyOn(LoginService, 'mfaContinue').mockImplementation();
-		const options = {
+		const option: MfaContinueRequest = {
 			track_id: ''
 		};
-		webAuth.mfaContinue(options);
-		expect(mfaContinueSpy).toHaveBeenCalledWith(options);
+		webAuth.mfaContinue(option);
+		expect(mfaContinueSpy).toHaveBeenCalledWith(option);
 	});
 
 	test('firstTimeChangePassword', () => {
 		const firstTimeChangePasswordSpy = jest.spyOn(LoginService, 'firstTimeChangePassword').mockImplementation();
-		const options: IChangePasswordEntity = {
+		const options: FirstTimeChangePasswordRequest = {
 			old_password: '',
 			new_password: '',
 			confirm_password: '',
@@ -678,7 +665,7 @@ describe('Login service functions', () => {
 
 	test('progressiveRegistration', () => {
 		const progressiveRegistrationSpy = jest.spyOn(LoginService, 'progressiveRegistration').mockImplementation();
-		const options: IUserEntity = {
+		const options: CidaasUser = {
 			userStatus: '',
 			user_status: '',
 			user_status_reason: '',
@@ -691,10 +678,8 @@ describe('Login service functions', () => {
 			email: '',
 			email_verified: false,
 			mobile_number: '',
-			mobile_number_obj: null,
 			mobile_number_verified: false,
 			phone_number: '',
-			phone_number_obj: null,
 			phone_number_verified: false,
 			profile: '',
 			picture: '',
@@ -708,12 +693,11 @@ describe('Login service functions', () => {
 			providerUserId: '',
 			identityId: '',
 			roles: [],
-			userGroups: [],
 			rawJSON: '',
 			trackId: '',
 			need_reset_password: false
 		};
-		const headers = {
+		const headers: ProgressiveRegistrationHeader = {
 			requestId: '',
 			trackId: '',
 			acceptlanguage: ''
@@ -724,7 +708,7 @@ describe('Login service functions', () => {
 
 	test('loginAfterRegister', () => {
 		const loginAfterRegisterSpy = jest.spyOn(LoginService, 'loginAfterRegister').mockImplementation();
-		const options = {
+		const options: LoginAfterRegisterRequest = {
 			device_id: 'deviceId',
 			dc: 'dc',
 			rememberMe: false,
@@ -735,13 +719,20 @@ describe('Login service functions', () => {
 		expect(loginAfterRegisterSpy).toHaveBeenCalledWith(options);
 	});
 
+	test('actionGuestLogin', () => {
+		const actionGuestLoginSpy = jest.spyOn(LoginService, 'actionGuestLogin').mockImplementation();
+		const requestId = '';
+		webAuth.actionGuestLogin(requestId);
+		expect(actionGuestLoginSpy).toHaveBeenCalledWith(requestId);
+	});
+
 });
 
 // Verification Service
 describe('Verification service functions', () => {
 	test('initiateAccountVerification', () => {
 		const initiateAccountVerificationSpy = jest.spyOn(VerificationService, 'initiateAccountVerification').mockImplementation();
-		const options: AccountVerificationRequestEntity = {
+		const options: InitiateAccountVerificationRequest = {
 			sub: ''
 		};
 		webAuth.initiateAccountVerification(options);
@@ -750,7 +741,7 @@ describe('Verification service functions', () => {
 	
 	test('verifyAccount', () => {
 		const verifyAccountSpy = jest.spyOn(VerificationService, 'verifyAccount').mockImplementation();
-		const options = {
+		const options: VerifyAccountRequest = {
 			accvid: '',
 			code: ''
 		};
@@ -760,18 +751,9 @@ describe('Verification service functions', () => {
 	
 	test('getMFAList', () => {
 		const getMFAListSpy = jest.spyOn(VerificationService, 'getMFAList').mockImplementation();
-		const options: IConfiguredListRequestEntity = {
-			sub: '',
+		const options: GetMFAListRequest = {
 			email: '',
-			mobile_number: '',
-			username: '',
-			request_id: '',
-			verification_types: [],
-			single_factor_sub_ref: '',
-			device_fp: '',
-			provider: '',
-			device_id: '',
-			verification_type: ''
+			request_id: ''
 		};
 		webAuth.getMFAList(options);
 		expect(getMFAListSpy).toHaveBeenCalledWith(options);
@@ -779,7 +761,7 @@ describe('Verification service functions', () => {
 	
 	test('cancelMFA', () => {
 		const cancelMFASpy = jest.spyOn(VerificationService, 'cancelMFA').mockImplementation();
-		const options = {
+		const options: CancelMFARequest = {
 			exchange_id: '',
 			reason: '',
 			type: ''
@@ -797,7 +779,7 @@ describe('Verification service functions', () => {
 
 	test('initiateEnrollment', () => {
 		const initiateEnrollmentSpy = jest.spyOn(VerificationService, 'initiateEnrollment').mockImplementation();
-		const options = {
+		const options: InitiateEnrollmentRequest = {
 			verification_type: ''
 		};
 		const accessToken = '';
@@ -815,16 +797,11 @@ describe('Verification service functions', () => {
 
 	test('enrollVerification', () => {
 		const enrollVerificationSpy = jest.spyOn(VerificationService, 'enrollVerification').mockImplementation();
-		const options: IEnrollVerificationSetupRequestEntity = {
+		const options: EnrollVerificationRequest = {
 			exchange_id: '',
 			device_id: '',
-			finger_print: '',
 			client_id: '',
-			push_id: '',
 			pass_code: '',
-			pkce_key: '',
-			face_attempt: 0,
-			attempt: 0,
 			fido2_client_response: {} ,
 			verification_type: ''
 		};
@@ -834,17 +811,9 @@ describe('Verification service functions', () => {
 
 	test('checkVerificationTypeConfigured', () => {
 		const checkVerificationTypeConfiguredSpy = jest.spyOn(VerificationService, 'checkVerificationTypeConfigured').mockImplementation();
-		const options: IConfiguredListRequestEntity = {
-			sub: '',
+		const options: CheckVerificationTypeConfiguredRequest = {
 			email: '',
-			mobile_number: '',
-			username: '',
 			request_id: '',
-			verification_types: [],
-			single_factor_sub_ref: '',
-			device_fp: '',
-			provider: '',
-			device_id: '',
 			verification_type: ''
 		};
 		webAuth.checkVerificationTypeConfigured(options);
@@ -853,9 +822,8 @@ describe('Verification service functions', () => {
 
 	test('initiateMFA', () => {
 		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
-		const options: IInitVerificationAuthenticationRequestEntity = {
+		const options: InitiateMFARequest = {
 			usage_type: '',
-			processingType: '',
 			request_id: ''
 		};
 		webAuth.initiateMFA(options);
@@ -864,9 +832,8 @@ describe('Verification service functions', () => {
 
 	test('initiateMFA with access token', () => {
 		const initiateMFASpy = jest.spyOn(VerificationService, 'initiateMFA').mockImplementation();
-		const options: IInitVerificationAuthenticationRequestEntity = {
+		const options: InitiateMFARequest = {
 			usage_type: '',
-			processingType: '',
 			request_id: ''
 		};
 		const accessToken = 'accessToken';
@@ -876,13 +843,48 @@ describe('Verification service functions', () => {
 
 	test('authenticateMFA', () => {
 		const authenticateMFASpy = jest.spyOn(VerificationService, 'authenticateMFA').mockImplementation();
-		const options: IAuthVerificationAuthenticationRequestEntity = {
+		const options: AuthenticateMFARequest = {
 			type: '',
 			exchange_id: '',
-			client_id: ''
+			pass_code: ''
 		};
 		webAuth.authenticateMFA(options);
 		expect(authenticateMFASpy).toHaveBeenCalledWith(options);
+	});
+
+	test('initiateVerification', () => {
+		const initiateVerificationSpy = jest.spyOn(VerificationService, 'initiateVerification').mockImplementation();
+		const options: InitiateVerificationRequest = {
+			email: ''
+		};
+		const trackId = '';
+  		const method = '';
+		webAuth.initiateVerification(options, trackId, method);
+		expect(initiateVerificationSpy).toHaveBeenCalledWith(options, trackId, method);
+	});
+
+	test('configureVerification', () => {
+		const configureVerificationSpy = jest.spyOn(VerificationService, 'configureVerification').mockImplementation();
+		const options: ConfigureVerificationRequest = {
+			exchange_id: '',
+			sub: '',
+			pass_code: ''
+		};
+  		const method = '';
+		webAuth.configureVerification(options, method);
+		expect(configureVerificationSpy).toHaveBeenCalledWith(options, method);
+	});
+
+	test('configureFriendlyName', () => {
+		const configureFriendlyNameSpy = jest.spyOn(VerificationService, 'configureFriendlyName').mockImplementation();
+		const options: ConfigureFriendlyNameRequest = {
+			sub: '',
+    		friendly_name: ''
+		};
+		const trackId = '';
+  		const method = '';
+		webAuth.configureFriendlyName(options, trackId, method);
+		expect(configureFriendlyNameSpy).toHaveBeenCalledWith(options, trackId, method);
 	});
 
 });
@@ -902,14 +904,13 @@ describe('Consent service functions', () => {
 	
 	test('acceptConsent', () => {
 		const acceptConsentSpy = jest.spyOn(ConsentService, 'acceptConsent').mockImplementation();
-		const options: IConsentAcceptEntity = {
+		const options: AcceptConsentRequest = {
 			client_id: '',
 			consent_id: '',
 			consent_version_id: '',
 			sub: '',
 			scopes: [],
 			url: '',
-			matcher: undefined,
 			field_key: '',
 			accepted_fields: [],
 			accepted_by: '',
@@ -925,7 +926,7 @@ describe('Consent service functions', () => {
 	
 	test('getConsentVersionDetails', () => {
 		const getConsentVersionDetailsSpy = jest.spyOn(ConsentService, 'getConsentVersionDetails').mockImplementation();
-		const options = {
+		const options: GetConsentVersionDetailsRequest = {
 			consentid: '',
 			locale: '',
 			access_token: ''
@@ -936,10 +937,10 @@ describe('Consent service functions', () => {
 	
 	test('acceptScopeConsent', () => {
 		const acceptScopeConsentSpy = jest.spyOn(ConsentService, 'acceptScopeConsent').mockImplementation();
-		const options = {
+		const options: AcceptScopeConsentRequest = {
 			client_id: '',
 			sub: '',
-			scopes: []
+			scopes: ['']
 		};
 		webAuth.acceptScopeConsent(options);
 		expect(acceptScopeConsentSpy).toHaveBeenCalledWith(options);
@@ -947,10 +948,10 @@ describe('Consent service functions', () => {
 	
 	test('acceptClaimConsent', () => {
 		const acceptClaimConsentSpy = jest.spyOn(ConsentService, 'acceptClaimConsent').mockImplementation();
-		const options = {
+		const options: AcceptClaimConsentRequest = {
 			client_id: '',
 			sub: '',
-			accepted_claims: []
+			accepted_claims: ['']
 		};
 		webAuth.acceptClaimConsent(options);
 		expect(acceptClaimConsentSpy).toHaveBeenCalledWith(options);
@@ -958,10 +959,11 @@ describe('Consent service functions', () => {
 	
 	test('revokeClaimConsent', () => {
 		const revokeClaimConsentSpy = jest.spyOn(ConsentService, 'revokeClaimConsent').mockImplementation();
-		const options = {
+		const options: RevokeClaimConsentRequest = {
+			access_token: '',
 			client_id: '',
 			sub: '',
-			revoked_claims: []
+			revoked_claims: ['']
 		};
 		webAuth.revokeClaimConsent(options);
 		expect(revokeClaimConsentSpy).toHaveBeenCalledWith(options);

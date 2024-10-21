@@ -1,41 +1,22 @@
-import {
-  Authentication, OidcSettings,
-  LoginRedirectOptions,
-  LogoutRedirectOptions,
-  PopupSignInOptions,
-  PopupSignOutOptions,
-  SilentSignInOptions,
-  OidcManager, LoginRequestOptions, User, LogoutResponse
-} from '../authentication';
-import { Helper, CustomException } from "./Helper";
-import { LoginService } from "./LoginService";
-import { UserService } from "./UserService";
-import { TokenService } from "./TokenService";
-import { VerificationService } from "./VerificationService";
-import { ConsentService } from "./ConsentService";
+import { Helper, CustomException } from "../common/Helper";
+import * as LoginService from "../login-service/LoginService";
+import * as UserService from "../user-service/UserService";
+import * as TokenService from "../token-service/TokenService";
+import * as VerificationService from "../verification-service/VerificationService";
+import * as ConsentService from "../consent-service/ConsentService";
 
-import {
-  AccessTokenRequest,
-  TokenIntrospectionEntity,
-  UserEntity,
-  ResetPasswordEntity,
-  IConfiguredListRequestEntity,
-  IInitVerificationAuthenticationRequestEntity,
-  FindUserEntity,
-  IUserEntity,
-  IEnrollVerificationSetupRequestEntity,
-  IUserLinkEntity,
-  ChangePasswordEntity,
-  IConsentAcceptEntity,
-  IAuthVerificationAuthenticationRequestEntity,
-  LoginFormRequestEntity,
-  AccountVerificationRequestEntity,
-  ValidateResetPasswordEntity,
-  AcceptResetPasswordEntity,
-  PhysicalVerificationLoginRequest,
-  IChangePasswordEntity,
-  IUserActivityPayloadEntity,
-} from "./Entities"
+import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
+import { LoginPrecheckRequest } from '../common/Common.model';
+import { CidaasUser } from '../common/User.model';
+import { ChangePasswordRequest, CompleteLinkAccountRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest, getCommunicationStatusRequest } from '../user-service/UserService.model';
+import { HTTPRequestHeader } from "../common/Common.model";
+import { User } from "oidc-client-ts";
+import { Authentication } from "../authentication/Authentication";
+import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
+import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
+import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -54,7 +35,7 @@ export class WebAuth {
       if (settings.authority && settings.authority.charAt(settings.authority.length - 1) === '/' ) {
         settings.authority = settings.authority.slice(0, settings.authority.length - 1);
       }
-      var usermanager = new OidcManager(settings);
+      const usermanager = new OidcManager(settings);
       window.webAuthSettings = settings;
       window.usermanager = usermanager;
       window.localeSettings = null;
@@ -77,7 +58,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginOrRegisterWithBrowser('login', options);
-  };
+  }
 
   /**
    * Generate and open authz url in a popup window.
@@ -92,7 +73,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignIn(options);
-  };
+  }
 
   /**
    * Generate and navigate to authz url in an iFrame.
@@ -107,7 +88,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.silentSignIn(options);
-  };
+  }
 
   /**
    * Generate and redirect to authz url in same window for register view.
@@ -118,7 +99,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginOrRegisterWithBrowser('register', options);
-  };
+  }
 
   /**
    * Once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
@@ -133,7 +114,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginCallback(url);
-  };
+  }
 
   /**
    * To complete the popup login process, call **popupSignInCallback()** from the popup login window.
@@ -147,7 +128,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignInCallback(url, keepOpen);
-  };
+  }
 
   /**
    * Returns a promise to notify the parent window of response from authz service
@@ -158,7 +139,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.silentSignInCallback(url);
-  };
+  }
 
   /**
    * To get the user profile information by using oidc-client-ts library, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
@@ -177,7 +158,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("UserManager cannot be empty", 417));
     }
     return await window.usermanager.getUser();
-  };
+  }
 
   /**
    * logout by using oidc-client-ts library
@@ -188,7 +169,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.logout(options);
-  };
+  }
 
   /**
    * logout by using oidc-client-ts library
@@ -199,7 +180,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.popupSignOut(options);
-  };
+  }
 
   /**
    * get the logout call state from the url provided, if none is provided current window url is used
@@ -210,7 +191,7 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.logoutCallback(url);
-  };
+  }
 
   /**
    * listen to popup sign out event
@@ -224,7 +205,7 @@ export class WebAuth {
     url = url || window.webAuthSettings.post_logout_redirect_uri;
 
     return window.authentication.popupSignOutCallback(url, keepOpen);
-  };  
+  }  
 
   /**
    * To get the generated login url, call **getLoginURL()**. This will call authz service and generate login url to be used.
@@ -244,18 +225,16 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return new Promise<string>((resolve, reject) => {
-      try {
-        window.usermanager.getClient().createSigninRequest({
-          ...window.webAuthSettings,
-          ...( options && { options } || {})
-        }).then((signinRequest: { url: string }) => {
-          resolve(signinRequest.url);
-        }); 
-      } catch (e) {
+      window.usermanager.getClient().createSigninRequest({
+        ...window.webAuthSettings,
+        ...( options && { options } || {})
+      }).then((signinRequest: { url: string }) => {
+        resolve(signinRequest.url);
+      }).catch(e => {
         reject(e);
-      }
+      }); 
     });
-  };
+  }
 
   /**
    * Each and every proccesses starts with requestId, it is an entry point to login or register. For getting the requestId, call **getRequestId()**.
@@ -281,7 +260,7 @@ export class WebAuth {
     };
     const serviceURL = window.webAuthSettings.authority + '/authz-srv/authrequest/authz/generate';
     return Helper.createHttpPromise(options, serviceURL, false, "POST");
-  };
+  }
 
   /**
    * To get the tenant basic information, call **getTenantInfo()**. This will return the basic tenant details such as tenant name and allowed login with types (Email, Mobile, Username).
@@ -297,7 +276,7 @@ export class WebAuth {
   getTenantInfo() {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
     return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
-  };
+  }
 
   /**
    * To logout the user by using cidaas internal api, call **logoutUser()**.
@@ -309,9 +288,9 @@ export class WebAuth {
    * });
    * ```
    */
-  logoutUser(options: { access_token: string }) {
+  logoutUser(options: LogoutUserRequest) {
     window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
-  };
+  }
 
   /**
    * To get the client basic information, call **getClientInfo()**. This will return the basic client details such as client name and its details.
@@ -327,17 +306,17 @@ export class WebAuth {
    * });
    * ```
    */
-  getClientInfo(options: { requestId: string }) {
+  getClientInfo(options: GetClientInfoRequest) {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/" + options.requestId;
     return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
-  };
+  }
 
   /**
    * To get all devices information associated to the client, call **getDevicesInfo()**
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2a2feed70303c-get-device-by-user for more details.
    * @example
    * ```js
-   * const options = {};
+   * const options = null; // the payload is deprecated and will be removed in the next major release
    * const accessToken = 'your access token';
    * cidaas.getDevicesInfo(options, accessToken).then(function (resp) {
    *   // the response will give you devices informations.
@@ -346,14 +325,11 @@ export class WebAuth {
    * });
    * ```
    */
-  getDevicesInfo(options: any, accessToken: string) {
-    options.userAgent = window.navigator.userAgent;
+  getDevicesInfo(options: void, accessToken: string) {
+    options = undefined;
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
-    if (window.navigator.userAgent) {
-      return Helper.createHttpPromise(options, _serviceURL,false, "GET", accessToken);
-    }
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", accessToken);
-  };
+    return Helper.createHttpPromise(options, _serviceURL,false, "GET", accessToken);
+  }
 
   /**
    * To delete device associated to the client, call **deleteDevice()**
@@ -371,14 +347,14 @@ export class WebAuth {
    * });
    * ```
    */
-  deleteDevice(options: { device_id: string; userAgent?: string }, accessToken: string) {
+  deleteDevice(options: DeleteDeviceRequest, accessToken: string) {
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
     options.userAgent = window.navigator.userAgent;
     if (window.navigator.userAgent) {
       return Helper.createHttpPromise(options, _serviceURL,false, "DELETE", accessToken);
     }
     return Helper.createHttpPromise(undefined, _serviceURL,false, "DELETE", accessToken);
-  };
+  }
 
   /**
    * To handle registration, first you need the registration fields. To get the registration fields, call **getRegistrationSetup()**. This will return the fields that has to be needed while registration.
@@ -395,10 +371,10 @@ export class WebAuth {
    * });
    * ```
    */
-  getRegistrationSetup(options: { acceptlanguage?: string; requestId: string }) {
+  getRegistrationSetup(options: GetRegistrationSetupRequest) {
     const serviceURL = window.webAuthSettings.authority + '/registration-setup-srv/public/list?acceptlanguage=' + options.acceptlanguage + '&requestId=' + options.requestId;
     return Helper.createHttpPromise(undefined, serviceURL, false, 'GET');
-  };
+  }
 
   /**
    * to generate device info, call **createDeviceInfo()**.
@@ -421,69 +397,69 @@ export class WebAuth {
       const serviceURL = window.webAuthSettings.authority + '/device-srv/deviceinfo';
       return Helper.createHttpPromise(options, serviceURL, false, 'POST');
     }
-  };
+  }
 
   /**
    * get the user profile information
    * @param options 
    * @returns 
    */
-  getUserProfile(options: { access_token: string }) {
+  getUserProfile(options: GetUserProfileRequest) {
     return UserService.getUserProfile(options);
-  };
+  }
 
   /**
    * renew token using refresh token
    * @param options 
    * @returns 
    */
-  renewToken(options: AccessTokenRequest) {
+  renewToken(options: RenewTokenRequest) {
     return TokenService.renewToken(options);
-  };
+  }
 
   /**
    * get access token from code
    * @param options 
    * @returns 
    */
-  getAccessToken(options: AccessTokenRequest) {
+  getAccessToken(options: GetAccessTokenRequest) {
     return TokenService.getAccessToken(options);
-  };
+  }
 
   /**
    * validate access token
    * @param options 
    * @returns 
    */
-  validateAccessToken(options: TokenIntrospectionEntity) {
+  validateAccessToken(options: TokenIntrospectionRequest) {
     return TokenService.validateAccessToken(options);
-  };
+  }
 
   /**
    * login with username and password
    * @param options 
    */
-  loginWithCredentials(options: LoginFormRequestEntity) {
+  loginWithCredentials(options: LoginWithCredentialsRequest) {
     LoginService.loginWithCredentials(options);
-  };
+  }
 
   /**
    * login with social
    * @param options 
    * @param queryParams 
    */
-  loginWithSocial(options: { provider: string; requestId: string; }, queryParams: { dc: string; device_fp: string }) {
+  loginWithSocial(options: SocialProviderPathParameter, queryParams?: SocialProviderQueryParameter) {
     LoginService.loginWithSocial(options, queryParams)
-  };
+  }
 
   /**
    * register with social
    * @param options 
    * @param queryParams 
    */
-  registerWithSocial(options: { provider: string; requestId: string; }, queryParams: { dc: string; device_fp: string }) {
+  registerWithSocial(options: SocialProviderPathParameter, queryParams?: SocialProviderQueryParameter) {
     LoginService.registerWithSocial(options, queryParams)
-  };
+  }
 
   /**
    * register user
@@ -491,217 +467,210 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  register(options: UserEntity, headers: { requestId: string; captcha?: string; acceptlanguage?: string; bot_captcha_response?: string; trackId?: string; }) {
+  register(options: RegisterRequest, headers: HTTPRequestHeader) {
     return UserService.register(options, headers);
-  };
+  }
 
   /**
    * get invite info
    * @param options 
    * @returns 
    */
-  getInviteUserDetails(options: { invite_id: string, callLatestAPI?: boolean }) {
+  getInviteUserDetails(options: GetInviteUserDetailsRequest) {
     return UserService.getInviteUserDetails(options);
-  };
+  }
 
   /**
    * get Communication status
    * @param options
    * @returns 
    */
-  getCommunicationStatus(options: { sub: string }, headers: {requestId: string }) {
+  getCommunicationStatus(options: getCommunicationStatusRequest, headers?: HTTPRequestHeader) {
     return UserService.getCommunicationStatus(options, headers);
-  };
+  }
 
   /**
    * initiate verification
    * @param options 
    * @returns 
    */
-  initiateAccountVerification(options: AccountVerificationRequestEntity) {
+  initiateAccountVerification(options: InitiateAccountVerificationRequest) {
     VerificationService.initiateAccountVerification(options);
-  };
+  }
 
   /**
    * verify account
    * @param options 
    * @returns 
    */
-  verifyAccount(options: { accvid: string; code: string; }) {
+  verifyAccount(options: VerifyAccountRequest) {
     return VerificationService.verifyAccount(options)
-  };
+  }
 
   /**
    * initiate reset password
    * @param options 
    * @returns 
    */
-  initiateResetPassword(options: ResetPasswordEntity) {
+  initiateResetPassword(options: InitiateResetPasswordRequest) {
     return UserService.initiateResetPassword(options);
-  };
+  }
 
   /**
    * handle reset password
    * @param options 
    */
-  handleResetPassword(options: ValidateResetPasswordEntity) {
+  handleResetPassword(options: HandleResetPasswordRequest) {
     return UserService.handleResetPassword(options);
-  };
+  }
 
   /**
   * reset password
   * @param options 
   */
-  resetPassword(options: AcceptResetPasswordEntity) {
+  resetPassword(options: ResetPasswordRequest) {
     return UserService.resetPassword(options);
-  };
+  }
 
   /**
    * get mfa list
    * @param options 
    * @returns 
    */
-  getMFAList(options: IConfiguredListRequestEntity) {
+  getMFAList(options: GetMFAListRequest) {
     return VerificationService.getMFAList(options);
-  };
+  }
 
   /**
    * cancel mfa
    * @param options 
    * @returns 
    */
-  cancelMFA(options: { exchange_id: string; reason: string; type: string; }) {
+  cancelMFA(options: CancelMFARequest) {
     return VerificationService.cancelMFA(options);
-  };
+  }
 
   /** 
    * passwordless login
    * @param options 
    */
-  passwordlessLogin(options: PhysicalVerificationLoginRequest) {
+  passwordlessLogin(options: PasswordlessLoginRequest) {
     LoginService.passwordlessLogin(options);
-  };
+  }
 
   /**
    * get user consent details
    * @param options 
    * @returns 
    */
-  getConsentDetails(options: { consent_id: string; consent_version_id: string; sub: string; }) {
+  getConsentDetails(options: GetConsentDetailsRequest) {
     return ConsentService.getConsentDetails(options);
-  };
+  }
 
   /**
    * accept consent
    * @param options 
    * @returns 
    */
-  acceptConsent(options: IConsentAcceptEntity) {
+  acceptConsent(options: AcceptConsentRequest) {
     return ConsentService.acceptConsent(options);
-  };
+  }
 
   /**
    * get scope consent details
    * @param options 
    * @returns 
    */
-  loginPrecheck(options: { track_id: string; locale: string; }) {
+  loginPrecheck(options: LoginPrecheckRequest) {
     return TokenService.loginPrecheck(options);
-  };
+  }
 
   /**
    * get scope consent version details
    * @param options 
    * @returns 
    */
-  getConsentVersionDetails(options: { consentid: string; locale: string; access_token: string; }) {
+  getConsentVersionDetails(options: GetConsentVersionDetailsRequest) {
     return ConsentService.getConsentVersionDetails(options);
-  };
+  }
 
   /**
    * accept scope Consent
    * @param options 
    * @returns 
    */
-  acceptScopeConsent(options: { client_id: string; sub: string; scopes: string[]; }) {
+  acceptScopeConsent(options: AcceptScopeConsentRequest) {
     return ConsentService.acceptScopeConsent(options);
-  };
+  }
 
   /**
    * accept claim Consent
    * @param options 
    * @returns 
    */
-  acceptClaimConsent(options: { client_id: string; sub: string; accepted_claims: string[]; }) {
+  acceptClaimConsent(options: AcceptClaimConsentRequest) {
     return ConsentService.acceptClaimConsent(options);
-  };
+  }
 
   /**
    * revoke claim Consent
    * @param options 
    * @returns 
    */
-  revokeClaimConsent(options: { client_id: string; sub: string; revoked_claims: string[]; }) {
+  revokeClaimConsent(options: RevokeClaimConsentRequest) {
     return ConsentService.revokeClaimConsent(options);
-  };
+  }
 
   /**
    * get Deduplication details
    * @param options 
    * @returns 
    */
-  getDeduplicationDetails(options: { trackId: string }) {
+  getDeduplicationDetails(options: GetDeduplicationDetailsRequest) {
     return UserService.getDeduplicationDetails(options);
-  };
+  }
 
   /**
    * deduplication login
    * @param options 
    */
-  deduplicationLogin(options: { trackId: string, requestId: string, sub: string }) {
+  deduplicationLogin(options: DeduplicationLoginRequest) {
     UserService.deduplicationLogin(options);
-  };
+  }
 
   /**
    * register Deduplication
    * @param options 
    * @returns 
    */
-  registerDeduplication(options: { trackId: string }) {
+  registerDeduplication(options: RegisterDeduplicationRequest) {
     return UserService.registerDeduplication(options);
-  };
+  }
 
   /**
-   * accepts any as the request
    * consent continue login
    * @param options 
    */
-  consentContinue(options: {
-    client_id: string;
-    consent_refs: string[];
-    sub: string;
-    scopes: string[];
-    matcher: any;
-    track_id: string;
-  }) {
+  consentContinue(options: LoginPrecheckRequest) {
     LoginService.consentContinue(options)
-  };
+  }
 
   /**
    * mfa continue login
+   * options: PhysicalVerificationLoginRequest is not needed anymore. It is now DEPRECATED and will be removed in the next major release
    * @param options 
    */
-  mfaContinue(options: PhysicalVerificationLoginRequest & { track_id: string }) {
+  mfaContinue(options: MfaContinueRequest) {
     LoginService.mfaContinue(options);
-  };
+  }
 
   /**
    * change password continue
    * @param options 
    */
-  firstTimeChangePassword(options: IChangePasswordEntity) {
+  firstTimeChangePassword(options: FirstTimeChangePasswordRequest) {
     LoginService.firstTimeChangePassword(options);
-  };
+  }
 
   /**
    * change password
@@ -709,9 +678,9 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  changePassword(options: ChangePasswordEntity, access_token: string) {
+  changePassword(options: ChangePasswordRequest, access_token: string) {
     return UserService.changePassword(options, access_token);
-  };
+  }
 
 
   /**
@@ -721,9 +690,9 @@ export class WebAuth {
    * @param sub 
    * @returns 
    */
-  updateProfile(options: UserEntity, access_token: string, sub: string) {
+  updateProfile(options: CidaasUser, access_token: string, sub: string) {
     return UserService.updateProfile(options, access_token, sub);
-  };
+  }
 
   /**
    * To get user activities, call **getUserActivities()**.
@@ -745,18 +714,34 @@ export class WebAuth {
    * });
    * ```
    */
-  getUserActivities(options: IUserActivityPayloadEntity, accessToken: string) {
+  getUserActivities(options: GetUserActivitiesRequest, accessToken: string) {
     const serviceURL = window.webAuthSettings.authority + '/activity-streams-srv/user-activities';
     return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
   }
 
+  /**
+   * To run predefined action after enrollment, call userActionOnEnrollment()
+   * @param options 
+   * @param trackId 
+   * @example
+   * ```js
+   * const options = {
+   *   action: 'predefined action'
+   * };
+   * cidaas.userActionOnEnrollment(options, 'trackId');
+   */
+  userActionOnEnrollment(options: UserActionOnEnrollmentRequest, trackId: string) {
+    const serviceURL = window.webAuthSettings.authority + '/auth-actions-srv/validation/' + trackId;
+    return Helper.createHttpPromise(options, serviceURL, false, 'POST');
+  }
+  
   /**
    * @param access_token 
    * @returns 
    */
   getAllVerificationList(access_token: string) {
     return VerificationService.getAllVerificationList(access_token);
-  };
+  }
 
   /**
    * initiate link accoount
@@ -764,9 +749,9 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  initiateLinkAccount(options: IUserLinkEntity, access_token: string) {
+  initiateLinkAccount(options: InitiateLinkAccountRequest, access_token: string) {
     return UserService.initiateLinkAccount(options, access_token);
-  };
+  }
 
   /**
    * complete link accoount
@@ -774,9 +759,9 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  completeLinkAccount(options: { code?: string; link_request_id?: string; }, access_token: string) {
+  completeLinkAccount(options: CompleteLinkAccountRequest, access_token: string) {
     return UserService.completeLinkAccount(options, access_token);
-  };
+  }
 
   /**
    * get linked users
@@ -786,7 +771,7 @@ export class WebAuth {
    */
   getLinkedUsers(access_token: string, sub: string) {
     return UserService.getLinkedUsers(access_token, sub)
-  };
+  }
 
   /**
    * unlink accoount
@@ -796,7 +781,7 @@ export class WebAuth {
    */
   unlinkAccount(access_token: string, identityId: string) {
     return UserService.unlinkAccount(access_token, identityId);
-  };
+  }
 
    /**
    * To change profile image, call **updateProfileImage()**.
@@ -815,7 +800,7 @@ export class WebAuth {
    * });
    * ```
    */
-  updateProfileImage(options: { image_key: string, photo: any; filename: string }, access_token: string) {
+  updateProfileImage(options: UpdateProfileImageRequest, access_token: string) {
     const serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
 
     const form = document.createElement('form');
@@ -839,22 +824,16 @@ export class WebAuth {
 
     return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', access_token, null, formdata);
 
-  };
+  }
 
   /**
    * enrollVerification
    * @param options 
    * @returns 
    */
-  initiateEnrollment(options: {
-    verification_type: string,
-    deviceInfo?: {
-      deviceId: string, 
-      location: {lat: string, lon: string}
-    }
-  }, accessToken: string) {
+  initiateEnrollment(options: InitiateEnrollmentRequest, accessToken: string) {
     return VerificationService.initiateEnrollment(options, accessToken);
-  };
+  }
 
   /**
    * update the status of notification
@@ -863,34 +842,34 @@ export class WebAuth {
    */
   getEnrollmentStatus(status_id: string, accessToken: string) {
     return VerificationService.getEnrollmentStatus(status_id, accessToken);
-  };
+  }
 
   /**
    * enrollVerification
    * @param options 
    * @returns 
    */
-    enrollVerification(options: IEnrollVerificationSetupRequestEntity) {
+    enrollVerification(options: EnrollVerificationRequest) {
       return VerificationService.enrollVerification(options);
-    };
+    }
 
   /**
    * checkVerificationTypeConfigured
    * @param options 
    * @returns 
    */
-  checkVerificationTypeConfigured(options: IConfiguredListRequestEntity) {
+  checkVerificationTypeConfigured(options: CheckVerificationTypeConfiguredRequest) {
     return VerificationService.checkVerificationTypeConfigured(options);
-  };
+  }
 
   /**
    * deleteUserAccount
    * @param options 
    * @returns 
    */
-  deleteUserAccount(options: { access_token: string, sub: string }) {
+  deleteUserAccount(options: DeleteUserAccountRequest) {
     return UserService.deleteUserAccount(options);
-  };
+  }
 
   /**
    * getMissingFields
@@ -918,7 +897,7 @@ export class WebAuth {
     } else {
       return TokenService.getMissingFields(trackId);
     }
-  };
+  }
 
   /**
    * progressiveRegistration
@@ -926,17 +905,17 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  progressiveRegistration(options: IUserEntity, headers: { requestId: string; trackId: string; acceptlanguage: string; }) {
+  progressiveRegistration(options: CidaasUser, headers: ProgressiveRegistrationHeader) {
     return LoginService.progressiveRegistration(options, headers);
-  };
+  }
 
   /**
    * loginAfterRegister
    * @param options
    */
-  loginAfterRegister(options: { device_id: string; dc?: string; rememberMe: boolean; trackId: string; }) {
+  loginAfterRegister(options: LoginAfterRegisterRequest) {
     LoginService.loginAfterRegister(options);
-  };
+  }
 
   /**
    * device code flow - initiate
@@ -958,9 +937,9 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  userCheckExists(options: FindUserEntity) {
+  userCheckExists(options: UserCheckExistsRequest) {
     return UserService.userCheckExists(options);
-  };
+  }
 
   /**
    * To set accept language
@@ -975,27 +954,63 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  initiateMFA(options: IInitVerificationAuthenticationRequestEntity, accessToken?: string) {
-    // TODO: remove accessToken parameter in the next major release
+  initiateMFA(options: InitiateMFARequest, accessToken?: string) {
+    // BREAKING TODO: remove accessToken parameter in the next major release
     if (accessToken) {
       return VerificationService.initiateMFA(options, accessToken);
     } 
     return VerificationService.initiateMFA(options);
-  };
+  }
 
   /**
    * authenticate mfa
    * @param options 
    * @returns 
    */
-  authenticateMFA(options: IAuthVerificationAuthenticationRequestEntity) {
+  authenticateMFA(options: AuthenticateMFARequest) {
     return VerificationService.authenticateMFA(options);
-  };
+  }
+
+  /**
+   * initiate verification
+   * @param options 
+   * @returns 
+   */
+  initiateVerification(options: InitiateVerificationRequest, trackId: string, method: string) {
+    return VerificationService.initiateVerification(options, trackId, method);
+  }
+
+  /**
+   * configure verification
+   * @param options 
+   * @returns 
+   */
+  configureVerification(options: ConfigureVerificationRequest, method: string) {
+    return VerificationService.configureVerification(options, method);
+  }
+
+  /**
+   * configure friendly name
+   * @param options 
+   * @returns 
+   */
+  configureFriendlyName(options: ConfigureFriendlyNameRequest, trackId: string, method: string) {
+    return VerificationService.configureFriendlyName(options, trackId, method);
+  }
+
+  /**
+   * login as guest
+   * @param requestId 
+   * @returns 
+   */
+  actionGuestLogin(requestId: string) {
+    return LoginService.actionGuestLogin(requestId);
+  }
 
   /**
    * offline token check
    */
   offlineTokenCheck(accessToken: string) {
     return TokenService.offlineTokenCheck(accessToken);
-  };
+  }
 }
