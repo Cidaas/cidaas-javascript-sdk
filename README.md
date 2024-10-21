@@ -132,6 +132,7 @@ The login functions could be found [here](https://github.com/Cidaas/cidaas-javas
 | loginPrecheck, consentContinue, firstTimeChangePassword, mfaContinue    | Depending on the missing information from loginPrecheck, user will be redirected to another page after login to either  accepting consent, changing password, continuing MFA process, or do progressive registration  |
 | getMissingFields, progressiveRegistration                                  | In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login |
 | loginAfterRegister                                  | By calling this sdk function, user could directly login to the app after successful registration |
+| actionGuestLogin                                  | If user has guestLoginForm prepared, it could be called using this function |
 
 #### User Management
 
@@ -171,6 +172,7 @@ The verification functions could be found [here](https://github.com/Cidaas/cidaa
 | cancelMFA                                                           | MFA process could be aborted in case something go the wrong way                     |
 | getAllVerificationList, getMFAList, checkVerificationTypeConfigured | Information about every supported MFA Verification types, List of configured MFA, and details about particular configured verification type are provided by the SDK        |
 | initiateEnrollment, enrollVerification, getEnrollmentStatus         | Additional MFA verification type could be enrolled using the sdk                                   |
+| initiateVerification, configureVerification, configureFriendlyName         | The SDK support configuring verification request as well as friendly name |
 
 #### Consent Management
 
@@ -193,6 +195,7 @@ general SDK functions could be found [here](https://github.com/Cidaas/cidaas-jav
 | setAcceptLanguageHeader                        | The SDK could be used to change response language                                           |
 | createDeviceInfo, getDevicesInfo, deleteDevice | Creating, getting, and removing device information is supported by the SDK                          |
 | logoutUser                                     | The SDK could be used to end user session by using cidaas internal api                      |
+| userActionOnEnrollment                                     | The SDK could be used to run predefined action after enrollment |
 
 ## Possible Error
 
