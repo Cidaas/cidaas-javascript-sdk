@@ -1,10 +1,10 @@
 export class Helper {
   /**
- * create form
- * @param form 
- * @param options 
- * @returns 
- */
+   * create form
+   * @param form 
+   * @param options 
+   * @returns 
+   */
   static createForm(url: string, options: any, method: string = 'POST') {
     const form = document.createElement('form');
     form.action = url;
@@ -30,7 +30,7 @@ export class Helper {
   * @param headers??
   * @returns 
   */
-  static createHttpPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any, formPayload?: FormData) {
+  static createHttpPromise(options: any, serviceurl: string, errorResolver: boolean, method:string, access_token?: string, headers?: any, formPayload?: FormData): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
         const http = new XMLHttpRequest();
