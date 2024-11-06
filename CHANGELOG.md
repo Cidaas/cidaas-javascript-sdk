@@ -4,6 +4,10 @@
 
 ### Changed: accepts Headers latitude, longitude in the below functions
 - ConsentService.ts: acceptConsent(), getConsentVersionDetails(), acceptScopeConsent(), acceptClaimConsent()
+- UserService: getInviteUserDetails(), initiateResetPassword(), handleResetPassword(), resetPassword(), getDeduplicationDetails(), registerDeduplication(), userCheckExists(), 
+- VerificationService: verifyAccount(), getMFAList(), cancelMFA(), getAllVerificationList(), getEnrollmentStatus(), initiateMFA(), authenticateMFA(), 
+- TokenService: loginPrecheck(), getMissingFields(), 
+- LoginService: 
 
 ## V4.3.0
 
