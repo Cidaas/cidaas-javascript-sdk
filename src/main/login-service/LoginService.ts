@@ -182,6 +182,8 @@ export function firstTimeChangePassword(options: FirstTimeChangePasswordRequest)
  *   trackId: 'the track id received while logging in',
  *   requestId: 'request id of the session',
  *   acceptlanguage: 'your locale/browser locale (OPTIONAL)',
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }
  * cidaas.progressiveRegistration(options, headers)
  * .then(function(response) {

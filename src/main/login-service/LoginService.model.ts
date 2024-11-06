@@ -136,6 +136,10 @@ export interface ProgressiveRegistrationHeader {
     trackId: string;
     /** Response language, which is configured in cidaas admin ui */
     acceptlanguage?: string;
+    /** Latitude is the string location parameter sent in an headers */
+    lat?: string;
+    /** Longitude is the string location parameter sent in an headers */
+    lon?: string;
 }
 
 export interface LoginAfterRegisterRequest {

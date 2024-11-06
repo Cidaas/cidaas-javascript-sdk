@@ -348,8 +348,9 @@ describe('User service functions', () => {
 			processingType: ProcessingType.CODE,
 			requestId: ''
 		};
-		webAuth.initiateResetPassword(options);
-		expect(initiateResetPasswordSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.initiateResetPassword(options, headers);
+		expect(initiateResetPasswordSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('handleResetPassword', () => {
