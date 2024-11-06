@@ -570,10 +570,11 @@ export class WebAuth {
   /**
    * accept consent
    * @param options 
+   * @param headers 
    * @returns 
    */
-  acceptConsent(options: AcceptConsentRequest) {
-    return ConsentService.acceptConsent(options);
+  acceptConsent(options: AcceptConsentRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.acceptConsent(options, headers);
   }
 
   /**
@@ -588,28 +589,31 @@ export class WebAuth {
   /**
    * get scope consent version details
    * @param options 
+   * @param headers
    * @returns 
    */
-  getConsentVersionDetails(options: GetConsentVersionDetailsRequest) {
-    return ConsentService.getConsentVersionDetails(options);
+  getConsentVersionDetails(options: GetConsentVersionDetailsRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.getConsentVersionDetails(options, headers);
   }
 
   /**
    * accept scope Consent
    * @param options 
+   * @param headers
    * @returns 
    */
-  acceptScopeConsent(options: AcceptScopeConsentRequest) {
-    return ConsentService.acceptScopeConsent(options);
+  acceptScopeConsent(options: AcceptScopeConsentRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.acceptScopeConsent(options, headers);
   }
 
   /**
    * accept claim Consent
    * @param options 
+   * @param headers
    * @returns 
    */
-  acceptClaimConsent(options: AcceptClaimConsentRequest) {
-    return ConsentService.acceptClaimConsent(options);
+  acceptClaimConsent(options: AcceptClaimConsentRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.acceptClaimConsent(options, headers);
   }
 
   /**

@@ -1,5 +1,10 @@
 # Changelog
 
+## V4.3.1
+
+### Changed: accepts Headers latitude, longitude in the below functions
+- ConsentService.ts: acceptConsent(), getConsentVersionDetails(), acceptScopeConsent(), acceptClaimConsent()
+
 ## V4.3.0
 
 ### Added

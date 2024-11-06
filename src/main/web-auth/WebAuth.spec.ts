@@ -920,8 +920,9 @@ describe('Consent service functions', () => {
 			q: '',
 			revoked: false
 		};
-		webAuth.acceptConsent(options);
-		expect(acceptConsentSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.acceptConsent(options, headers);
+		expect(acceptConsentSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('getConsentVersionDetails', () => {
@@ -931,8 +932,9 @@ describe('Consent service functions', () => {
 			locale: '',
 			access_token: ''
 		};
-		webAuth.getConsentVersionDetails(options);
-		expect(getConsentVersionDetailsSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getConsentVersionDetails(options, headers);
+		expect(getConsentVersionDetailsSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('acceptScopeConsent', () => {
@@ -942,8 +944,9 @@ describe('Consent service functions', () => {
 			sub: '',
 			scopes: ['']
 		};
-		webAuth.acceptScopeConsent(options);
-		expect(acceptScopeConsentSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.acceptScopeConsent(options, headers);
+		expect(acceptScopeConsentSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('acceptClaimConsent', () => {
@@ -953,8 +956,9 @@ describe('Consent service functions', () => {
 			sub: '',
 			accepted_claims: ['']
 		};
-		webAuth.acceptClaimConsent(options);
-		expect(acceptClaimConsentSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.acceptClaimConsent(options, headers);
+		expect(acceptClaimConsentSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('revokeClaimConsent', () => {
