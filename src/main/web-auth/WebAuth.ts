@@ -588,10 +588,11 @@ export class WebAuth {
   /**
    * get scope consent details
    * @param options 
+   * @param headers 
    * @returns 
    */
-  loginPrecheck(options: LoginPrecheckRequest) {
-    return TokenService.loginPrecheck(options);
+  loginPrecheck(options: LoginPrecheckRequest, headers?: HTTPRequestHeader) {
+    return TokenService.loginPrecheck(options, headers);
   }
 
   /**
@@ -898,7 +899,13 @@ export class WebAuth {
    * const useSocialProvider = {
    *   requestId: 'request id from cidaas'
    * };
-   * cidaas.getMissingFields(trackId, useSocialProvider).then(function (resp) {
+   * cidaas.getMissingFields(
+   * trackId, 
+   * useSocialProvider,
+   * {
+   *   lat: 'location latitude', 
+   *   lon: 'location longitude'
+   * }).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
@@ -906,12 +913,12 @@ export class WebAuth {
    * ```
    * 
    */
-  getMissingFields(trackId: string, useSocialProvider?: {requestId: string}) {
+  getMissingFields(trackId: string, useSocialProvider?: {requestId: string}, headers?: HTTPRequestHeader) {
     if (useSocialProvider) {
       const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + useSocialProvider.requestId + "/" + trackId;
-      return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
+      return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", undefined, headers);
     } else {
-      return TokenService.getMissingFields(trackId);
+      return TokenService.getMissingFields(trackId, headers);
     }
   }
 

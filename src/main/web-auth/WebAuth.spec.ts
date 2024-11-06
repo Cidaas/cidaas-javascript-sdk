@@ -543,15 +543,24 @@ describe('Token service functions', () => {
 		const options = {
 			track_id: ''
 		};
-		webAuth.loginPrecheck(options);
-		expect(loginPrecheckSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.loginPrecheck(options, headers);
+		expect(loginPrecheckSpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('getMissingFieldsFromDefaultProvider', () => {
 		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
 		const trackId = '';
 		webAuth.getMissingFields(trackId);
-		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId);
+		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId, undefined);
+	});
+	
+	test('getMissingFieldsFromDefaultProvider with lat lon headers', () => {
+		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
+		const trackId = '';
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getMissingFields(trackId, undefined, headers);
+		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId, headers);
 	});
 
 	test('getMissingFieldsFromSocialProvider', () => {
@@ -559,7 +568,7 @@ describe('Token service functions', () => {
 		const useSocialProvider = {requestId: ''};
 		const serviceURL = `${authority}/public-srv/public/trackinfo/${useSocialProvider.requestId}/${trackId}`;
 		webAuth.getMissingFields(trackId, useSocialProvider);
-		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL,false, "GET");
+		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL,false, "GET", undefined, undefined);
 	});
 
 	test('initiateDeviceCode', () => {

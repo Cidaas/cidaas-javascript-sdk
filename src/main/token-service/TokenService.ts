@@ -1,7 +1,7 @@
 import { GetAccessTokenRequest, GrantType, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./TokenService.model";
 import { Helper, CustomException } from "../common/Helper";
 import { JwtHelper } from "../common/JwtHelper";
-import { LoginPrecheckRequest } from "../common/Common.model";
+import { HTTPRequestHeader, LoginPrecheckRequest } from "../common/Common.model";
 
 /**
  * To get a new token with the grant type refresh_token, call **renewToken()**.
@@ -100,7 +100,10 @@ export function validateAccessToken(options: TokenIntrospectionRequest) {
  *   trackId: "your track id from login",
  *   locale: "your preferred locale. DEPRECATED as it is not supported anymore. Will be removed in next major release",
  * }
- * 
+ * const headers = {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
+ * }
  * cidaas.loginPrecheck(options)
  * .then(function (response) {
  *   // type your code here
@@ -110,9 +113,9 @@ export function validateAccessToken(options: TokenIntrospectionRequest) {
  * });
  * ```
  */
-export function loginPrecheck(options: LoginPrecheckRequest) {
+export function loginPrecheck(options: LoginPrecheckRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + options.track_id;
-  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
+  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
 }
 
 /**
@@ -121,7 +124,12 @@ export function loginPrecheck(options: LoginPrecheckRequest) {
  * @example
  * ```js
  * const trackId = "your track id from login";
- * cidaas.getMissingFields(trackId)
+ * cidaas.getMissingFields(
+ * trackId,
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
+ * })
  *   .then(function (response) {
  *     // type your code here
  * })
@@ -130,9 +138,9 @@ export function loginPrecheck(options: LoginPrecheckRequest) {
  * });
  * ```
  */
-export function getMissingFields(trackId: string) {
+export function getMissingFields(trackId: string, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/token-srv/prelogin/metadata/" + trackId;
-  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
+  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
 }
 
 /**
