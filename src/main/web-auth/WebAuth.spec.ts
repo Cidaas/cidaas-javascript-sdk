@@ -316,7 +316,7 @@ describe('User service functions', () => {
 			callLatestAPI: true
 		};
 		webAuth.getInviteUserDetails(options);
-		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);
+		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options, undefined);
 	});
 
 	test('getInviteUserDetails to call without callLatestApi parameter', () => {
@@ -325,7 +325,7 @@ describe('User service functions', () => {
 			invite_id: '',
 		};
 		webAuth.getInviteUserDetails(options);
-		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);
+		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options, undefined);
 	});
 	
 	test('getCommunicationStatus', () => {
@@ -358,8 +358,9 @@ describe('User service functions', () => {
 			resetRequestId: '',
 			code: ''
 		};
-		webAuth.handleResetPassword(options);
-		expect(handleResetPasswordSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.handleResetPassword(options, undefined, headers);
+		expect(handleResetPasswordSpy).toHaveBeenCalledWith(options, undefined, headers);
 	});
 	
 	test('resetPassword', () => {
@@ -370,8 +371,9 @@ describe('User service functions', () => {
 			password: '',
 			confirmPassword: ''
 		};
-		webAuth.resetPassword(options);
-		expect(resetPasswordSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.resetPassword(options, undefined, headers);
+		expect(resetPasswordSpy).toHaveBeenCalledWith(options, undefined, headers);
 	});
 
 	test('getDeduplicationDetails', () => {
@@ -379,8 +381,9 @@ describe('User service functions', () => {
 		const options = {
 			trackId: ''
 		};
-		webAuth.getDeduplicationDetails(options);
-		expect(getDeduplicationDetailsSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getDeduplicationDetails(options, headers);
+		expect(getDeduplicationDetailsSpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('deduplicationLogin', () => {
@@ -399,8 +402,9 @@ describe('User service functions', () => {
 		const options = {
 			trackId: ''
 		};
-		webAuth.registerDeduplication(options);
-		expect(registerDeduplicationSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.registerDeduplication(options, headers);
+		expect(registerDeduplicationSpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('changePassword', () => {
@@ -488,8 +492,9 @@ describe('User service functions', () => {
 			webfinger: '',
 			requestId: ''
 		};
-		webAuth.userCheckExists(options);
-		expect(userCheckExistsSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.userCheckExists(options, headers);
+		expect(userCheckExistsSpy).toHaveBeenCalledWith(options, headers);
 	});
 
 });

@@ -73,7 +73,11 @@ export function register(options: RegisterRequest, headers: HTTPRequestHeader) {
  *   invite_id: 'id of user invitation'
  *   callLatestAPI: 'true' // call latest api if parameter is given. By default, the older api will be called
  * }
- * cidaas.getInviteUserDetails(options)
+ * const headers = {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
+ *  }
+ * cidaas.getInviteUserDetails(options, headers)
  * .then(function () {
  *   // the response will give you information about the invitation.
  * }).catch(function (ex) {
@@ -81,14 +85,14 @@ export function register(options: RegisterRequest, headers: HTTPRequestHeader) {
  * });
  * ```
  */
-export function getInviteUserDetails(options: GetInviteUserDetailsRequest) {
+export function getInviteUserDetails(options: GetInviteUserDetailsRequest, headers?: HTTPRequestHeader) {
   let _serviceURL: string = "";
   if(options.callLatestAPI){
     _serviceURL = window.webAuthSettings.authority + "/useractions-srv/invitations/" + options.invite_id;
   }else{
     _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
   }
-  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
+  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
 }
 
 /**
@@ -97,6 +101,10 @@ export function getInviteUserDetails(options: GetInviteUserDetailsRequest) {
  * ```js
  * cidaas.getCommunicationStatus({
  *   sub: 'your sub', // which you will get on the registration response
+ * },
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you account details once its verified.
  * }).catch(function(ex) {
@@ -119,6 +127,10 @@ export function getCommunicationStatus(options: getCommunicationStatusRequest, h
  *   processingType: ProcessingType.CODE,
  *   requestId: 'your requestId',
  *   resetMedium: ResetMedium.EMAIL
+ * },
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you password reset details.
  * }).catch(function(ex) {
@@ -126,9 +138,9 @@ export function getCommunicationStatus(options: getCommunicationStatusRequest, h
  * });
  * ```
  */
-export function initiateResetPassword(options: InitiateResetPasswordRequest) {
+export function initiateResetPassword(options: InitiateResetPasswordRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -140,14 +152,19 @@ export function initiateResetPassword(options: InitiateResetPasswordRequest) {
  * cidaas.handleResetPassword({
  *   code: 'your code in email or sms or ivr',
  *   resetRequestId: 'your resetRequestId' // which you will get on initiate reset password response
- * }, handleResponseAsJson).then(function (response) {
+ * }, 
+ * handleResponseAsJson,
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
+ * }).then(function (response) {
  *   // the response will give you valid verification code.
  * }).catch(function(ex) {
  *   // your failure code here
  * });
  * ```
  */
-export function handleResetPassword(options: HandleResetPasswordRequest, handleResponseAsJson?: boolean) {
+export function handleResetPassword(options: HandleResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
   try {
     const url = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
     if (!handleResponseAsJson) {
@@ -157,7 +174,7 @@ export function handleResetPassword(options: HandleResetPasswordRequest, handleR
       form.submit();
     } else {
       // older cidaas service handling return json object
-      return Helper.createHttpPromise(options, url, false, "POST");
+      return Helper.createHttpPromise(options, url, false, "POST", undefined, headers);
     }
   } catch (ex) {
     throw new CustomException(String(ex), 417);
@@ -175,6 +192,11 @@ export function handleResetPassword(options: HandleResetPasswordRequest, handleR
  *   confirmPassword: '123456',
  *   exchangeId: 'your exchangeId', // which you will get on handle reset password response
  *   resetRequestId: 'your resetRequestId' // which you will get on handle reset password response
+ * }, 
+ * handleResponseAsJson,
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you reset password details.
  * }).catch(function(ex) {
@@ -182,7 +204,7 @@ export function handleResetPassword(options: HandleResetPasswordRequest, handleR
  * });
  * ```
  */
-export function resetPassword(options: ResetPasswordRequest, handleResponseAsJson?: boolean) {
+export function resetPassword(options: ResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
   const url = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
   try {
     if (!handleResponseAsJson) {
@@ -192,7 +214,7 @@ export function resetPassword(options: ResetPasswordRequest, handleResponseAsJso
       form.submit();
     } else {
       // older cidaas service handling return json object
-      return Helper.createHttpPromise(options, url, false, "POST");
+      return Helper.createHttpPromise(options, url, false, "POST", undefined, headers);
     }
   } catch (ex) {
     throw new CustomException(String(ex), 417);
@@ -205,6 +227,10 @@ export function resetPassword(options: ResetPasswordRequest, handleResponseAsJso
  * ```js
  * this.cidaas.getDeduplicationDetails({
  *   track_id: 'your track id'
+ * },
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }).then((response) => {
  *   // the response will give you deduplication details of users.
  * }).catch((err) => {
@@ -212,9 +238,9 @@ export function resetPassword(options: ResetPasswordRequest, handleResponseAsJso
  * });
  * ```
  */
-export function getDeduplicationDetails(options: GetDeduplicationDetailsRequest) {
+export function getDeduplicationDetails(options: GetDeduplicationDetailsRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
-  return Helper.createHttpPromise(options, _serviceURL, false, "GET");
+  return Helper.createHttpPromise(options, _serviceURL, false, "GET", undefined, headers);
 }
 
 /**
@@ -245,6 +271,10 @@ export function deduplicationLogin(options: DeduplicationLoginRequest) {
  * ```js
  * this.cidaas.registerDeduplication({
  *   track_id: 'track id from deduplication initialisation after register',
+ * },
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }).then((response) => {
  *   // the response will give you new registered deduplication user. 
  * }).catch((err) => {
@@ -252,9 +282,9 @@ export function deduplicationLogin(options: DeduplicationLoginRequest) {
  * });
  * ```
  */
-export function registerDeduplication(options: RegisterDeduplicationRequest) {
+export function registerDeduplication(options: RegisterDeduplicationRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST");
+  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", undefined, headers);
 }
 
 /**
@@ -419,6 +449,10 @@ export function deleteUserAccount(options: DeleteUserAccountRequest) {
  *   requestId: "your request id",
  *   email: "your email"
  * }
+ * headers = {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
+ * }
  * 
  * cidaas.userCheckExists(options).then(function (response) {
  *   // your success code
@@ -427,7 +461,7 @@ export function deleteUserAccount(options: DeleteUserAccountRequest) {
  * });
  * ```
  */
-export function userCheckExists(options: UserCheckExistsRequest) {
+export function userCheckExists(options: UserCheckExistsRequest, headers?: HTTPRequestHeader) {
   let queryParameter = ''
   if (options.webfinger || options.rememberMe) {
     queryParameter += '?';
@@ -441,5 +475,5 @@ export function userCheckExists(options: UserCheckExistsRequest) {
     }
   }
   const _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + queryParameter;
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", undefined, headers);
 }

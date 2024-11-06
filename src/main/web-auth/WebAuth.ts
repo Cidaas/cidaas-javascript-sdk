@@ -474,15 +474,17 @@ export class WebAuth {
   /**
    * get invite info
    * @param options 
+   * @param headers 
    * @returns 
    */
-  getInviteUserDetails(options: GetInviteUserDetailsRequest) {
-    return UserService.getInviteUserDetails(options);
+  getInviteUserDetails(options: GetInviteUserDetailsRequest, headers?: HTTPRequestHeader) {
+    return UserService.getInviteUserDetails(options, headers);
   }
 
   /**
    * get Communication status
    * @param options
+   * @param headers 
    * @returns 
    */
   getCommunicationStatus(options: getCommunicationStatusRequest, headers?: HTTPRequestHeader) {
@@ -510,26 +512,29 @@ export class WebAuth {
   /**
    * initiate reset password
    * @param options 
+   * @param headers 
    * @returns 
    */
-  initiateResetPassword(options: InitiateResetPasswordRequest) {
-    return UserService.initiateResetPassword(options);
+  initiateResetPassword(options: InitiateResetPasswordRequest, headers?: HTTPRequestHeader) {
+    return UserService.initiateResetPassword(options, headers);
   }
 
   /**
    * handle reset password
    * @param options 
+   * @param headers 
    */
-  handleResetPassword(options: HandleResetPasswordRequest) {
-    return UserService.handleResetPassword(options);
+  handleResetPassword(options: HandleResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
+    return UserService.handleResetPassword(options, handleResponseAsJson, headers);
   }
 
   /**
   * reset password
   * @param options 
+  * @param headers 
   */
-  resetPassword(options: ResetPasswordRequest) {
-    return UserService.resetPassword(options);
+  resetPassword(options: ResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
+    return UserService.resetPassword(options, handleResponseAsJson, headers);
   }
 
   /**
@@ -628,10 +633,11 @@ export class WebAuth {
   /**
    * get Deduplication details
    * @param options 
+   * @param headers 
    * @returns 
    */
-  getDeduplicationDetails(options: GetDeduplicationDetailsRequest) {
-    return UserService.getDeduplicationDetails(options);
+  getDeduplicationDetails(options: GetDeduplicationDetailsRequest, headers?: HTTPRequestHeader) {
+    return UserService.getDeduplicationDetails(options, headers);
   }
 
   /**
@@ -645,10 +651,11 @@ export class WebAuth {
   /**
    * register Deduplication
    * @param options 
+   * @param headers 
    * @returns 
    */
-  registerDeduplication(options: RegisterDeduplicationRequest) {
-    return UserService.registerDeduplication(options);
+  registerDeduplication(options: RegisterDeduplicationRequest, headers?: HTTPRequestHeader) {
+    return UserService.registerDeduplication(options, headers);
   }
 
   /**
@@ -939,10 +946,11 @@ export class WebAuth {
   /**
    * check if an user exists
    * @param options 
+   * @param headers 
    * @returns 
    */
-  userCheckExists(options: UserCheckExistsRequest) {
-    return UserService.userCheckExists(options);
+  userCheckExists(options: UserCheckExistsRequest, headers?: HTTPRequestHeader) {
+    return UserService.userCheckExists(options, headers);
   }
 
   /**
