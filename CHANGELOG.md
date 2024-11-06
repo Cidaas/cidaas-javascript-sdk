@@ -7,7 +7,7 @@
 - UserService: getInviteUserDetails(), initiateResetPassword(), handleResetPassword(), resetPassword(), getDeduplicationDetails(), registerDeduplication(), userCheckExists(), 
 - VerificationService: verifyAccount(), getMFAList(), cancelMFA(), getAllVerificationList(), getEnrollmentStatus(), initiateMFA(), authenticateMFA(), 
 - TokenService: loginPrecheck(), getMissingFields(), 
-- LoginService: 
+- LoginService: progressiveRegistration()
 
 ## V4.3.0
 
