@@ -503,10 +503,11 @@ export class WebAuth {
   /**
    * verify account
    * @param options 
+   * @param headers 
    * @returns 
    */
-  verifyAccount(options: VerifyAccountRequest) {
-    return VerificationService.verifyAccount(options)
+  verifyAccount(options: VerifyAccountRequest, headers?: HTTPRequestHeader) {
+    return VerificationService.verifyAccount(options, headers)
   }
 
   /**
@@ -540,19 +541,21 @@ export class WebAuth {
   /**
    * get mfa list
    * @param options 
+   * @param headers 
    * @returns 
    */
-  getMFAList(options: GetMFAListRequest) {
-    return VerificationService.getMFAList(options);
+  getMFAList(options: GetMFAListRequest, headers?: HTTPRequestHeader) {
+    return VerificationService.getMFAList(options, headers);
   }
 
   /**
    * cancel mfa
    * @param options 
+   * @param headers 
    * @returns 
    */
-  cancelMFA(options: CancelMFARequest) {
-    return VerificationService.cancelMFA(options);
+  cancelMFA(options: CancelMFARequest, headers?: HTTPRequestHeader) {
+    return VerificationService.cancelMFA(options, headers);
   }
 
   /** 
@@ -748,10 +751,11 @@ export class WebAuth {
   
   /**
    * @param access_token 
+   * @param headers 
    * @returns 
    */
-  getAllVerificationList(access_token: string) {
-    return VerificationService.getAllVerificationList(access_token);
+  getAllVerificationList(access_token: string, headers?: HTTPRequestHeader) {
+    return VerificationService.getAllVerificationList(access_token, headers);
   }
 
   /**
@@ -849,10 +853,11 @@ export class WebAuth {
   /**
    * update the status of notification
    * @param status_id 
+   * @param headers 
    * @returns 
    */
-  getEnrollmentStatus(status_id: string, accessToken: string) {
-    return VerificationService.getEnrollmentStatus(status_id, accessToken);
+  getEnrollmentStatus(status_id: string, accessToken: string, headers?: HTTPRequestHeader) {
+    return VerificationService.getEnrollmentStatus(status_id, accessToken, headers);
   }
 
   /**
@@ -964,23 +969,25 @@ export class WebAuth {
   /**
    * initiate mfa
    * @param options 
+   * @param headers 
    * @returns 
    */
-  initiateMFA(options: InitiateMFARequest, accessToken?: string) {
+  initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) {
     // BREAKING TODO: remove accessToken parameter in the next major release
     if (accessToken) {
-      return VerificationService.initiateMFA(options, accessToken);
+      return VerificationService.initiateMFA(options, accessToken, headers);
     } 
-    return VerificationService.initiateMFA(options);
+    return VerificationService.initiateMFA(options, undefined, headers);
   }
 
   /**
    * authenticate mfa
    * @param options 
+   * @param headers 
    * @returns 
    */
-  authenticateMFA(options: AuthenticateMFARequest) {
-    return VerificationService.authenticateMFA(options);
+  authenticateMFA(options: AuthenticateMFARequest, headers?: HTTPRequestHeader) {
+    return VerificationService.authenticateMFA(options, headers);
   }
 
   /**

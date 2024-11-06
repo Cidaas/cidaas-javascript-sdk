@@ -1,4 +1,5 @@
 
+import { HTTPRequestHeader } from "../common/Common.model";
 import { Helper, CustomException } from "../common/Helper";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "./VerificationService.model";
 
@@ -38,6 +39,10 @@ export function initiateAccountVerification(options: InitiateAccountVerification
  * cidaas.verifyAccount({
  *   accvid: 'your accvid', // which you will get on initiate account verification response
  *   code: 'your code in email or sms or ivr'
+ * },
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you account verification ID and unique code.
  * }).catch(function(ex) {
@@ -45,9 +50,9 @@ export function initiateAccountVerification(options: InitiateAccountVerification
  * });
  * ```
  */
-export function verifyAccount(options: VerifyAccountRequest) {
+export function verifyAccount(options: VerifyAccountRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -58,6 +63,10 @@ export function verifyAccount(options: VerifyAccountRequest) {
  * cidaas.getMFAList({
  *   request_id: 'your request id',
  *   email: 'your email'
+ * },
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you list of configured multi factor authentication
  * }).catch(function(ex) {
@@ -65,9 +74,9 @@ export function verifyAccount(options: VerifyAccountRequest) {
  * });
  * ```
  */
-export function getMFAList(options: GetMFAListRequest) {
+export function getMFAList(options: GetMFAListRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -78,6 +87,10 @@ export function getMFAList(options: GetMFAListRequest) {
  *   exchange_id: 'exchange id from initiateMFA() response',
  *   reason: 'reason of mfa cancelation',
  *   type: 'authentication type e.g. email'
+ * },
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
  * }).then(function (response) {
  *   // your success code here
  * }).catch(function(ex) {
@@ -85,9 +98,9 @@ export function getMFAList(options: GetMFAListRequest) {
  * });
  * ```
  */
-export function cancelMFA(options: CancelMFARequest) {
+export function cancelMFA(options: CancelMFARequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/cancel/" + options.type;
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", undefined, headers);
 }
 
 /**
@@ -96,7 +109,12 @@ export function cancelMFA(options: CancelMFARequest) {
  * ```js
  * const access_token = "your access token";
  * 
- * cidaas.getAllVerificationList(access_token)
+ * cidaas.getAllVerificationList(
+ * access_token,
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
+ * })
  * .then(function (response) {
  *   // type your code here
  * })
@@ -105,9 +123,9 @@ export function cancelMFA(options: CancelMFARequest) {
  * });
  * ```
  */
-export function getAllVerificationList(access_token: string) {
+export function getAllVerificationList(access_token: string, headers?: HTTPRequestHeader) {
   const _serviceURL = `${window.webAuthSettings.authority}/verification-srv/config/list`;
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", access_token);
+  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", access_token, headers);
 }
 
 /**
@@ -143,7 +161,13 @@ export function initiateEnrollment(options: InitiateEnrollmentRequest, accessTok
  * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/branches/master/b06447d02d8e0-get-status-of-physical-verification-setup-configuration for more details.
  * @example
  * ```js
- * cidaas.getEnrollmentStatus('statusId from initiateEnrollment()', 'your access token')
+ * cidaas.getEnrollmentStatus(
+ * 'statusId from initiateEnrollment()', 
+ * 'your access token', 
+ * {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
+ * })
  * .then(function (response) {
  *   // type your code here
  * })
@@ -152,9 +176,9 @@ export function initiateEnrollment(options: InitiateEnrollmentRequest, accessTok
  * });
  * ```
 */
-export function getEnrollmentStatus(status_id: string, accessToken: string) {
+export function getEnrollmentStatus(status_id: string, accessToken: string, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", accessToken);
+  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", accessToken, headers);
 }
 
 /**
@@ -218,6 +242,10 @@ export function checkVerificationTypeConfigured(options: CheckVerificationTypeCo
  *   type: 'email'
  *   email: 'your email'
  *  }
+ * const headers = {
+ *   lat: 'location latitude', 
+ *   lon: 'location longitude'
+ *  }
  * }
  * 
  * cidaas.initiateMFA(options, access_token)
@@ -229,13 +257,13 @@ export function checkVerificationTypeConfigured(options: CheckVerificationTypeCo
  * });
  * ```
  */
-export function initiateMFA(options: InitiateMFARequest, accessToken?: string) {
+export function initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
   // BREAKING TODO: remove accessToken parameter in the next major release
   if (accessToken) {
-    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken, headers);
   } 
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -248,6 +276,10 @@ export function initiateMFA(options: InitiateMFARequest, accessToken?: string) {
   *   client_id: 'your client id',
   *   exchange_id: exchange id from initiateMFA(),
   *   pass_code: 'code to authenticate'
+  * },
+  * {
+  *   lat: 'location latitude', 
+  *   lon: 'location longitude'
   * }).then(function (response) {
   *   // type your code here
   * })
@@ -256,9 +288,9 @@ export function initiateMFA(options: InitiateMFARequest, accessToken?: string) {
   * });
   * ```
   */
-export function authenticateMFA(options: AuthenticateMFARequest) {
+export function authenticateMFA(options: AuthenticateMFARequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", undefined, headers);
 }
 
 /**

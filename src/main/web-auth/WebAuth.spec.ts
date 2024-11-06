@@ -750,8 +750,9 @@ describe('Verification service functions', () => {
 			accvid: '',
 			code: ''
 		};
-		webAuth.verifyAccount(options);
-		expect(verifyAccountSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.verifyAccount(options, headers);
+		expect(verifyAccountSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('getMFAList', () => {
@@ -760,8 +761,9 @@ describe('Verification service functions', () => {
 			email: '',
 			request_id: ''
 		};
-		webAuth.getMFAList(options);
-		expect(getMFAListSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getMFAList(options, headers);
+		expect(getMFAListSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('cancelMFA', () => {
@@ -771,15 +773,17 @@ describe('Verification service functions', () => {
 			reason: '',
 			type: ''
 		};
-		webAuth.cancelMFA(options);
-		expect(cancelMFASpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.cancelMFA(options, headers);
+		expect(cancelMFASpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('getAllVerificationList', () => {
 		const getAllVerificationListSpy = jest.spyOn(VerificationService, 'getAllVerificationList').mockImplementation();
 		const accessToken = '';
-		webAuth.getAllVerificationList(accessToken);
-		expect(getAllVerificationListSpy).toHaveBeenCalledWith(accessToken);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getAllVerificationList(accessToken, headers);
+		expect(getAllVerificationListSpy).toHaveBeenCalledWith(accessToken, headers);
 	});
 
 	test('initiateEnrollment', () => {
@@ -796,8 +800,9 @@ describe('Verification service functions', () => {
 		const getEnrollmentStatusSpy = jest.spyOn(VerificationService, 'getEnrollmentStatus').mockImplementation();
 		const statusId = '';
 		const accessToken = '';
-		webAuth.getEnrollmentStatus(statusId, accessToken);
-		expect(getEnrollmentStatusSpy).toHaveBeenCalledWith(statusId, accessToken);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getEnrollmentStatus(statusId, accessToken, headers);
+		expect(getEnrollmentStatusSpy).toHaveBeenCalledWith(statusId, accessToken, headers);
 	});
 
 	test('enrollVerification', () => {
@@ -831,8 +836,9 @@ describe('Verification service functions', () => {
 			usage_type: '',
 			request_id: ''
 		};
-		webAuth.initiateMFA(options);
-		expect(initiateMFASpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.initiateMFA(options, undefined, headers);
+		expect(initiateMFASpy).toHaveBeenCalledWith(options, undefined, headers);
 	});
 
 	test('initiateMFA with access token', () => {
@@ -842,8 +848,9 @@ describe('Verification service functions', () => {
 			request_id: ''
 		};
 		const accessToken = 'accessToken';
-		webAuth.initiateMFA(options, accessToken);
-		expect(initiateMFASpy).toHaveBeenCalledWith(options, accessToken);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.initiateMFA(options, accessToken, headers);
+		expect(initiateMFASpy).toHaveBeenCalledWith(options, accessToken, headers);
 	});
 
 	test('authenticateMFA', () => {
@@ -853,8 +860,9 @@ describe('Verification service functions', () => {
 			exchange_id: '',
 			pass_code: ''
 		};
-		webAuth.authenticateMFA(options);
-		expect(authenticateMFASpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.authenticateMFA(options, headers);
+		expect(authenticateMFASpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('initiateVerification', () => {

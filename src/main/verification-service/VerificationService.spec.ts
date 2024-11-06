@@ -29,8 +29,9 @@ test('verifyAccount', () => {
     code: 'code'
   };
   const serviceURL = `${serviceBaseUrl}/account/verify`;
-  VerificationService.verifyAccount(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  VerificationService.verifyAccount(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, headers);
 });
 
 test('getMFAList', () => {
@@ -39,8 +40,9 @@ test('getMFAList', () => {
     request_id: 'request_id'
   };
   const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
-  VerificationService.getMFAList(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  VerificationService.getMFAList(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, headers);
 });
 
 test('cancelMFA', () => {
@@ -50,15 +52,17 @@ test('cancelMFA', () => {
     type: 'type'
   };
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/cancel/${options.type}`;
-  VerificationService.cancelMFA(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  VerificationService.cancelMFA(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST", undefined, headers);
 });
 
 test('getAllVerificationList', () => {
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/config/list`;
-  VerificationService.getAllVerificationList(accessToken);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, "GET", accessToken);
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  VerificationService.getAllVerificationList(accessToken, headers);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, "GET", accessToken, headers);
 });
 
 test('initiateEnrollment', () => {
@@ -82,8 +86,9 @@ test('getEnrollmentStatus', () => {
   const status_id = 'status_id';
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/v2/notification/status/${status_id}`;
-  VerificationService.getEnrollmentStatus(status_id, accessToken);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, "POST", accessToken);
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  VerificationService.getEnrollmentStatus(status_id, accessToken, headers);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, "POST", accessToken, headers);
 });
 
 test('enrollVerification', () => {
@@ -118,8 +123,9 @@ test('initiateMFA', () => {
     type: 'type'
   };
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
-  VerificationService.initiateMFA(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST");
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  VerificationService.initiateMFA(options, undefined, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, headers);
 });
 
 test('initiateMFA with access token', () => {
@@ -131,7 +137,7 @@ test('initiateMFA with access token', () => {
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
   VerificationService.initiateMFA(options, accessToken);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", accessToken);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", accessToken, undefined);
 });
 
 test('authenticateMFA', () => {
@@ -141,8 +147,9 @@ test('authenticateMFA', () => {
     pass_code: 'pass_code',
   };
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/authenticate/${options.type}`;
-  VerificationService.authenticateMFA(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST");
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  VerificationService.authenticateMFA(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, "POST", undefined, headers);
 });
 
 test('initiateVerification', () => {
