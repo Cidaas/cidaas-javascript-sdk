@@ -20,9 +20,9 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
  * });
  * ```
  */
-export function getConsentDetails(options: GetConsentDetailsRequest) {
+export function getConsentDetails(options: GetConsentDetailsRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**

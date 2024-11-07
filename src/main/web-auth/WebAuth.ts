@@ -571,8 +571,8 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getConsentDetails(options: GetConsentDetailsRequest) {
-    return ConsentService.getConsentDetails(options);
+  getConsentDetails(options: GetConsentDetailsRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.getConsentDetails(options, headers);
   }
 
   /**

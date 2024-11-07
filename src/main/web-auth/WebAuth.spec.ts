@@ -921,8 +921,9 @@ describe('Consent service functions', () => {
 			consent_version_id: '',
 			sub: ''
 		};
-		webAuth.getConsentDetails(options);
-		expect(getConsentDetailsSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getConsentDetails(options, headers);
+		expect(getConsentDetailsSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('acceptConsent', () => {

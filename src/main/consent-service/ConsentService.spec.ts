@@ -19,8 +19,9 @@ test('getConsentDetails', () => {
     sub: 'sub'
   };
   const serviceURL = `${serviceBaseUrl}/usage/public/info`;
-  ConsentService.getConsentDetails(option);
-  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  ConsentService.getConsentDetails(option, headers);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', undefined, headers);
 });
 
 test('acceptConsent', () => {
