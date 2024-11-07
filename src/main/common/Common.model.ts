@@ -30,9 +30,9 @@ export interface HTTPRequestHeader {
     bot_captcha_response?: string;
     /** Identifier generated after successful authentication but unfulfilled prechecks */
     trackId?: string;
-    /** Latitude is the string location parameter sent in an headers */
+    /** Latitude is the string location parameter sent in the headers */
     lat?: string;
-    /** Longitude is the string location parameter sent in an headers */
+    /** Longitude is the string location parameter sent in the headers */
     lon?: string;
 }
 
