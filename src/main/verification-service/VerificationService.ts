@@ -39,10 +39,6 @@ export function initiateAccountVerification(options: InitiateAccountVerification
  * cidaas.verifyAccount({
  *   accvid: 'your accvid', // which you will get on initiate account verification response
  *   code: 'your code in email or sms or ivr'
- * },
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you account verification ID and unique code.
  * }).catch(function(ex) {
@@ -63,10 +59,6 @@ export function verifyAccount(options: VerifyAccountRequest, headers?: HTTPReque
  * cidaas.getMFAList({
  *   request_id: 'your request id',
  *   email: 'your email'
- * },
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you list of configured multi factor authentication
  * }).catch(function(ex) {
@@ -87,10 +79,6 @@ export function getMFAList(options: GetMFAListRequest, headers?: HTTPRequestHead
  *   exchange_id: 'exchange id from initiateMFA() response',
  *   reason: 'reason of mfa cancelation',
  *   type: 'authentication type e.g. email'
- * },
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }).then(function (response) {
  *   // your success code here
  * }).catch(function(ex) {
@@ -109,12 +97,7 @@ export function cancelMFA(options: CancelMFARequest, headers?: HTTPRequestHeader
  * ```js
  * const access_token = "your access token";
  * 
- * cidaas.getAllVerificationList(
- * access_token,
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
- * })
+ * cidaas.getAllVerificationList(access_token)
  * .then(function (response) {
  *   // type your code here
  * })
@@ -161,13 +144,7 @@ export function initiateEnrollment(options: InitiateEnrollmentRequest, accessTok
  * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/branches/master/b06447d02d8e0-get-status-of-physical-verification-setup-configuration for more details.
  * @example
  * ```js
- * cidaas.getEnrollmentStatus(
- * 'statusId from initiateEnrollment()', 
- * 'your access token', 
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
- * })
+ * cidaas.getEnrollmentStatus('statusId from initiateEnrollment()', 'your access token')
  * .then(function (response) {
  *   // type your code here
  * })
@@ -242,10 +219,6 @@ export function checkVerificationTypeConfigured(options: CheckVerificationTypeCo
  *   type: 'email'
  *   email: 'your email'
  *  }
- * const headers = {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
- *  }
  * }
  * 
  * cidaas.initiateMFA(options, access_token)
@@ -276,10 +249,6 @@ export function initiateMFA(options: InitiateMFARequest, accessToken?: string, h
   *   client_id: 'your client id',
   *   exchange_id: exchange id from initiateMFA(),
   *   pass_code: 'code to authenticate'
-  * },
-  * {
-  *   lat: 'location latitude', 
-  *   lon: 'location longitude'
   * }).then(function (response) {
   *   // type your code here
   * })

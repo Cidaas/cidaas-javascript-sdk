@@ -899,13 +899,7 @@ export class WebAuth {
    * const useSocialProvider = {
    *   requestId: 'request id from cidaas'
    * };
-   * cidaas.getMissingFields(
-   * trackId, 
-   * useSocialProvider,
-   * {
-   *   lat: 'location latitude', 
-   *   lon: 'location longitude'
-   * }).then(function (resp) {
+   * cidaas.getMissingFields(trackId, useSocialProvider).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code

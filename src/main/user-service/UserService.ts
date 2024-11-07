@@ -73,11 +73,7 @@ export function register(options: RegisterRequest, headers: HTTPRequestHeader) {
  *   invite_id: 'id of user invitation'
  *   callLatestAPI: 'true' // call latest api if parameter is given. By default, the older api will be called
  * }
- * const headers = {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
- *  }
- * cidaas.getInviteUserDetails(options, headers)
+ * cidaas.getInviteUserDetails(options)
  * .then(function () {
  *   // the response will give you information about the invitation.
  * }).catch(function (ex) {
@@ -101,10 +97,6 @@ export function getInviteUserDetails(options: GetInviteUserDetailsRequest, heade
  * ```js
  * cidaas.getCommunicationStatus({
  *   sub: 'your sub', // which you will get on the registration response
- * },
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you account details once its verified.
  * }).catch(function(ex) {
@@ -127,10 +119,6 @@ export function getCommunicationStatus(options: getCommunicationStatusRequest, h
  *   processingType: ProcessingType.CODE,
  *   requestId: 'your requestId',
  *   resetMedium: ResetMedium.EMAIL
- * },
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you password reset details.
  * }).catch(function(ex) {
@@ -152,12 +140,7 @@ export function initiateResetPassword(options: InitiateResetPasswordRequest, hea
  * cidaas.handleResetPassword({
  *   code: 'your code in email or sms or ivr',
  *   resetRequestId: 'your resetRequestId' // which you will get on initiate reset password response
- * }, 
- * handleResponseAsJson,
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
- * }).then(function (response) {
+ * }, handleResponseAsJson).then(function (response) {
  *   // the response will give you valid verification code.
  * }).catch(function(ex) {
  *   // your failure code here
@@ -192,11 +175,6 @@ export function handleResetPassword(options: HandleResetPasswordRequest, handleR
  *   confirmPassword: '123456',
  *   exchangeId: 'your exchangeId', // which you will get on handle reset password response
  *   resetRequestId: 'your resetRequestId' // which you will get on handle reset password response
- * }, 
- * handleResponseAsJson,
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }).then(function (response) {
  *   // the response will give you reset password details.
  * }).catch(function(ex) {
@@ -227,10 +205,6 @@ export function resetPassword(options: ResetPasswordRequest, handleResponseAsJso
  * ```js
  * this.cidaas.getDeduplicationDetails({
  *   track_id: 'your track id'
- * },
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }).then((response) => {
  *   // the response will give you deduplication details of users.
  * }).catch((err) => {
@@ -271,10 +245,6 @@ export function deduplicationLogin(options: DeduplicationLoginRequest) {
  * ```js
  * this.cidaas.registerDeduplication({
  *   track_id: 'track id from deduplication initialisation after register',
- * },
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }).then((response) => {
  *   // the response will give you new registered deduplication user. 
  * }).catch((err) => {
@@ -448,10 +418,6 @@ export function deleteUserAccount(options: DeleteUserAccountRequest) {
  * options = {
  *   requestId: "your request id",
  *   email: "your email"
- * }
- * headers = {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  * }
  * 
  * cidaas.userCheckExists(options).then(function (response) {

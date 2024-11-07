@@ -34,10 +34,6 @@ export function getConsentDetails(options: GetConsentDetailsRequest, headers?: H
  *   consent_id: 'consent id',
  *   consent_version: 'consent version id',
  *   sub: 'masked sub'
- * }, 
- * {
- *  lat: 'location latitude', 
- *  lon: 'location longitude'
  * }).then((response) => {
  *   // the response will give you details of accepted consent.
  * }).catch((err) => {
@@ -59,10 +55,6 @@ export function acceptConsent(options: AcceptConsentRequest, headers?: HTTPReque
  *   consentid: 'your consent id',
  *   locale: 'browser accept language or custom language',
  *   access_token: 'your access token',
- * }, 
- * {
- *  lat: 'location latitude', 
- *  lon: 'location longitude'
  * }).then((response) => {
  *   // type your code here
  * }).catch((err) => {
@@ -87,10 +79,6 @@ export function getConsentVersionDetails(options: GetConsentVersionDetailsReques
  *   client_id: 'your client id',
  *   sub: 'masked sub',
  *   scopes: [your scope consents]
- *  }, 
- *  {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  *  });
  * ```
  */
@@ -107,10 +95,6 @@ export function acceptScopeConsent(options: AcceptScopeConsentRequest, headers?:
  *   client_id: 'your client id',
  *   sub: 'masked sub',
  *   accepted_claims: [your claim consents]
- *  }, 
- *  {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
  *  });
  * ```
  */

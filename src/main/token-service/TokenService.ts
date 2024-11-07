@@ -100,10 +100,7 @@ export function validateAccessToken(options: TokenIntrospectionRequest) {
  *   trackId: "your track id from login",
  *   locale: "your preferred locale. DEPRECATED as it is not supported anymore. Will be removed in next major release",
  * }
- * const headers = {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
- * }
+ * 
  * cidaas.loginPrecheck(options)
  * .then(function (response) {
  *   // type your code here
@@ -124,12 +121,7 @@ export function loginPrecheck(options: LoginPrecheckRequest, headers?: HTTPReque
  * @example
  * ```js
  * const trackId = "your track id from login";
- * cidaas.getMissingFields(
- * trackId,
- * {
- *   lat: 'location latitude', 
- *   lon: 'location longitude'
- * })
+ * cidaas.getMissingFields(trackId)
  *   .then(function (response) {
  *     // type your code here
  * })
