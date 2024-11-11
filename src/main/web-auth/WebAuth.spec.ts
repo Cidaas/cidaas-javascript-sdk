@@ -360,7 +360,7 @@ describe('User service functions', () => {
 			code: ''
 		};
 		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-		webAuth.handleResetPassword(options, undefined, headers);
+		webAuth.handleResetPassword(options, headers);
 		expect(handleResetPasswordSpy).toHaveBeenCalledWith(options, undefined, headers);
 	});
 	
@@ -373,7 +373,7 @@ describe('User service functions', () => {
 			confirmPassword: ''
 		};
 		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-		webAuth.resetPassword(options, undefined, headers);
+		webAuth.resetPassword(options, headers);
 		expect(resetPasswordSpy).toHaveBeenCalledWith(options, undefined, headers);
 	});
 
