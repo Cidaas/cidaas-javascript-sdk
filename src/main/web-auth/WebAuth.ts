@@ -523,19 +523,21 @@ export class WebAuth {
   /**
    * handle reset password
    * @param options 
+   * @param handleResponseAsJson 
    * @param headers 
    */
-  handleResetPassword(options: HandleResetPasswordRequest, headers?: HTTPRequestHeader) {
-    return UserService.handleResetPassword(options, undefined, headers);
+  handleResetPassword(options: HandleResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
+    return UserService.handleResetPassword(options, handleResponseAsJson, headers);
   }
 
   /**
   * reset password
   * @param options 
+  * @param handleResponseAsJson 
   * @param headers 
   */
-  resetPassword(options: ResetPasswordRequest, headers?: HTTPRequestHeader) {
-    return UserService.resetPassword(options, undefined, headers);
+  resetPassword(options: ResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
+    return UserService.resetPassword(options, handleResponseAsJson, headers);
   }
 
   /**

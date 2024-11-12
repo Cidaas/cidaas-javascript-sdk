@@ -3,7 +3,7 @@
 ## V4.3.1
 
 ### Changed
-- Update required functions to accept the headers
+- Update required functions to accept the headers and handleResponseAsJson
 
 ## V4.3.0
 
