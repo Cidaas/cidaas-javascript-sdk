@@ -360,8 +360,8 @@ describe('User service functions', () => {
 			code: ''
 		};
 		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-		webAuth.handleResetPassword(options, headers);
-		expect(handleResetPasswordSpy).toHaveBeenCalledWith(options, undefined, headers);
+		webAuth.handleResetPassword(options, false, headers);
+		expect(handleResetPasswordSpy).toHaveBeenCalledWith(options, false, headers);
 	});
 	
 	test('resetPassword', () => {
@@ -373,8 +373,8 @@ describe('User service functions', () => {
 			confirmPassword: ''
 		};
 		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-		webAuth.resetPassword(options, headers);
-		expect(resetPasswordSpy).toHaveBeenCalledWith(options, undefined, headers);
+		webAuth.resetPassword(options, false, headers);
+		expect(resetPasswordSpy).toHaveBeenCalledWith(options, false, headers);
 	});
 
 	test('getDeduplicationDetails', () => {
