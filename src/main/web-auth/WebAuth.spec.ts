@@ -85,13 +85,14 @@ describe('Webauth functions without module or services', () => {
 		jest.useRealTimers();
 		expect(httpSpy).toHaveBeenCalledWith(payload, serviceURL, false, 'POST');
 	});
+	
 	test('getRequestIdWithoutParameter', () => {
 		jest.useFakeTimers();
 		jest.setSystemTime(mockDate);
 		const defaultPayload: GetRequestIdRequest  = {
 			'client_id': window.webAuthSettings.client_id,
 			'redirect_uri': window.webAuthSettings.redirect_uri,
-			'response_type': 'token',
+			'response_type': window.webAuthSettings.response_type,
 			"response_mode": 'fragment',
 			"scope": window.webAuthSettings.scope,
 			"nonce": mockDate.getTime().toString()

@@ -257,17 +257,19 @@ export class WebAuth {
     const defaultPayload: GetRequestIdRequest = {
       'client_id': window.webAuthSettings.client_id,
       'redirect_uri': window.webAuthSettings.redirect_uri,
+      'response_type': window.webAuthSettings.response_type,
+      'response_mode': window.webAuthSettings.response_mode,
       'scope': window.webAuthSettings.scope,
       ...(ui_locales && { ui_locales } || {})
     }
-    let payload = option ? option : defaultPayload;
-    if(!payload.response_type){
+    const payload = option ? option : defaultPayload;
+    if (!payload.response_type){
       payload.response_type = 'token';
     } 
-    if(!payload.response_mode){
+    if (!payload.response_mode){
       payload.response_mode = 'fragment';
     }
-    if(!payload.nonce){
+    if (!payload.nonce){
       payload.nonce = new Date().getTime().toString();
     }
     const serviceURL = window.webAuthSettings.authority + '/authz-srv/authrequest/authz/generate';
