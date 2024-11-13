@@ -55,3 +55,13 @@ export interface UserActionOnEnrollmentRequest {
     /** action to be executed */
     action: string;
 }
+
+export interface GetRequestIdOptions{
+    client_id: string 
+    redirect_uri: string,
+    response_type?: string,
+    response_mode?: string,
+    scope: string ,
+    nonce: string,
+    ui_locales?: string
+}

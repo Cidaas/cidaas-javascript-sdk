@@ -16,7 +16,7 @@ import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
-import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from "./webauth.model";
+import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, GetRequestIdOptions } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -240,26 +240,38 @@ export class WebAuth {
    * Each and every proccesses starts with requestId, it is an entry point to login or register. For getting the requestId, call **getRequestId()**.
    * @example
    * ```js
-   * cidaas.getRequestId().then(function (response) {
+   * const defaultPayload: GetRequestIdOptions = {
+   *   'client_id': 'your client id',
+   *   'redirect_uri': 'your redirect url',
+   *   'scope': 'your scopes',  
+   * }
+   * cidaas.getRequestId(defaultPayload).then(function (response) {
    *   // the response will give you request id.
    * }).catch(function(ex) {
    *   // your failure code here
    * });
    * ``` 
    */
-  getRequestId() {
+  getRequestId(option?: GetRequestIdOptions) {
     const ui_locales = window.webAuthSettings.ui_locales
-    const options = {
+    const defaultPayload: GetRequestIdOptions = {
       'client_id': window.webAuthSettings.client_id,
       'redirect_uri': window.webAuthSettings.redirect_uri,
       'response_type': window.webAuthSettings.response_type ?? 'token',
-      "response_mode": window.webAuthSettings.response_mode ?? 'fragment',
-      "scope": window.webAuthSettings.scope,
-      "nonce": new Date().getTime().toString(),
+      'response_mode': window.webAuthSettings.response_mode ?? 'fragment',
+      'scope': window.webAuthSettings.scope,
+      'nonce': new Date().getTime().toString(),
       ...(ui_locales && { ui_locales } || {})
-    };
+    }
+    let payload = option ? option : defaultPayload;
+    if(!payload.response_type){
+      payload.response_type = 'token';
+    } 
+    if(!payload.response_mode){
+      payload.response_mode = 'fragment';
+    }
     const serviceURL = window.webAuthSettings.authority + '/authz-srv/authrequest/authz/generate';
-    return Helper.createHttpPromise(options, serviceURL, false, "POST");
+    return Helper.createHttpPromise(payload, serviceURL, false, "POST");
   }
 
   /**
