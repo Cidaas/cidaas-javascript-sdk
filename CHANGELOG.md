@@ -8,6 +8,9 @@
 - Define data model for getRequestId() function payload
 - Expand getRequestId() function with optional payload as parameter
 
+### Fix
+- Fix vulnerabilities from `npm audit`
+
 ## V4.3.0
 
 ### Added
