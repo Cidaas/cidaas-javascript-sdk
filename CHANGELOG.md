@@ -4,11 +4,8 @@
 
 ### Changed
 - Update required functions to accept headers
-
 - expand resetPassword flow functions with optional handleResponseAsJson for compatibility with older cidaas version
-
 - update  getRequestId() with optional parameter
-
 - update data model for getrequestId
 
 ## V4.3.0
