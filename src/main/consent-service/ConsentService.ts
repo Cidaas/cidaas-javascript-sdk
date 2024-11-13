@@ -1,3 +1,4 @@
+import { HTTPRequestHeader } from "../common/Common.model";
 import { Helper } from "../common/Helper";
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from "./ConsentService.model";
 
@@ -19,9 +20,9 @@ import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequ
  * });
  * ```
  */
-export function getConsentDetails(options: GetConsentDetailsRequest) {
+export function getConsentDetails(options: GetConsentDetailsRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/public/info";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -40,9 +41,9 @@ export function getConsentDetails(options: GetConsentDetailsRequest) {
  * });
  * ```
  */
-export function acceptConsent(options: AcceptConsentRequest) {
+export function acceptConsent(options: AcceptConsentRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/usage/accept";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -61,13 +62,13 @@ export function acceptConsent(options: AcceptConsentRequest) {
  * });
  * ```
  */
-export function getConsentVersionDetails(options: GetConsentVersionDetailsRequest) {
+export function getConsentVersionDetails(options: GetConsentVersionDetailsRequest, headers?: HTTPRequestHeader) {
   let _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/v2/consent/versions/details/" + options.consentid;
   if (options.locale) {
     _serviceURL += "?locale=" + options.locale;
   }
   // BREAKING TODO: remove access token as it is not needed to get consent version details
-  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", options.access_token);
+  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", options.access_token, headers);
 }
 
 /**
@@ -81,9 +82,9 @@ export function getConsentVersionDetails(options: GetConsentVersionDetailsReques
  *  });
  * ```
  */
-export function acceptScopeConsent(options: AcceptScopeConsentRequest) {
+export function acceptScopeConsent(options: AcceptScopeConsentRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/scope/accept";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -97,9 +98,9 @@ export function acceptScopeConsent(options: AcceptScopeConsentRequest) {
  *  });
  * ```
  */
-export function acceptClaimConsent(options: AcceptClaimConsentRequest) {
+export function acceptClaimConsent(options: AcceptClaimConsentRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/accept";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**

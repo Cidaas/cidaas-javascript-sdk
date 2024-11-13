@@ -474,15 +474,17 @@ export class WebAuth {
   /**
    * get invite info
    * @param options 
+   * @param headers 
    * @returns 
    */
-  getInviteUserDetails(options: GetInviteUserDetailsRequest) {
-    return UserService.getInviteUserDetails(options);
+  getInviteUserDetails(options: GetInviteUserDetailsRequest, headers?: HTTPRequestHeader) {
+    return UserService.getInviteUserDetails(options, headers);
   }
 
   /**
    * get Communication status
    * @param options
+   * @param headers 
    * @returns 
    */
   getCommunicationStatus(options: getCommunicationStatusRequest, headers?: HTTPRequestHeader) {
@@ -501,53 +503,61 @@ export class WebAuth {
   /**
    * verify account
    * @param options 
+   * @param headers 
    * @returns 
    */
-  verifyAccount(options: VerifyAccountRequest) {
-    return VerificationService.verifyAccount(options)
+  verifyAccount(options: VerifyAccountRequest, headers?: HTTPRequestHeader) {
+    return VerificationService.verifyAccount(options, headers)
   }
 
   /**
    * initiate reset password
    * @param options 
+   * @param headers 
    * @returns 
    */
-  initiateResetPassword(options: InitiateResetPasswordRequest) {
-    return UserService.initiateResetPassword(options);
+  initiateResetPassword(options: InitiateResetPasswordRequest, headers?: HTTPRequestHeader) {
+    return UserService.initiateResetPassword(options, headers);
   }
 
   /**
    * handle reset password
    * @param options 
+   * @param handleResponseAsJson 
+   * @param headers 
    */
-  handleResetPassword(options: HandleResetPasswordRequest) {
-    return UserService.handleResetPassword(options);
+  handleResetPassword(options: HandleResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
+    return UserService.handleResetPassword(options, handleResponseAsJson, headers);
   }
 
   /**
   * reset password
   * @param options 
+  * @param handleResponseAsJson 
+  * @param headers 
   */
-  resetPassword(options: ResetPasswordRequest) {
-    return UserService.resetPassword(options);
+  resetPassword(options: ResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
+    return UserService.resetPassword(options, handleResponseAsJson, headers);
   }
 
   /**
    * get mfa list
    * @param options 
+   * @param headers 
    * @returns 
    */
-  getMFAList(options: GetMFAListRequest) {
-    return VerificationService.getMFAList(options);
+  getMFAList(options: GetMFAListRequest, headers?: HTTPRequestHeader) {
+    return VerificationService.getMFAList(options, headers);
   }
 
   /**
    * cancel mfa
    * @param options 
+   * @param headers 
    * @returns 
    */
-  cancelMFA(options: CancelMFARequest) {
-    return VerificationService.cancelMFA(options);
+  cancelMFA(options: CancelMFARequest, headers?: HTTPRequestHeader) {
+    return VerificationService.cancelMFA(options, headers);
   }
 
   /** 
@@ -563,53 +573,58 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getConsentDetails(options: GetConsentDetailsRequest) {
-    return ConsentService.getConsentDetails(options);
+  getConsentDetails(options: GetConsentDetailsRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.getConsentDetails(options, headers);
   }
 
   /**
    * accept consent
    * @param options 
+   * @param headers 
    * @returns 
    */
-  acceptConsent(options: AcceptConsentRequest) {
-    return ConsentService.acceptConsent(options);
+  acceptConsent(options: AcceptConsentRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.acceptConsent(options, headers);
   }
 
   /**
    * get scope consent details
    * @param options 
+   * @param headers 
    * @returns 
    */
-  loginPrecheck(options: LoginPrecheckRequest) {
-    return TokenService.loginPrecheck(options);
+  loginPrecheck(options: LoginPrecheckRequest, headers?: HTTPRequestHeader) {
+    return TokenService.loginPrecheck(options, headers);
   }
 
   /**
    * get scope consent version details
    * @param options 
+   * @param headers
    * @returns 
    */
-  getConsentVersionDetails(options: GetConsentVersionDetailsRequest) {
-    return ConsentService.getConsentVersionDetails(options);
+  getConsentVersionDetails(options: GetConsentVersionDetailsRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.getConsentVersionDetails(options, headers);
   }
 
   /**
    * accept scope Consent
    * @param options 
+   * @param headers
    * @returns 
    */
-  acceptScopeConsent(options: AcceptScopeConsentRequest) {
-    return ConsentService.acceptScopeConsent(options);
+  acceptScopeConsent(options: AcceptScopeConsentRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.acceptScopeConsent(options, headers);
   }
 
   /**
    * accept claim Consent
    * @param options 
+   * @param headers
    * @returns 
    */
-  acceptClaimConsent(options: AcceptClaimConsentRequest) {
-    return ConsentService.acceptClaimConsent(options);
+  acceptClaimConsent(options: AcceptClaimConsentRequest, headers?: HTTPRequestHeader) {
+    return ConsentService.acceptClaimConsent(options, headers);
   }
 
   /**
@@ -624,10 +639,11 @@ export class WebAuth {
   /**
    * get Deduplication details
    * @param options 
+   * @param headers 
    * @returns 
    */
-  getDeduplicationDetails(options: GetDeduplicationDetailsRequest) {
-    return UserService.getDeduplicationDetails(options);
+  getDeduplicationDetails(options: GetDeduplicationDetailsRequest, headers?: HTTPRequestHeader) {
+    return UserService.getDeduplicationDetails(options, headers);
   }
 
   /**
@@ -641,10 +657,11 @@ export class WebAuth {
   /**
    * register Deduplication
    * @param options 
+   * @param headers 
    * @returns 
    */
-  registerDeduplication(options: RegisterDeduplicationRequest) {
-    return UserService.registerDeduplication(options);
+  registerDeduplication(options: RegisterDeduplicationRequest, headers?: HTTPRequestHeader) {
+    return UserService.registerDeduplication(options, headers);
   }
 
   /**
@@ -737,10 +754,11 @@ export class WebAuth {
   
   /**
    * @param access_token 
+   * @param headers 
    * @returns 
    */
-  getAllVerificationList(access_token: string) {
-    return VerificationService.getAllVerificationList(access_token);
+  getAllVerificationList(access_token: string, headers?: HTTPRequestHeader) {
+    return VerificationService.getAllVerificationList(access_token, headers);
   }
 
   /**
@@ -838,10 +856,11 @@ export class WebAuth {
   /**
    * update the status of notification
    * @param status_id 
+   * @param headers 
    * @returns 
    */
-  getEnrollmentStatus(status_id: string, accessToken: string) {
-    return VerificationService.getEnrollmentStatus(status_id, accessToken);
+  getEnrollmentStatus(status_id: string, accessToken: string, headers?: HTTPRequestHeader) {
+    return VerificationService.getEnrollmentStatus(status_id, accessToken, headers);
   }
 
   /**
@@ -890,12 +909,12 @@ export class WebAuth {
    * ```
    * 
    */
-  getMissingFields(trackId: string, useSocialProvider?: {requestId: string}) {
+  getMissingFields(trackId: string, useSocialProvider?: {requestId: string}, headers?: HTTPRequestHeader) {
     if (useSocialProvider) {
       const _serviceURL = window.webAuthSettings.authority + "/public-srv/public/trackinfo/" + useSocialProvider.requestId + "/" + trackId;
-      return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
+      return Helper.createHttpPromise(undefined, _serviceURL,false, "GET", undefined, headers);
     } else {
-      return TokenService.getMissingFields(trackId);
+      return TokenService.getMissingFields(trackId, headers);
     }
   }
 
@@ -935,10 +954,11 @@ export class WebAuth {
   /**
    * check if an user exists
    * @param options 
+   * @param headers 
    * @returns 
    */
-  userCheckExists(options: UserCheckExistsRequest) {
-    return UserService.userCheckExists(options);
+  userCheckExists(options: UserCheckExistsRequest, headers?: HTTPRequestHeader) {
+    return UserService.userCheckExists(options, headers);
   }
 
   /**
@@ -952,23 +972,25 @@ export class WebAuth {
   /**
    * initiate mfa
    * @param options 
+   * @param headers 
    * @returns 
    */
-  initiateMFA(options: InitiateMFARequest, accessToken?: string) {
+  initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) {
     // BREAKING TODO: remove accessToken parameter in the next major release
     if (accessToken) {
-      return VerificationService.initiateMFA(options, accessToken);
+      return VerificationService.initiateMFA(options, accessToken, headers);
     } 
-    return VerificationService.initiateMFA(options);
+    return VerificationService.initiateMFA(options, undefined, headers);
   }
 
   /**
    * authenticate mfa
    * @param options 
+   * @param headers 
    * @returns 
    */
-  authenticateMFA(options: AuthenticateMFARequest) {
-    return VerificationService.authenticateMFA(options);
+  authenticateMFA(options: AuthenticateMFARequest, headers?: HTTPRequestHeader) {
+    return VerificationService.authenticateMFA(options, headers);
   }
 
   /**

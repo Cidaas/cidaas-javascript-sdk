@@ -316,7 +316,7 @@ describe('User service functions', () => {
 			callLatestAPI: true
 		};
 		webAuth.getInviteUserDetails(options);
-		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);
+		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options, undefined);
 	});
 
 	test('getInviteUserDetails to call without callLatestApi parameter', () => {
@@ -325,7 +325,7 @@ describe('User service functions', () => {
 			invite_id: '',
 		};
 		webAuth.getInviteUserDetails(options);
-		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options);
+		expect(getInviteUserDetailsSpy).toHaveBeenCalledWith(options, undefined);
 	});
 	
 	test('getCommunicationStatus', () => {
@@ -348,8 +348,9 @@ describe('User service functions', () => {
 			processingType: ProcessingType.CODE,
 			requestId: ''
 		};
-		webAuth.initiateResetPassword(options);
-		expect(initiateResetPasswordSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.initiateResetPassword(options, headers);
+		expect(initiateResetPasswordSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('handleResetPassword', () => {
@@ -358,8 +359,9 @@ describe('User service functions', () => {
 			resetRequestId: '',
 			code: ''
 		};
-		webAuth.handleResetPassword(options);
-		expect(handleResetPasswordSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.handleResetPassword(options, false, headers);
+		expect(handleResetPasswordSpy).toHaveBeenCalledWith(options, false, headers);
 	});
 	
 	test('resetPassword', () => {
@@ -370,8 +372,9 @@ describe('User service functions', () => {
 			password: '',
 			confirmPassword: ''
 		};
-		webAuth.resetPassword(options);
-		expect(resetPasswordSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.resetPassword(options, false, headers);
+		expect(resetPasswordSpy).toHaveBeenCalledWith(options, false, headers);
 	});
 
 	test('getDeduplicationDetails', () => {
@@ -379,8 +382,9 @@ describe('User service functions', () => {
 		const options = {
 			trackId: ''
 		};
-		webAuth.getDeduplicationDetails(options);
-		expect(getDeduplicationDetailsSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getDeduplicationDetails(options, headers);
+		expect(getDeduplicationDetailsSpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('deduplicationLogin', () => {
@@ -399,8 +403,9 @@ describe('User service functions', () => {
 		const options = {
 			trackId: ''
 		};
-		webAuth.registerDeduplication(options);
-		expect(registerDeduplicationSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.registerDeduplication(options, headers);
+		expect(registerDeduplicationSpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('changePassword', () => {
@@ -488,8 +493,9 @@ describe('User service functions', () => {
 			webfinger: '',
 			requestId: ''
 		};
-		webAuth.userCheckExists(options);
-		expect(userCheckExistsSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.userCheckExists(options, headers);
+		expect(userCheckExistsSpy).toHaveBeenCalledWith(options, headers);
 	});
 
 });
@@ -538,15 +544,24 @@ describe('Token service functions', () => {
 		const options = {
 			track_id: ''
 		};
-		webAuth.loginPrecheck(options);
-		expect(loginPrecheckSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.loginPrecheck(options, headers);
+		expect(loginPrecheckSpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('getMissingFieldsFromDefaultProvider', () => {
 		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
 		const trackId = '';
 		webAuth.getMissingFields(trackId);
-		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId);
+		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId, undefined);
+	});
+	
+	test('getMissingFieldsFromDefaultProvider with lat lon headers', () => {
+		const getMissingFieldsSpy = jest.spyOn(TokenService, 'getMissingFields').mockImplementation();
+		const trackId = '';
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getMissingFields(trackId, undefined, headers);
+		expect(getMissingFieldsSpy).toHaveBeenCalledWith(trackId, headers);
 	});
 
 	test('getMissingFieldsFromSocialProvider', () => {
@@ -554,7 +569,7 @@ describe('Token service functions', () => {
 		const useSocialProvider = {requestId: ''};
 		const serviceURL = `${authority}/public-srv/public/trackinfo/${useSocialProvider.requestId}/${trackId}`;
 		webAuth.getMissingFields(trackId, useSocialProvider);
-		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL,false, "GET");
+		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL,false, "GET", undefined, undefined);
 	});
 
 	test('initiateDeviceCode', () => {
@@ -745,8 +760,9 @@ describe('Verification service functions', () => {
 			accvid: '',
 			code: ''
 		};
-		webAuth.verifyAccount(options);
-		expect(verifyAccountSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.verifyAccount(options, headers);
+		expect(verifyAccountSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('getMFAList', () => {
@@ -755,8 +771,9 @@ describe('Verification service functions', () => {
 			email: '',
 			request_id: ''
 		};
-		webAuth.getMFAList(options);
-		expect(getMFAListSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getMFAList(options, headers);
+		expect(getMFAListSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('cancelMFA', () => {
@@ -766,15 +783,17 @@ describe('Verification service functions', () => {
 			reason: '',
 			type: ''
 		};
-		webAuth.cancelMFA(options);
-		expect(cancelMFASpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.cancelMFA(options, headers);
+		expect(cancelMFASpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('getAllVerificationList', () => {
 		const getAllVerificationListSpy = jest.spyOn(VerificationService, 'getAllVerificationList').mockImplementation();
 		const accessToken = '';
-		webAuth.getAllVerificationList(accessToken);
-		expect(getAllVerificationListSpy).toHaveBeenCalledWith(accessToken);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getAllVerificationList(accessToken, headers);
+		expect(getAllVerificationListSpy).toHaveBeenCalledWith(accessToken, headers);
 	});
 
 	test('initiateEnrollment', () => {
@@ -791,8 +810,9 @@ describe('Verification service functions', () => {
 		const getEnrollmentStatusSpy = jest.spyOn(VerificationService, 'getEnrollmentStatus').mockImplementation();
 		const statusId = '';
 		const accessToken = '';
-		webAuth.getEnrollmentStatus(statusId, accessToken);
-		expect(getEnrollmentStatusSpy).toHaveBeenCalledWith(statusId, accessToken);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getEnrollmentStatus(statusId, accessToken, headers);
+		expect(getEnrollmentStatusSpy).toHaveBeenCalledWith(statusId, accessToken, headers);
 	});
 
 	test('enrollVerification', () => {
@@ -826,8 +846,9 @@ describe('Verification service functions', () => {
 			usage_type: '',
 			request_id: ''
 		};
-		webAuth.initiateMFA(options);
-		expect(initiateMFASpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.initiateMFA(options, undefined, headers);
+		expect(initiateMFASpy).toHaveBeenCalledWith(options, undefined, headers);
 	});
 
 	test('initiateMFA with access token', () => {
@@ -837,8 +858,9 @@ describe('Verification service functions', () => {
 			request_id: ''
 		};
 		const accessToken = 'accessToken';
-		webAuth.initiateMFA(options, accessToken);
-		expect(initiateMFASpy).toHaveBeenCalledWith(options, accessToken);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.initiateMFA(options, accessToken, headers);
+		expect(initiateMFASpy).toHaveBeenCalledWith(options, accessToken, headers);
 	});
 
 	test('authenticateMFA', () => {
@@ -848,8 +870,9 @@ describe('Verification service functions', () => {
 			exchange_id: '',
 			pass_code: ''
 		};
-		webAuth.authenticateMFA(options);
-		expect(authenticateMFASpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.authenticateMFA(options, headers);
+		expect(authenticateMFASpy).toHaveBeenCalledWith(options, headers);
 	});
 
 	test('initiateVerification', () => {
@@ -898,8 +921,9 @@ describe('Consent service functions', () => {
 			consent_version_id: '',
 			sub: ''
 		};
-		webAuth.getConsentDetails(options);
-		expect(getConsentDetailsSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getConsentDetails(options, headers);
+		expect(getConsentDetailsSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('acceptConsent', () => {
@@ -920,8 +944,9 @@ describe('Consent service functions', () => {
 			q: '',
 			revoked: false
 		};
-		webAuth.acceptConsent(options);
-		expect(acceptConsentSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.acceptConsent(options, headers);
+		expect(acceptConsentSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('getConsentVersionDetails', () => {
@@ -931,8 +956,9 @@ describe('Consent service functions', () => {
 			locale: '',
 			access_token: ''
 		};
-		webAuth.getConsentVersionDetails(options);
-		expect(getConsentVersionDetailsSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.getConsentVersionDetails(options, headers);
+		expect(getConsentVersionDetailsSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('acceptScopeConsent', () => {
@@ -942,8 +968,9 @@ describe('Consent service functions', () => {
 			sub: '',
 			scopes: ['']
 		};
-		webAuth.acceptScopeConsent(options);
-		expect(acceptScopeConsentSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.acceptScopeConsent(options, headers);
+		expect(acceptScopeConsentSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('acceptClaimConsent', () => {
@@ -953,8 +980,9 @@ describe('Consent service functions', () => {
 			sub: '',
 			accepted_claims: ['']
 		};
-		webAuth.acceptClaimConsent(options);
-		expect(acceptClaimConsentSpy).toHaveBeenCalledWith(options);
+		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+		webAuth.acceptClaimConsent(options, headers);
+		expect(acceptClaimConsentSpy).toHaveBeenCalledWith(options, headers);
 	});
 	
 	test('revokeClaimConsent', () => {
