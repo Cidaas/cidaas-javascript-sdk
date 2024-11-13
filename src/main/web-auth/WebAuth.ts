@@ -262,7 +262,7 @@ export class WebAuth {
       'scope': window.webAuthSettings.scope,
       ...(ui_locales && { ui_locales } || {})
     }
-    const payload = option ? option : defaultPayload;
+    const payload: GetRequestIdRequest = option ? option : defaultPayload;
     if (!payload.response_type){
       payload.response_type = 'token';
     } 
