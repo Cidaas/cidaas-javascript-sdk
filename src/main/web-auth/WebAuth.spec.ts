@@ -91,7 +91,7 @@ describe('Webauth functions without module or services', () => {
 		const defaultPayload: GetRequestIdRequest  = {
 			'client_id': window.webAuthSettings.client_id,
 			'redirect_uri': window.webAuthSettings.redirect_uri,
-			'response_type': window.webAuthSettings.response_type,
+			'response_type': 'token',
 			"response_mode": 'fragment',
 			"scope": window.webAuthSettings.scope,
 			"nonce": mockDate.getTime().toString()
