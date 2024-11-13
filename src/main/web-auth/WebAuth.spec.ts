@@ -13,7 +13,7 @@ import { LoginPrecheckRequest, ProcessingType, VerificationType } from '../commo
 import { CidaasUser } from '../common/User.model';
 import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../user-service/UserService.model';
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from '../verification-service/VerificationService.model';
-import { DeleteDeviceRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from './webauth.model';
+import { DeleteDeviceRequest, GetRegistrationSetupRequest, GetRequestIdRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from './webauth.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -69,10 +69,27 @@ describe('Webauth functions without module or services', () => {
 		expect(createSigninRequestSpy).toHaveBeenCalled();
 	});
 	
-	test('getRequestId', () => {
+	test('getRequestIdWithParameter', () => {
 		jest.useFakeTimers();
 		jest.setSystemTime(mockDate);
-		const options = {
+		const payload: GetRequestIdRequest  = {
+			'client_id': 'client_id',
+			'redirect_uri': 'redirect_uri',
+			'response_type':'response_type',
+			'response_mode': 'fragment',
+			'scope': 'scope',
+			'nonce': 'nonce'
+		};
+		const serviceURL = `${authority}/authz-srv/authrequest/authz/generate`;
+		webAuth.getRequestId(payload);
+		jest.useRealTimers();
+		expect(httpSpy).toHaveBeenCalledWith(payload, serviceURL, false, 'POST');
+	});
+	
+	test('getRequestIdWithoutParameter', () => {
+		jest.useFakeTimers();
+		jest.setSystemTime(mockDate);
+		const defaultPayload: GetRequestIdRequest  = {
 			'client_id': window.webAuthSettings.client_id,
 			'redirect_uri': window.webAuthSettings.redirect_uri,
 			'response_type': window.webAuthSettings.response_type,
@@ -83,7 +100,7 @@ describe('Webauth functions without module or services', () => {
 		const serviceURL = `${authority}/authz-srv/authrequest/authz/generate`;
 		webAuth.getRequestId();
 		jest.useRealTimers();
-		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
+		expect(httpSpy).toHaveBeenCalledWith(defaultPayload, serviceURL, false, 'POST');
 	});
 	
 	test('getTenantInfo', () => {

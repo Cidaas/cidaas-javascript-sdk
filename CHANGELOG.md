@@ -4,7 +4,12 @@
 
 ### Changed
 - Update required functions to accept headers
-- expand resetPassword flow functions with optional handleResponseAsJson for compatibility with older cidaas version
+- Expand resetPassword flow functions with optional handleResponseAsJson for compatibility with older cidaas version
+- Define data model for getRequestId() function payload
+- Expand getRequestId() function with optional payload as parameter
+
+### Fix
+- Fix vulnerabilities from `npm audit`
 
 ## V4.3.0
 
