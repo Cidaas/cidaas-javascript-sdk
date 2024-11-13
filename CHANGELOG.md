@@ -3,7 +3,8 @@
 ## V4.3.1
 
 ### Changed
-- Update required functions to accept the headers and handleResponseAsJson
+- Update required functions to accept headers
+- expand resetPassword flow functions with optional handleResponseAsJson for compatibility with older cidaas version
 
 ## V4.3.0
 
