@@ -6,7 +6,7 @@
 - add initiateVerification(), configureVerification() & configureFriendlyName() functions to verification service
 - add actionGuestLogin() functions to login service
 - add userActionOnEnrollment() functions to general sdk functions
-
+- links changed for Authentication, Login, User, Token, Verification, Consent
 ### Changed
 - Update project structure
 - Update data model to mirror current cidaas api call

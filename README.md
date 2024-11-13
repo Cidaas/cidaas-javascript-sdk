@@ -114,7 +114,7 @@ Cidaas Javascript SDK features the following functionality:
 
 #### Authentication Functions
 
-The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. The functions for authentication could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/authentication/index.ts)
+The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. The functions for authentication could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/authentication/Authentication.ts)
 
 | SDK Functions                                                                    | Description                                                                                                                                                                    |
 |----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -124,7 +124,7 @@ The SDK offers multiple way to authenticate user. Whether using browser redirect
 
 #### Login Management
 
-The login functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/LoginService.ts). The SDK support the following login management functions:
+The login functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/login-service/LoginService.ts). The SDK support the following login management functions:
 
 | SDK Functions                                            | Description                                                                                                                                                                                         |
 |----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -136,7 +136,7 @@ The login functions could be found [here](https://github.com/Cidaas/cidaas-javas
 
 #### User Management
 
-The user functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/UserService.ts). The SDK support the following user management functions:
+The user functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/user-service/UserService.ts). The SDK support the following user management functions:
 
 | SDK Functions                                                                                                                       | Description                                                                                                                                                                                                                                 |
 |-------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -151,7 +151,7 @@ The user functions could be found [here](https://github.com/Cidaas/cidaas-javasc
 
 #### Token Management
 
-The token functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/TokenService.ts). The SDK support the following token management functions:
+The token functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/token-service/TokenService.ts). The SDK support the following token management functions:
 
 | SDK Functions                        | Description                                                                                         |
 |--------------------------------------|-----------------------------------------------------------------------------------------------------|
@@ -163,7 +163,7 @@ The token functions could be found [here](https://github.com/Cidaas/cidaas-javas
 
 #### Verification Management
 
-The verification functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/VerificationService.ts). The SDK support the following verification management functions:
+The verification functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/verification-service/VerificationService.ts). The SDK support the following verification management functions:
 
 | SDK Functions                                                       | Description                                                                           |
 |---------------------------------------------------------------------|---------------------------------------------------------------------------------------|
@@ -176,7 +176,7 @@ The verification functions could be found [here](https://github.com/Cidaas/cidaa
 
 #### Consent Management
 
-The consent functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/ConsentService.ts). The SDK support the following consent management functions:
+The consent functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/consent-service/ConsentService.ts). The SDK support the following consent management functions:
 
 | SDK Functions                                                             | Description                                                                                                           |
 |---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
