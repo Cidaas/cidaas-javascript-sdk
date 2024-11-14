@@ -86,7 +86,7 @@ describe('Webauth functions without module or services', () => {
 			"nonce": mockDate.getTime().toString()
 		}
 		const serviceURL = `${authority}/authz-srv/authrequest/authz/generate`;
-		webAuth.getRequestId(payload);
+		webAuth.getRequestId(option);
 		jest.useRealTimers();
 		expect(httpSpy).toHaveBeenCalledWith(payload, serviceURL, false, 'POST');
 	});
