@@ -240,10 +240,17 @@ export class WebAuth {
    * Each and every proccesses starts with requestId, it is an entry point to login or register. For getting the requestId, call **getRequestId()**.
    * @example
    * ```js
+   * // To get requestId using default configured settings, run the function without parameter
+   * cidaas.getRequestId().then(function (response) {
+   *   // the response will give you request id.
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });
+   * 
+   * // To get requestId using custom settings, run the function with custom setting(s) inside option parameter. Example below will only override client_id & redirect_uri
    * const option: GetRequestIdRequest = {
    *   'client_id': 'your client id',
-   *   'redirect_uri': 'your redirect url',
-   *   'scope': 'your scopes',  
+   *   'redirect_uri': 'your redirect url',  
    * }
    * cidaas.getRequestId(option).then(function (response) {
    *   // the response will give you request id.
@@ -254,23 +261,14 @@ export class WebAuth {
    */
   getRequestId(option?: GetRequestIdRequest) {
     const ui_locales = window.webAuthSettings.ui_locales
-    const defaultPayload: GetRequestIdRequest = {
-      'client_id': window.webAuthSettings.client_id,
-      'redirect_uri': window.webAuthSettings.redirect_uri,
-      'response_type': window.webAuthSettings.response_type,
-      'response_mode': window.webAuthSettings.response_mode,
-      'scope': window.webAuthSettings.scope,
+    const payload: GetRequestIdRequest = {
+      'client_id': option?.client_id ?? window.webAuthSettings.client_id,
+      'redirect_uri': option?.redirect_uri ?? window.webAuthSettings.redirect_uri,
+      'response_type': option?.response_type ?? (window.webAuthSettings.response_type || 'token'),
+      'response_mode': option?.response_mode ?? (window.webAuthSettings.response_mode || 'fragment'),
+      'scope': option?.scope ?? window.webAuthSettings.scope,
+      'nonce': new Date().getTime().toString(),
       ...(ui_locales && { ui_locales } || {})
-    }
-    const payload: GetRequestIdRequest = option ? option : defaultPayload;
-    if (!payload.response_type){
-      payload.response_type = 'token';
-    } 
-    if (!payload.response_mode){
-      payload.response_mode = 'fragment';
-    }
-    if (!payload.nonce){
-      payload.nonce = new Date().getTime().toString();
     }
     const serviceURL = window.webAuthSettings.authority + '/authz-srv/authrequest/authz/generate';
     return Helper.createHttpPromise(payload, serviceURL, false, "POST");

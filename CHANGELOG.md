@@ -1,5 +1,10 @@
 # Changelog
 
+## V4.3.2
+
+### Changed
+- Update getRequestId() to support overriding single option
+
 ## V4.3.1
 
 ### Changed
