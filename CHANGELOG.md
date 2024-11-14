@@ -9,7 +9,7 @@
 - Expand getRequestId() function with optional payload as parameter
 
 ### Fix
-- Fix vulnerabilities from `npm audit`
+- Fix redirection in readme file
 
 ## V4.3.0
 
