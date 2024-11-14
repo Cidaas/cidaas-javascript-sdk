@@ -25,7 +25,7 @@ const options = {
 	response_type: 'code',
 	scope: 'scope'
 };
-const defaultFragment = 'fragment';
+const defaultResponseMode = 'fragment';
 const webAuth = new WebAuth(options);
 const mockDate = new Date('1970-01-01T00:00:00Z');
 
@@ -81,7 +81,7 @@ describe('Webauth functions without module or services', () => {
 			'client_id': option.client_id,
 			'redirect_uri': option.redirect_uri,
 			'response_type': window.webAuthSettings.response_type,
-			"response_mode": defaultFragment,
+			"response_mode": defaultResponseMode,
 			"scope": window.webAuthSettings.scope,
 			"nonce": mockDate.getTime().toString()
 		}
@@ -98,7 +98,7 @@ describe('Webauth functions without module or services', () => {
 			'client_id': window.webAuthSettings.client_id,
 			'redirect_uri': window.webAuthSettings.redirect_uri,
 			'response_type': window.webAuthSettings.response_type,
-			"response_mode": defaultFragment,
+			"response_mode": defaultResponseMode,
 			"scope": window.webAuthSettings.scope,
 			"nonce": mockDate.getTime().toString()
 		};
