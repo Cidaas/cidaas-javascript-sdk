@@ -9,7 +9,7 @@
 - Expand getRequestId() function with optional payload as parameter
 
 ### Fix
-- Fix vulnerabilities from `npm audit`
+- Fix redirection in readme file
 
 ## V4.3.0
 
@@ -17,7 +17,7 @@
 - add initiateVerification(), configureVerification() & configureFriendlyName() functions to verification service
 - add actionGuestLogin() functions to login service
 - add userActionOnEnrollment() functions to general sdk functions
-- links changed for Authentication, Login, User, Token, Verification, Consent
+
 ### Changed
 - Update project structure
 - Update data model to mirror current cidaas api call
