@@ -32,7 +32,9 @@ test('register', () => {
 		password_echo: 'password_echo'
 	};
 	const headers = {
-		requestId: 'requestId'
+		requestId: 'requestId',
+    lat: 'latitude',
+    lon: 'longitude'
 	}
   const serviceURL = `${serviceBaseUrl}/register`;
   UserService.register(options, headers);
@@ -44,8 +46,9 @@ test('getInviteUserDetails: to use older api, if no callLatestApi is present', (
         invite_id: 'invite_id',
     };
     const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
-    UserService.getInviteUserDetails(options);
-    expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+    const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+    UserService.getInviteUserDetails(options, headers);
+    expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, headers);
 });
 
 test('getInviteUserDetails using latest api', () => {
@@ -54,8 +57,9 @@ test('getInviteUserDetails using latest api', () => {
     callLatestAPI: true
   };
   const serviceURL = `${serviceBaseUrlUsersActions}/invitations/${options.invite_id}`;
-  UserService.getInviteUserDetails(options);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  UserService.getInviteUserDetails(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, headers);
 });
 
 test('getInviteUserDetails using older api', () => {
@@ -65,7 +69,7 @@ test('getInviteUserDetails using older api', () => {
   };
   const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
   UserService.getInviteUserDetails(options);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, undefined);
 });
 
 
@@ -74,7 +78,9 @@ test('getCommunicationStatus', () => {
     sub: 'sub',
   };
 	const headers = {
-		requestId: 'requestId'
+		requestId: 'requestId',
+    lat: 'latitude',
+    lon: 'longitude'
 	}
   const serviceURL = `${serviceBaseUrl}/user/communication/status/${options.sub}`;
   UserService.getCommunicationStatus(options, headers);
@@ -89,8 +95,9 @@ test('initiateResetPassword', () => {
 		requestId: 'requestId'
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/initiate`;
-  UserService.initiateResetPassword(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  UserService.initiateResetPassword(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
 test('handleResetPassword', () => {
@@ -98,8 +105,9 @@ test('handleResetPassword', () => {
 		resetRequestId: 'resetRequestId',
 		code: 'code'
 	};
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
   const serviceURL = `${serviceBaseUrl}/resetpassword/validatecode`;
-  UserService.handleResetPassword(options);
+  UserService.handleResetPassword(options, undefined, headers);
 	expect(createFormSpy).toHaveBeenCalledWith(serviceURL, options);
 	expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -109,9 +117,10 @@ test('handleResetPassword with json response', () => {
 		resetRequestId: 'resetRequestId',
 		code: 'code'
 	};
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
   const serviceURL = `${serviceBaseUrl}/resetpassword/validatecode`;
-  UserService.handleResetPassword(options, true);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
+  UserService.handleResetPassword(options, true, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
 test('resetPassword', () => {
@@ -122,7 +131,8 @@ test('resetPassword', () => {
 		confirmPassword: 'confirmPassword'
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/accept`;
-  UserService.resetPassword(options);
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  UserService.resetPassword(options, undefined, headers);
 	expect(createFormSpy).toHaveBeenCalledWith(serviceURL, options);
 	expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -135,8 +145,9 @@ test('resetPassword with json response', () => {
 		confirmPassword: 'confirmPassword'
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/accept`;
-  UserService.resetPassword(options, true);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  UserService.resetPassword(options, true, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
 test('getDeduplicationDetails', () => {
@@ -144,8 +155,9 @@ test('getDeduplicationDetails', () => {
 		trackId: 'trackId'
 	};
   const serviceURL = `${serviceBaseUrl}/deduplication/info/${options.trackId}`;
-  UserService.getDeduplicationDetails(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'GET');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  UserService.getDeduplicationDetails(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'GET', undefined, headers);
 });
 
 test('deduplicationLogin', () => {
@@ -165,8 +177,9 @@ test('registerDeduplication', () => {
 		trackId: 'trackId'
 	};
   const serviceURL = `${serviceBaseUrl}/deduplication/register/${options.trackId}`;
-  UserService.registerDeduplication(options);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  UserService.registerDeduplication(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, 'POST', undefined, headers);
 });
 
 test('changePassword', () => {
@@ -258,6 +271,7 @@ test('userCheckExists', () => {
   };
   const queryParameter = `?webfinger=${options.webfinger}&rememberMe=${options.rememberMe}`
   const serviceURL = `${authority}/useractions-srv/userexistence/${options.requestId}${queryParameter}`;
-  UserService.userCheckExists(options);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  UserService.userCheckExists(options, headers);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', undefined, headers);
 });

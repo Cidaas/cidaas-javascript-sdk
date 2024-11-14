@@ -81,14 +81,14 @@ export function register(options: RegisterRequest, headers: HTTPRequestHeader) {
  * });
  * ```
  */
-export function getInviteUserDetails(options: GetInviteUserDetailsRequest) {
+export function getInviteUserDetails(options: GetInviteUserDetailsRequest, headers?: HTTPRequestHeader) {
   let _serviceURL: string = "";
   if(options.callLatestAPI){
     _serviceURL = window.webAuthSettings.authority + "/useractions-srv/invitations/" + options.invite_id;
   }else{
     _serviceURL = window.webAuthSettings.authority + "/users-srv/invite/info/" + options.invite_id;
   }
-  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET");
+  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
 }
 
 /**
@@ -126,9 +126,9 @@ export function getCommunicationStatus(options: getCommunicationStatusRequest, h
  * });
  * ```
  */
-export function initiateResetPassword(options: InitiateResetPasswordRequest) {
+export function initiateResetPassword(options: InitiateResetPasswordRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/resetpassword/initiate";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -147,7 +147,7 @@ export function initiateResetPassword(options: InitiateResetPasswordRequest) {
  * });
  * ```
  */
-export function handleResetPassword(options: HandleResetPasswordRequest, handleResponseAsJson?: boolean) {
+export function handleResetPassword(options: HandleResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
   try {
     const url = window.webAuthSettings.authority + "/users-srv/resetpassword/validatecode";
     if (!handleResponseAsJson) {
@@ -157,7 +157,7 @@ export function handleResetPassword(options: HandleResetPasswordRequest, handleR
       form.submit();
     } else {
       // older cidaas service handling return json object
-      return Helper.createHttpPromise(options, url, false, "POST");
+      return Helper.createHttpPromise(options, url, false, "POST", undefined, headers);
     }
   } catch (ex) {
     throw new CustomException(String(ex), 417);
@@ -182,7 +182,7 @@ export function handleResetPassword(options: HandleResetPasswordRequest, handleR
  * });
  * ```
  */
-export function resetPassword(options: ResetPasswordRequest, handleResponseAsJson?: boolean) {
+export function resetPassword(options: ResetPasswordRequest, handleResponseAsJson?: boolean, headers?: HTTPRequestHeader) {
   const url = window.webAuthSettings.authority + "/users-srv/resetpassword/accept";
   try {
     if (!handleResponseAsJson) {
@@ -192,7 +192,7 @@ export function resetPassword(options: ResetPasswordRequest, handleResponseAsJso
       form.submit();
     } else {
       // older cidaas service handling return json object
-      return Helper.createHttpPromise(options, url, false, "POST");
+      return Helper.createHttpPromise(options, url, false, "POST", undefined, headers);
     }
   } catch (ex) {
     throw new CustomException(String(ex), 417);
@@ -212,9 +212,9 @@ export function resetPassword(options: ResetPasswordRequest, handleResponseAsJso
  * });
  * ```
  */
-export function getDeduplicationDetails(options: GetDeduplicationDetailsRequest) {
+export function getDeduplicationDetails(options: GetDeduplicationDetailsRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/info/" + options.trackId;
-  return Helper.createHttpPromise(options, _serviceURL, false, "GET");
+  return Helper.createHttpPromise(options, _serviceURL, false, "GET", undefined, headers);
 }
 
 /**
@@ -252,9 +252,9 @@ export function deduplicationLogin(options: DeduplicationLoginRequest) {
  * });
  * ```
  */
-export function registerDeduplication(options: RegisterDeduplicationRequest) {
+export function registerDeduplication(options: RegisterDeduplicationRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/deduplication/register/" + options.trackId;
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST");
+  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", undefined, headers);
 }
 
 /**
@@ -427,7 +427,7 @@ export function deleteUserAccount(options: DeleteUserAccountRequest) {
  * });
  * ```
  */
-export function userCheckExists(options: UserCheckExistsRequest) {
+export function userCheckExists(options: UserCheckExistsRequest, headers?: HTTPRequestHeader) {
   let queryParameter = ''
   if (options.webfinger || options.rememberMe) {
     queryParameter += '?';
@@ -441,5 +441,5 @@ export function userCheckExists(options: UserCheckExistsRequest) {
     }
   }
   const _serviceURL = window.webAuthSettings.authority + "/useractions-srv/userexistence/" + options.requestId + queryParameter;
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", undefined, headers);
 }

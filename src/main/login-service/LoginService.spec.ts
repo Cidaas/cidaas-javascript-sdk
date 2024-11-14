@@ -146,7 +146,9 @@ test('progressiveRegistration', () => {
   const headers: ProgressiveRegistrationHeader = {
     requestId: 'requestId',
     trackId: 'trackId',
-    acceptlanguage: 'acceptlanguage'
+    acceptlanguage: 'acceptlanguage',
+    lat: 'lat value',
+    lon: 'lon value'
   }
   const serviceURL = `${serviceBaseUrl}/progressive/update/user`;
   LoginService.progressiveRegistration(options, headers);

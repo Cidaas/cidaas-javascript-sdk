@@ -1,4 +1,5 @@
 
+import { HTTPRequestHeader } from "../common/Common.model";
 import { Helper, CustomException } from "../common/Helper";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "./VerificationService.model";
 
@@ -45,9 +46,9 @@ export function initiateAccountVerification(options: InitiateAccountVerification
  * });
  * ```
  */
-export function verifyAccount(options: VerifyAccountRequest) {
+export function verifyAccount(options: VerifyAccountRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/account/verify";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -65,9 +66,9 @@ export function verifyAccount(options: VerifyAccountRequest) {
  * });
  * ```
  */
-export function getMFAList(options: GetMFAListRequest) {
+export function getMFAList(options: GetMFAListRequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/public/configured/list";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -85,9 +86,9 @@ export function getMFAList(options: GetMFAListRequest) {
  * });
  * ```
  */
-export function cancelMFA(options: CancelMFARequest) {
+export function cancelMFA(options: CancelMFARequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/cancel/" + options.type;
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", undefined, headers);
 }
 
 /**
@@ -105,9 +106,9 @@ export function cancelMFA(options: CancelMFARequest) {
  * });
  * ```
  */
-export function getAllVerificationList(access_token: string) {
+export function getAllVerificationList(access_token: string, headers?: HTTPRequestHeader) {
   const _serviceURL = `${window.webAuthSettings.authority}/verification-srv/config/list`;
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", access_token);
+  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", access_token, headers);
 }
 
 /**
@@ -152,9 +153,9 @@ export function initiateEnrollment(options: InitiateEnrollmentRequest, accessTok
  * });
  * ```
 */
-export function getEnrollmentStatus(status_id: string, accessToken: string) {
+export function getEnrollmentStatus(status_id: string, accessToken: string, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", accessToken);
+  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", accessToken, headers);
 }
 
 /**
@@ -229,13 +230,13 @@ export function checkVerificationTypeConfigured(options: CheckVerificationTypeCo
  * });
  * ```
  */
-export function initiateMFA(options: InitiateMFARequest, accessToken?: string) {
+export function initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
   // BREAKING TODO: remove accessToken parameter in the next major release
   if (accessToken) {
-    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken, headers);
   } 
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 
 /**
@@ -256,9 +257,9 @@ export function initiateMFA(options: InitiateMFARequest, accessToken?: string) {
   * });
   * ```
   */
-export function authenticateMFA(options: AuthenticateMFARequest) {
+export function authenticateMFA(options: AuthenticateMFARequest, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
+  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", undefined, headers);
 }
 
 /**

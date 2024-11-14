@@ -19,8 +19,9 @@ test('getConsentDetails', () => {
     sub: 'sub'
   };
   const serviceURL = `${serviceBaseUrl}/usage/public/info`;
-  ConsentService.getConsentDetails(option);
-  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  ConsentService.getConsentDetails(option, headers);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', undefined, headers);
 });
 
 test('acceptConsent', () => {
@@ -41,8 +42,9 @@ test('acceptConsent', () => {
     revoked: false
   };
   const serviceURL = `${serviceBaseUrl}/usage/accept`;
-  ConsentService.acceptConsent(option);
-  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  ConsentService.acceptConsent(option, headers);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', undefined, headers);
 });
 
 test('getConsentVersionDetails', () => {
@@ -51,8 +53,9 @@ test('getConsentVersionDetails', () => {
     locale: 'locale'
   };
   const serviceURL = `${serviceBaseUrl}/versions/details/${option.consentid}?locale=${option.locale}`;
-  ConsentService.getConsentVersionDetails(option);
-  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', option.access_token);
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  ConsentService.getConsentVersionDetails(option, headers);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', option.access_token, headers);
 });
 
 test('acceptScopeConsent', () => {
@@ -62,8 +65,9 @@ test('acceptScopeConsent', () => {
     scopes: ['scopes']
   };
   const serviceURL = `${serviceBaseUrlV1}/scope/accept`;
-  ConsentService.acceptScopeConsent(option);
-  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  ConsentService.acceptScopeConsent(option, headers);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', undefined, headers);
 });
 
 test('acceptClaimConsent', () => {
@@ -73,8 +77,9 @@ test('acceptClaimConsent', () => {
     accepted_claims: ['accepted_claims']
   };
   const serviceURL = `${serviceBaseUrlV1}/claim/accept`;
-  ConsentService.acceptClaimConsent(option);
-  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST');
+  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+  ConsentService.acceptClaimConsent(option, headers);
+  expect(httpSpy).toHaveBeenCalledWith(option, serviceURL, false, 'POST', undefined, headers);
 });
 
 test('revokeClaimConsent', () => {

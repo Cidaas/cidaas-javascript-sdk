@@ -56,15 +56,17 @@ test('loginPrecheck', () => {
 		track_id: 'track_id',
 	};
 	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${options.track_id}`;
-	TokenService.loginPrecheck(options);
-	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+	const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+	TokenService.loginPrecheck(options, headers);
+	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, headers);
 });
 
 test('getMissingFields', () => {
 	const trackId = 'trackId';
 	const serviceURL = `${serviceBaseUrl}/prelogin/metadata/${trackId}`;
-	TokenService.getMissingFields(trackId);
-	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
+	const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
+	TokenService.getMissingFields(trackId, headers);
+	expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, headers);
 });
 
 test('initiateDeviceCode', () => {
