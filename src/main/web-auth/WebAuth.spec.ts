@@ -25,6 +25,7 @@ const options = {
 	response_type: 'code',
 	scope: 'scope'
 };
+const defaultResponseMode = 'fragment';
 const webAuth = new WebAuth(options);
 const mockDate = new Date('1970-01-01T00:00:00Z');
 
@@ -72,16 +73,20 @@ describe('Webauth functions without module or services', () => {
 	test('getRequestIdWithParameter', () => {
 		jest.useFakeTimers();
 		jest.setSystemTime(mockDate);
-		const payload: GetRequestIdRequest  = {
-			'client_id': 'client_id',
-			'redirect_uri': 'redirect_uri',
-			'response_type':'response_type',
-			'response_mode': 'fragment',
-			'scope': 'scope',
-			'nonce': 'nonce'
+		const option: GetRequestIdRequest  = {
+			'client_id': 'custom client_id',
+			'redirect_uri': 'custom redirect_uri',
 		};
+		const payload: GetRequestIdRequest = {
+			'client_id': option.client_id,
+			'redirect_uri': option.redirect_uri,
+			'response_type': window.webAuthSettings.response_type,
+			"response_mode": defaultResponseMode,
+			"scope": window.webAuthSettings.scope,
+			"nonce": mockDate.getTime().toString()
+		}
 		const serviceURL = `${authority}/authz-srv/authrequest/authz/generate`;
-		webAuth.getRequestId(payload);
+		webAuth.getRequestId(option);
 		jest.useRealTimers();
 		expect(httpSpy).toHaveBeenCalledWith(payload, serviceURL, false, 'POST');
 	});
@@ -93,7 +98,7 @@ describe('Webauth functions without module or services', () => {
 			'client_id': window.webAuthSettings.client_id,
 			'redirect_uri': window.webAuthSettings.redirect_uri,
 			'response_type': window.webAuthSettings.response_type,
-			"response_mode": 'fragment',
+			"response_mode": defaultResponseMode,
 			"scope": window.webAuthSettings.scope,
 			"nonce": mockDate.getTime().toString()
 		};
