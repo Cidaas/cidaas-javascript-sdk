@@ -64,6 +64,8 @@ export interface AcceptConsentRequest {
   export interface AcceptScopeConsentRequest {
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;
+    /** List of scopes, which is included in the scope consent to be accepted */
+    scopes: string[];
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
@@ -74,13 +76,13 @@ export interface AcceptConsentRequest {
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
      * */
     q?: string;
-    /** List of scopes, which is included in the scope consent to be accepted */
-    scopes: string[];
   }
 
   export interface AcceptClaimConsentRequest {
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;
+    /** List of claims, which is included in the claim consent to be accepted */
+    accepted_claims: string[];
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
@@ -91,17 +93,15 @@ export interface AcceptConsentRequest {
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
      * */
     q?: string;
-    /** List of claims, which is included in the claim consent to be accepted */
-    accepted_claims: string[];
   }
   
   export interface RevokeClaimConsentRequest {
-    /** Access token needed to authorized api call */
-    access_token: string;
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;
     /** sub (id of user), who will revoke the consent */
     sub: string;
     /** List of claims, which is included in the claim consent to be revoked */
     revoked_claims: string[];
+    /** Access token needed to authorized api call. If not provided, access token from UserStorage will be used. */
+    access_token?: string;
   }

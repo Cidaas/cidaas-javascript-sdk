@@ -116,8 +116,8 @@ export interface GetAccessTokenRequest {
 }
 
 export class TokenIntrospectionRequest {
-  /** access token to be inspected */
-  token: string;
+  /** access token to be inspected. If not provided, access token from UserStorage will be used. */
+  token?: string;
   /** 
    * Optional hint about the type of the submitted token. 
    * BREAKING TODO: change type to TokenTypeHint only in next major version

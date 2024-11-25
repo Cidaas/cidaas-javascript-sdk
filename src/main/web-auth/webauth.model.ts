@@ -1,5 +1,5 @@
 export interface LogoutUserRequest {
-    /** Access token needed to authorized api call */
+    /** Access token needed to authorized api call. If not provided, access token from UserStorage will be used. */
     access_token: string;
 }
 

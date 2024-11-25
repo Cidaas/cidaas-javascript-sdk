@@ -416,7 +416,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getUserProfile(options: GetUserProfileRequest) {
+  getUserProfile(options?: GetUserProfileRequest) {
     return UserService.getUserProfile(options);
   }
 
@@ -443,7 +443,7 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  validateAccessToken(options: TokenIntrospectionRequest) {
+  validateAccessToken(options?: TokenIntrospectionRequest) {
     return TokenService.validateAccessToken(options);
   }
 
@@ -707,7 +707,7 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  changePassword(options: ChangePasswordRequest, access_token: string) {
+  changePassword(options: ChangePasswordRequest, access_token?: string) {
     return UserService.changePassword(options, access_token);
   }
 
@@ -719,7 +719,7 @@ export class WebAuth {
    * @param sub 
    * @returns 
    */
-  updateProfile(options: CidaasUser, access_token: string, sub: string) {
+  updateProfile(options: CidaasUser, access_token?: string, sub?: string) {
     return UserService.updateProfile(options, access_token, sub);
   }
 
@@ -779,7 +779,7 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  initiateLinkAccount(options: InitiateLinkAccountRequest, access_token: string) {
+  initiateLinkAccount(options: InitiateLinkAccountRequest, access_token?: string) {
     return UserService.initiateLinkAccount(options, access_token);
   }
 
@@ -789,7 +789,7 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  completeLinkAccount(options: CompleteLinkAccountRequest, access_token: string) {
+  completeLinkAccount(options: CompleteLinkAccountRequest, access_token?: string) {
     return UserService.completeLinkAccount(options, access_token);
   }
 
@@ -799,7 +799,7 @@ export class WebAuth {
    * @param sub 
    * @returns 
    */
-  getLinkedUsers(access_token: string, sub: string) {
+  getLinkedUsers(access_token?: string, sub?: string) {
     return UserService.getLinkedUsers(access_token, sub)
   }
 
@@ -809,7 +809,7 @@ export class WebAuth {
    * @param identityId 
    * @returns 
    */
-  unlinkAccount(access_token: string, identityId: string) {
+  unlinkAccount(access_token?: string, identityId?: string) {
     return UserService.unlinkAccount(access_token, identityId);
   }
 

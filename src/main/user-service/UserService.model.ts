@@ -2,8 +2,8 @@ import { ProcessingType } from "../common/Common.model";
 import { CidaasUser } from "../common/User.model";
 
 export interface GetUserProfileRequest {
-    /** Access token needed to authorized api call */
-    access_token: string
+    /** Access token needed to authorized api call. If not provided, access token from UserStorage will be used. */
+    access_token?: string
 }
 
 export interface RegisterRequest extends CidaasUser {
@@ -118,10 +118,10 @@ export interface InitiateLinkAccountRequest {
 }
 
 export interface DeleteUserAccountRequest {
-    /** Access token needed to authorized api call */
-    access_token?: string;
     /** Subject (User) identifier */
     sub: string;
+    /** Access token needed to authorized api call. If not provided, access token from UserStorage will be used. */
+    access_token?: string;
 }
 
 export interface CompleteLinkAccountRequest {

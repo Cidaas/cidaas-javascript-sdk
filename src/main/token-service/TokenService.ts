@@ -70,8 +70,8 @@ export async function getAccessToken(options: GetAccessTokenRequest) {
  * @example 
  * ```js
  * const options = {
- *   token: "your access token",
- *   token_type_hint: "accepted token type hints are access_token, id_token, refresh_token, sso",
+ *   roles: ['role1', 'role2'],
+ *   strictRoleValidation: true
  * }
  * 
  * cidaas.validateAccessToken(options)
@@ -83,12 +83,14 @@ export async function getAccessToken(options: GetAccessTokenRequest) {
  * });
  * ```
  */
-export function validateAccessToken(options: TokenIntrospectionRequest) {
-  if (!options.token) {
-    throw new CustomException("token cannot be empty", 417);
-  }
+export function validateAccessToken(options?: TokenIntrospectionRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.token);
+  if (options?.token) {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.token);
+  }
+  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+  });
 }
 
 /**

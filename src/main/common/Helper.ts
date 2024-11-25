@@ -80,6 +80,18 @@ export class Helper {
       }
     });
   }
+
+  static getAccessTokenFromUserStorage(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        window.usermanager.getUser().then( user => {
+          resolve(user?.access_token);
+        });
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  }
 }
 
 export class CustomException {
