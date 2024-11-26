@@ -146,7 +146,8 @@ describe('Webauth functions without module or services', () => {
 	
 	test('deleteDevice', () => {
 		const options: DeleteDeviceRequest = {
-			device_id: 'device_id'
+			device_id: 'device_id',
+			userAgent: window.navigator.userAgent
 		};
 		const acccessToken = 'accessToken';
 		const serviceURL = `${authority}/device-srv/device/${options.device_id}`;
@@ -181,7 +182,7 @@ describe('Webauth functions without module or services', () => {
 				to_date: ''
 			}
 		};
-		const accessToken = '';
+		const accessToken = 'accessToken';
 		const serviceURL = `${authority}/activity-streams-srv/user-activities`;
 		webAuth.getUserActivities(options, accessToken);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
@@ -882,7 +883,8 @@ describe('Verification service functions', () => {
 		const accessToken = 'accessToken';
 		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
 		webAuth.initiateMFA(options, accessToken, headers);
-		expect(initiateMFASpy).toHaveBeenCalledWith(options, accessToken, headers);
+		// access token is not needed for initiateMFA and will be removed in the next major release
+		expect(initiateMFASpy).toHaveBeenCalledWith(options, undefined, headers);
 	});
 
 	test('authenticateMFA', () => {

@@ -137,7 +137,8 @@ test('initiateMFA with access token', () => {
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
   VerificationService.initiateMFA(options, accessToken);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", accessToken, undefined);
+  // access token is not needed for initiateMFA and will be removed in the next major release
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, undefined);
 });
 
 test('authenticateMFA', () => {
