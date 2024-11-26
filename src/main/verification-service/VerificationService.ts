@@ -95,9 +95,7 @@ export function cancelMFA(options: CancelMFARequest, headers?: HTTPRequestHeader
  * To get list of all verification type configured, call **getAllVerificationList()**. access_token must be passed as function parameter.
  * @example
  * ```js
- * const access_token = "your access token";
- * 
- * cidaas.getAllVerificationList(access_token)
+ * cidaas.getAllVerificationList()
  * .then(function (response) {
  *   // type your code here
  * })
@@ -106,9 +104,14 @@ export function cancelMFA(options: CancelMFARequest, headers?: HTTPRequestHeader
  * });
  * ```
  */
-export function getAllVerificationList(access_token: string, headers?: HTTPRequestHeader) {
+export function getAllVerificationList(access_token?: string, headers?: HTTPRequestHeader) {
   const _serviceURL = `${window.webAuthSettings.authority}/verification-srv/config/list`;
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", access_token, headers);
+  if (access_token) {
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", access_token, headers);
+  }
+  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", accessToken, headers);
+  });
 }
 
 /**
@@ -116,7 +119,6 @@ export function getAllVerificationList(access_token: string, headers?: HTTPReque
  * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/branches/master/f85aef6754714-initiate-physical-verification-setup for more details.
  * @example
  * ```js
- * const access_token = "your access token";
  * const options = {
  *   verification_type: 'one of verification_type such as fido2, face, ivr',
  *   deviceInfo: {
@@ -125,7 +127,7 @@ export function getAllVerificationList(access_token: string, headers?: HTTPReque
  *  }
  * }
  * 
- * cidaas.initiateEnrollment(options, access_token)
+ * cidaas.initiateEnrollment(options)
  * .then(function (response) {
  *   // type your code here
  * })
@@ -134,9 +136,14 @@ export function getAllVerificationList(access_token: string, headers?: HTTPReque
  * });
  * ```
  */
-export function initiateEnrollment(options: InitiateEnrollmentRequest, accessToken: string) {
+export function initiateEnrollment(options: InitiateEnrollmentRequest, access_token?: string) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/setup/initiate/" + options.verification_type;
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", accessToken);
+  if (access_token) {
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", access_token);
+  }
+  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", accessToken);
+  });
 }
 
 /**
@@ -144,7 +151,7 @@ export function initiateEnrollment(options: InitiateEnrollmentRequest, accessTok
  * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/branches/master/b06447d02d8e0-get-status-of-physical-verification-setup-configuration for more details.
  * @example
  * ```js
- * cidaas.getEnrollmentStatus('statusId from initiateEnrollment()', 'your access token')
+ * cidaas.getEnrollmentStatus('statusId from initiateEnrollment()')
  * .then(function (response) {
  *   // type your code here
  * })
@@ -153,9 +160,14 @@ export function initiateEnrollment(options: InitiateEnrollmentRequest, accessTok
  * });
  * ```
 */
-export function getEnrollmentStatus(status_id: string, accessToken: string, headers?: HTTPRequestHeader) {
+export function getEnrollmentStatus(status_id: string, access_token?: string, headers?: HTTPRequestHeader) {
   const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/notification/status/" + status_id;
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", accessToken, headers);
+  if (access_token) {
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", access_token, headers);
+  }
+  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", accessToken, headers);
+  });
 }
 
 /**
@@ -212,7 +224,6 @@ export function checkVerificationTypeConfigured(options: CheckVerificationTypeCo
  * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2a3ea581bb249-initiate-verification for more details.
  * @example
  * ```js
- * const access_token = "your access token";
  * const options = {
  *   request_id: 'your request id',
  *   usage_type: 'PASSWORDLESS_AUTHENTICATION',
@@ -221,7 +232,7 @@ export function checkVerificationTypeConfigured(options: CheckVerificationTypeCo
  *  }
  * }
  * 
- * cidaas.initiateMFA(options, access_token)
+ * cidaas.initiateMFA(options)
  * .then(function (response) {
  *   // type your code here
  * })
@@ -231,11 +242,8 @@ export function checkVerificationTypeConfigured(options: CheckVerificationTypeCo
  * ```
  */
 export function initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) {
-  const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
   // BREAKING TODO: remove accessToken parameter in the next major release
-  if (accessToken) {
-    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken, headers);
-  } 
+  const _serviceURL = window.webAuthSettings.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
   return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 }
 

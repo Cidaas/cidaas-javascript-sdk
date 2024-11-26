@@ -54,7 +54,6 @@ export function acceptConsent(options: AcceptConsentRequest, headers?: HTTPReque
  * this.cidaas.getConsentVersionDetails({
  *   consentid: 'your consent id',
  *   locale: 'browser accept language or custom language',
- *   access_token: 'your access token',
  * }).then((response) => {
  *   // type your code here
  * }).catch((err) => {

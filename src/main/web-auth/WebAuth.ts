@@ -295,13 +295,18 @@ export class WebAuth {
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/3b5ce6a54bf29-logout for more details.
    * @example
    * ```js
-   * cidaas.logoutUser({
-   *   access_token : 'your accessToken'
-   * });
+   * cidaas.logoutUser();
    * ```
    */
-  logoutUser(options: LogoutUserRequest) {
-    window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
+  logoutUser(options?: LogoutUserRequest) {
+    if (options && options.access_token) {
+      window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
+    } else {
+      Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+        window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + accessToken + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
+      });
+    }
+    
   }
 
   /**
@@ -328,19 +333,22 @@ export class WebAuth {
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2a2feed70303c-get-device-by-user for more details.
    * @example
    * ```js
-   * const options = null; // the payload is deprecated and will be removed in the next major release
-   * const accessToken = 'your access token';
-   * cidaas.getDevicesInfo(options, accessToken).then(function (resp) {
+   * cidaas.getDevicesInfo().then(function (resp) {
    *   // the response will give you devices informations.
    * }).catch(function(ex) {
    *   // your failure code here
    * });
    * ```
    */
-  getDevicesInfo(options: void, accessToken: string) {
-    options = undefined;
+  getDevicesInfo(options?: void, access_token?: string) {
+    // BREAKING TODO: remove options parameter in the next major release
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
-    return Helper.createHttpPromise(options, _serviceURL,false, "GET", accessToken);
+    if (access_token) {
+      Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
+    }
+    Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      Helper.createHttpPromise(undefined, _serviceURL, false, "GET", accessToken);
+    });
   }
 
   /**
@@ -351,21 +359,22 @@ export class WebAuth {
    * const options = {
    *   device_id: 'id of device associated to the client.' // call **getDevicesInfo()** to get List of device ids and its details.
    * };
-   * const accessToken = 'your access token';
-   * cidaas.deleteDevice(options, accessToken).then(function (resp) {
+   * cidaas.deleteDevice(options).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
    * });
    * ```
    */
-  deleteDevice(options: DeleteDeviceRequest, accessToken: string) {
+  deleteDevice(options: DeleteDeviceRequest, access_token?: string) {
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
-    options.userAgent = window.navigator.userAgent;
-    if (window.navigator.userAgent) {
-      return Helper.createHttpPromise(options, _serviceURL,false, "DELETE", accessToken);
+    const payload: DeleteDeviceRequest = window.navigator.userAgent ? { ...options, userAgent: window.navigator.userAgent } : undefined;
+    if (access_token) {
+      return Helper.createHttpPromise(payload, _serviceURL,false, "DELETE", access_token);
     }
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "DELETE", accessToken);
+    Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.createHttpPromise(payload, _serviceURL,false, "DELETE", accessToken);
+    });
   }
 
   /**
@@ -735,17 +744,21 @@ export class WebAuth {
    *     to:date: 'date in UTC format'
    *   }
    * };
-   * const accessToken = 'your access token';
-   * cidaas.getUserActivities(options, accessToken).then(function (resp) {
+   * cidaas.getUserActivities(options).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
    * });
    * ```
    */
-  getUserActivities(options: GetUserActivitiesRequest, accessToken: string) {
+  getUserActivities(options: GetUserActivitiesRequest, access_token?: string) {
     const serviceURL = window.webAuthSettings.authority + '/activity-streams-srv/user-activities';
-    return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
+    if (access_token) {
+      return Helper.createHttpPromise(options, serviceURL, false, 'POST', access_token);
+    }
+    Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
+    });
   }
 
   /**
@@ -769,7 +782,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  getAllVerificationList(access_token: string, headers?: HTTPRequestHeader) {
+  getAllVerificationList(access_token?: string, headers?: HTTPRequestHeader) {
     return VerificationService.getAllVerificationList(access_token, headers);
   }
 
@@ -822,15 +835,14 @@ export class WebAuth {
    *   photo: yourImageFile,
    *   filename: 'name of your image file'
    * };
-   * const accessToken = 'your access token';
-   * cidaas.updateProfileImage(options, accessToken).then(function (resp) {
+   * cidaas.updateProfileImage(options).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
    * });
    * ```
    */
-  updateProfileImage(options: UpdateProfileImageRequest, access_token: string) {
+  updateProfileImage(options: UpdateProfileImageRequest, access_token?: string) {
     const serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
 
     const form = document.createElement('form');
@@ -852,27 +864,34 @@ export class WebAuth {
     formdata.set('image_key', options.image_key);
     formdata.set('photo', options.photo, options.filename);
 
-    return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', access_token, null, formdata);
+    if (access_token) {
+      return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', access_token, null, formdata);
+    }
+    Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', accessToken, null, formdata);
+    });
 
   }
 
   /**
    * enrollVerification
    * @param options 
+   * @param access_token
    * @returns 
    */
-  initiateEnrollment(options: InitiateEnrollmentRequest, accessToken: string) {
-    return VerificationService.initiateEnrollment(options, accessToken);
+  initiateEnrollment(options: InitiateEnrollmentRequest, access_token?: string) {
+    return VerificationService.initiateEnrollment(options, access_token);
   }
 
   /**
    * update the status of notification
-   * @param status_id 
+   * @param status_id
+   * @param access_token
    * @param headers 
    * @returns 
    */
-  getEnrollmentStatus(status_id: string, accessToken: string, headers?: HTTPRequestHeader) {
-    return VerificationService.getEnrollmentStatus(status_id, accessToken, headers);
+  getEnrollmentStatus(status_id: string, access_token?: string, headers?: HTTPRequestHeader) {
+    return VerificationService.getEnrollmentStatus(status_id, access_token, headers);
   }
 
   /**
@@ -987,11 +1006,8 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) {
-    // BREAKING TODO: remove accessToken parameter in the next major release
-    if (accessToken) {
-      return VerificationService.initiateMFA(options, accessToken, headers);
-    } 
+  initiateMFA(options: InitiateMFARequest, access_token?: string, headers?: HTTPRequestHeader) {
+    // BREAKING TODO: remove access_token parameter in the next major release
     return VerificationService.initiateMFA(options, undefined, headers);
   }
 
