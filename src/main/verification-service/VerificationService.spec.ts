@@ -34,15 +34,56 @@ test('verifyAccount', () => {
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, headers);
 });
 
-test('getMFAList', () => {
-  const options: GetMFAListRequest = {
-    email: 'email',
-    request_id: 'request_id'
-  };
-  const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
-  const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  VerificationService.getMFAList(options, headers);
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, headers);
+describe('getMFAList', () => {
+  test('getMFAListWithEmail', () => {
+    const options: GetMFAListRequest = {
+      request_id: 'request_id',
+      email: 'email'
+    };
+    const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
+    VerificationService.getMFAList(options);
+    expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, undefined);
+  });
+  
+  test('getMFAListWithMobile', () => {
+    const options: GetMFAListRequest = {
+      request_id: 'request_id',
+      mobile_number: 'mobile_number'
+    };
+    const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
+    VerificationService.getMFAList(options);
+    expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, undefined);
+  });
+  
+  test('getMFAListWithUsername', () => {
+    const options: GetMFAListRequest = {
+      request_id: 'request_id',
+      username: 'username'
+    };
+    const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
+    VerificationService.getMFAList(options);
+    expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, undefined);
+  });
+  
+  test('getMFAListWithMaskedSub', () => {
+    const options: GetMFAListRequest = {
+      request_id: 'request_id',
+      sub: 'masked sub'
+    };
+    const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
+    VerificationService.getMFAList(options);
+    expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, undefined);
+  });
+
+  test('getMFAListWithQ', () => {
+    const options: GetMFAListRequest = {
+      request_id: 'request_id',
+      q: 'masked sub'
+    };
+    const serviceURL = `${serviceBaseUrl}/v2/setup/public/configured/list`;
+    VerificationService.getMFAList(options);
+    expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, undefined);
+  });
 });
 
 test('cancelMFA', () => {
