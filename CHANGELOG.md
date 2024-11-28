@@ -1,5 +1,10 @@
 # Changelog
 
+## V4.3.3
+
+## Changed
+- Update GetMFAListRequest to support more parameters
+
 ## V4.3.2
 
 ### Changed
