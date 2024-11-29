@@ -1,5 +1,5 @@
 import { WebAuth } from './WebAuth';
-import { GenerateTokenFromCodeRequest, GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { GenerateTokenFromCodeRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
 import * as ConsentService from '../consent-service/ConsentService';
 import { Helper } from '../common/Helper';
 import * as LoginService from '../login-service/LoginService';

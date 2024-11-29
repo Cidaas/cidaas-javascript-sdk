@@ -1,4 +1,4 @@
-import { GenerateTokenFromCodeRequest, GetAccessTokenRequest, TokenIntrospectionRequest } from './TokenService.model';
+import { GenerateTokenFromCodeRequest, TokenIntrospectionRequest } from './TokenService.model';
 import { Helper } from '../common/Helper';
 import * as TokenService from './TokenService';
 
