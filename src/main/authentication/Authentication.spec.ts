@@ -93,14 +93,8 @@ test('popupSignOutCallback', () => {
 	expect(popupSignOutCallbackSpy).toHaveBeenCalled();
 });
 
-test('silentSignIn', () => {
-    const silentSignInSpy = jest.spyOn(userManager, 'signinSilent').mockResolvedValue(user);
-	authentication.silentSignIn();
-	expect(silentSignInSpy).toHaveBeenCalled();
-});
-
-test('silentSignInCallback', () => {
-    const silentSignInCallbackSpy = jest.spyOn(userManager, 'signinSilentCallback').mockResolvedValue();
-	authentication.silentSignInCallback();
-	expect(silentSignInCallbackSpy).toHaveBeenCalled();
+test('renewToken', () => {
+    const renewTokenSpy = jest.spyOn(userManager, 'signinSilent').mockResolvedValue(user);
+	authentication.renewToken();
+	expect(renewTokenSpy).toHaveBeenCalled();
 });

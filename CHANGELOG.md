@@ -1,5 +1,21 @@
 # Changelog
 
+## V5.0.0
+
+### Changed
+- **Breaking** Rework token & refresh token flow
+- **Breaking** Rework renewToken() to store the newly generated token in user storage
+- **Breaking** Rename getUserInfo() to getUserInfoFromStorage()
+- **Breaking** Rename getAccessToken() to generateTokenFromCode()
+
+### Removed
+- **Breaking** Removed silentSignin() & silentSignInCallback() function
+
+## V4.3.3
+
+## Changed
+- Update GetMFAListRequest to support more parameters
+
 ## V4.3.2
 
 ### Changed

@@ -5,7 +5,7 @@ import * as TokenService from "../token-service/TokenService";
 import * as VerificationService from "../verification-service/VerificationService";
 import * as ConsentService from "../consent-service/ConsentService";
 
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { GenerateTokenFromCodeRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
@@ -14,7 +14,7 @@ import { ChangePasswordRequest, CompleteLinkAccountRequest, DeduplicationLoginRe
 import { HTTPRequestHeader } from "../common/Common.model";
 import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
-import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
+import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions, RenewTokenOptions } from "../authentication/Authentication.model";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
 import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, GetRequestIdRequest } from "./webauth.model";
 
@@ -76,18 +76,17 @@ export class WebAuth {
   }
 
   /**
-   * Generate and navigate to authz url in an iFrame.
-   * On successful sign in, authenticated user is returned
+   * On successful token renewal, authenticated user is returned
    *
-   * @param {SilentSignInOptions} options options to over-ride the client config for silent sign in
+   * @param {RenewTokenOptions} options options to over-ride the client config for renewing token
    * @returns {Promise<User>} Authenticated user
    * @throws error if unable to get the parse and get user
    */
-  silentSignIn(options?: SilentSignInOptions): Promise<User> {
+  renewToken(options?: RenewTokenOptions): Promise<User> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.silentSignIn(options);
+    return window.authentication.renewToken(options);
   }
 
   /**
@@ -131,21 +130,12 @@ export class WebAuth {
   }
 
   /**
-   * Returns a promise to notify the parent window of response from authz service
-   * @param {string} url optional url to check authz response, if none window.location is used
-   */
-  silentSignInCallback(url?: string) {
-    if (!window.webAuthSettings || !window.authentication) {
-      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
-    }
-    return window.authentication.silentSignInCallback(url);
-  }
-
-  /**
-   * To get the user profile information by using oidc-client-ts library, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
+   * To get the user informations from defined UserStorage, call **getUserInfoFromStorage()**. 
+   * This will fetch informations about the authenticated user such as tokens & user profiles, which has been stored in predefined user storage based on cidaas configuration. (default is session storage)
+   * 
    * @example
    * ```js
-   * cidaas.getUserInfo().then(function (response) {
+   * cidaas.getUserInfoFromStorage().then(function (response) {
    *   // the response will give you profile details.
    * }).catch(function(ex) {
    *   // your failure code here
@@ -153,7 +143,7 @@ export class WebAuth {
    * ```
    * @return {Promise<User|null>} returns authenticated user if present, else null
    */
-  async getUserInfo(): Promise<User | null> {
+  async getUserInfoFromStorage(): Promise<User | null> {
     if (!window.usermanager) {
       return Promise.reject(new CustomException("UserManager cannot be empty", 417));
     }
@@ -430,21 +420,12 @@ export class WebAuth {
   }
 
   /**
-   * renew token using refresh token
+   * generate token(s) from code
    * @param options 
    * @returns 
    */
-  renewToken(options: RenewTokenRequest) {
-    return TokenService.renewToken(options);
-  }
-
-  /**
-   * get access token from code
-   * @param options 
-   * @returns 
-   */
-  getAccessToken(options: GetAccessTokenRequest) {
-    return TokenService.getAccessToken(options);
+  generateTokenFromCode(options: GenerateTokenFromCodeRequest) {
+    return TokenService.generateTokenFromCode(options);
   }
 
   /**

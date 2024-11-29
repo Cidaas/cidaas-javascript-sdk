@@ -76,18 +76,6 @@ export interface Consent {
     creation_time: string
 }
 
-export interface RenewTokenRequest {
-  /** One time valid code that is used for issuing a new token */
-  refresh_token: string;
-  /** Unique identifier of client app, can be found in app setting under admin ui */
-  client_id?: string;
-  /** 
-   * Type of grant used in token request 
-   * BREAKING TODO: change type to GrantType only in next major version
-  */
-  grant_type?: GrantType | string;
-}
-
 /** Type of grant used in token request */
 export enum GrantType {
   AuthorizationCode = 'authorization_code',
@@ -99,7 +87,7 @@ export enum GrantType {
   DeviceCode = 'urn:ietf:params:oauth:grant-type:device_code'
 }
 
-export interface GetAccessTokenRequest {
+export interface GenerateTokenFromCodeRequest {
   /** The code which you receive while using authorization code flow */
   code: string;
   /** When we choose PKCE method to generate token, we need to pass code_verifier which is a cryptographically random string */

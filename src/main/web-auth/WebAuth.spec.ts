@@ -1,5 +1,5 @@
 import { WebAuth } from './WebAuth';
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { GenerateTokenFromCodeRequest, GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
 import * as ConsentService from '../consent-service/ConsentService';
 import { Helper } from '../common/Helper';
 import * as LoginService from '../login-service/LoginService';
@@ -58,9 +58,9 @@ describe('Webauth functions without module or services', () => {
 		new WebAuth(options);
 	});
 
-	test('getUserInfo', () => {
+	test('getUserInfoFromStorage', () => {
 		const getUserSpy = jest.spyOn(window.usermanager, 'getUser');
-		webAuth.getUserInfo();
+		webAuth.getUserInfoFromStorage();
 		expect(getUserSpy).toHaveBeenCalled();
 	});
 	
@@ -249,10 +249,10 @@ describe('Authentication module functions', () => {
 		expect(popupSignInSpy).toHaveBeenCalled();
 	});
 	
-	test('silentSignIn', () => {
-		const silentSignInSpy = jest.spyOn(window.authentication, 'silentSignIn').mockResolvedValue(null);
-		webAuth.silentSignIn();
-		expect(silentSignInSpy).toHaveBeenCalled();
+	test('renewToken', () => {
+		const renewTokenSpy = jest.spyOn(window.authentication, 'renewToken').mockResolvedValue(null);
+		webAuth.renewToken();
+		expect(renewTokenSpy).toHaveBeenCalled();
 	});
 	
 	test('registerWithBrowser', () => {
@@ -271,12 +271,6 @@ describe('Authentication module functions', () => {
 		const popupSignInCallbackSpy = jest.spyOn(window.authentication, 'popupSignInCallback').mockResolvedValue(null);
 		webAuth.popupSignInCallback();
 		expect(popupSignInCallbackSpy).toHaveBeenCalled();
-	});
-	
-	test('silentSignInCallback', () => {
-		const silentSignInCallbackSpy = jest.spyOn(window.authentication, 'silentSignInCallback').mockResolvedValue(null);
-		webAuth.silentSignInCallback();
-		expect(silentSignInCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('logout', () => {
@@ -525,28 +519,17 @@ describe('User service functions', () => {
 
 // Token Service
 describe('Token service functions', () => {
-	test('renewToken', () => {
-		const renewTokenSpy = jest.spyOn(TokenService, 'renewToken').mockImplementation();
-		const options: RenewTokenRequest = {
-			client_id: '',
-			grant_type: '',
-			refresh_token: ''
-		}
-		webAuth.renewToken(options);
-		expect(renewTokenSpy).toHaveBeenCalledWith(options);
-	});
-	
-	test('getAccessToken', () => {
-		const getAccessTokenSpy = jest.spyOn(TokenService, 'getAccessToken').mockImplementation();
-		const options: GetAccessTokenRequest = {
+	test('generateTokenFromCode', () => {
+		const generateTokenFromCodeSpy = jest.spyOn(TokenService, 'generateTokenFromCode').mockImplementation();
+		const options: GenerateTokenFromCodeRequest = {
 			code: '',
 			code_verifier: '',
 			client_id: '',
 			grant_type: '',
 			redirect_uri: ''
 		}
-		webAuth.getAccessToken(options);
-		expect(getAccessTokenSpy).toHaveBeenCalledWith(options);
+		webAuth.generateTokenFromCode(options);
+		expect(generateTokenFromCodeSpy).toHaveBeenCalledWith(options);
 	});
 	
 	test('validateAccessToken', () => {

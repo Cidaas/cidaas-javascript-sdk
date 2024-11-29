@@ -5,7 +5,8 @@ import {
     LogoutRedirectOptions,
     PopupSignInOptions,
     PopupSignOutOptions,
-    SilentSignInOptions, LogoutResponse,
+    LogoutResponse,
+    RenewTokenOptions,
 } from './Authentication.model';
 
 export * from './Authentication.model';
@@ -159,35 +160,21 @@ export class Authentication {
     }
 
     /**
-     * **silentSignIn()** will open the hosted login page in an iframe. 
-     * this function could only be called from the same domain. Cross Domain is not supported for security purpose.
+     * **renewToken()** will update user information in user storage with a new token, based on refresh token that is stored in the storage.
      * @example
      * ```js
-     * cidaas.silentSignIn().then(function (response) {
+     * cidaas.renewToken().then(function (response) {
      *   // the response will give you user details.
      * }).catch(function(ex) {
      *  // your failure code here
      * });
      * ```
-     * @param {SilentSignInOptions} options options to over-ride the client config for silent sign in
+     * @param {RenewTokenOptions} options options to over-ride the client config for renewing token
      */
-    silentSignIn(options?: SilentSignInOptions) {
+    renewToken(options?: RenewTokenOptions) {
         return this.userManager.signinSilent({
             silentRequestTimeoutInSeconds: 60,
             ...( options && { ...options } || {})
         });
-    }
-
-    /**
-     * To complete the silent login process, call **silentSignInCallback()** from the iframe. This will complete the login process in iframe.
-     * @example
-     * ```js
-     * cidaas.silentSignInCallback();
-     *
-     * ```
-     * @param {string} url optional url to read sign in state from
-     */
-    silentSignInCallback(url?: string) {
-        return this.userManager.signinSilentCallback(url);
     }
 }
