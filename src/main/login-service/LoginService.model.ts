@@ -71,12 +71,12 @@ export interface PasswordlessLoginRequest {
      * */
     verificationType: VerificationType | string;
     /** 
-     * Masked sub (id of user), who will accept the consent. 
+     * Masked sub (id of user)
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
      * */
     sub?: string;
     /** 
-     * Masked sub (id of user), who will accept the consent. 
+     * Masked sub (id of user)
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
      * */
     q?: string;

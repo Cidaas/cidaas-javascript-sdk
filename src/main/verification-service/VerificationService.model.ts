@@ -42,10 +42,24 @@ export interface VerifyAccountRequest {
 }
 
 export interface GetMFAListRequest {
-  /** email of user */
-  email: string;
   /** Request id returned from the authorization call */
   request_id: string;
+  /** Email of the user */
+  email?: string;
+  /** Mobile number of the user */
+  mobile_number?: string;
+  /** Username of the user */
+  username?: string;
+  /** 
+   * Masked sub (id of user)
+   * Either sub or q have to be provided, depends on what is given from the query parameter. 
+   * */
+  sub?: string;
+  /** 
+   * Masked sub (id of user)
+   * Either sub or q have to be provided, depends on what is given from the query parameter. 
+   * */
+  q?: string;
 }
 
 export interface CancelMFARequest {
