@@ -2,6 +2,8 @@
 
 ## V5.0.0
 
+If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
+
 ### Changed
 - **Breaking** Rework token & refresh token flow
 - **Breaking** Rework renewToken() to store the newly generated token in user storage
@@ -114,7 +116,7 @@
 
 ## V4.0.0
 
-If you are upgrading from v3.x.x,  please see ['UPGRADING.md'](UPGRADING.md)
+If you are upgrading from v3.x.x,  please see [UPGRADING.md](UPGRADING_V4.md)
 
 ### Fixed
 - fix vulnerabilities from `npm audit`
