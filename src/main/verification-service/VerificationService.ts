@@ -109,7 +109,7 @@ export function getAllVerificationList(access_token?: string, headers?: HTTPRequ
   if (access_token) {
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", access_token, headers);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", accessToken, headers);
   });
 }
@@ -141,7 +141,7 @@ export function initiateEnrollment(options: InitiateEnrollmentRequest, access_to
   if (access_token) {
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", accessToken);
   });
 }
@@ -165,7 +165,7 @@ export function getEnrollmentStatus(status_id: string, access_token?: string, he
   if (access_token) {
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", access_token, headers);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "POST", accessToken, headers);
   });
 }

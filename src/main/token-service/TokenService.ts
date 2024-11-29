@@ -60,7 +60,7 @@ export function validateAccessToken(options?: TokenIntrospectionRequest) {
   if (options?.token) {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
   });
 }

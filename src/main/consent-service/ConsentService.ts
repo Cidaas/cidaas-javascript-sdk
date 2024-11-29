@@ -122,7 +122,7 @@ export function revokeClaimConsent(options: RevokeClaimConsentRequest) {
   if (options.access_token) {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
   });
 }

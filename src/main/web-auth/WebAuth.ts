@@ -292,7 +292,7 @@ export class WebAuth {
     if (options && options.access_token) {
       window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
     } else {
-      Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
         window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + accessToken + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
       });
     }
@@ -362,7 +362,7 @@ export class WebAuth {
     if (access_token) {
       return Helper.createHttpPromise(payload, _serviceURL,false, "DELETE", access_token);
     }
-    Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
       return Helper.createHttpPromise(payload, _serviceURL,false, "DELETE", accessToken);
     });
   }
@@ -737,7 +737,7 @@ export class WebAuth {
     if (access_token) {
       return Helper.createHttpPromise(options, serviceURL, false, 'POST', access_token);
     }
-    Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
       return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
     });
   }
@@ -848,7 +848,7 @@ export class WebAuth {
     if (access_token) {
       return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', access_token, null, formdata);
     }
-    Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
       return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', accessToken, null, formdata);
     });
 

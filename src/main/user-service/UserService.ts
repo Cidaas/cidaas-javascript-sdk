@@ -21,7 +21,7 @@ export function getUserProfile(options?: GetUserProfileRequest) {
   if (options?.access_token) {
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", options.access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", accessToken);
   });
 }
@@ -279,7 +279,7 @@ export function changePassword(options: ChangePasswordRequest, access_token?: st
   if (access_token) {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
   });
 }
@@ -310,7 +310,7 @@ export function updateProfile(options: CidaasUser, access_token?: string, sub?: 
   if (access_token) {
     return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(options, _serviceURL, false, "PUT", accessToken);
   });
 }
@@ -337,7 +337,7 @@ export function initiateLinkAccount(options: InitiateLinkAccountRequest, access_
   if (access_token) {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
   });
 }
@@ -362,7 +362,7 @@ export function completeLinkAccount(options: CompleteLinkAccountRequest, access_
   if (access_token) {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
   });
 }
@@ -391,7 +391,7 @@ export function getLinkedUsers(access_token?: string, sub?: string) {
   if (access_token) {
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", accessToken);
   });
 }
@@ -419,7 +419,7 @@ export function unlinkAccount(access_token?: string, identityId?: string) {
   if (access_token) {
     return Helper.createHttpPromise(undefined, _serviceURL, false, "POST", access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(undefined, _serviceURL, false, "POST", accessToken);
   });
 }
@@ -445,7 +445,7 @@ export function deleteUserAccount(options: DeleteUserAccountRequest) {
   if (options.access_token) {
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", options.access_token);
   }
-  Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
     return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", accessToken);
   });
 }
