@@ -63,6 +63,7 @@ Cidaas options variable support every [OIDC Client UserManagerSettings Propertie
 | redirect_uri | yes | URL to be redirected after successful login attempt. |
 | post_logout_redirect_uri | no | URL to be redirected after successful logout attempt. |
 | scope | no | the scope the application requires and requests from cidaas. The default value is 'openid' if no properties is being sent. |
+| userStore | no | define where authenticated user information will be saved on the client application. The default value is session storage if no properties is being sent. |
 
 an example of Cidaas options variable looks like this:
 
@@ -75,6 +76,39 @@ const options = {
     scope: 'openid email roles profile',
 }
 ```
+
+### Configure user storage (Optional)
+
+The following storages are supported to store authenticated user information, such as tokens information & user profile:
+* window.sessionStorage (default)
+* window.localStorage
+* InMemoryWebStorage (all Information will be cleared after browser refresh) in case user do not want to save token in window object
+
+additionally, user can also define custom storage in the client side by implementing Storage class.
+
+If there is no userStore properties being send in Cidaas options variable, it will use session storage by default.
+
+In case local storage is prefered to be used, then Cidaas options can be modified as following:
+
+```js
+const options = {
+    authority: 'your domain base url',
+    ...,
+    userStore: new WebStorageStateStore({ store: window.localStorage })
+}
+```
+
+In case custom solution for storing authenticated user information is being used, or saving the token in memory is preferred, you can configured userStore with InMemoryWebStorage. Authenticated user information will be cleared as soon as the page is refreshed afterwards.
+
+```js
+const options = {
+    authority: 'your domain base url',
+    ...,
+    userStore: new WebStorageStateStore({ store: new InMemoryWebStorage()})
+}
+```
+
+see [usage](#get-tokens-and-user-profile-information-from-user-storage) to get the stored informations from user storage.
 
 ### Initialise the cidaas sdk using the configured options mentioned above:
 
@@ -108,6 +142,18 @@ After successful loginCallback, You will get access token, along with id token a
 
 There are code documentations for each of the functions with example code of how to call them individually.
 
+#### Get Tokens And User Profile Information From User Storage
+
+To get information from user storage, call **getUserInfoFromStorage()**. This function will fetch stored information from predefined user storage (session storage, local storage or in memory)
+
+```js
+cidaas.getUserInfoFromStorage().then(function(response) {
+    // the response will contains tokens & user profile information.
+}).catch(function(ex) {
+    // your failure code here
+});
+```
+
 ### Functions Overview
 
 Cidaas Javascript SDK features the following functionality:
@@ -120,7 +166,7 @@ The SDK offers multiple way to authenticate user. Whether using browser redirect
 |----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | loginWithBrowser, registerWithBrowser, loginCallback, logout, logoutCallback | The SDK support browser redirection for authenticating user. The authentication process will then happens in a new tab. This is the default authentication function of the SDK |
 | popupSignIn, popupSignInCallback, popupSignOut, popupSignOutCallback             | The SDK support using pop up window for authenticating user. The authentication process will then happens in a new popup window                                                      |
-| silentSignIn, silentSignInCallback                                               | The SDK support silent authentication. The authentication process will then happens in an iframe.                                                                              |
+| renewToken                           | Session renewal is possible by using refresh token                                                  |
 
 #### Login Management
 
@@ -142,7 +188,7 @@ The user functions could be found [here](https://github.com/Cidaas/cidaas-javasc
 |-------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | getRegistrationSetup, register, registerWithSocial                                                                                                        | Registering a new user is possible by using classic registration (getting registration fields information & call register function) or by using social provider                                                                                                                                       |
 | getUserProfile, getInviteUserDetails, getCommunicationStatus, updateProfile, updateProfileImage, deleteUserAccount, userCheckExists | To maintain user, functions for getting user information by using cidaas internal api, updating user information, removing user, as well as check if user exist are supported                                                                                                           |
-| getUserInfo | The SDK could be used to get user information by using oidc client ts library                                                                                                           |
+| getUserInfoFromStorage | The SDK could be used to get user information from predefined user storage by using oidc client ts library                                                                                                           |
 | getUserActivities | In case user want to see the history of his activities, getUserActivities function is provided                                                                                                           |
 | initiateResetPassword, handleResetPassword, resetPassword                                                                           | In case user want to reset password, password reset flow is supported. From initiating the reset password, handling the code or link which has been sent to predefined medium such as email, sms & ivr, and finishing up the reset password |
 | changePassword                                                                                                                      | In case user want to change password, changePassword function is provided                                                                                                                                                                  |
@@ -155,8 +201,7 @@ The token functions could be found [here](https://github.com/Cidaas/cidaas-javas
 
 | SDK Functions                        | Description                                                                                         |
 |--------------------------------------|-----------------------------------------------------------------------------------------------------|
-| getAccessToken                       | The SDK facilitate login using PKCE flow by exchanging code after succesful login with access token |
-| renewToken                           | Session renewal is possible by using refresh token                                                  |
+| generateTokenFromCode                       | The SDK facilitate login using PKCE flow by exchanging code after succesful login with token(s) such as access token, id token, refresh token |
 | initiateDeviceCode, deviceCodeVerify | Device code flow is supported for authenticating user without user interaction possibilty in device |
 | validateAccessToken                  | Token validation could be done by using introspection endpoint                                      |
 | offlineTokenCheck                    | To save API call, offline token check function could be used                                        |

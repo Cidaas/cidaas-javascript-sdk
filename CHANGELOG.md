@@ -5,7 +5,7 @@
 If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
 
 ### Changed
-- **Breaking** Rework token & refresh token flow
+- Support tokens from predefined user storage
 - **Breaking** Rework renewToken() to store the newly generated token in user storage
 - **Breaking** Rename getUserInfo() to getUserInfoFromStorage()
 - **Breaking** Rename getAccessToken() to generateTokenFromCode()
