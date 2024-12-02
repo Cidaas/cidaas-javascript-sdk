@@ -16,7 +16,7 @@ import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions, RenewTokenOptions } from "../authentication/Authentication.model";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
-import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, GetRequestIdRequest } from "./webauth.model";
+import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, GetRequestIdRequest } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -48,7 +48,17 @@ export class WebAuth {
     }
   }
 
-  // prototype methods 
+  /**
+   * Generate and redirect to authz url in same window for register view.
+   * @param {LoginRedirectOptions} options options options to over-ride the client config for redirect login
+   */
+  registerWithBrowser(options?: LoginRedirectOptions): Promise<void> {
+    if (!window.webAuthSettings || !window.authentication) {
+      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
+    }
+    return window.authentication.loginOrRegisterWithBrowser('register', options);
+  }
+  
   /**
    * Generate and redirect to authz url in same window for logging in.
    * @param {LoginRedirectOptions} options options options to over-ride the client config for redirect login
@@ -76,31 +86,6 @@ export class WebAuth {
   }
 
   /**
-   * On successful token renewal, authenticated user is returned
-   *
-   * @param {RenewTokenOptions} options options to over-ride the client config for renewing token
-   * @returns {Promise<User>} Authenticated user
-   * @throws error if unable to get the parse and get user
-   */
-  renewToken(options?: RenewTokenOptions): Promise<User> {
-    if (!window.webAuthSettings || !window.authentication) {
-      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
-    }
-    return window.authentication.renewToken(options);
-  }
-
-  /**
-   * Generate and redirect to authz url in same window for register view.
-   * @param {LoginRedirectOptions} options options options to over-ride the client config for redirect login
-   */
-  registerWithBrowser(options?: LoginRedirectOptions): Promise<void> {
-    if (!window.webAuthSettings || !window.authentication) {
-      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
-    }
-    return window.authentication.loginOrRegisterWithBrowser('register', options);
-  }
-
-  /**
    * Once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
    * To complete the login process, call **loginCallback()**. This will parses the access_token, id_token and whatever in hash in the redirect url.
    *
@@ -113,41 +98,6 @@ export class WebAuth {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginCallback(url);
-  }
-
-  /**
-   * To complete the popup login process, call **popupSignInCallback()** from the popup login window.
-   * Popup window will be closed after doing callback
-   *
-   * @param {string} url optional url to read sign-in callback state from
-   * @param {boolean} keepOpen true to keep the popup open even after sign in, else false
-   */
-  popupSignInCallback(url?: string, keepOpen?: boolean) {
-    if (!window.webAuthSettings || !window.authentication) {
-      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
-    }
-    return window.authentication.popupSignInCallback(url, keepOpen);
-  }
-
-  /**
-   * To get the user informations from defined UserStorage, call **getUserInfoFromStorage()**. 
-   * This will fetch informations about the authenticated user such as tokens & user profiles, which has been stored in predefined user storage based on cidaas configuration. (default is session storage)
-   * 
-   * @example
-   * ```js
-   * cidaas.getUserInfoFromStorage().then(function (response) {
-   *   // the response will give you profile details.
-   * }).catch(function(ex) {
-   *   // your failure code here
-   * });
-   * ```
-   * @return {Promise<User|null>} returns authenticated user if present, else null
-   */
-  async getUserInfoFromStorage(): Promise<User | null> {
-    if (!window.usermanager) {
-      return Promise.reject(new CustomException("UserManager cannot be empty", 417));
-    }
-    return await window.usermanager.getUser();
   }
 
   /**
@@ -174,28 +124,49 @@ export class WebAuth {
 
   /**
    * get the logout call state from the url provided, if none is provided current window url is used
-   * @returns {Promise<LogoutResponse>} logout response from auth service
+   * @returns {Promise<void | LogoutResponse>} logout response from auth service
    */
-  logoutCallback(url?: string): Promise<LogoutResponse> {
+  logoutCallback(url?: string, keepOpen?: boolean): Promise<void | LogoutResponse> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.logoutCallback(url);
+    return window.authentication.logoutCallback(url, keepOpen);
   }
 
   /**
-   * listen to popup sign out event
-   * @param {string} url optional url to override to check for sign out state
-   * @param {boolean} keepOpen true to keep the popup open even after sign out, else false
+   * On successful token renewal, authenticated user is returned
+   *
+   * @param {RenewTokenOptions} options options to over-ride the client config for renewing token
+   * @returns {Promise<User>} Authenticated user
+   * @throws error if unable to get the parse and get user
    */
-  popupSignOutCallback(url?: string, keepOpen?: boolean) {
+  renewToken(options?: RenewTokenOptions): Promise<User> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    url = url || window.webAuthSettings.post_logout_redirect_uri;
+    return window.authentication.renewToken(options);
+  }
 
-    return window.authentication.popupSignOutCallback(url, keepOpen);
-  }  
+  /**
+   * To get the user informations from defined UserStorage, call **getUserInfoFromStorage()**. 
+   * This will fetch informations about the authenticated user such as tokens & user profiles, which has been stored in predefined user storage based on cidaas configuration. (default is session storage)
+   * 
+   * @example
+   * ```js
+   * cidaas.getUserInfoFromStorage().then(function (response) {
+   *   // the response will give you profile details.
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });
+   * ```
+   * @return {Promise<User|null>} returns authenticated user if present, else null
+   */
+  async getUserInfoFromStorage(): Promise<User | null> {
+    if (!window.usermanager) {
+      return Promise.reject(new CustomException("UserManager cannot be empty", 417));
+    }
+    return await window.usermanager.getUser();
+  }
 
   /**
    * To get the generated login url, call **getLoginURL()**. This will call authz service and generate login url to be used.
@@ -278,25 +249,6 @@ export class WebAuth {
   getTenantInfo() {
     const _serviceURL = window.webAuthSettings.authority + "/public-srv/tenantinfo/basic";
     return Helper.createHttpPromise(undefined, _serviceURL,false, "GET");
-  }
-
-  /**
-   * To logout the user by using cidaas internal api, call **logoutUser()**.
-   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/3b5ce6a54bf29-logout for more details.
-   * @example
-   * ```js
-   * cidaas.logoutUser();
-   * ```
-   */
-  logoutUser(options?: LogoutUserRequest) {
-    if (options && options.access_token) {
-      window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
-    } else {
-      return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
-        window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + accessToken + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
-      });
-    }
-    
   }
 
   /**

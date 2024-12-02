@@ -5,7 +5,6 @@ import {
     LogoutRedirectOptions,
     PopupSignInOptions,
     PopupSignOutOptions,
-    LogoutResponse,
     RenewTokenOptions,
 } from './Authentication.model';
 
@@ -48,11 +47,27 @@ export class Authentication {
     }
 
     /**
+     * **popupSignIn()** will open the hosted login page in pop up window.
+     * @example
+     * ```js
+     * cidaas.popupSignIn().then(function (response) {
+     *   // the response will give you user details after finishing loginCallback().
+     * }).catch(function(ex) {
+     *  // your failure code here
+     * });
+     * ```
+     * @param {PopupSignInOptions} options optional popup sign-in options to override webauth configurations
+     */
+    popupSignIn(options?: PopupSignInOptions) {
+        return this.userManager.signinPopup(options);
+    }
+
+    /**
      * Once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
      * To complete the login process, call **loginCallback()**. This will parses the access_token, id_token and whatever in hash in the redirect url.
      * @example
      * ```js
-     * cidaas.loginCallback().then(function (response) {
+     * cidaas.loginCallback().then(function (response: User) {
      *   // the response will give you login details.
      * }).catch(function(ex) {
      *  // your failure code here
@@ -77,52 +92,6 @@ export class Authentication {
     }
 
     /**
-     * **logoutCallback()** will parses the details of userState after logout.
-     * @example
-     * ```js
-     * cidaas.logoutCallback().then(function (response) {
-     *   // the response will give you userState details.
-     * }).catch(function(ex) {
-     *  // your failure code here
-     * });
-     * ```
-     * @param {string} url optional url to read signout state from,
-     */
-    logoutCallback(url?: string): Promise<LogoutResponse> {
-        return this.userManager.signoutRedirectCallback(url);
-    }
-
-    /**
-     * **popupSignIn()** will open the hosted login page in pop up window.
-     * @example
-     * ```js
-     * cidaas.popupSignIn().then(function (response) {
-     *   // the response will give you user details after finishing popupSignInCallback().
-     * }).catch(function(ex) {
-     *  // your failure code here
-     * });
-     * ```
-     * @param {LogoutRedirectOptions} options optional popup sign-in options to override webauth configurations
-     */
-    popupSignIn(options?: PopupSignInOptions) {
-        return this.userManager.signinPopup(options);
-    }
-
-    /**
-     * To complete the popup login process, call **popupSignInCallback()** from the popup login window. 
-     * Popup window will be closed after doing callback
-     * @example
-     * ```js
-     * cidaas.popupSignInCallback();
-     * ```
-     * @param {string} url optional url to read sign-in callback state from
-     * @param {boolean} keepOpen true to keep the popup open even after sign in, else false
-     */
-    popupSignInCallback(url?: string, keepOpen?: boolean) {
-        return this.userManager.signinPopupCallback(url, keepOpen);
-    }
-
-    /**
      * **popupSignOut()** will open the hosted logout page in pop up window.
      * @example
      * ```js
@@ -140,23 +109,20 @@ export class Authentication {
     }
 
     /**
-     * calling **popupSignOutCallback()** from the popup window complete popup logout process. 
-     * Popup window won't be closed after doing callback
+     * **logoutCallback()** will parses the details of userState after logout.
      * @example
      * ```js
-     * cidaas.popupSignOutCallback().then(function() {
-     *   // success callback in popup window after finishing popupSignOutCallback().
+     * cidaas.logoutCallback().then(function (response: LogoutResponse) {
+     *   // the response will give you userState details.
      * }).catch(function(ex) {
-     *   // your failure code here
+     *  // your failure code here
      * });
      * ```
-     *
-     * @param {string} url optional url to override to check for sign out state
-     * @param {boolean} keepOpen true to keep the popup open even after sign out, else false
+     * @param {string} url optional url to read signout state from,
+     * @param {boolean} keepopen optional boolean to keep the popup window open after logout, in case of popupSignOut()
      */
-    popupSignOutCallback(url?: string, keepOpen: boolean = true) {
-        url = url ?? this.webAuthSettings.post_logout_redirect_uri;
-        return this.userManager.signoutPopupCallback(url, keepOpen);
+    logoutCallback(url?: string, keepopen?: boolean) {
+        return this.userManager.signoutCallback(url, keepopen);
     }
 
     /**

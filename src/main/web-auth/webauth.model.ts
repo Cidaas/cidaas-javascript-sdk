@@ -1,8 +1,3 @@
-export interface LogoutUserRequest {
-    /** Access token needed to authorized api call. If not provided, access token from UserStorage will be used. */
-    access_token: string;
-}
-
 export interface GetClientInfoRequest {
     /** Request id returned from the authorization call */
     requestId: string;

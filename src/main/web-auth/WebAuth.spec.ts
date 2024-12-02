@@ -114,20 +114,6 @@ describe('Webauth functions without module or services', () => {
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 	});
 	
-	test('logoutUser', () => {
-		Object.defineProperty(window, 'location', {
-			value: {
-				href: authority
-			}
-		});
-		const options = {
-			access_token: 'accessToken'
-		};
-		const serviceURL = `${authority}/session/end_session?access_token_hint=${options.access_token}&post_logout_redirect_uri=${window.webAuthSettings.post_logout_redirect_uri}`;
-		webAuth.logoutUser(options);
-		expect(window.location.href).toBe(serviceURL);
-	});
-	
 	test('getClientInfo', () => {
 		const options = {
 			requestId: 'requestId'
@@ -237,6 +223,12 @@ describe('Webauth functions without module or services', () => {
 
 // Authentication Module
 describe('Authentication module functions', () => {
+	test('registerWithBrowser', () => {
+		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
+		webAuth.registerWithBrowser();
+		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register', undefined);
+	});
+	
 	test('loginWithBrowser', () => {
 		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
 		webAuth.loginWithBrowser();
@@ -248,29 +240,11 @@ describe('Authentication module functions', () => {
 		webAuth.popupSignIn();
 		expect(popupSignInSpy).toHaveBeenCalled();
 	});
-	
-	test('renewToken', () => {
-		const renewTokenSpy = jest.spyOn(window.authentication, 'renewToken').mockResolvedValue(null);
-		webAuth.renewToken();
-		expect(renewTokenSpy).toHaveBeenCalled();
-	});
-	
-	test('registerWithBrowser', () => {
-		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
-		webAuth.registerWithBrowser();
-		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register', undefined);
-	});
-	
+
 	test('loginCallback', () => {
 		const loginCallbackSpy = jest.spyOn(window.authentication, 'loginCallback').mockResolvedValue(null);
 		webAuth.loginCallback();
 		expect(loginCallbackSpy).toHaveBeenCalled();
-	});
-	
-	test('popupSignInCallback', () => {
-		const popupSignInCallbackSpy = jest.spyOn(window.authentication, 'popupSignInCallback').mockResolvedValue(null);
-		webAuth.popupSignInCallback();
-		expect(popupSignInCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('logout', () => {
@@ -291,10 +265,10 @@ describe('Authentication module functions', () => {
 		expect(logoutCallbackSpy).toHaveBeenCalled();
 	});
 	
-	test('popupSignOutCallback', () => {
-		const popupSignOutCallbackSpy = jest.spyOn(window.authentication, 'popupSignOutCallback').mockImplementation();
-		webAuth.popupSignOutCallback();
-		expect(popupSignOutCallbackSpy).toHaveBeenCalled();
+	test('renewToken', () => {
+		const renewTokenSpy = jest.spyOn(window.authentication, 'renewToken').mockResolvedValue(null);
+		webAuth.renewToken();
+		expect(renewTokenSpy).toHaveBeenCalled();
 	});
 
 });
