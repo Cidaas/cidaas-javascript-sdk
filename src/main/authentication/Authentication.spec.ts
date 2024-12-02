@@ -43,7 +43,7 @@ test('loginOrRegisterWithBrowser', () => {
 });
 
 test('loginCallback', () => {
-    const loginCallbackSpy = jest.spyOn(userManager, 'signinRedirectCallback').mockResolvedValue(user);
+    const loginCallbackSpy = jest.spyOn(userManager, 'signinCallback').mockResolvedValue(user);
 	authentication.loginCallback();
 	expect(loginCallbackSpy).toHaveBeenCalled();
 });

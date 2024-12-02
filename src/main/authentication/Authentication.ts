@@ -61,7 +61,7 @@ export class Authentication {
      * @param {string} url optional url to read sign in state from
      */
     loginCallback(url?: string) {
-        return this.userManager.signinRedirectCallback(url);
+        return this.userManager.signinCallback(url);
     }
 
     /**
