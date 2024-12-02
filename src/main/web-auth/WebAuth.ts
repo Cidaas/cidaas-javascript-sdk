@@ -112,6 +112,19 @@ export class WebAuth {
   }
 
   /**
+   * In case no token is stored in sdk user storage, logout the user by using cidaas internal api: **logoutUser()**.
+   * 
+   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/3b5ce6a54bf29-logout for more details.
+   * @example
+   * ```js
+   * cidaas.logoutUser('your accessToken');
+   * ```
+   */
+  logoutUsingAccessToken(accessToken: String) {
+    window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + accessToken + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
+  }
+
+  /**
    * logout by using oidc-client-ts library
    * @param {PopupSignOutOptions} options optional options to over-ride logout options using popup window
    */
