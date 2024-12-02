@@ -286,10 +286,10 @@ export class WebAuth {
     // BREAKING TODO: remove options parameter in the next major release
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
     if (access_token) {
-      Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
+      return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
     }
     Helper.getAccessTokenFromUserStorage().then((accessToken) => {
-      Helper.createHttpPromise(undefined, _serviceURL, false, "GET", accessToken);
+      return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", accessToken);
     });
   }
 
