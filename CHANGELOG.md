@@ -4,6 +4,9 @@
 
 If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
 
+### Added
+- Add logoutUsingAccessToken() function
+
 ### Changed
 - Support tokens from predefined user storage
 - **Breaking** Rework renewToken() to store the newly generated token in user storage
@@ -12,6 +15,8 @@ If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
 
 ### Removed
 - **Breaking** Removed silentSignin() & silentSignInCallback() function
+- **Breaking** Removed popupSignInCallback() & popupSignOutCallback()function
+- **Breaking** Removed logoutUser() function
 
 ## V4.3.3
 

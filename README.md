@@ -64,6 +64,7 @@ Cidaas options variable support every [OIDC Client UserManagerSettings Propertie
 | post_logout_redirect_uri | no | URL to be redirected after successful logout attempt. |
 | scope | no | the scope the application requires and requests from cidaas. The default value is 'openid' if no properties is being sent. |
 | userStore | no | define where authenticated user information will be saved on the client application. The default value is session storage if no properties is being sent. |
+| automaticSilentRenew | no | configure whether automatic token renewal will be activated. The default value is true. |
 
 an example of Cidaas options variable looks like this:
 
@@ -109,6 +110,18 @@ const options = {
 ```
 
 see [usage](#get-tokens-and-user-profile-information-from-user-storage) to get the stored informations from user storage.
+
+### Configure automatic token renewal (Optional)
+
+By default, The SDK will generate new tokens based on refresh token stored in user storage, one minute before the access token is expiring. To disable this behaviour, Cidaas options can be modified as following:
+
+```js
+const options = {
+    authority: 'your domain base url',
+    ...,
+    automaticSilentRenew: false
+}
+```
 
 ### Initialise the cidaas sdk using the configured options mentioned above:
 
