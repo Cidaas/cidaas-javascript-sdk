@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@toolz/is-a-regular-object": "^1.0.1",
-    "oidc-client-ts": "^2.4.1"
+    "oidc-client-ts": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",

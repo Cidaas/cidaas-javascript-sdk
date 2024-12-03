@@ -90,10 +90,10 @@ export class WebAuth {
    * To complete the login process, call **loginCallback()**. This will parses the access_token, id_token and whatever in hash in the redirect url.
    *
    * @param {string} url optional url from where to process the login state
-   * @returns {Promise<void | User>} Authenticated user
+   * @returns {Promise<User | undefined>} Authenticated user
    * @throws error if unable to get the parse and get user
    */
-  loginCallback(url?: string): Promise<void | User> {
+  loginCallback(url?: string): Promise<User | undefined> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
@@ -137,9 +137,9 @@ export class WebAuth {
 
   /**
    * get the logout call state from the url provided, if none is provided current window url is used
-   * @returns {Promise<void | LogoutResponse>} logout response from auth service
+   * @returns {Promise<LogoutResponse | undefined>} logout response from auth service
    */
-  logoutCallback(url?: string, keepOpen?: boolean): Promise<void | LogoutResponse> {
+  logoutCallback(url?: string, keepOpen?: boolean): Promise<LogoutResponse | undefined> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
