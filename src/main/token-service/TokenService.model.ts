@@ -103,31 +103,6 @@ export interface GenerateTokenFromCodeRequest {
   redirect_uri?: string;
 }
 
-export class TokenIntrospectionRequest {
-  /** access token to be inspected. If not provided, access token from UserStorage will be used. */
-  token?: string;
-  /** 
-   * Optional hint about the type of the submitted token. 
-   * BREAKING TODO: change type to TokenTypeHint only in next major version
-   * */
-  token_type_hint?: TokenTypeHint | string;
-  /** List of roles to match */
-  roles?: string[];
-  /** List of scopes to match */
-  scopes?: string[];
-  /** List of groups to match */
-  groups?: GroupAllowed[];
-
-  /** If true, all roles have to be included. If false, only 1 role from the list is needed */
-  strictRoleValidation?: boolean = false;
-  /** If true, all group have to be included. If false, only 1 group from the list is needed */
-  strictGroupValidation?: boolean = false;
-  /** If true, all scopes have to be included. If false, only 1 scope from the list is needed */
-  strictScopeValidation?: boolean = false;
-  /** If true, all defined roles and/or groups and/or scopes validation has to be succesful. If false, only 1 of them is needed */
-  strictValidation?: boolean = false;
-}
-
 /** Optional hint about the type of the submitted token. */
 export enum TokenTypeHint {
   AccessToken = 'access_token',

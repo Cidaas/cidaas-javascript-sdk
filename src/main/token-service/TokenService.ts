@@ -1,4 +1,4 @@
-import { GenerateTokenFromCodeRequest, GrantType, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./TokenService.model";
+import { GenerateTokenFromCodeRequest, GrantType, TokenClaim, TokenHeader } from "./TokenService.model";
 import { Helper, CustomException } from "../common/Helper";
 import { JwtHelper } from "../common/JwtHelper";
 import { HTTPRequestHeader, LoginPrecheckRequest } from "../common/Common.model";
@@ -34,35 +34,6 @@ export async function generateTokenFromCode(options: GenerateTokenFromCodeReques
   }
   const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-}
-
-/**
- * To validate an access token, call **validateAccessToken()**.
- * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/26ff31e2937f1-introspect-with-bearer-token for more details.
- * @example 
- * ```js
- * const options = {
- *   roles: ['role1', 'role2'],
- *   strictRoleValidation: true
- * }
- * 
- * cidaas.validateAccessToken(options)
- * .then(function (response) {
- *   // type your code here
- * })
- * .catch(function (ex) {
- *   // your failure code here
- * });
- * ```
- */
-export function validateAccessToken(options?: TokenIntrospectionRequest) {
-  const _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
-  if (options?.token) {
-    return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.token);
-  }
-  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
-    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
-  });
 }
 
 /**

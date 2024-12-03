@@ -17,6 +17,7 @@ If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
 - **Breaking** Removed silentSignin() & silentSignInCallback() function
 - **Breaking** Removed popupSignInCallback() & popupSignOutCallback()function
 - **Breaking** Removed logoutUser() function
+- **Breaking** Removed validateAccessToken() function
 
 ## V4.3.3
 

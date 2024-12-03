@@ -5,7 +5,7 @@ import * as TokenService from "../token-service/TokenService";
 import * as VerificationService from "../verification-service/VerificationService";
 import * as ConsentService from "../consent-service/ConsentService";
 
-import { GenerateTokenFromCodeRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { GenerateTokenFromCodeRequest } from '../token-service/TokenService.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
@@ -391,15 +391,6 @@ export class WebAuth {
    */
   generateTokenFromCode(options: GenerateTokenFromCodeRequest) {
     return TokenService.generateTokenFromCode(options);
-  }
-
-  /**
-   * validate access token
-   * @param options 
-   * @returns 
-   */
-  validateAccessToken(options?: TokenIntrospectionRequest) {
-    return TokenService.validateAccessToken(options);
   }
 
   /**

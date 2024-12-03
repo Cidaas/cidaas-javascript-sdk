@@ -28,3 +28,4 @@ There are changes in the function names. The old & new function name could be fo
 * If you used silentSignInCallback() or popupSignInCallback() previously, now it is recommended to use loginCallback() instead.
 * If you used popupSignOutCallback() previously, now it is recommended to use logoutCallback() instead.
 * If you used logoutUser() previously, you can now use logout() if sdk user storage is used to store tokens. In case the tokens are not stored on sdk user storage, you could use logoutUsingAccessToken().
+* In case you need to use validateAccessToken() on the client side, offlineTokenCheck() function can be used as it only check on general token information without involving secret key. Generally, it is recommended to do token introspection on the server side.

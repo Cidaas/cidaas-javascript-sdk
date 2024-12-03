@@ -1,5 +1,5 @@
 import { WebAuth } from './WebAuth';
-import { GenerateTokenFromCodeRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { GenerateTokenFromCodeRequest } from '../token-service/TokenService.model';
 import * as ConsentService from '../consent-service/ConsentService';
 import { Helper } from '../common/Helper';
 import * as LoginService from '../login-service/LoginService';
@@ -516,19 +516,6 @@ describe('Token service functions', () => {
 		}
 		webAuth.generateTokenFromCode(options);
 		expect(generateTokenFromCodeSpy).toHaveBeenCalledWith(options);
-	});
-	
-	test('validateAccessToken', () => {
-		const validateAccessTokenSpy = jest.spyOn(TokenService, 'validateAccessToken').mockImplementation();
-		const options: TokenIntrospectionRequest = {
-			token: '',
-			strictGroupValidation: false,
-			strictScopeValidation: false,
-			strictRoleValidation: false,
-			strictValidation: false
-		}
-		webAuth.validateAccessToken(options);
-		expect(validateAccessTokenSpy).toHaveBeenCalledWith(options);
 	});
 	
 	test('loginPrecheck', () => {

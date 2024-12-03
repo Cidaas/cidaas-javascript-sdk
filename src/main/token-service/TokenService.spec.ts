@@ -1,4 +1,4 @@
-import { GenerateTokenFromCodeRequest, TokenIntrospectionRequest } from './TokenService.model';
+import { GenerateTokenFromCodeRequest } from './TokenService.model';
 import { Helper } from '../common/Helper';
 import * as TokenService from './TokenService';
 
@@ -24,20 +24,6 @@ test('generateTokenFromCode', () => {
 	const serviceURL = `${serviceBaseUrl}/token`;
 	TokenService.generateTokenFromCode(options);
 	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
-});
-
-test('validateAccessToken', () => {
-	const options: TokenIntrospectionRequest = {
-		token: 'token',
-		token_type_hint: 'token_type_hint',
-		strictGroupValidation: false,
-		strictScopeValidation: false,
-		strictRoleValidation: false,
-		strictValidation: false
-	};
-	const serviceURL = `${serviceBaseUrl}/introspect`;
-	TokenService.validateAccessToken(options);
-	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', 'token');
 });
 
 test('loginPrecheck', () => {
