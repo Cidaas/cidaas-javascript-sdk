@@ -4,9 +4,6 @@
 
 If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
 
-### Added
-- Add logoutUsingAccessToken() function
-
 ### Changed
 - Support tokens from predefined user storage
 - Use latest version of oidc client ts library

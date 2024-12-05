@@ -58,18 +58,6 @@ describe('Webauth functions without module or services', () => {
 		new WebAuth(options);
 	});
 
-	test('logoutUsingAccessToken', () => {
-		Object.defineProperty(window, 'location', {
-			value: {
-				href: authority
-			}
-		});
-		const accessToken = 'accessToken';
-		const serviceURL = `${authority}/session/end_session?access_token_hint=${accessToken}&post_logout_redirect_uri=${window.webAuthSettings.post_logout_redirect_uri}`;
-		webAuth.logoutUsingAccessToken(accessToken);
-		expect(window.location.href).toBe(serviceURL);
-	});
-
 	test('getUserInfoFromStorage', () => {
 		const getUserSpy = jest.spyOn(window.usermanager, 'getUser');
 		webAuth.getUserInfoFromStorage();
