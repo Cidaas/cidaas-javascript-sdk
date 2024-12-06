@@ -16,7 +16,7 @@ import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
 import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions, RenewTokenOptions } from "../authentication/Authentication.model";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
-import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, GetRequestIdRequest } from "./webauth.model";
+import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, GetRequestIdRequest, InvokeIdValidationCaseRequest } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -986,5 +986,36 @@ export class WebAuth {
    */
   offlineTokenCheck(accessToken: string) {
     return TokenService.offlineTokenCheck(accessToken);
+  }
+
+  /**
+   * To invoke a new id validation case, call invokeIdValidationCase()
+   *
+   * @param options 
+   * @param access_token
+   * @example
+   * ```js
+   * const options = {
+   *   sub: 'your sub',
+   *   dateFilter: {
+   *     redirect_url: 'url to be redirected after case invocation',
+   *     validation_settings_id: 'validation settings id from cidaas admin ui'
+   *   }
+   * };
+   * cidaas.invokeIdValidationCase(options).then(function (resp) {
+   *   // your success code
+   * }).catch(function(ex) {
+   *   // your failure code
+   * });
+   * ```
+   */
+  invokeIdValidationCase(options: InvokeIdValidationCaseRequest, access_token?: string) {
+    const serviceURL = window.webAuthSettings.authority + '/idval-sign-srv/caseinvocation';
+    if (access_token) {
+      return Helper.createHttpPromise(options, serviceURL, false, 'POST', access_token);
+    }
+    return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
+    });
   }
 }
