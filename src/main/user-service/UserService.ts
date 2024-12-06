@@ -411,7 +411,7 @@ export function getLinkedUsers(access_token?: string, sub?: string) {
  * });
  * ```
  */
-export function unlinkAccount(access_token?: string, identityId?: string) {
+export function unlinkAccount(access_token: string | undefined, identityId: string) {
   if (!identityId) {
     throw new CustomException("identityId cannot be empty", 417);
   }
