@@ -8,10 +8,7 @@ import { CidaasUser } from "../common/User.model";
  * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2zfvjx3vtq6g6-get-user-info for more details.
  * @example
  * ```js
- * const options = {
- *   access_token: 'your access token'
- * }
- * cidaas.getUserProfile(options)
+ * cidaas.getUserProfile()
  * .then(function () {
  *   // the response will give you user profile information.
  * }).catch(function (ex) {
@@ -19,12 +16,14 @@ import { CidaasUser } from "../common/User.model";
  * });
  * ```
  */
-export function getUserProfile(options: GetUserProfileRequest) {
-  if (!options.access_token) {
-    throw new CustomException("access_token cannot be empty", 417);
-  }
+export function getUserProfile(options?: GetUserProfileRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo";
-  return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", options.access_token);
+  if (options?.access_token) {
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", options.access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(undefined, _serviceURL, undefined, "GET", accessToken);
+  });
 }
 
 /**
@@ -267,7 +266,7 @@ export function registerDeduplication(options: RegisterDeduplicationRequest, hea
  *   new_password: 'your new password',
  *   confirm_password: 'your new password',
  *   sub: 'your sub',
- * }, 'your access token')
+ * })
  * .then(function () {
  *   // your success code
  * }).catch(function (ex) {
@@ -275,9 +274,14 @@ export function registerDeduplication(options: RegisterDeduplicationRequest, hea
  * });
  * ```
  */
-export function changePassword(options: ChangePasswordRequest, access_token: string) {
+export function changePassword(options: ChangePasswordRequest, access_token?: string) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/changepassword";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
+  if (access_token) {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+  });
 }
 
 /**
@@ -290,16 +294,25 @@ export function changePassword(options: ChangePasswordRequest, access_token: str
  *   given_name: 'John',
  *   provider: 'self',
  *   acceptlanguage: 'your locale' // optional example: de-de, en-US
- * }, 'your access token', 'your sub').then(function () {
+ * }, undefined, 'your sub').then(function () {
  *   // the response will give you updated user profile info.
  * }).catch(function (ex) {
  *   // your failure code here
  * });
  * ```
  */
-export function updateProfile(options: CidaasUser, access_token: string, sub: string) {
+export function updateProfile(options: CidaasUser, access_token?: string, sub?: string) {
+  // Breaking TODO: update parameter sequence, so the only optional parameter is access_token
+  if (!sub) {
+    throw new CustomException("sub cannot be empty", 417);
+  }
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/profile/" + sub;
-  return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
+  if (access_token) {
+    return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(options, _serviceURL, false, "PUT", accessToken);
+  });
 }
 
 /**
@@ -311,18 +324,22 @@ export function updateProfile(options: CidaasUser, access_token: string, sub: st
  *   user_name_to_link: 'username of the user which should get linked',
  *   user_name_type: 'type of user name to link. E.g. email'
  * }
- * const access_token = 'your access token'
- * this.cidaas.initiateLinkAccount(options, access_token).then((response) => {
+ * this.cidaas.initiateLinkAccount(options).then((response) => {
  *   // your success code
  * }).catch((err) => {
  *   // your failure code here 
  * });
  * ```
  */
-export function initiateLinkAccount(options: InitiateLinkAccountRequest, access_token: string) {
+export function initiateLinkAccount(options: InitiateLinkAccountRequest, access_token?: string) {
   options.user_name_type = 'email';
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/initiate";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
+  if (access_token) {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+  });
 }
 
 /**
@@ -333,27 +350,30 @@ export function initiateLinkAccount(options: InitiateLinkAccountRequest, access_
  *   code: 'code which is sent to account to be linked',
  *   link_request_id: 'comes from initiateLinkAccount'
  * }
- * const access_token = 'your access token'
- * this.cidaas.completeLinkAccount(options, access_token).then((response) => {
+ * this.cidaas.completeLinkAccount(options).then((response) => {
  *   // your success code
  * }).catch((err) => {
  *   // your failure code here 
  * });
  * ```
  */
-export function completeLinkAccount(options: CompleteLinkAccountRequest, access_token: string) {
+export function completeLinkAccount(options: CompleteLinkAccountRequest, access_token?: string) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/link/complete";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
+  if (access_token) {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+  });
 }
 
 /**
  * To get all the linked accounts, call **getLinkedUsers()**.
  * @example
  * ```js
- * const acccess_token= 'your access token';
  * const sub = 'your sub';
  * 
- * cidaas.getLinkedUsers(access_token, sub)
+ * cidaas.getLinkedUsers(undefined, sub)
  * .then(function (response) {
  *   // type your code here
  * })
@@ -362,19 +382,27 @@ export function completeLinkAccount(options: CompleteLinkAccountRequest, access_
  * });
  * ```
  */
-export function getLinkedUsers(access_token: string, sub: string) {
+export function getLinkedUsers(access_token?: string, sub?: string) {
+  // Breaking TODO: update parameter sequence, so the only optional parameter is access_token
+  if (!sub) {
+    throw new CustomException("sub cannot be empty", 417);
+  }
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/userinfo/social/" + sub;
-  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
+  if (access_token) {
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", accessToken);
+  });
 }
 
 /**
  * To unlink an account for a user, call **unlinkAccount()**.
  * @example
  * ```js
- * const acccess_token= "your access token";
  * const identityId = "comes from getLinkedUsers";
  * 
- * cidaas.unlinkAccount(access_token, identityId)
+ * cidaas.unlinkAccount(undefined, identityId)
  * .then(function (response) {
  *   // type your code here
  * })
@@ -383,9 +411,17 @@ export function getLinkedUsers(access_token: string, sub: string) {
  * });
  * ```
  */
-export function unlinkAccount(access_token: string, identityId: string) {
+export function unlinkAccount(access_token: string | undefined, identityId: string) {
+  if (!identityId) {
+    throw new CustomException("identityId cannot be empty", 417);
+  }
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unlink/" + identityId;
-  return Helper.createHttpPromise(undefined, _serviceURL, false, "POST", access_token);
+  if (access_token) {
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "POST", access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(undefined, _serviceURL, false, "POST", accessToken);
+  });
 }
 
 /**
@@ -394,7 +430,6 @@ export function unlinkAccount(access_token: string, identityId: string) {
  * @example
  * ```js
  * options = {
- *   access_token: "your access token",
  *   sub: "your sub"
  * }
  * 
@@ -407,7 +442,12 @@ export function unlinkAccount(access_token: string, identityId: string) {
  */
 export function deleteUserAccount(options: DeleteUserAccountRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/users-srv/user/unregister/scheduler/schedule/" + options.sub;
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", options.access_token);
+  if (options.access_token) {
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", options.access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", accessToken);
+  });
 }
 
 

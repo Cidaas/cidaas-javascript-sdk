@@ -1,5 +1,5 @@
 import { WebAuth } from './WebAuth';
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { GenerateTokenFromCodeRequest } from '../token-service/TokenService.model';
 import * as ConsentService from '../consent-service/ConsentService';
 import { Helper } from '../common/Helper';
 import * as LoginService from '../login-service/LoginService';
@@ -58,9 +58,9 @@ describe('Webauth functions without module or services', () => {
 		new WebAuth(options);
 	});
 
-	test('getUserInfo', () => {
+	test('getUserInfoFromStorage', () => {
 		const getUserSpy = jest.spyOn(window.usermanager, 'getUser');
-		webAuth.getUserInfo();
+		webAuth.getUserInfoFromStorage();
 		expect(getUserSpy).toHaveBeenCalled();
 	});
 	
@@ -114,20 +114,6 @@ describe('Webauth functions without module or services', () => {
 		expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 	});
 	
-	test('logoutUser', () => {
-		Object.defineProperty(window, 'location', {
-			value: {
-				href: authority
-			}
-		});
-		const options = {
-			access_token: 'accessToken'
-		};
-		const serviceURL = `${authority}/session/end_session?access_token_hint=${options.access_token}&post_logout_redirect_uri=${window.webAuthSettings.post_logout_redirect_uri}`;
-		webAuth.logoutUser(options);
-		expect(window.location.href).toBe(serviceURL);
-	});
-	
 	test('getClientInfo', () => {
 		const options = {
 			requestId: 'requestId'
@@ -146,7 +132,8 @@ describe('Webauth functions without module or services', () => {
 	
 	test('deleteDevice', () => {
 		const options: DeleteDeviceRequest = {
-			device_id: 'device_id'
+			device_id: 'device_id',
+			userAgent: window.navigator.userAgent
 		};
 		const acccessToken = 'accessToken';
 		const serviceURL = `${authority}/device-srv/device/${options.device_id}`;
@@ -181,7 +168,7 @@ describe('Webauth functions without module or services', () => {
 				to_date: ''
 			}
 		};
-		const accessToken = '';
+		const accessToken = 'accessToken';
 		const serviceURL = `${authority}/activity-streams-srv/user-activities`;
 		webAuth.getUserActivities(options, accessToken);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
@@ -236,6 +223,12 @@ describe('Webauth functions without module or services', () => {
 
 // Authentication Module
 describe('Authentication module functions', () => {
+	test('registerWithBrowser', () => {
+		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
+		webAuth.registerWithBrowser();
+		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register', undefined);
+	});
+	
 	test('loginWithBrowser', () => {
 		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
 		webAuth.loginWithBrowser();
@@ -247,35 +240,11 @@ describe('Authentication module functions', () => {
 		webAuth.popupSignIn();
 		expect(popupSignInSpy).toHaveBeenCalled();
 	});
-	
-	test('silentSignIn', () => {
-		const silentSignInSpy = jest.spyOn(window.authentication, 'silentSignIn').mockResolvedValue(null);
-		webAuth.silentSignIn();
-		expect(silentSignInSpy).toHaveBeenCalled();
-	});
-	
-	test('registerWithBrowser', () => {
-		const loginOrRegisterWithBrowserSpy = jest.spyOn(window.authentication, 'loginOrRegisterWithBrowser').mockResolvedValue(null);
-		webAuth.registerWithBrowser();
-		expect(loginOrRegisterWithBrowserSpy).toHaveBeenCalledWith('register', undefined);
-	});
-	
+
 	test('loginCallback', () => {
 		const loginCallbackSpy = jest.spyOn(window.authentication, 'loginCallback').mockResolvedValue(null);
 		webAuth.loginCallback();
 		expect(loginCallbackSpy).toHaveBeenCalled();
-	});
-	
-	test('popupSignInCallback', () => {
-		const popupSignInCallbackSpy = jest.spyOn(window.authentication, 'popupSignInCallback').mockResolvedValue(null);
-		webAuth.popupSignInCallback();
-		expect(popupSignInCallbackSpy).toHaveBeenCalled();
-	});
-	
-	test('silentSignInCallback', () => {
-		const silentSignInCallbackSpy = jest.spyOn(window.authentication, 'silentSignInCallback').mockResolvedValue(null);
-		webAuth.silentSignInCallback();
-		expect(silentSignInCallbackSpy).toHaveBeenCalled();
 	});
 	
 	test('logout', () => {
@@ -296,10 +265,10 @@ describe('Authentication module functions', () => {
 		expect(logoutCallbackSpy).toHaveBeenCalled();
 	});
 	
-	test('popupSignOutCallback', () => {
-		const popupSignOutCallbackSpy = jest.spyOn(window.authentication, 'popupSignOutCallback').mockImplementation();
-		webAuth.popupSignOutCallback();
-		expect(popupSignOutCallbackSpy).toHaveBeenCalled();
+	test('renewToken', () => {
+		const renewTokenSpy = jest.spyOn(window.authentication, 'renewToken').mockResolvedValue(null);
+		webAuth.renewToken();
+		expect(renewTokenSpy).toHaveBeenCalled();
 	});
 
 });
@@ -524,41 +493,17 @@ describe('User service functions', () => {
 
 // Token Service
 describe('Token service functions', () => {
-	test('renewToken', () => {
-		const renewTokenSpy = jest.spyOn(TokenService, 'renewToken').mockImplementation();
-		const options: RenewTokenRequest = {
-			client_id: '',
-			grant_type: '',
-			refresh_token: ''
-		}
-		webAuth.renewToken(options);
-		expect(renewTokenSpy).toHaveBeenCalledWith(options);
-	});
-	
-	test('getAccessToken', () => {
-		const getAccessTokenSpy = jest.spyOn(TokenService, 'getAccessToken').mockImplementation();
-		const options: GetAccessTokenRequest = {
+	test('generateTokenFromCode', () => {
+		const generateTokenFromCodeSpy = jest.spyOn(TokenService, 'generateTokenFromCode').mockImplementation();
+		const options: GenerateTokenFromCodeRequest = {
 			code: '',
 			code_verifier: '',
 			client_id: '',
 			grant_type: '',
 			redirect_uri: ''
 		}
-		webAuth.getAccessToken(options);
-		expect(getAccessTokenSpy).toHaveBeenCalledWith(options);
-	});
-	
-	test('validateAccessToken', () => {
-		const validateAccessTokenSpy = jest.spyOn(TokenService, 'validateAccessToken').mockImplementation();
-		const options: TokenIntrospectionRequest = {
-			token: '',
-			strictGroupValidation: false,
-			strictScopeValidation: false,
-			strictRoleValidation: false,
-			strictValidation: false
-		}
-		webAuth.validateAccessToken(options);
-		expect(validateAccessTokenSpy).toHaveBeenCalledWith(options);
+		webAuth.generateTokenFromCode(options);
+		expect(generateTokenFromCodeSpy).toHaveBeenCalledWith(options);
 	});
 	
 	test('loginPrecheck', () => {
@@ -882,7 +827,8 @@ describe('Verification service functions', () => {
 		const accessToken = 'accessToken';
 		const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
 		webAuth.initiateMFA(options, accessToken, headers);
-		expect(initiateMFASpy).toHaveBeenCalledWith(options, accessToken, headers);
+		// access token is not needed for initiateMFA and will be removed in the next major release
+		expect(initiateMFASpy).toHaveBeenCalledWith(options, undefined, headers);
 	});
 
 	test('authenticateMFA', () => {

@@ -1,4 +1,4 @@
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from './TokenService.model';
+import { GenerateTokenFromCodeRequest } from './TokenService.model';
 import { Helper } from '../common/Helper';
 import * as TokenService from './TokenService';
 
@@ -12,20 +12,9 @@ beforeAll(() => {
 	window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
 });
 
-test('renewToken', () => {
-	const options: RenewTokenRequest = {
-		client_id: 'client_id',
-		grant_type: 'authorization_code',
-		refresh_token: 'refresh_token'
-	};
-	const serviceURL = `${serviceBaseUrl}/token`;
-	TokenService.renewToken(options);
-	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
-});
-
-test('getAccessToken', () => {
+test('generateTokenFromCode', () => {
 	window.webAuthSettings.disablePKCE = true;
-	const options: GetAccessTokenRequest = {
+	const options: GenerateTokenFromCodeRequest = {
 		code: 'code',
 		code_verifier: 'code_verifier',
 		client_id: 'client_id',
@@ -33,22 +22,8 @@ test('getAccessToken', () => {
 		redirect_uri: 'redirect_uri'
 	}
 	const serviceURL = `${serviceBaseUrl}/token`;
-	TokenService.getAccessToken(options);
+	TokenService.generateTokenFromCode(options);
 	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST');
-});
-
-test('validateAccessToken', () => {
-	const options: TokenIntrospectionRequest = {
-		token: 'token',
-		token_type_hint: 'token_type_hint',
-		strictGroupValidation: false,
-		strictScopeValidation: false,
-		strictRoleValidation: false,
-		strictValidation: false
-	};
-	const serviceURL = `${serviceBaseUrl}/introspect`;
-	TokenService.validateAccessToken(options);
-	expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', 'token');
 });
 
 test('loginPrecheck', () => {

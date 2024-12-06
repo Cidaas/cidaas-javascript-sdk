@@ -83,7 +83,7 @@ export interface PopupSignOutOptions extends SignoutPopupArgs {
  * Options to override options during silent sign in
  * @augments SigninSilentArgs
  */
-export interface SilentSignInOptions extends SigninSilentArgs {
+export interface RenewTokenOptions extends SigninSilentArgs {
 
 }
 

@@ -1,46 +1,18 @@
-import { GetAccessTokenRequest, GrantType, RenewTokenRequest, TokenClaim, TokenHeader, TokenIntrospectionRequest } from "./TokenService.model";
+import { GenerateTokenFromCodeRequest, GrantType, TokenClaim, TokenHeader } from "./TokenService.model";
 import { Helper, CustomException } from "../common/Helper";
 import { JwtHelper } from "../common/JwtHelper";
 import { HTTPRequestHeader, LoginPrecheckRequest } from "../common/Common.model";
 
 /**
- * To get a new token with the grant type refresh_token, call **renewToken()**.
- * The refresh token to create a new token. The refresh token is received while creating an access token using the token endpoint and later can be used to fetch a new token without using credentials
- * @example
- * ```js
- * const options = {
- *   refresh_token: "your refresh token",
- * }
- * 
- * cidaas.renewToken(options)
- *   .then(function (response) {
- *     // type your code here
- *   })
- *   .catch(function (ex) {
- *     // your failure code here
- *   });
- * ```
- */
-export function renewToken(options: RenewTokenRequest) {
-  if (!options.refresh_token) {
-    throw new CustomException("refresh_token cannot be empty", 417);
-  }
-  options.client_id = window.webAuthSettings.client_id;
-  options.grant_type = GrantType.RefreshToken;
-  const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
-  return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-}
-
-/**
- * To get a new token with the grant type authorization_code, call **getAccessToken()** with code to create a new token.
+ * To generate token(s) with the grant type authorization_code, call **generateTokenFromCode()**
  * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/4ff850f48629a-generate-token for more details.
  * @example
  * ```js
  * const options = {
- *   code: "your code to be exchanged with access token",
+ *   code: "your code to be exchanged with the token(s)",
  * }
  * 
- * cidaas.getAccessToken(options)
+ * cidaas.generateTokenFromCode(options)
  *   .then(function (response) {
  *     // type your code here
  *   })
@@ -49,7 +21,7 @@ export function renewToken(options: RenewTokenRequest) {
  *   });
  * ```
  */
-export async function getAccessToken(options: GetAccessTokenRequest) {
+export async function generateTokenFromCode(options: GenerateTokenFromCodeRequest) {
   if (!options.code) {
     throw new CustomException("code cannot be empty", 417);
   }
@@ -62,33 +34,6 @@ export async function getAccessToken(options: GetAccessTokenRequest) {
   }
   const _serviceURL = window.webAuthSettings.authority + "/token-srv/token";
   return Helper.createHttpPromise(options, _serviceURL, undefined, "POST");
-}
-
-/**
- * To validate an access token, call **validateAccessToken()**.
- * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/26ff31e2937f1-introspect-with-bearer-token for more details.
- * @example 
- * ```js
- * const options = {
- *   token: "your access token",
- *   token_type_hint: "accepted token type hints are access_token, id_token, refresh_token, sso",
- * }
- * 
- * cidaas.validateAccessToken(options)
- * .then(function (response) {
- *   // type your code here
- * })
- * .catch(function (ex) {
- *   // your failure code here
- * });
- * ```
- */
-export function validateAccessToken(options: TokenIntrospectionRequest) {
-  if (!options.token) {
-    throw new CustomException("token cannot be empty", 417);
-  }
-  const _serviceURL = window.webAuthSettings.authority + "/token-srv/introspect";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.token);
 }
 
 /**

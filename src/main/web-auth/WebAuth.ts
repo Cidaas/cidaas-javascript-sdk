@@ -5,7 +5,7 @@ import * as TokenService from "../token-service/TokenService";
 import * as VerificationService from "../verification-service/VerificationService";
 import * as ConsentService from "../consent-service/ConsentService";
 
-import { GetAccessTokenRequest, RenewTokenRequest, TokenIntrospectionRequest } from '../token-service/TokenService.model';
+import { GenerateTokenFromCodeRequest } from '../token-service/TokenService.model';
 import { AcceptClaimConsentRequest, AcceptConsentRequest, AcceptScopeConsentRequest, GetConsentDetailsRequest, GetConsentVersionDetailsRequest, RevokeClaimConsentRequest } from '../consent-service/ConsentService.model';
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from '../login-service/LoginService.model';
 import { LoginPrecheckRequest } from '../common/Common.model';
@@ -14,9 +14,9 @@ import { ChangePasswordRequest, CompleteLinkAccountRequest, DeduplicationLoginRe
 import { HTTPRequestHeader } from "../common/Common.model";
 import { User } from "oidc-client-ts";
 import { Authentication } from "../authentication/Authentication";
-import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, SilentSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions } from "../authentication/Authentication.model";
+import { OidcSettings, OidcManager, LoginRedirectOptions, PopupSignInOptions, LogoutRedirectOptions, PopupSignOutOptions, LogoutResponse, LoginRequestOptions, RenewTokenOptions } from "../authentication/Authentication.model";
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from "../verification-service/VerificationService.model";
-import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, LogoutUserRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, GetRequestIdRequest } from "./webauth.model";
+import { DeleteDeviceRequest, GetClientInfoRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, GetRequestIdRequest } from "./webauth.model";
 
 export const createPreloginWebauth = (authority: string) => {
   return new WebAuth({'authority': authority} as OidcSettings);
@@ -48,7 +48,17 @@ export class WebAuth {
     }
   }
 
-  // prototype methods 
+  /**
+   * Generate and redirect to authz url in same window for register view.
+   * @param {LoginRedirectOptions} options options options to over-ride the client config for redirect login
+   */
+  registerWithBrowser(options?: LoginRedirectOptions): Promise<void> {
+    if (!window.webAuthSettings || !window.authentication) {
+      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
+    }
+    return window.authentication.loginOrRegisterWithBrowser('register', options);
+  }
+  
   /**
    * Generate and redirect to authz url in same window for logging in.
    * @param {LoginRedirectOptions} options options options to over-ride the client config for redirect login
@@ -76,88 +86,18 @@ export class WebAuth {
   }
 
   /**
-   * Generate and navigate to authz url in an iFrame.
-   * On successful sign in, authenticated user is returned
-   *
-   * @param {SilentSignInOptions} options options to over-ride the client config for silent sign in
-   * @returns {Promise<User>} Authenticated user
-   * @throws error if unable to get the parse and get user
-   */
-  silentSignIn(options?: SilentSignInOptions): Promise<User> {
-    if (!window.webAuthSettings || !window.authentication) {
-      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
-    }
-    return window.authentication.silentSignIn(options);
-  }
-
-  /**
-   * Generate and redirect to authz url in same window for register view.
-   * @param {LoginRedirectOptions} options options options to over-ride the client config for redirect login
-   */
-  registerWithBrowser(options?: LoginRedirectOptions): Promise<void> {
-    if (!window.webAuthSettings || !window.authentication) {
-      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
-    }
-    return window.authentication.loginOrRegisterWithBrowser('register', options);
-  }
-
-  /**
    * Once login successful, it will automatically redirects you to the redirect url whatever you mentioned in the options.
    * To complete the login process, call **loginCallback()**. This will parses the access_token, id_token and whatever in hash in the redirect url.
    *
    * @param {string} url optional url from where to process the login state
-   * @returns {Promise<User>} Authenticated user
+   * @returns {Promise<User | undefined>} Authenticated user
    * @throws error if unable to get the parse and get user
    */
-  loginCallback(url?: string): Promise<User> {
+  loginCallback(url?: string): Promise<User | undefined> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
     return window.authentication.loginCallback(url);
-  }
-
-  /**
-   * To complete the popup login process, call **popupSignInCallback()** from the popup login window.
-   * Popup window will be closed after doing callback
-   *
-   * @param {string} url optional url to read sign-in callback state from
-   * @param {boolean} keepOpen true to keep the popup open even after sign in, else false
-   */
-  popupSignInCallback(url?: string, keepOpen?: boolean) {
-    if (!window.webAuthSettings || !window.authentication) {
-      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
-    }
-    return window.authentication.popupSignInCallback(url, keepOpen);
-  }
-
-  /**
-   * Returns a promise to notify the parent window of response from authz service
-   * @param {string} url optional url to check authz response, if none window.location is used
-   */
-  silentSignInCallback(url?: string) {
-    if (!window.webAuthSettings || !window.authentication) {
-      return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
-    }
-    return window.authentication.silentSignInCallback(url);
-  }
-
-  /**
-   * To get the user profile information by using oidc-client-ts library, call **getUserInfo()**. This will return the basic user profile details along with groups, roles and whatever scopes you mentioned in the options.
-   * @example
-   * ```js
-   * cidaas.getUserInfo().then(function (response) {
-   *   // the response will give you profile details.
-   * }).catch(function(ex) {
-   *   // your failure code here
-   * });
-   * ```
-   * @return {Promise<User|null>} returns authenticated user if present, else null
-   */
-  async getUserInfo(): Promise<User | null> {
-    if (!window.usermanager) {
-      return Promise.reject(new CustomException("UserManager cannot be empty", 417));
-    }
-    return await window.usermanager.getUser();
   }
 
   /**
@@ -184,28 +124,49 @@ export class WebAuth {
 
   /**
    * get the logout call state from the url provided, if none is provided current window url is used
-   * @returns {Promise<LogoutResponse>} logout response from auth service
+   * @returns {Promise<LogoutResponse | undefined>} logout response from auth service
    */
-  logoutCallback(url?: string): Promise<LogoutResponse> {
+  logoutCallback(url?: string, keepOpen?: boolean): Promise<LogoutResponse | undefined> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    return window.authentication.logoutCallback(url);
+    return window.authentication.logoutCallback(url, keepOpen);
   }
 
   /**
-   * listen to popup sign out event
-   * @param {string} url optional url to override to check for sign out state
-   * @param {boolean} keepOpen true to keep the popup open even after sign out, else false
+   * On successful token renewal, authenticated user is returned
+   *
+   * @param {RenewTokenOptions} options options to over-ride the client config for renewing token
+   * @returns {Promise<User>} Authenticated user
+   * @throws error if unable to get the parse and get user
    */
-  popupSignOutCallback(url?: string, keepOpen?: boolean) {
+  renewToken(options?: RenewTokenOptions): Promise<User> {
     if (!window.webAuthSettings || !window.authentication) {
       return Promise.reject(new CustomException("Settings or Authentication instance in OIDC cannot be empty", 417));
     }
-    url = url || window.webAuthSettings.post_logout_redirect_uri;
+    return window.authentication.renewToken(options);
+  }
 
-    return window.authentication.popupSignOutCallback(url, keepOpen);
-  }  
+  /**
+   * To get the user informations from defined UserStorage, call **getUserInfoFromStorage()**. 
+   * This will fetch informations about the authenticated user such as tokens & user profiles, which has been stored in predefined user storage based on cidaas configuration. (default is session storage)
+   * 
+   * @example
+   * ```js
+   * cidaas.getUserInfoFromStorage().then(function (response) {
+   *   // the response will give you profile details.
+   * }).catch(function(ex) {
+   *   // your failure code here
+   * });
+   * ```
+   * @return {Promise<User|null>} returns authenticated user if present, else null
+   */
+  async getUserInfoFromStorage(): Promise<User | null> {
+    if (!window.usermanager) {
+      return Promise.reject(new CustomException("UserManager cannot be empty", 417));
+    }
+    return await window.usermanager.getUser();
+  }
 
   /**
    * To get the generated login url, call **getLoginURL()**. This will call authz service and generate login url to be used.
@@ -291,20 +252,6 @@ export class WebAuth {
   }
 
   /**
-   * To logout the user by using cidaas internal api, call **logoutUser()**.
-   * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/3b5ce6a54bf29-logout for more details.
-   * @example
-   * ```js
-   * cidaas.logoutUser({
-   *   access_token : 'your accessToken'
-   * });
-   * ```
-   */
-  logoutUser(options: LogoutUserRequest) {
-    window.location.href = window.webAuthSettings.authority + "/session/end_session?access_token_hint=" + options.access_token + "&post_logout_redirect_uri=" + window.webAuthSettings.post_logout_redirect_uri;
-  }
-
-  /**
    * To get the client basic information, call **getClientInfo()**. This will return the basic client details such as client name and its details.
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/dc8a6cfb28abb-public-page-information for more details.
    * @example
@@ -328,19 +275,22 @@ export class WebAuth {
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2a2feed70303c-get-device-by-user for more details.
    * @example
    * ```js
-   * const options = null; // the payload is deprecated and will be removed in the next major release
-   * const accessToken = 'your access token';
-   * cidaas.getDevicesInfo(options, accessToken).then(function (resp) {
+   * cidaas.getDevicesInfo().then(function (resp) {
    *   // the response will give you devices informations.
    * }).catch(function(ex) {
    *   // your failure code here
    * });
    * ```
    */
-  getDevicesInfo(options: void, accessToken: string) {
-    options = undefined;
+  getDevicesInfo(options?: void, access_token?: string) {
+    // BREAKING TODO: remove options parameter in the next major release
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/devices";
-    return Helper.createHttpPromise(options, _serviceURL,false, "GET", accessToken);
+    if (access_token) {
+      return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
+    }
+    Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", accessToken);
+    });
   }
 
   /**
@@ -351,21 +301,22 @@ export class WebAuth {
    * const options = {
    *   device_id: 'id of device associated to the client.' // call **getDevicesInfo()** to get List of device ids and its details.
    * };
-   * const accessToken = 'your access token';
-   * cidaas.deleteDevice(options, accessToken).then(function (resp) {
+   * cidaas.deleteDevice(options).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
    * });
    * ```
    */
-  deleteDevice(options: DeleteDeviceRequest, accessToken: string) {
+  deleteDevice(options: DeleteDeviceRequest, access_token?: string) {
     const _serviceURL = window.webAuthSettings.authority + "/device-srv/device/" + options.device_id;
-    options.userAgent = window.navigator.userAgent;
-    if (window.navigator.userAgent) {
-      return Helper.createHttpPromise(options, _serviceURL,false, "DELETE", accessToken);
+    const payload: DeleteDeviceRequest = window.navigator.userAgent ? { ...options, userAgent: window.navigator.userAgent } : undefined;
+    if (access_token) {
+      return Helper.createHttpPromise(payload, _serviceURL,false, "DELETE", access_token);
     }
-    return Helper.createHttpPromise(undefined, _serviceURL,false, "DELETE", accessToken);
+    return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.createHttpPromise(payload, _serviceURL,false, "DELETE", accessToken);
+    });
   }
 
   /**
@@ -416,35 +367,17 @@ export class WebAuth {
    * @param options 
    * @returns 
    */
-  getUserProfile(options: GetUserProfileRequest) {
+  getUserProfile(options?: GetUserProfileRequest) {
     return UserService.getUserProfile(options);
   }
 
   /**
-   * renew token using refresh token
+   * generate token(s) from code
    * @param options 
    * @returns 
    */
-  renewToken(options: RenewTokenRequest) {
-    return TokenService.renewToken(options);
-  }
-
-  /**
-   * get access token from code
-   * @param options 
-   * @returns 
-   */
-  getAccessToken(options: GetAccessTokenRequest) {
-    return TokenService.getAccessToken(options);
-  }
-
-  /**
-   * validate access token
-   * @param options 
-   * @returns 
-   */
-  validateAccessToken(options: TokenIntrospectionRequest) {
-    return TokenService.validateAccessToken(options);
+  generateTokenFromCode(options: GenerateTokenFromCodeRequest) {
+    return TokenService.generateTokenFromCode(options);
   }
 
   /**
@@ -707,7 +640,7 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  changePassword(options: ChangePasswordRequest, access_token: string) {
+  changePassword(options: ChangePasswordRequest, access_token?: string) {
     return UserService.changePassword(options, access_token);
   }
 
@@ -719,7 +652,7 @@ export class WebAuth {
    * @param sub 
    * @returns 
    */
-  updateProfile(options: CidaasUser, access_token: string, sub: string) {
+  updateProfile(options: CidaasUser, access_token?: string, sub?: string) {
     return UserService.updateProfile(options, access_token, sub);
   }
 
@@ -735,17 +668,21 @@ export class WebAuth {
    *     to:date: 'date in UTC format'
    *   }
    * };
-   * const accessToken = 'your access token';
-   * cidaas.getUserActivities(options, accessToken).then(function (resp) {
+   * cidaas.getUserActivities(options).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
    * });
    * ```
    */
-  getUserActivities(options: GetUserActivitiesRequest, accessToken: string) {
+  getUserActivities(options: GetUserActivitiesRequest, access_token?: string) {
     const serviceURL = window.webAuthSettings.authority + '/activity-streams-srv/user-activities';
-    return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
+    if (access_token) {
+      return Helper.createHttpPromise(options, serviceURL, false, 'POST', access_token);
+    }
+    return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken);
+    });
   }
 
   /**
@@ -769,7 +706,7 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  getAllVerificationList(access_token: string, headers?: HTTPRequestHeader) {
+  getAllVerificationList(access_token?: string, headers?: HTTPRequestHeader) {
     return VerificationService.getAllVerificationList(access_token, headers);
   }
 
@@ -779,7 +716,7 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  initiateLinkAccount(options: InitiateLinkAccountRequest, access_token: string) {
+  initiateLinkAccount(options: InitiateLinkAccountRequest, access_token?: string) {
     return UserService.initiateLinkAccount(options, access_token);
   }
 
@@ -789,7 +726,7 @@ export class WebAuth {
    * @param access_token 
    * @returns 
    */
-  completeLinkAccount(options: CompleteLinkAccountRequest, access_token: string) {
+  completeLinkAccount(options: CompleteLinkAccountRequest, access_token?: string) {
     return UserService.completeLinkAccount(options, access_token);
   }
 
@@ -799,7 +736,7 @@ export class WebAuth {
    * @param sub 
    * @returns 
    */
-  getLinkedUsers(access_token: string, sub: string) {
+  getLinkedUsers(access_token?: string, sub?: string) {
     return UserService.getLinkedUsers(access_token, sub)
   }
 
@@ -809,7 +746,7 @@ export class WebAuth {
    * @param identityId 
    * @returns 
    */
-  unlinkAccount(access_token: string, identityId: string) {
+  unlinkAccount(access_token?: string, identityId?: string) {
     return UserService.unlinkAccount(access_token, identityId);
   }
 
@@ -822,15 +759,14 @@ export class WebAuth {
    *   photo: yourImageFile,
    *   filename: 'name of your image file'
    * };
-   * const accessToken = 'your access token';
-   * cidaas.updateProfileImage(options, accessToken).then(function (resp) {
+   * cidaas.updateProfileImage(options).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
    * });
    * ```
    */
-  updateProfileImage(options: UpdateProfileImageRequest, access_token: string) {
+  updateProfileImage(options: UpdateProfileImageRequest, access_token?: string) {
     const serviceURL = window.webAuthSettings.authority + "/image-srv/profile/upload";
 
     const form = document.createElement('form');
@@ -852,27 +788,34 @@ export class WebAuth {
     formdata.set('image_key', options.image_key);
     formdata.set('photo', options.photo, options.filename);
 
-    return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', access_token, null, formdata);
+    if (access_token) {
+      return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', access_token, null, formdata);
+    }
+    return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+      return Helper.createHttpPromise(options, serviceURL, undefined, 'POST', accessToken, null, formdata);
+    });
 
   }
 
   /**
    * enrollVerification
    * @param options 
+   * @param access_token
    * @returns 
    */
-  initiateEnrollment(options: InitiateEnrollmentRequest, accessToken: string) {
-    return VerificationService.initiateEnrollment(options, accessToken);
+  initiateEnrollment(options: InitiateEnrollmentRequest, access_token?: string) {
+    return VerificationService.initiateEnrollment(options, access_token);
   }
 
   /**
    * update the status of notification
-   * @param status_id 
+   * @param status_id
+   * @param access_token
    * @param headers 
    * @returns 
    */
-  getEnrollmentStatus(status_id: string, accessToken: string, headers?: HTTPRequestHeader) {
-    return VerificationService.getEnrollmentStatus(status_id, accessToken, headers);
+  getEnrollmentStatus(status_id: string, access_token?: string, headers?: HTTPRequestHeader) {
+    return VerificationService.getEnrollmentStatus(status_id, access_token, headers);
   }
 
   /**
@@ -987,11 +930,8 @@ export class WebAuth {
    * @param headers 
    * @returns 
    */
-  initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) {
-    // BREAKING TODO: remove accessToken parameter in the next major release
-    if (accessToken) {
-      return VerificationService.initiateMFA(options, accessToken, headers);
-    } 
+  initiateMFA(options: InitiateMFARequest, access_token?: string, headers?: HTTPRequestHeader) {
+    // BREAKING TODO: remove access_token parameter in the next major release
     return VerificationService.initiateMFA(options, undefined, headers);
   }
 

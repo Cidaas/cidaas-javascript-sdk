@@ -1,5 +1,22 @@
 # Changelog
 
+## V5.0.0
+
+If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
+
+### Changed
+- Support tokens from predefined user storage
+- Use latest version of oidc client ts library
+- **Breaking** Rework renewToken() to store the newly generated token in user storage
+- **Breaking** Rename getUserInfo() to getUserInfoFromStorage()
+- **Breaking** Rename getAccessToken() to generateTokenFromCode()
+
+### Removed
+- **Breaking** Removed silentSignin() & silentSignInCallback() function
+- **Breaking** Removed popupSignInCallback() & popupSignOutCallback()function
+- **Breaking** Removed logoutUser() function
+- **Breaking** Removed validateAccessToken() function
+
 ## V4.3.3
 
 ## Changed
@@ -103,7 +120,7 @@
 
 ## V4.0.0
 
-If you are upgrading from v3.x.x,  please see ['UPGRADING.md'](UPGRADING.md)
+If you are upgrading from v3.x.x,  please see [UPGRADING.md](UPGRADING_V4.md)
 
 ### Fixed
 - fix vulnerabilities from `npm audit`

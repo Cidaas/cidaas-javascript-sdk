@@ -54,7 +54,6 @@ export function acceptConsent(options: AcceptConsentRequest, headers?: HTTPReque
  * this.cidaas.getConsentVersionDetails({
  *   consentid: 'your consent id',
  *   locale: 'browser accept language or custom language',
- *   access_token: 'your access token',
  * }).then((response) => {
  *   // type your code here
  * }).catch((err) => {
@@ -67,8 +66,7 @@ export function getConsentVersionDetails(options: GetConsentVersionDetailsReques
   if (options.locale) {
     _serviceURL += "?locale=" + options.locale;
   }
-  // BREAKING TODO: remove access token as it is not needed to get consent version details
-  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", options.access_token, headers);
+  return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
 }
 
 /**
@@ -109,7 +107,6 @@ export function acceptClaimConsent(options: AcceptClaimConsentRequest, headers?:
  * @example
  * ```js
  * this.cidaas.revokeClaimConsent({
- *    access_token: 'your access token',
  *    client_id: 'your client id',
  *    sub: 'masked sub'
  *    revoked_claims: [your claim consents]
@@ -122,5 +119,10 @@ export function acceptClaimConsent(options: AcceptClaimConsentRequest, headers?:
  */
 export function revokeClaimConsent(options: RevokeClaimConsentRequest) {
   const _serviceURL = window.webAuthSettings.authority + "/consent-management-srv/consent/claim/revoke";
-  return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.access_token);
+  if (options.access_token) {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", options.access_token);
+  }
+  return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+    return Helper.createHttpPromise(options, _serviceURL, false, "POST", accessToken);
+  });
 }
