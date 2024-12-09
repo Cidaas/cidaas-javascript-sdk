@@ -13,7 +13,7 @@ import { LoginPrecheckRequest, ProcessingType, VerificationType } from '../commo
 import { CidaasUser } from '../common/User.model';
 import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetMedium, ResetPasswordRequest, UserCheckExistsRequest } from '../user-service/UserService.model';
 import { AuthenticateMFARequest, CancelMFARequest, CheckVerificationTypeConfiguredRequest, ConfigureFriendlyNameRequest, ConfigureVerificationRequest, EnrollVerificationRequest, GetMFAListRequest, InitiateAccountVerificationRequest, InitiateEnrollmentRequest, InitiateMFARequest, InitiateVerificationRequest, VerifyAccountRequest } from '../verification-service/VerificationService.model';
-import { DeleteDeviceRequest, GetRegistrationSetupRequest, GetRequestIdRequest, GetUserActivitiesRequest, InvokeIdValidationCaseRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from './webauth.model';
+import { DeleteDeviceRequest, GetRegistrationSetupRequest, GetRequestIdRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from './webauth.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
@@ -211,17 +211,6 @@ describe('Webauth functions without module or services', () => {
 		const serviceURL = `${authority}/auth-actions-srv/validation/${trackId}`;
 		webAuth.userActionOnEnrollment(options, trackId);
 		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
-	});
-
-	test('invokeIdValidationCase', () => {
-		const options: InvokeIdValidationCaseRequest = {
-			redirect_url: 'redirect_url',
-    		validation_settings_id: 'validation_settings_id'
-		};
-		const accessToken = 'accessToken';
-		const serviceURL = `${authority}/idval-sign-srv/caseinvocation`;
-		webAuth.invokeIdValidationCase(options, accessToken);
-		expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 	});
 	
 	test('setAcceptLanguageHeader', () => {

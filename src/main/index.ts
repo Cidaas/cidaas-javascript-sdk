@@ -1,5 +1,6 @@
+import ConfigProvider from "./common/ConfigProvider";
+import * as IdValidationService from "./id-validation-service/IdValidationService";
 import { WebAuth } from "./web-auth/WebAuth";
 
 export * from './authentication/Authentication';
-export { WebAuth };
-
+export { ConfigProvider, WebAuth, IdValidationService };
