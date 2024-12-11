@@ -966,15 +966,3 @@ describe('Consent service functions', () => {
 	});
 
 });
-function fakeAsync(arg0: () => void): jest.ProvidesCallback | undefined {
-	throw new Error('Function not implemented.');
-}
-
-function tick() {
-	throw new Error('Function not implemented.');
-}
-
-function async(arg0: () => void): jest.ProvidesCallback | undefined {
-	throw new Error('Function not implemented.');
-}
-
