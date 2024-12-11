@@ -6,8 +6,9 @@ import { InvokeIdValidationCaseRequest } from "./IdValidationService.model";
   * Make sure that the access token, which is used to call this api (either as parameter or from user storage) 
   * have the following scopes: cidaas:idval_init cidaas:idval_perform cidaas:idval_settings_read profile
   *
-  * @param options 
-  * @param access_token
+  * @param options payload to be sent to the api
+  * @param access_token will either be given as function parameter or will be fetch from user storage if not given
+  * 
   * @example
   * ```js
   * import { IdValidationService } from 'cidaas-javascript-sdk';
@@ -27,15 +28,27 @@ import { InvokeIdValidationCaseRequest } from "./IdValidationService.model";
 export function invokeIdValidationCase(options: InvokeIdValidationCaseRequest, access_token?: string) {
     const serviceURL = window.webAuthSettings.authority + '/idval-sign-srv/caseinvocation';
     if (access_token) {
-        return Helper.createHttpPromise(options, serviceURL, false, 'POST', access_token).then(response => {
-            const redirectUrl = response.data.case_redirect_url;
-            window.location.href = redirectUrl;
-        });
+        return callIdValidationAPI(options, serviceURL, access_token);
     }
     return Helper.getAccessTokenFromUserStorage().then((accessToken) => {
-        return Helper.createHttpPromise(options, serviceURL, false, 'POST', accessToken).then(response => {
+        return callIdValidationAPI(options, serviceURL, accessToken);
+    });
+}
+
+/** 
+ * API call and response handling of id validation case invocation. This function will be called internally by invokeIdValidationCase() function.
+ * 
+ * @param options payload to be sent to the api
+ * @param serviceURL will be provided by invokeIdValidationCase() function
+ * @param access_token comes from either invokeIdValidationCase() function parameter or from user storage
+ */
+function callIdValidationAPI(options: InvokeIdValidationCaseRequest, serviceURL: string, access_token: string) {
+    return Helper.createHttpPromise(options, serviceURL, false, 'POST', access_token).then(response => {
+        if (response?.success && response.data) {
             const redirectUrl = response.data.case_redirect_url;
             window.location.href = redirectUrl;
-        });
+        } else {
+            console.info(`${response.error_code}: ${response.error}`);
+        }
     });
 }
