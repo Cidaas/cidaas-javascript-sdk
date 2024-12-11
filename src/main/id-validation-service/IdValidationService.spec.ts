@@ -1,5 +1,5 @@
+import { IdValidationService } from './IdValidationService';
 import { InvokeIdValidationCaseRequest } from "./IdValidationService.model";
-import * as IdValidationService from './IdValidationService';
 import { Helper } from "../common/Helper";
 import ConfigProvider from "../common/ConfigProvider"
 import { OidcClientSettings } from "oidc-client-ts";
@@ -12,7 +12,8 @@ const options: OidcClientSettings = {
     client_id: '',
     redirect_uri: ''
 };
-ConfigProvider.setConfig(options);
+const configProvider: ConfigProvider = new ConfigProvider(options);
+const idValidationService = new IdValidationService(configProvider);
 
 test('invokeIdValidationCase', () => {
     const options: InvokeIdValidationCaseRequest = {
@@ -21,6 +22,6 @@ test('invokeIdValidationCase', () => {
     };
     const accessToken = 'accessToken';
     const serviceURL = `${authority}/idval-sign-srv/caseinvocation`;
-    IdValidationService.invokeIdValidationCase(options, accessToken);
+    idValidationService.invokeIdValidationCase(options, accessToken);
     expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 });
