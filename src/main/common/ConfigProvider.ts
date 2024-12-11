@@ -2,14 +2,26 @@ import { OidcSettings } from "../authentication/Authentication.model";
 
 
 class ConfigProvider {
-    private static config: OidcSettings;
+    private config: OidcSettings;
 
-    public static setConfig(config: OidcSettings) {
-        this.config = { ...this.config, ...config };
-        window.webAuthSettings = this.config;
+    constructor(config: OidcSettings) {
+        if (!config.response_type) {
+            config.response_type = "code";
+        }
+        if (!config.scope) {
+            config.scope = "email openid profile mobile";
+        }
+        if (config.authority && config.authority.charAt(config.authority.length - 1) === '/' ) {
+            config.authority = config.authority.slice(0, config.authority.length - 1);
+        }
+        this.config = config;
     }
 
-    public static getConfig(): OidcSettings {
+    public setConfig(config: OidcSettings) {
+        this.config = { ...this.config, ...config };
+    }
+
+    public getConfig(): OidcSettings {
         return this.config;
     }
 }
