@@ -248,12 +248,13 @@ general SDK functions could be found [here](https://github.com/Cidaas/cidaas-jav
 | SDK Functions                                  | Description                                                                                 |
 |------------------------------------------------|---------------------------------------------------------------------------------------------|
 | getRequestId                                   | The SDK could be used to get request id, which is required as input to call other functions |
-| getLoginURL                                    | Getting login authz url is supported by the SDK                                                        |
-| getTenantInfo, getClientInfo                   | Getting public information such as tenant info & client info is supported by the SDK                                                    |
+| getLoginURL                                    | Getting login authz url is supported by the SDK                                             |
+| getTenantInfo, getClientInfo                   | Getting public information such as tenant info & client info is supported by the SDK        |
 | setAcceptLanguageHeader                        | The SDK could be used to change response language                                           |
-| createDeviceInfo, getDevicesInfo, deleteDevice | Creating, getting, and removing device information is supported by the SDK                          |
+| createDeviceInfo, getDevicesInfo, deleteDevice | Creating, getting, and removing device information is supported by the SDK                  |
 | logoutUser                                     | The SDK could be used to end user session by using cidaas internal api                      |
-| userActionOnEnrollment                                     | The SDK could be used to run predefined action after enrollment |
+| userActionOnEnrollment                         | The SDK could be used to run predefined action after enrollment                             |
+| invokeIdValidationCase                         | The SDK could be used to invoke a new id validation case                                    |
 
 ## Possible Error
 
