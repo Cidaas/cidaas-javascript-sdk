@@ -1,17 +1,26 @@
-import * as LoginService from './LoginService';
+import { LoginService } from './LoginService';
 import { Helper } from "../common/Helper";
 import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
+import { OidcSettings } from '../authentication/Authentication.model';
+import ConfigUserProvider from '../common/ConfigUserProvider';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/login-srv`;
 const createFormSpy = jest.spyOn(Helper, 'createForm');
 const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
+let loginService: LoginService;
 
 beforeAll(() => {
-  window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
+  const options: OidcSettings = {
+    authority: authority,
+    client_id: '',
+    redirect_uri: ''
+  };
+  const configUserProvider: ConfigUserProvider = new ConfigUserProvider(options);
+  loginService = new LoginService(configUserProvider);
 });
 
 test('loginWithCredentials', () => {
@@ -21,7 +30,7 @@ test('loginWithCredentials', () => {
     requestId: 'requestId'
   };
   const serviceURL = `${serviceBaseUrl}/login`;
-  LoginService.loginWithCredentials(option);
+  loginService.loginWithCredentials(option);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
   expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -38,7 +47,7 @@ test('loginWithSocial', () => {
     dc: 'dc',
     device_fp: 'device_fp' 
   };
-  LoginService.loginWithSocial(options, queryParams);
+  loginService.loginWithSocial(options, queryParams);
   const serviceURL = `${serviceBaseUrl}/social/login/${options.provider.toLowerCase()}/${options.requestId}?dc=${queryParams.dc}&device_fp=${queryParams.device_fp}`;
   expect(window.location.href).toEqual(serviceURL);  
 });
@@ -55,7 +64,7 @@ test('registerWithSocial', () => {
     dc: 'dc',
     device_fp: 'device_fp' 
   };
-  LoginService.registerWithSocial(options, queryParams);
+  loginService.registerWithSocial(options, queryParams);
   const serviceURL = `${serviceBaseUrl}/social/register/${options.provider.toLowerCase()}/${options.requestId}?dc=${queryParams.dc}&device_fp=${queryParams.device_fp}`;
   expect(window.location.href).toEqual(serviceURL);  
 });
@@ -68,7 +77,7 @@ test('passwordlessLogin', () => {
     verificationType: VerificationType.EMAIL
   };
   const serviceURL = `${serviceBaseUrl}/verification/login`;
-  LoginService.passwordlessLogin(option);
+  loginService.passwordlessLogin(option);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
   expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -78,7 +87,7 @@ test('consentContinue', () => {
     track_id: 'track_id'
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
-  LoginService.consentContinue(option);
+  loginService.consentContinue(option);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
   expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -88,7 +97,7 @@ test('mfaContinue', () => {
     track_id: 'track_id',
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
-  LoginService.mfaContinue(option);
+  loginService.mfaContinue(option);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
   expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -102,7 +111,7 @@ test('firstTimeChangePassword', () => {
     loginSettingsId: 'loginSettingsId'
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.loginSettingsId}`;
-  LoginService.firstTimeChangePassword(option);
+  loginService.firstTimeChangePassword(option);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
   expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -151,7 +160,7 @@ test('progressiveRegistration', () => {
     lon: 'lon value'
   }
   const serviceURL = `${serviceBaseUrl}/progressive/update/user`;
-  LoginService.progressiveRegistration(options, headers);
+  loginService.progressiveRegistration(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', undefined, headers);
 });
 
@@ -164,7 +173,7 @@ test('loginAfterRegister', () => {
     device_fp: 'device_fp'
   };
   const serviceURL = `${serviceBaseUrl}/login/handle/afterregister/${option.trackId}`;
-  LoginService.loginAfterRegister(option);
+  loginService.loginAfterRegister(option);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
 });
 
@@ -175,7 +184,7 @@ test('actionGuestLogin', () => {
   const form = document.createElement('form');
   form.setAttribute('name', 'guestLoginForm');
   document.body.appendChild(form);
-  LoginService.actionGuestLogin(requestId);
+  loginService.actionGuestLogin(requestId);
   expect(submitFormSpy).toHaveBeenCalled();
   expect(form.action).toEqual(serviceURL);
   expect(form.method).toEqual('post');

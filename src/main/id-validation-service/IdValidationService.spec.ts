@@ -1,19 +1,19 @@
 import { IdValidationService } from './IdValidationService';
 import { InvokeIdValidationCaseRequest } from "./IdValidationService.model";
 import { Helper } from "../common/Helper";
-import ConfigProvider from "../common/ConfigProvider"
-import { OidcClientSettings } from "oidc-client-ts";
+import ConfigUserProvider from "../common/ConfigUserProvider"
+import { OidcSettings } from '../authentication/Authentication.model';
 
 const authority = 'baseURL';
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
 
-const options: OidcClientSettings = {
+const options: OidcSettings = {
     authority: authority,
     client_id: '',
     redirect_uri: ''
 };
-const configProvider: ConfigProvider = new ConfigProvider(options);
-const idValidationService = new IdValidationService(configProvider);
+const configUserProvider: ConfigUserProvider = new ConfigUserProvider(options);
+const idValidationService: IdValidationService = new IdValidationService(configUserProvider);
 
 test('invokeIdValidationCase', () => {
     const options: InvokeIdValidationCaseRequest = {

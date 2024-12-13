@@ -10,7 +10,9 @@ If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
 ### Changed
 - Support tokens from predefined user storage
 - Use latest version of oidc client ts library
+- **Breaking** Rework library to calls functions from various modules
 - **Breaking** Rework renewToken() to store the newly generated token in user storage
+- **Breaking** Move setAcceptLanguageHeader function to Helper class
 - **Breaking** Rename getUserInfo() to getUserInfoFromStorage()
 - **Breaking** Rename getAccessToken() to generateTokenFromCode()
 
@@ -19,6 +21,10 @@ If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
 - **Breaking** Removed popupSignInCallback() & popupSignOutCallback()function
 - **Breaking** Removed logoutUser() function
 - **Breaking** Removed validateAccessToken() function
+- **Breaking** Removed createPreloginWebauth function
+
+### Fix
+- Fix vulnerabilities from `npm audit`
 
 ## V4.3.3
 

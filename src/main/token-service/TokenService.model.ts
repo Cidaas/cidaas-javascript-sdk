@@ -97,7 +97,7 @@ export interface GenerateTokenFromCodeRequest {
   /** 
    * Type of grant used in token request 
    * BREAKING TODO: change type to GrantType only in next major version
-   * */
+   */
   grant_type?: GrantType | string;
   /** Specify the url where the user needs to be redirected after successful login */
   redirect_uri?: string;

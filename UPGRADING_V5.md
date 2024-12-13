@@ -1,7 +1,63 @@
 # Upgrading Notes
 This document described how to handle breaking changes from upgrading Cidaas Javascript SDK v4.x.x to the stable v5.0.0 release.
 
-## 1. Update access token handling
+## 1. call functions from its own module
+
+Previously all of javascript sdk function is called from webauth. Now the functions will be called its modules. Cidaas ConfigUserProvider have to be initialise to be added to each of the modules as dependencies:
+
+Example of Cidaas Service:
+```js
+export class CidaasService {
+    cidaasConfigUserProvider: ConfigUserProvider;
+    authentication: Authentication;
+    verificationService: VerificationService;
+    options: OidcSettings = { ... };
+
+    constructor() {
+        // init ConfigUserProvider
+        this.cidaasConfigUserProvider = new ConfigUserProvider(this.options);
+        // init authentication module
+        this.authentication = new Authentication(this.cidaasConfigUserProvider);
+        // init verification module
+        this.verificationService = new VerificationService(this.cidaasConfigUserProvider);
+    }
+
+    // get authentication module
+    getAuthentication() {
+        return this.authentication;
+    }
+
+    // get verification module
+    getVerificationService() {
+        return this.verificationService
+    }
+}
+```
+
+Usage in Component:
+ ```js
+ // inject cidaas service
+constructor(private cidaasService: CidaasService, ...) {}
+
+...
+
+// init each of cidaas modules which are needed in the component
+this.cidaasAuthentication = this.cidaasService.getAuthentication();
+this.cidaasVerificationService = this.cidaasService.getVerificationService();
+
+...
+
+// call functions from each of the modules
+this.cidaasAuthentication.loginCallback();
+...
+this.cidaasVerificationService.getMFAList(getMFAListOptions);
+...
+
+```
+
+Each of the functions and its module can be looked in the doc.
+
+## 2. Update access token handling
 
 As the SDK now using user storage to handle access token, if previously you saved the token manually, check whether there is conflict between access token in user storage & client side implementation. If you don't want to use user storage, you can use InMemoryWebStorage to remove all tokens information from the storage after refreshing the app.
 
@@ -13,7 +69,7 @@ const options = {
 }
 ```
 
-## 2. Use the latest function
+## 3. Use the latest function
 
 There are changes in the function names. The old & new function name could be found below:
 
@@ -22,10 +78,13 @@ There are changes in the function names. The old & new function name could be fo
 | getUserInfo                                       | getUserInfoFromStorage                      |
 | getAccessToken                                    | generateTokenFromCode                       |
 
-## 3. Handling for removed functions
+If you used setAcceptLanguageHeader() function, it is now moved to Helper class and can be called with static call Helper.setAcceptLanguageHeader();
+
+## 4. Handling for removed functions
 
 * If you used silentSignin() previously, it has now been reimplemented as renewToken() function. The previous existing renewToken() function is removed, to be replaced by the new implementation, which will look for refresh token in user storage instead of using function parameter.
 * If you used silentSignInCallback() or popupSignInCallback() previously, now it is recommended to use loginCallback() instead.
 * If you used popupSignOutCallback() previously, now it is recommended to use logoutCallback() instead.
 * If you used logoutUser() previously, you can now use logout() function instead.
 * In case you need to use validateAccessToken() on the client side, offlineTokenCheck() function can be used as it only check on general token information without involving secret key. Generally, it is recommended to do token introspection on the server side.
+* In case you used createPreloginWebauth function, javascript sdk now support multiple configuration instance. You can create an additional configuration needed for prelogin case.

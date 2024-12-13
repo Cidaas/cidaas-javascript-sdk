@@ -1,8 +1,9 @@
-import { OidcSettings } from "../authentication/Authentication.model";
+import { OidcManager, OidcSettings } from "../authentication-service/AuthenticationService.model";
 
 
-class ConfigProvider {
+class ConfigUserProvider {
     private config: OidcSettings;
+    private userManager: OidcManager;
 
     constructor(config: OidcSettings) {
         if (!config.response_type) {
@@ -15,6 +16,7 @@ class ConfigProvider {
             config.authority = config.authority.slice(0, config.authority.length - 1);
         }
         this.config = config;
+        this.userManager = new OidcManager(this.config);
     }
 
     public setConfig(config: OidcSettings) {
@@ -24,6 +26,10 @@ class ConfigProvider {
     public getConfig(): OidcSettings {
         return this.config;
     }
+
+    public getUserManager(): OidcManager {
+        return this.userManager;
+    }
 }
 
-export default ConfigProvider;
+export default ConfigUserProvider;
