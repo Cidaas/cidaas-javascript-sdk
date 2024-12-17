@@ -30,7 +30,7 @@ export class DeviceService {
         if (access_token) {
             return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);
         }
-        Helper.getAccessTokenFromUserStorage(this.userManager).then((accessToken) => {
+        return Helper.getAccessTokenFromUserStorage(this.userManager).then((accessToken) => {
             return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", accessToken);
         });
     }
