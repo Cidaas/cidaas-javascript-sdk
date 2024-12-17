@@ -10,7 +10,7 @@ export class VerificationService {
 
 	constructor(configUserProvider: ConfigUserProvider) {
 		this.config = configUserProvider.getConfig();
-		this.userManager = new OidcManager(this.config);
+		this.userManager = configUserProvider.getUserManager();
 	}
 
 	/**
