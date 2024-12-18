@@ -95,7 +95,7 @@ export class LoginService {
 	*   requestId: 'your requestId',
 	*   sub: 'your user sub',
 	*   statusId: 'status id from authenticateMFA()'
-	*   verificationType: 'your verificationType. e.g. VerificationType.EMAIL'
+	*   verificationType: 'your verificationType. e.g. VerificationType.Email'
 	* });
 	* ```
 	*/
