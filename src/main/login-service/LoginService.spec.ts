@@ -1,6 +1,6 @@
 import { LoginService } from './LoginService';
 import { Helper } from "../common/Helper";
-import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from './LoginService.model';
 import { LoginPrecheckRequest, VerificationType } from '../common/Common.model';
 import { CidaasUser } from '../common/User.model';
 import { OidcSettings } from '../authentication/Authentication.model';
@@ -93,7 +93,7 @@ test('consentContinue', () => {
 });
 
 test('mfaContinue', () => {
-  const option: MfaContinueRequest = {
+  const option: LoginPrecheckRequest = {
     track_id: 'track_id',
   };
   const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.track_id}`;
@@ -104,14 +104,13 @@ test('mfaContinue', () => {
 
 test('firstTimeChangePassword', () => {
   const option: FirstTimeChangePasswordRequest = {
-    sub: 'sub',
     old_password: 'old',
     new_password: 'new',
-    confirm_password: 'new',
-    loginSettingsId: 'loginSettingsId'
+    confirm_password: 'new'
   };
-  const serviceURL = `${serviceBaseUrl}/precheck/continue/${option.loginSettingsId}`;
-  loginService.firstTimeChangePassword(option);
+  const trackId: string = 'trackId';
+  const serviceURL = `${serviceBaseUrl}/precheck/continue/${trackId}`;
+  loginService.firstTimeChangePassword(option, trackId);
   expect(createFormSpy).toHaveBeenCalledWith(serviceURL, option);
   expect(submitFormSpy).toHaveBeenCalled();
 });

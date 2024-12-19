@@ -82,7 +82,23 @@ If you used setAcceptLanguageHeader() function, it is now moved to Helper class 
 
 There are changes in enums. If you used UPPERCASE to call enum member previously, now they have been standardize to use PascalCase instead.
 
-## 4. Handling for removed functions
+Use enum instead of string for the following properties:
+* LoginWithCredentialsRequest.username_type: UsernameType
+* PasswordlessLoginRequest.verificationType: VerificationType
+* GenerateTokenFromCodeRequest.grant_type: GrantType
+* InitiateResetPasswordRequest.resetMedium: ResetMedium
+* InitiateResetPasswordRequest.processingType: ProcessingType
+* InitiateAccountVerificationRequest.processingType: ProcessingType
+
+Some parameters in function has been updated. Some has been removed because it is deprecated. The details can be found below:
+* getDevicesInfo(options?: void, access_token?: string) is now getDevicesInfo(access_token?: string) 
+* firstTimeChangePassword(options: FirstTimeChangePasswordRequest) is now firstTimeChangePassword(options: FirstTimeChangePasswordRequest, trackId; string). The trackId has the same value as previously loginSettingsId from FirstTimeChangePasswordRequest.
+* updateProfile(options: CidaasUser, access_token?: string, sub?: string) is now updateProfile(options: CidaasUser, sub: string, access_token?: string).
+* getLinkedUsers(access_token?: string, sub?: string) is now getLinkedUsers(sub: string, access_token?: string)
+* initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) is now initiateMFA(options: InitiateMFARequest, headers?: HTTPRequestHeader)
+* mfaContinue(options: MfaContinueRequest) is now mfaContinue(options: LoginPrecheckRequest)
+
+## 4. Handling for removed functions and properties
 
 * If you used silentSignin() previously, it has now been reimplemented as renewToken() function. The previous existing renewToken() function is removed, to be replaced by the new implementation, which will look for refresh token in user storage instead of using function parameter.
 * If you used silentSignInCallback() or popupSignInCallback() previously, now it is recommended to use loginCallback() instead.
@@ -90,3 +106,13 @@ There are changes in enums. If you used UPPERCASE to call enum member previously
 * If you used logoutUser() previously, you can now use logout() function instead.
 * In case you need to use validateAccessToken() on the client side, offlineTokenCheck() function can be used as it only check on general token information without involving secret key. Generally, it is recommended to do token introspection on the server side.
 * In case you used createPreloginWebauth function, javascript sdk now support multiple configuration instance. You can create an additional configuration needed for prelogin case.
+
+The following deprecated properties should be updated to the latest supported properties:
+
+| Deprecated Properties                             | Latest Supported Properties                 |
+|---------------------------------------------------|---------------------------------------------|
+| CidaasUser.user_status                            | CidaasUser.userStatus                       |
+| CidaasUser.userGroups                             | CidaasUser.groups                           |
+| TokenClaim.clientid                               | TokenClaim.aud                              |
+| TokenClaim.scope                                  | TokenClaim.scopes                           |
+| TokenClaim.role                                   | TokenClaim.roles                            |

@@ -33,14 +33,12 @@ export interface GetCommunicationStatusRequest {
 export interface InitiateResetPasswordRequest {
     /** 
      * Type of medium to be used to reset password 
-     * BREAKING TODO: change type to ResetMedium only in next major version
      */
-    resetMedium: ResetMedium | string;
+    resetMedium: ResetMedium;
     /** 
      * defines whether the password can be resetted via email link or whether the user needs to enter a code to complete the reset password process.
-     * BREAKING TODO: change type to ProcessingType only in next major version
      */
-    processingType: ProcessingType | string;
+    processingType: ProcessingType;
     /** Email of the user */
     email?: string;
     /** Mobile number of the user */

@@ -53,8 +53,7 @@ export class TokenService {
 	 * @example
 	 * ```js
 	 * const options = {
-	 *   trackId: "your track id from login",
-	 *   locale: "your preferred locale. DEPRECATED as it is not supported anymore. Will be removed in next major release",
+	 *   track_id: "your track id from login",
 	 * }
 	 * 
 	 * cidaas.loginPrecheck(options)

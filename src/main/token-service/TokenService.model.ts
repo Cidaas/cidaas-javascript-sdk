@@ -50,12 +50,6 @@ export interface TokenClaim {
     ua_hash?: string,
     /** List of unaccepted consents */
     consents?: Consent[],
-    /** DEPRECATED: replaced with aud claim */
-    clientid?: string,
-    /** DEPRECATED: replaced with scopes claim */
-    scope?: string,
-    /** DEPRECATED: replaced with roles claim */
-    role?: string
 }
 
 export interface Group {
@@ -96,9 +90,8 @@ export interface GenerateTokenFromCodeRequest {
   client_id?: string;
   /** 
    * Type of grant used in token request 
-   * BREAKING TODO: change type to GrantType only in next major version
    */
-  grant_type?: GrantType | string;
+  grant_type?: GrantType;
   /** Specify the url where the user needs to be redirected after successful login */
   redirect_uri?: string;
 }

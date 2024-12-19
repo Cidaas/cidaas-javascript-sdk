@@ -1,8 +1,6 @@
 export interface CidaasUser {
     /** Status of User */
     userStatus?: string;
-    /** DEPRECATED: use userStatus variable instead */
-    user_status?: string;
     /** Reason for user status */
     user_status_reason?: string;
     /** Username of the user */
@@ -81,8 +79,6 @@ export interface CidaasUser {
     roles?: string[];  
     /** List of groups of a user */
     groups?: UserGroupMap[];
-    /** DEPRECATED: use groups instead */
-    userGroups?: UserGroupMap[];
     /** Identifier generated after successful authentication but unfulfilled prechecks */
     trackId?: string;
     /** User information Json Object in String format */

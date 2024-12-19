@@ -174,21 +174,8 @@ test('initiateMFA', () => {
   };
   const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  verificationService.initiateMFA(options, undefined, headers);
+  verificationService.initiateMFA(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, headers);
-});
-
-test('initiateMFA with access token', () => {
-  const options: InitiateMFARequest = {
-    usage_type: 'usage_type',
-    request_id: 'request_id',
-    type: 'type'
-  };
-  const accessToken = 'accessToken';
-  const serviceURL = `${serviceBaseUrl}/v2/authenticate/initiate/${options.type}`;
-  verificationService.initiateMFA(options, accessToken);
-  // access token is not needed for initiateMFA and will be removed in the next major release
-  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, "POST", undefined, undefined);
 });
 
 test('authenticateMFA', () => {
