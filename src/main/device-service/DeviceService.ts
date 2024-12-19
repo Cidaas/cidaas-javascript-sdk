@@ -24,8 +24,7 @@ export class DeviceService {
      * });
      * ```
      */
-    getDevicesInfo(options?: void, access_token?: string) {
-        // BREAKING TODO: remove options parameter in the next major release
+    getDevicesInfo(access_token?: string) {
         const _serviceURL = this.config.authority + "/device-srv/devices";
         if (access_token) {
             return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);

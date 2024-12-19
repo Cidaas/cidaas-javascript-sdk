@@ -328,18 +328,14 @@ export class UserService {
 	 *   given_name: 'John',
 	 *   provider: 'self',
 	 *   acceptlanguage: 'your locale' // optional example: de-de, en-US
-	 * }, undefined, 'your sub').then(function () {
+	 * }, 'your sub' ).then(function () {
 	 *   // the response will give you updated user profile info.
 	 * }).catch(function (ex) {
 	 *   // your failure code here
 	 * });
 	 * ```
 	 */
-	updateProfile(options: CidaasUser, access_token?: string, sub?: string) {
-		// Breaking TODO: update parameter sequence, so the only optional parameter is access_token
-		if (!sub) {
-			throw new CustomException("sub cannot be empty", 417);
-		}
+	updateProfile(options: CidaasUser, sub: string, access_token?: string) {
 		const _serviceURL = this.config.authority + "/users-srv/user/profile/" + sub;
 		if (access_token) {
 			return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token)
@@ -407,7 +403,7 @@ export class UserService {
 	 * ```js
 	 * const sub = 'your sub';
 	 * 
-	 * cidaas.getLinkedUsers(undefined, sub)
+	 * cidaas.getLinkedUsers(sub)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -416,11 +412,7 @@ export class UserService {
 	 * });
 	 * ```
 	 */
-	getLinkedUsers(access_token?: string, sub?: string) {
-		// Breaking TODO: update parameter sequence, so the only optional parameter is access_token
-		if (!sub) {
-			throw new CustomException("sub cannot be empty", 417);
-		}
+	getLinkedUsers(sub: string, access_token?: string) {
 		const _serviceURL = this.config.authority + "/users-srv/userinfo/social/" + sub;
 		if (access_token) {
 			return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", access_token);

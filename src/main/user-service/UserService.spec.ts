@@ -226,7 +226,7 @@ test('updateProfile', () => {
   const accessToken = 'accessToken';
   const sub = 'sub';
   const serviceURL = `${serviceBaseUrl}/user/profile/${sub}`;
-  userService.updateProfile(options, accessToken, sub);
+  userService.updateProfile(options, sub, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'PUT', accessToken);
 });
 
@@ -257,7 +257,7 @@ test('getLinkedUsers', () => {
   const accessToken = 'accessToken';
   const sub = 'sub';
   const serviceURL = `${serviceBaseUrl}/userinfo/social/${sub}`;
-  userService.getLinkedUsers(accessToken, sub);
+  userService.getLinkedUsers(sub, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', accessToken);
 });
 

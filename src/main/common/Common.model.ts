@@ -22,12 +22,8 @@ export enum VerificationType {
 export interface HTTPRequestHeader {
     /** Request id returned from the authorization call */
     requestId: string;
-    /** DEPRECATED: Captcha string for captcha check */
-    captcha?: string;
     /** Response language, which is configured in cidaas admin ui */
     acceptlanguage?: string;
-    /** DEPRECATED: Needed in case bot captcha check is activated */
-    bot_captcha_response?: string;
     /** Identifier generated after successful authentication but unfulfilled prechecks */
     trackId?: string;
     /** Latitude is the string location parameter sent in the headers */

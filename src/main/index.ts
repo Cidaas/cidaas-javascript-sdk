@@ -8,7 +8,7 @@ import { DeleteDeviceRequest } from "./device-service/DeviceService.model";
 import { IdValidationService } from "./id-validation-service/IdValidationService";
 import { InvokeIdValidationCaseRequest } from "./id-validation-service/IdValidationService.model";
 import { LoginService } from "./login-service/LoginService";
-import { LoginWithCredentialsRequest, UsernameType, SocialProviderPathParameter, SocialProviderQueryParameter, PasswordlessLoginRequest, MfaContinueRequest, FirstTimeChangePasswordRequest, ProgressiveRegistrationHeader, LoginAfterRegisterRequest } from "./login-service/LoginService.model";
+import { LoginWithCredentialsRequest, UsernameType, SocialProviderPathParameter, SocialProviderQueryParameter, PasswordlessLoginRequest, FirstTimeChangePasswordRequest, ProgressiveRegistrationHeader, LoginAfterRegisterRequest } from "./login-service/LoginService.model";
 import { PublicService } from "./public-service/PublicService";
 import { GetClientInfoRequest, GetRequestIdRequest } from "./public-service/PublicService.model";
 import { TokenService } from "./token-service/TokenService";
@@ -31,7 +31,7 @@ export {
     IdValidationService,
     InvokeIdValidationCaseRequest,
     LoginService,
-    LoginWithCredentialsRequest, UsernameType, SocialProviderPathParameter, SocialProviderQueryParameter, PasswordlessLoginRequest, MfaContinueRequest, FirstTimeChangePasswordRequest, ProgressiveRegistrationHeader, LoginAfterRegisterRequest,
+    LoginWithCredentialsRequest, UsernameType, SocialProviderPathParameter, SocialProviderQueryParameter, PasswordlessLoginRequest, FirstTimeChangePasswordRequest, ProgressiveRegistrationHeader, LoginAfterRegisterRequest,
     PublicService,
     GetClientInfoRequest, GetRequestIdRequest,
     TokenService,

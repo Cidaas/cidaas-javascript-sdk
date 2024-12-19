@@ -22,7 +22,7 @@ beforeAll(() => {
 test('getDevicesInfo', () => {
     const acccessToken = 'accessToken';
     const serviceURL = `${serviceBaseUrl}/devices`;
-    deviceService.getDevicesInfo(undefined, acccessToken);
+    deviceService.getDevicesInfo(acccessToken);
     expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', acccessToken);
 });
 

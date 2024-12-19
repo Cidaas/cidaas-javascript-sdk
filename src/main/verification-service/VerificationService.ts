@@ -257,8 +257,7 @@ export class VerificationService {
 	 * });
 	 * ```
 	 */
-	initiateMFA(options: InitiateMFARequest, accessToken?: string, headers?: HTTPRequestHeader) {
-		// BREAKING TODO: remove accessToken parameter in the next major release
+	initiateMFA(options: InitiateMFARequest, headers?: HTTPRequestHeader) {
 		const _serviceURL = this.config.authority + "/verification-srv/v2/authenticate/initiate/" + options.type;
 		return Helper.createHttpPromise(options, _serviceURL, false, "POST", undefined, headers);
 	}

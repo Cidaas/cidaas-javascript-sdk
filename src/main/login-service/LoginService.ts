@@ -1,6 +1,6 @@
 import { Helper, CustomException } from "../common/Helper";
 import { LoginPrecheckRequest } from "../common/Common.model";
-import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, MfaContinueRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from "./LoginService.model";
+import { FirstTimeChangePasswordRequest, LoginAfterRegisterRequest, LoginWithCredentialsRequest, PasswordlessLoginRequest, ProgressiveRegistrationHeader, SocialProviderPathParameter, SocialProviderQueryParameter } from "./LoginService.model";
 import { CidaasUser } from "../common/User.model";
 import { OidcSettings } from "../authentication-service/AuthenticationService.model";
 import ConfigUserProvider from "../common/ConfigUserProvider";
@@ -132,7 +132,6 @@ export class LoginService {
 
 	/**
 	 * To continue after MFA completion, call **mfaContinue()**.
-	 * options: PhysicalVerificationLoginRequest is not needed anymore. It is now DEPRECATED and will be removed in the next major release
 	 * 
 	 * @example
 	 * ```js
@@ -141,7 +140,7 @@ export class LoginService {
 	 * });
 	 * ```
 	 */
-	mfaContinue(options: MfaContinueRequest) {
+	mfaContinue(options: LoginPrecheckRequest) {
 		try {
 			const url = this.config.authority + "/login-srv/precheck/continue/" + options.track_id;
 			const form = Helper.createForm(url, options)
@@ -158,19 +157,15 @@ export class LoginService {
 	 * @example
 	 * ```js
 	 * cidaas.firstTimeChangePassword({
-	 *   sub: 'your sub',
 	 *   old_password: 'your old password',
 	 *   new_password: 'your new password',
-	 *   confirm_password: 'your new password',
-	 *   loginSettingsId: 'loginSettingsId'
-	 * });
+	 *   confirm_password: 'your new password'
+	 * }, 'your track id');
 	 * ```
 	 */
-	// BREAKING TODO: separate path parameter trackId (from LoginPrecheckRequest) from payload FirstTimeChangePasswordRequest in model
-	firstTimeChangePassword(options: FirstTimeChangePasswordRequest) {
+	firstTimeChangePassword(options: FirstTimeChangePasswordRequest, trackId: string) {
 		try {
-			// BREAKING TODO: use trackId instead of loginSettingsId for precheck
-			const url = this.config.authority + "/login-srv/precheck/continue/" + options.loginSettingsId;
+			const url = this.config.authority + "/login-srv/precheck/continue/" + trackId;
 			const form = Helper.createForm(url, options)
 			document.body.appendChild(form);
 			form.submit();
