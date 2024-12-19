@@ -116,3 +116,4 @@ The following deprecated properties should be updated to the latest supported pr
 | TokenClaim.clientid                               | TokenClaim.aud                              |
 | TokenClaim.scope                                  | TokenClaim.scopes                           |
 | TokenClaim.role                                   | TokenClaim.roles                            |
+
