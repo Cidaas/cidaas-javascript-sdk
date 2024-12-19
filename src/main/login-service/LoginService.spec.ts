@@ -74,7 +74,7 @@ test('passwordlessLogin', () => {
     requestId: 'requestId',
     sub: 'sub',
     status_id: 'statusId',
-    verificationType: VerificationType.EMAIL
+    verificationType: VerificationType.Email
   };
   const serviceURL = `${serviceBaseUrl}/verification/login`;
   loginService.passwordlessLogin(option);

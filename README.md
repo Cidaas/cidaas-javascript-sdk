@@ -20,19 +20,11 @@ Please check the [Changelog](https://github.com/Cidaas/cidaas-sdk-javascript-v2/
 ## Table of Contents
 
 <!--ts-->
+* [Documentation](https://cidaas.github.io/cidaas-javascript-sdk)
 * [Installation](#installation)
 * [Initialisation](#initialisation)
 * [Usage](#usage)
 * [Functions Overview](#functions-overview)
-    <!--ts-->
-    * [Authentication Functions](#authentication-functions)
-    * [Login Management](#login-management)
-    * [User Management](#user-management)
-    * [Token Management](#token-management)
-    * [Verification Management](#verification-management)
-    * [Consent Management](#consent-management)
-    * [Other Functionality](#other-functionality)
-    <!--te-->
 * [Possible Error](#possible-error)
 
 ### Installation
@@ -131,7 +123,7 @@ Example of Cidaas Service:
 ```js
 export class CidaasService {
     cidaasConfigUserProvider: ConfigUserProvider;
-    authentication: Authentication;
+    authenticationService: AuthenticationService;
     verificationService: VerificationService;
     options: OidcSettings = { ... };
 
@@ -139,14 +131,14 @@ export class CidaasService {
         // init ConfigUserProvider
         this.cidaasConfigUserProvider = new ConfigUserProvider(this.options);
         // init authentication module
-        this.authentication = new Authentication(this.cidaasConfigUserProvider);
+        this.authenticationService = new AuthenticationService(this.cidaasConfigUserProvider);
         // init verification module
         this.verificationService = new VerificationService(this.cidaasConfigUserProvider);
     }
 
     // get authentication module
     getAuthentication() {
-        return this.authentication;
+        return this.authenticationService;
     }
 
     // get verification module
@@ -164,13 +156,13 @@ constructor(private cidaasService: CidaasService, ...) {}
 ...
 
 // init each of cidaas modules which are needed in the component
-this.cidaasAuthentication = this.cidaasService.getAuthentication();
+this.cidaasAuthenticationService = this.cidaasService.getAuthenticationService();
 this.cidaasVerificationService = this.cidaasService.getVerificationService();
 
 ...
 
 // call functions from each of the modules
-this.cidaasAuthentication.loginCallback();
+this.cidaasAuthenticationService.loginCallback();
 ...
 this.cidaasVerificationService.getMFAList(getMFAListOptions);
 ...
@@ -186,7 +178,7 @@ Each of the functions and its module can be looked in the doc.
 To login through cidaas sdk, call **loginWithBrowser()**. This will redirect you to the hosted login page.
 
 ```js
-cidaas.loginWithBrowser();
+cidaasAuthenticationService.loginWithBrowser();
 ```
 
 once login is successful, it will automatically redirects you to redirect_uri you have configured in cidaas options. You will get information such as code & state as redirect url parameter (query or fragment), which is needed to get access token.
@@ -194,7 +186,7 @@ once login is successful, it will automatically redirects you to redirect_uri yo
 To complete the login process, call **logincallback()**.
 
 ```js
-cidaas.loginCallback().then(function(response) {
+cidaasAuthenticationService.loginCallback().then(function(response) {
     // the response will give you login details.
 }).catch(function(ex) {
     // your failure code here
@@ -210,7 +202,7 @@ There are code documentations for each of the functions with example code of how
 To get information from user storage, call **getUserInfoFromStorage()**. This function will fetch stored information from predefined user storage (session storage, local storage or in memory)
 
 ```js
-cidaas.getUserInfoFromStorage().then(function(response) {
+cidaasAuthenticationService.getUserInfoFromStorage().then(function(response) {
     // the response will contains tokens & user profile information.
 }).catch(function(ex) {
     // your failure code here
@@ -219,92 +211,7 @@ cidaas.getUserInfoFromStorage().then(function(response) {
 
 ### Functions Overview
 
-Cidaas Javascript SDK features the following functionality:
-
-#### Authentication Functions
-
-The SDK offers multiple way to authenticate user. Whether using browser redirection, in a pop up window, or in an iframe for silent sign in. The functions for authentication could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/authentication/Authentication.ts)
-
-| SDK Functions                                                                    | Description                                                                                                                                                                    |
-|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| loginWithBrowser, registerWithBrowser, loginCallback, logout, logoutCallback | The SDK support browser redirection for authenticating user. The authentication process will then happens in a new tab. This is the default authentication function of the SDK |
-| popupSignIn, popupSignInCallback, popupSignOut, popupSignOutCallback             | The SDK support using pop up window for authenticating user. The authentication process will then happens in a new popup window                                                      |
-| renewToken                           | Session renewal is possible by using refresh token                                                  |
-
-#### Login Management
-
-The login functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/login-service/LoginService.ts). The SDK support the following login management functions:
-
-| SDK Functions                                            | Description                                                                                                                                                                                         |
-|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| passwordlessLogin, loginWithCredentials, loginWithSocial | User could authenticate themselves using passwordless authentication, classic password credentials, as well as using social provider such as google or social media platform                        |
-| loginPrecheck, consentContinue, firstTimeChangePassword, mfaContinue    | Depending on the missing information from loginPrecheck, user will be redirected to another page after login to either  accepting consent, changing password, continuing MFA process, or do progressive registration  |
-| getMissingFields, progressiveRegistration                                  | In case a new required field is added in registration settings, it is possible to use the sdk to inform user of the changes and asked them to fill in the missing required fields by the next login |
-| loginAfterRegister                                  | By calling this sdk function, user could directly login to the app after successful registration |
-| actionGuestLogin                                  | If user has guestLoginForm prepared, it could be called using this function |
-
-#### User Management
-
-The user functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/user-service/UserService.ts). The SDK support the following user management functions:
-
-| SDK Functions                                                                                                                       | Description                                                                                                                                                                                                                                 |
-|-------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| getRegistrationSetup, register, registerWithSocial                                                                                                        | Registering a new user is possible by using classic registration (getting registration fields information & call register function) or by using social provider                                                                                                                                       |
-| getUserProfile, getInviteUserDetails, getCommunicationStatus, updateProfile, updateProfileImage, deleteUserAccount, userCheckExists | To maintain user, functions for getting user information by using cidaas internal api, updating user information, removing user, as well as check if user exist are supported                                                                                                           |
-| getUserInfoFromStorage | The SDK could be used to get user information from predefined user storage by using oidc client ts library                                                                                                           |
-| getUserActivities | In case user want to see the history of his activities, getUserActivities function is provided                                                                                                           |
-| initiateResetPassword, handleResetPassword, resetPassword                                                                           | In case user want to reset password, password reset flow is supported. From initiating the reset password, handling the code or link which has been sent to predefined medium such as email, sms & ivr, and finishing up the reset password |
-| changePassword                                                                                                                      | In case user want to change password, changePassword function is provided                                                                                                                                                                  |
-| registerDeduplication, deduplicationLogin, getDeduplicationDetails                                                                  | In case a new user is registered with similiar information as existing user, deduplication could be activated to either proceed with the registration, or combine the user with an existing one                                             |
-| initiateLinkAccount, completeLinkAccount, unlinkAccount, getLinkedUsers                                                             | Linking und unlinking user account with another account, as well as getting linked user is supported                                                                                                                                        |
-
-#### Token Management
-
-The token functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/token-service/TokenService.ts). The SDK support the following token management functions:
-
-| SDK Functions                        | Description                                                                                         |
-|--------------------------------------|-----------------------------------------------------------------------------------------------------|
-| generateTokenFromCode                       | The SDK facilitate login using PKCE flow by exchanging code after succesful login with token(s) such as access token, id token, refresh token |
-| initiateDeviceCode, deviceCodeVerify | Device code flow is supported for authenticating user without user interaction possibilty in device |
-| validateAccessToken                  | Token validation could be done by using introspection endpoint                                      |
-| offlineTokenCheck                    | To save API call, offline token check function could be used                                        |
-
-#### Verification Management
-
-The verification functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/verification-service/VerificationService.ts). The SDK support the following verification management functions:
-
-| SDK Functions                                                       | Description                                                                           |
-|---------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| initiateMFA, authenticateMFA                                        | The SDK support initiating & authenticating MFA, which starts passwordless login flow |
-| initiateAccountVerification, verifyAccount                          | User account verification using preconfigured MFA is supported                         |
-| cancelMFA                                                           | MFA process could be aborted in case something go the wrong way                     |
-| getAllVerificationList, getMFAList, checkVerificationTypeConfigured | Information about every supported MFA Verification types, List of configured MFA, and details about particular configured verification type are provided by the SDK        |
-| initiateEnrollment, enrollVerification, getEnrollmentStatus         | Additional MFA verification type could be enrolled using the sdk                                   |
-| initiateVerification, configureVerification, configureFriendlyName         | The SDK support configuring verification request as well as friendly name |
-
-#### Consent Management
-
-The consent functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/consent-service/ConsentService.ts). The SDK support the following consent management functions:
-
-| SDK Functions                                                             | Description                                                                                                           |
-|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| getConsentDetails, getConsentVersionDetails                               | The SDK could be used to get consent details as well as details of consent's version                                  |
-| acceptConsent, acceptScopeConsent, acceptClaimConsent, revokeClaimConsent | The SDK support accepting consent (app level consent, scope consent or claim consent) as well as revoke claim consent |
-
-#### Other Functionality
-
-general SDK functions could be found [here](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/src/main/web-auth/WebAuth.ts). The SDK support the following other functionality:
-
-| SDK Functions                                  | Description                                                                                 |
-|------------------------------------------------|---------------------------------------------------------------------------------------------|
-| getRequestId                                   | The SDK could be used to get request id, which is required as input to call other functions |
-| getLoginURL                                    | Getting login authz url is supported by the SDK                                             |
-| getTenantInfo, getClientInfo                   | Getting public information such as tenant info & client info is supported by the SDK        |
-| setAcceptLanguageHeader                        | The SDK could be used to change response language                                           |
-| createDeviceInfo, getDevicesInfo, deleteDevice | Creating, getting, and removing device information is supported by the SDK                  |
-| logoutUser                                     | The SDK could be used to end user session by using cidaas internal api                      |
-| userActionOnEnrollment                         | The SDK could be used to run predefined action after enrollment                             |
-| invokeIdValidationCase                         | The SDK could be used to invoke a new id validation case                                    |
+Cidaas Javascript SDK Functions can be found on the [documentation](https://cidaas.github.io/cidaas-javascript-sdk).
 
 ## Possible Error
 

@@ -15,6 +15,7 @@ If you are upgrading from v4.x.x,  please see [UPGRADING.md](UPGRADING_V5.md)
 - **Breaking** Move setAcceptLanguageHeader function to Helper class
 - **Breaking** Rename getUserInfo() to getUserInfoFromStorage()
 - **Breaking** Rename getAccessToken() to generateTokenFromCode()
+- **Breaking** Standardize enums
 
 ### Removed
 - **Breaking** Removed silentSignin() & silentSignInCallback() function

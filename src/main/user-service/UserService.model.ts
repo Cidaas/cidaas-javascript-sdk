@@ -25,7 +25,7 @@ export interface GetInviteUserDetailsRequest {
     callLatestAPI?: boolean
 }
 
-export interface getCommunicationStatusRequest {
+export interface GetCommunicationStatusRequest {
     /** Subject (User) identifier */
     sub: string
 }
@@ -191,7 +191,7 @@ export interface DateFilter {
 
 /** Type of medium to be used to reset password */
 export enum ResetMedium {
-    'SMS',
-    'EMAIL',
-    'IVR'
+    Sms = 'SMS',
+    Email = 'EMAIL',
+    Ivr = 'IVR'
 }

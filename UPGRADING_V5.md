@@ -55,7 +55,7 @@ this.cidaasVerificationService.getMFAList(getMFAListOptions);
 
 ```
 
-Each of the functions and its module can be looked in the doc.
+Each of the functions and its module can be looked in the [documentation](https://cidaas.github.io/cidaas-javascript-sdk).
 
 ## 2. Update access token handling
 
@@ -69,9 +69,9 @@ const options = {
 }
 ```
 
-## 3. Use the latest function
+## 3. Use the latest functions & enums
 
-There are changes in the function names. The old & new function name could be found below:
+There are changes in the function names. The old & new function name can be found below:
 
 | Old Function                                      | New Function                                |
 |---------------------------------------------------|---------------------------------------------|
@@ -79,6 +79,8 @@ There are changes in the function names. The old & new function name could be fo
 | getAccessToken                                    | generateTokenFromCode                       |
 
 If you used setAcceptLanguageHeader() function, it is now moved to Helper class and can be called with static call Helper.setAcceptLanguageHeader();
+
+There are changes in enums. If you used UPPERCASE to call enum member previously, now they have been standardize to use PascalCase instead.
 
 ## 4. Handling for removed functions
 

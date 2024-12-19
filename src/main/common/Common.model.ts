@@ -5,19 +5,19 @@ export interface LoginPrecheckRequest {
 
 /** Type of verification to be used to authenticate user */
 export enum VerificationType {
-    'PASSWORD',
-    'TOUCHID',
-    'FIDO2',
-    'SECURITY_QUESTION',
-    'SMS',
-    'IVR',
-    'FACE',
-    'TOTP',
-    'EMAIL',
-    'BACKUPCODE',
-    'PATTERN',
-    'PUSH',
-    'VOICE',
+    Password = 'PASSWORD',
+    TouchId = 'TOUCHID',
+    Fido2 = 'FIDO2',
+    SecurityQuestion = 'SECURITY_QUESTION',
+    Sms = 'SMS',
+    Ivr = 'IVR',
+    Face = 'FACE',
+    Totp = 'TOTP',
+    Email = 'EMAIL',
+    BackupCode = 'BACKUPCODE',
+    Pattern = 'PATTERN',
+    Push = 'PUSH',
+    Voice = 'VOICE',
 }
 export interface HTTPRequestHeader {
     /** Request id returned from the authorization call */
@@ -38,6 +38,6 @@ export interface HTTPRequestHeader {
 
 /** defines whether the the process will be done via email link or whether the user needs to enter a code to complete the process. */
 export enum ProcessingType {
-    'CODE',
-    'LINK'
+    Code = 'CODE',
+    Link = 'LINK'
 }

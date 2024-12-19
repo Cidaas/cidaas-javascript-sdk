@@ -1,5 +1,5 @@
 import { Helper, CustomException } from "../common/Helper";
-import { ChangePasswordRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest, CompleteLinkAccountRequest, getCommunicationStatusRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from "./UserService.model";
+import { ChangePasswordRequest, DeduplicationLoginRequest, DeleteUserAccountRequest, GetDeduplicationDetailsRequest, GetInviteUserDetailsRequest, GetUserProfileRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterDeduplicationRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest, CompleteLinkAccountRequest, GetCommunicationStatusRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest } from "./UserService.model";
 import { HTTPRequestHeader } from "../common/Common.model";
 import { CidaasUser } from "../common/User.model";
 import { OidcManager, OidcSettings } from "../authentication-service/AuthenticationService.model";
@@ -134,7 +134,7 @@ export class UserService {
 	 * });
 	 * ```
 	 */
-	getCommunicationStatus(options: getCommunicationStatusRequest, headers?: HTTPRequestHeader) {
+	getCommunicationStatus(options: GetCommunicationStatusRequest, headers?: HTTPRequestHeader) {
 		const _serviceURL = this.config.authority + "/users-srv/user/communication/status/" + options.sub;
 		return Helper.createHttpPromise(undefined, _serviceURL, false, "GET", undefined, headers);
 	}
@@ -146,9 +146,9 @@ export class UserService {
 	 * ```js
 	 * cidaas.initiateResetPassword({
 	 *   email: 'xxxxxx@xxx.com',
-	 *   processingType: ProcessingType.CODE,
+	 *   processingType: ProcessingType.Code,
 	 *   requestId: 'your requestId',
-	 *   resetMedium: ResetMedium.EMAIL
+	 *   resetMedium: ResetMedium.Email
 	 * }).then(function (response) {
 	 *   // the response will give you password reset details.
 	 * }).catch(function(ex) {
@@ -317,6 +317,9 @@ export class UserService {
 
 	/**
 	 * To update the user profile information, call **updateProfile()**.
+	 * After updating the user profile, the information in user storage won't be automatically updated.
+	 * To get the latest user profile information, you will need to call **getUserProfile()**.
+	 * To update the user storage, you will need to call **renewToken()** to generate latest tokens (access token, id token, refresh token) & user informations.
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/i3uqnxcpxr19r-update-user-profile for more details.
 	 * @example
 	 * ```js
@@ -339,7 +342,7 @@ export class UserService {
 		}
 		const _serviceURL = this.config.authority + "/users-srv/user/profile/" + sub;
 		if (access_token) {
-			return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token);
+			return Helper.createHttpPromise(options, _serviceURL, false, "PUT", access_token)
 		}
 		return Helper.getAccessTokenFromUserStorage(this.userManager).then((accessToken) => {
 			return Helper.createHttpPromise(options, _serviceURL, false, "PUT", accessToken);

@@ -21,7 +21,7 @@ export class VerificationService {
 	 * cidaas.initiateAccountVerification({
 	 *   verificationMedium: 'email',
 	 *   requestId: 'your requestId',
-	 *   processingType: ProcessingType.CODE, 
+	 *   processingType: ProcessingType.Code, 
 	 *   email: 'your email'
 	 * }).then(function (response) {
 	 *   // the response will give you account verification details.
@@ -266,21 +266,21 @@ export class VerificationService {
 	/**
 	 * to authenticate with multi factor auhentication, call **authenticateMFA()**. 
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/1aa38936252d6-perform-the-authentication-method for more details.
-	  * @example
-	  * ```js
-	  * cidaas.authenticateMFA({
-	  *   type: 'email',
-	  *   client_id: 'your client id',
-	  *   exchange_id: exchange id from initiateMFA(),
-	  *   pass_code: 'code to authenticate'
-	  * }).then(function (response) {
-	  *   // type your code here
-	  * })
-	  * .catch(function (ex) {
-	  *   // your failure code here
-	  * });
-	  * ```
-	  */
+	 * @example
+	 * ```js
+	 * cidaas.authenticateMFA({
+	 *   type: 'email',
+	 *   client_id: 'your client id',
+	 *   exchange_id: exchange id from initiateMFA(),
+	 *   pass_code: 'code to authenticate'
+	 * }).then(function (response) {
+	 *   // type your code here
+	 * })
+	 * .catch(function (ex) {
+	 *   // your failure code here
+	 * });
+	 * ```
+	 */
 	authenticateMFA(options: AuthenticateMFARequest, headers?: HTTPRequestHeader) {
 		const _serviceURL = this.config.authority + "/verification-srv/v2/authenticate/authenticate/" + options.type;
 		return Helper.createHttpPromise(options, _serviceURL, undefined, "POST", undefined, headers);
@@ -288,6 +288,24 @@ export class VerificationService {
 
 	/**
 	 * to initiate verification process, call **initiateVerification**
+	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/odmtzu2e53f5k-initiate-verification-enrollment for more details.
+	 * @example
+	 * ```js
+	 * const options = {
+	 *   mobile_number: 'your mobile number',
+	 *  }
+	 * }
+	 * const trackId = 'your track id'
+	 * const method = 'email'
+	 * 
+	 * cidaas.initiateVerification(options, trackId, method)
+	 * .then(function (response) {
+	 *   // type your code here
+	 * })
+	 * .catch(function (ex) {
+	 *   // your failure code here
+	 * });
+	 * ``` 
 	 */
 	initiateVerification(options: InitiateVerificationRequest, trackId: string, method: string) {
 		const serviceURL = this.config.authority + '/verification-actions-srv/setup/' + method + '/initiate/' + trackId;
@@ -296,6 +314,25 @@ export class VerificationService {
 
 	/**
 	 * to finish configuring verification process, call **configureVerification**
+	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/vurqjgv46yyid-initiate-verification-setup-authenticate for more details.
+	 * @example
+	 * ```js
+	 * const options = {
+	 *   exchange_id: 'your exchange id';
+	 *	 sub: 'your sub;
+  	 *	 pass_code: 'your pass code';
+	 *  }
+	 * }
+	 * const method = 'email'
+	 * 
+	 * cidaas.initiateVerification(options, method)
+	 * .then(function (response) {
+	 *   // type your code here
+	 * })
+	 * .catch(function (ex) {
+	 *   // your failure code here
+	 * });
+	 * ``` 
 	 */
 	configureVerification(options: ConfigureVerificationRequest, method: string) {
 		const serviceURL = this.config.authority + '/verification-actions-srv/setup/' + method + '/verification';
@@ -304,6 +341,25 @@ export class VerificationService {
 
 	/**
 	 * to configure friendly name, call **configureFriendlyName**
+	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/f0i458vm5zo6z-add-a-friendly-name for more details.
+	 * @example
+	 * ```js
+	 * const options = {
+	 *	 sub: 'your sub;
+  	 *	 friendly_name: 'your friendly name';
+	 *  }
+	 * }
+	 * const trackId = 'your track id'
+	 * const method = 'email'
+	 * 
+	 * cidaas.configureFriendlyName(options, trackId, method)
+	 * .then(function (response) {
+	 *   // type your code here
+	 * })
+	 * .catch(function (ex) {
+	 *   // your failure code here
+	 * });
+	 * ``` 
 	 */
 	configureFriendlyName(options: ConfigureFriendlyNameRequest, trackId: string, method: string) {
 		const serviceURL = this.config.authority + '/verification-actions-srv/setup/users/friendlyname/' + method.toUpperCase() + '/' + trackId;
