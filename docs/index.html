@@ -1,0 +1,148 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="."><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>cidaas-javascript-sdk</title><meta name="description" content="Documentation for cidaas-javascript-sdk"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search"><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">cidaas-javascript-sdk</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>cidaas-javascript-sdk</h1></div><div class="tsd-panel tsd-typography"><p><img src="https://raw.githubusercontent.com/Cidaas/cidaas-javascript-sdk/master/logo.jpg" alt="Logo"></p>
+<a id="about-cidaas" class="tsd-anchor"></a><h2 class="tsd-anchor-link">About cidaas:<a href="#about-cidaas" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p><a href="https://www.cidaas.com">cidaas</a>
+is a fast and secure Cloud Identity &amp; Access Management solution that standardises what’s important and simplifies what’s complex.</p>
+<a id="feature-set-includes" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Feature set includes:<a href="#feature-set-includes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Single Sign On (SSO) based on OAuth 2.0, OpenID Connect, SAML 2.0</li>
+<li>Multi-Factor-Authentication with more than 14 authentication methods, including TOTP and FIDO2</li>
+<li>Passwordless Authentication</li>
+<li>Social Login (e.g. Facebook, Google, LinkedIn and more) as well as Enterprise Identity Provider (e.g. SAML or AD)</li>
+<li>Security in Machine-to-Machine (M2M) and IoT</li>
+</ul>
+<a id="cidaas-javascript-sdk" class="tsd-anchor"></a><h1 class="tsd-anchor-link">Cidaas Javascript SDK<a href="#cidaas-javascript-sdk" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p>This cidaas Javascript SDK library is built on the top of <a href="https://github.com/authts/oidc-client-ts">OIDC client typescript library</a>.</p>
+<p>Please check the <a href="https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/CHANGELOG.md">Changelog</a> for more information about the latest release.</p>
+<a id="table-of-contents" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Table of Contents<a href="#table-of-contents" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><!--ts-->
+<ul>
+<li><a href="https://cidaas.github.io/cidaas-javascript-sdk">Documentation</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#initialisation">Initialisation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#functions-overview">Functions Overview</a></li>
+<li><a href="#possible-error">Possible Error</a></li>
+</ul>
+<a id="installation" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>From CDN</p>
+<pre><code class="html"><span class="hl-0">&lt;!-- Replace the required &lt;version&gt; in the script tag, example: 4.0.0. All the released tag can be found https://www.npmjs.com/package/cidaas-javascript-sdk?activeTab=versions --&gt;</span><br/><span class="hl-1">&lt;</span><span class="hl-2">script</span><span class="hl-3"> </span><span class="hl-4">src</span><span class="hl-3">=</span><span class="hl-5">&quot;https://cdn.cidaas.de/javascript/oidc/&lt;version&gt;/cidaas-javascript-sdk.min.js&quot;</span><span class="hl-1">&gt;&lt;/</span><span class="hl-2">script</span><span class="hl-1">&gt;</span>
+</code><button type="button">Copy</button></pre>
+
+<p>From npm</p>
+<pre><code><span class="hl-6">npm</span><span class="hl-7"> </span><span class="hl-6">install</span><span class="hl-7"> </span><span class="hl-6">cidaas</span><span class="hl-7">-</span><span class="hl-6">javascript</span><span class="hl-7">-</span><span class="hl-6">sdk</span>
+</code><button>Copy</button></pre>
+
+<a id="initialisation" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Initialisation<a href="#initialisation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>After adding the sdk library, create a local file such as <strong>cidaas.service.ts</strong> and define Cidaas options variable there for initializing cidaas sdk.</p>
+<p>Cidaas options variable support every <a href="https://authts.github.io/oidc-client-ts/interfaces/UserManagerSettings.html">OIDC Client UserManagerSettings Properties</a> which has the following notable properties:</p>
+<table>
+<thead>
+<tr>
+<th>Property Name</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>authority</td>
+<td>yes</td>
+<td>cidaas instance base url</td>
+</tr>
+<tr>
+<td>client_id</td>
+<td>yes</td>
+<td>client application's identifier, which could be found in cidaas admin ui</td>
+</tr>
+<tr>
+<td>redirect_uri</td>
+<td>yes</td>
+<td>URL to be redirected after successful login attempt.</td>
+</tr>
+<tr>
+<td>post_logout_redirect_uri</td>
+<td>no</td>
+<td>URL to be redirected after successful logout attempt.</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>no</td>
+<td>the scope the application requires and requests from cidaas. The default value is 'openid' if no properties is being sent.</td>
+</tr>
+<tr>
+<td>userStore</td>
+<td>no</td>
+<td>define where authenticated user information will be saved on the client application. The default value is session storage if no properties is being sent.</td>
+</tr>
+<tr>
+<td>automaticSilentRenew</td>
+<td>no</td>
+<td>configure whether automatic token renewal will be activated. The default value is true.</td>
+</tr>
+</tbody>
+</table>
+<p>an example of Cidaas options variable looks like this:</p>
+<pre><code class="js"><span class="hl-8">const</span><span class="hl-7"> </span><span class="hl-9">options</span><span class="hl-7"> = {</span><br/><span class="hl-7">    </span><span class="hl-6">authority:</span><span class="hl-7"> </span><span class="hl-10">&#39;your domain base url&#39;</span><span class="hl-7">,</span><br/><span class="hl-7">    </span><span class="hl-6">client_id:</span><span class="hl-7"> </span><span class="hl-10">&#39;your app id&#39;</span><span class="hl-7">,</span><br/><span class="hl-7">    </span><span class="hl-6">redirect_uri:</span><span class="hl-7"> </span><span class="hl-10">&#39;your redirect url&#39;</span><span class="hl-7">,</span><br/><span class="hl-7">    </span><span class="hl-6">post_logout_redirect_uri:</span><span class="hl-7"> </span><span class="hl-10">&#39;your post logout redirect url&#39;</span><span class="hl-7">,</span><br/><span class="hl-7">    </span><span class="hl-6">scope:</span><span class="hl-7"> </span><span class="hl-10">&#39;openid email roles profile&#39;</span><span class="hl-7">,</span><br/><span class="hl-7">}</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="configure-user-storage-optional" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Configure user storage (Optional)<a href="#configure-user-storage-optional" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>The following storages are supported to store authenticated user information, such as tokens information &amp; user profile:</p>
+<ul>
+<li>window.sessionStorage (default)</li>
+<li>window.localStorage</li>
+<li>InMemoryWebStorage (all Information will be cleared after browser refresh) in case user do not want to save token in window object</li>
+</ul>
+<p>additionally, user can also define custom storage in the client side by implementing Storage class.</p>
+<p>If there is no userStore properties being send in Cidaas options variable, it will use session storage by default.</p>
+<p>In case local storage is prefered to be used, then Cidaas options can be modified as following:</p>
+<pre><code class="js"><span class="hl-8">const</span><span class="hl-7"> </span><span class="hl-9">options</span><span class="hl-7"> = {</span><br/><span class="hl-7">    </span><span class="hl-6">authority:</span><span class="hl-7"> </span><span class="hl-10">&#39;your domain base url&#39;</span><span class="hl-7">,</span><br/><span class="hl-7">    ...,</span><br/><span class="hl-7">    </span><span class="hl-6">userStore:</span><span class="hl-7"> </span><span class="hl-8">new</span><span class="hl-7"> </span><span class="hl-11">WebStorageStateStore</span><span class="hl-7">({ </span><span class="hl-6">store:</span><span class="hl-7"> </span><span class="hl-6">window</span><span class="hl-7">.</span><span class="hl-6">localStorage</span><span class="hl-7"> })</span><br/><span class="hl-7">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>In case custom solution for storing authenticated user information is being used, or saving the token in memory is preferred, you can configured userStore with InMemoryWebStorage. Authenticated user information will be cleared as soon as the page is refreshed afterwards.</p>
+<pre><code class="js"><span class="hl-8">const</span><span class="hl-7"> </span><span class="hl-9">options</span><span class="hl-7"> = {</span><br/><span class="hl-7">    </span><span class="hl-6">authority:</span><span class="hl-7"> </span><span class="hl-10">&#39;your domain base url&#39;</span><span class="hl-7">,</span><br/><span class="hl-7">    ...,</span><br/><span class="hl-7">    </span><span class="hl-6">userStore:</span><span class="hl-7"> </span><span class="hl-8">new</span><span class="hl-7"> </span><span class="hl-11">WebStorageStateStore</span><span class="hl-7">({ </span><span class="hl-6">store:</span><span class="hl-7"> </span><span class="hl-8">new</span><span class="hl-7"> </span><span class="hl-11">InMemoryWebStorage</span><span class="hl-7">()})</span><br/><span class="hl-7">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>see <a href="#get-tokens-and-user-profile-information-from-user-storage">usage</a> to get the stored informations from user storage.</p>
+<a id="configure-automatic-token-renewal-optional" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Configure automatic token renewal (Optional)<a href="#configure-automatic-token-renewal-optional" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>By default, The SDK will generate new tokens based on refresh token stored in user storage, one minute before the access token is expiring. To disable this behaviour, Cidaas options can be modified as following:</p>
+<pre><code class="js"><span class="hl-8">const</span><span class="hl-7"> </span><span class="hl-9">options</span><span class="hl-7"> = {</span><br/><span class="hl-7">    </span><span class="hl-6">authority:</span><span class="hl-7"> </span><span class="hl-10">&#39;your domain base url&#39;</span><span class="hl-7">,</span><br/><span class="hl-7">    ...,</span><br/><span class="hl-7">    </span><span class="hl-6">automaticSilentRenew:</span><span class="hl-7"> </span><span class="hl-8">false</span><br/><span class="hl-7">}</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="initialise-the-cidaas-sdk-using-the-configured-options-mentioned-above" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Initialise the cidaas sdk using the configured options mentioned above:<a href="#initialise-the-cidaas-sdk-using-the-configured-options-mentioned-above" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Cidaas ConfigUserProvider have to be initialise to be added to each of the modules as dependencies:</p>
+<p>Example of Cidaas Service:</p>
+<pre><code class="js"><span class="hl-12">export</span><span class="hl-7"> </span><span class="hl-8">class</span><span class="hl-7"> </span><span class="hl-13">CidaasService</span><span class="hl-7"> {</span><br/><span class="hl-7">    </span><span class="hl-6">cidaasConfigUserProvider</span><span class="hl-7">: </span><span class="hl-13">ConfigUserProvider</span><span class="hl-7">;</span><br/><span class="hl-7">    </span><span class="hl-6">authenticationService</span><span class="hl-7">: </span><span class="hl-13">AuthenticationService</span><span class="hl-7">;</span><br/><span class="hl-7">    </span><span class="hl-6">verificationService</span><span class="hl-7">: </span><span class="hl-13">VerificationService</span><span class="hl-7">;</span><br/><span class="hl-7">    </span><span class="hl-6">options</span><span class="hl-7">: </span><span class="hl-13">OidcSettings</span><span class="hl-7"> = { ... };</span><br/><br/><span class="hl-7">    </span><span class="hl-8">constructor</span><span class="hl-7">() {</span><br/><span class="hl-7">        </span><span class="hl-0">// init ConfigUserProvider</span><br/><span class="hl-7">        </span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasConfigUserProvider</span><span class="hl-7"> = </span><span class="hl-8">new</span><span class="hl-7"> </span><span class="hl-11">ConfigUserProvider</span><span class="hl-7">(</span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">options</span><span class="hl-7">);</span><br/><span class="hl-7">        </span><span class="hl-0">// init authentication module</span><br/><span class="hl-7">        </span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">authenticationService</span><span class="hl-7"> = </span><span class="hl-8">new</span><span class="hl-7"> </span><span class="hl-11">AuthenticationService</span><span class="hl-7">(</span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasConfigUserProvider</span><span class="hl-7">);</span><br/><span class="hl-7">        </span><span class="hl-0">// init verification module</span><br/><span class="hl-7">        </span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">verificationService</span><span class="hl-7"> = </span><span class="hl-8">new</span><span class="hl-7"> </span><span class="hl-11">VerificationService</span><span class="hl-7">(</span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasConfigUserProvider</span><span class="hl-7">);</span><br/><span class="hl-7">    }</span><br/><br/><span class="hl-7">    </span><span class="hl-0">// get authentication module</span><br/><span class="hl-7">    </span><span class="hl-11">getAuthentication</span><span class="hl-7">() {</span><br/><span class="hl-7">        </span><span class="hl-12">return</span><span class="hl-7"> </span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">authenticationService</span><span class="hl-7">;</span><br/><span class="hl-7">    }</span><br/><br/><span class="hl-7">    </span><span class="hl-0">// get verification module</span><br/><span class="hl-7">    </span><span class="hl-11">getVerificationService</span><span class="hl-7">() {</span><br/><span class="hl-7">        </span><span class="hl-12">return</span><span class="hl-7"> </span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">verificationService</span><br/><span class="hl-7">    }</span><br/><span class="hl-7">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Usage in Component:</p>
+<pre><code class="js"><span class="hl-0">// inject cidaas service</span><br/><span class="hl-11">constructor</span><span class="hl-7">(</span><span class="hl-6">private</span><span class="hl-7"> </span><span class="hl-6">cidaasService</span><span class="hl-7">: </span><span class="hl-6">CidaasService</span><span class="hl-7">, ...) {}</span><br/><br/><span class="hl-7">...</span><br/><br/><span class="hl-0">// init each of cidaas modules which are needed in the component</span><br/><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasAuthenticationService</span><span class="hl-7"> = </span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasService</span><span class="hl-7">.</span><span class="hl-11">getAuthenticationService</span><span class="hl-7">();</span><br/><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasVerificationService</span><span class="hl-7"> = </span><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasService</span><span class="hl-7">.</span><span class="hl-11">getVerificationService</span><span class="hl-7">();</span><br/><br/><span class="hl-7">...</span><br/><br/><span class="hl-0">// call functions from each of the modules</span><br/><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasAuthenticationService</span><span class="hl-7">.</span><span class="hl-11">loginCallback</span><span class="hl-7">();</span><br/><span class="hl-7">...</span><br/><span class="hl-8">this</span><span class="hl-7">.</span><span class="hl-6">cidaasVerificationService</span><span class="hl-7">.</span><span class="hl-11">getMFAList</span><span class="hl-7">(</span><span class="hl-6">getMFAListOptions</span><span class="hl-7">);</span><br/><span class="hl-7">...</span><br/>
+</code><button type="button">Copy</button></pre>
+
+<p>Each of the functions and its module can be looked in the doc.</p>
+<a id="usage" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Usage<a href="#usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><a id="login-with-browser" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Login With Browser<a href="#login-with-browser" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>To login through cidaas sdk, call <strong>loginWithBrowser()</strong>. This will redirect you to the hosted login page.</p>
+<pre><code class="js"><span class="hl-6">cidaasAuthenticationService</span><span class="hl-7">.</span><span class="hl-11">loginWithBrowser</span><span class="hl-7">();</span>
+</code><button type="button">Copy</button></pre>
+
+<p>once login is successful, it will automatically redirects you to redirect_uri you have configured in cidaas options. You will get information such as code &amp; state as redirect url parameter (query or fragment), which is needed to get access token.</p>
+<p>To complete the login process, call <strong>logincallback()</strong>.</p>
+<pre><code class="js"><span class="hl-6">cidaasAuthenticationService</span><span class="hl-7">.</span><span class="hl-11">loginCallback</span><span class="hl-7">().</span><span class="hl-11">then</span><span class="hl-7">(</span><span class="hl-8">function</span><span class="hl-7">(</span><span class="hl-6">response</span><span class="hl-7">) {</span><br/><span class="hl-7">    </span><span class="hl-0">// the response will give you login details.</span><br/><span class="hl-7">}).</span><span class="hl-11">catch</span><span class="hl-7">(</span><span class="hl-8">function</span><span class="hl-7">(</span><span class="hl-6">ex</span><span class="hl-7">) {</span><br/><span class="hl-7">    </span><span class="hl-0">// your failure code here</span><br/><span class="hl-7">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p>After successful loginCallback, You will get access token, along with id token and refresh token in the json response, depends on your application configuration.</p>
+<p>There are code documentations for each of the functions with example code of how to call them individually.</p>
+<a id="get-tokens-and-user-profile-information-from-user-storage" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Get Tokens And User Profile Information From User Storage<a href="#get-tokens-and-user-profile-information-from-user-storage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>To get information from user storage, call <strong>getUserInfoFromStorage()</strong>. This function will fetch stored information from predefined user storage (session storage, local storage or in memory)</p>
+<pre><code class="js"><span class="hl-6">cidaasAuthenticationService</span><span class="hl-7">.</span><span class="hl-11">getUserInfoFromStorage</span><span class="hl-7">().</span><span class="hl-11">then</span><span class="hl-7">(</span><span class="hl-8">function</span><span class="hl-7">(</span><span class="hl-6">response</span><span class="hl-7">) {</span><br/><span class="hl-7">    </span><span class="hl-0">// the response will contains tokens &amp; user profile information.</span><br/><span class="hl-7">}).</span><span class="hl-11">catch</span><span class="hl-7">(</span><span class="hl-8">function</span><span class="hl-7">(</span><span class="hl-6">ex</span><span class="hl-7">) {</span><br/><span class="hl-7">    </span><span class="hl-0">// your failure code here</span><br/><span class="hl-7">});</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="functions-overview" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Functions Overview<a href="#functions-overview" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Cidaas Javascript SDK Functions can be found on the <a href="https://cidaas.github.io/cidaas-javascript-sdk">documentation</a>.</p>
+<a id="possible-error" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Possible Error<a href="#possible-error" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The SDK will throws Custom Exception if something went wrong during the operation:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>When could it be thrown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td>during creation of WebAuth instance</td>
+</tr>
+<tr>
+<td>417</td>
+<td>if there are any other failure</td>
+</tr>
+</tbody>
+</table>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><ul><li><a href="#about-cidaas"><span>About cidaas:</span></a></li><li><a href="#feature-set-includes"><span>Feature set includes:</span></a></li></ul><a href="#cidaas-javascript-sdk"><span>Cidaas <wbr/>Javascript SDK</span></a><ul><li><a href="#table-of-contents"><span>Table of <wbr/>Contents</span></a></li><li><ul><li><a href="#installation"><span>Installation</span></a></li><li><a href="#initialisation"><span>Initialisation</span></a></li><li><a href="#configure-user-storage-optional"><span>Configure user storage (<wbr/>Optional)</span></a></li><li><a href="#configure-automatic-token-renewal-optional"><span>Configure automatic token renewal (<wbr/>Optional)</span></a></li><li><a href="#initialise-the-cidaas-sdk-using-the-configured-options-mentioned-above"><span>Initialise the cidaas sdk using the configured options mentioned above:</span></a></li><li><a href="#usage"><span>Usage</span></a></li><li><ul><li><a href="#login-with-browser"><span>Login <wbr/>With <wbr/>Browser</span></a></li><li><a href="#get-tokens-and-user-profile-information-from-user-storage"><span>Get <wbr/>Tokens <wbr/>And <wbr/>User <wbr/>Profile <wbr/>Information <wbr/>From <wbr/>User <wbr/>Storage</span></a></li></ul></li><li><a href="#functions-overview"><span>Functions <wbr/>Overview</span></a></li></ul></li><li><a href="#possible-error"><span>Possible <wbr/>Error</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">cidaas-javascript-sdk</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>

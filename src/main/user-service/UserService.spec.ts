@@ -1,7 +1,9 @@
+import ConfigUserProvider from '../common/ConfigUserProvider';
 import { Helper } from '../common/Helper';
 import { CidaasUser } from '../common/User.model';
-import * as UserService from './UserService';
-import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetPasswordRequest, UserCheckExistsRequest } from './UserService.model';
+import { UserService } from './UserService';
+import { ChangePasswordRequest, CompleteLinkAccountRequest, DeleteUserAccountRequest, GetRegistrationSetupRequest, GetUserActivitiesRequest, HandleResetPasswordRequest, InitiateLinkAccountRequest, InitiateResetPasswordRequest, RegisterRequest, ResetPasswordRequest, UpdateProfileImageRequest, UserActionOnEnrollmentRequest, UserCheckExistsRequest } from './UserService.model';
+import { OidcSettings } from '../authentication/Authentication.model';
 
 const authority = 'baseURL';
 const serviceBaseUrl: string = `${authority}/users-srv`;
@@ -9,9 +11,16 @@ const serviceBaseUrlUsersActions: string = `${authority}/useractions-srv`;
 const createFormSpy = jest.spyOn(Helper, 'createForm');
 const submitFormSpy = jest.spyOn(HTMLFormElement.prototype, 'submit').mockImplementation();
 const httpSpy = jest.spyOn(Helper, 'createHttpPromise');
+let userService: UserService;
 
 beforeAll(() => {
-	window.webAuthSettings = { authority: authority, client_id: '', redirect_uri: '' };
+	const options: OidcSettings = {
+    authority: authority,
+    client_id: '',
+    redirect_uri: ''
+  };
+  const configUserProvider: ConfigUserProvider = new ConfigUserProvider(options);
+  userService = new UserService(configUserProvider);
 });
 
 test('getUserProfile', () => {
@@ -19,8 +28,18 @@ test('getUserProfile', () => {
     access_token: 'access_token',
   };
   const serviceURL = `${serviceBaseUrl}/userinfo`;
-  UserService.getUserProfile(options);
+  userService.getUserProfile(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, 'GET', options.access_token);
+});
+	
+test('getRegistrationSetup', () => {
+  const options: GetRegistrationSetupRequest = {
+    acceptlanguage: 'acceptlanguage',
+    requestId: 'requestId'
+  };
+  const serviceURL = `${authority}/registration-setup-srv/public/list?acceptlanguage=${options.acceptlanguage}&requestId=${options.requestId}`;
+  userService.getRegistrationSetup(options);
+  expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET');
 });
 
 test('register', () => {
@@ -37,7 +56,7 @@ test('register', () => {
     lon: 'longitude'
 	}
   const serviceURL = `${serviceBaseUrl}/register`;
-  UserService.register(options, headers);
+  userService.register(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
@@ -47,7 +66,7 @@ test('getInviteUserDetails: to use older api, if no callLatestApi is present', (
     };
     const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
     const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-    UserService.getInviteUserDetails(options, headers);
+    userService.getInviteUserDetails(options, headers);
     expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, headers);
 });
 
@@ -58,7 +77,7 @@ test('getInviteUserDetails using latest api', () => {
   };
   const serviceURL = `${serviceBaseUrlUsersActions}/invitations/${options.invite_id}`;
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  UserService.getInviteUserDetails(options, headers);
+  userService.getInviteUserDetails(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, headers);
 });
 
@@ -68,7 +87,7 @@ test('getInviteUserDetails using older api', () => {
     callLatestAPI: false
   };
   const serviceURL = `${serviceBaseUrl}/invite/info/${options.invite_id}`;
-  UserService.getInviteUserDetails(options);
+  userService.getInviteUserDetails(options);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, undefined);
 });
 
@@ -83,7 +102,7 @@ test('getCommunicationStatus', () => {
     lon: 'longitude'
 	}
   const serviceURL = `${serviceBaseUrl}/user/communication/status/${options.sub}`;
-  UserService.getCommunicationStatus(options, headers);
+  userService.getCommunicationStatus(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', undefined, headers);
 });
 
@@ -96,7 +115,7 @@ test('initiateResetPassword', () => {
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/initiate`;
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  UserService.initiateResetPassword(options, headers);
+  userService.initiateResetPassword(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
@@ -107,7 +126,7 @@ test('handleResetPassword', () => {
 	};
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
   const serviceURL = `${serviceBaseUrl}/resetpassword/validatecode`;
-  UserService.handleResetPassword(options, undefined, headers);
+  userService.handleResetPassword(options, undefined, headers);
 	expect(createFormSpy).toHaveBeenCalledWith(serviceURL, options);
 	expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -119,7 +138,7 @@ test('handleResetPassword with json response', () => {
 	};
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
   const serviceURL = `${serviceBaseUrl}/resetpassword/validatecode`;
-  UserService.handleResetPassword(options, true, headers);
+  userService.handleResetPassword(options, true, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
@@ -132,7 +151,7 @@ test('resetPassword', () => {
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/accept`;
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  UserService.resetPassword(options, undefined, headers);
+  userService.resetPassword(options, undefined, headers);
 	expect(createFormSpy).toHaveBeenCalledWith(serviceURL, options);
 	expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -146,7 +165,7 @@ test('resetPassword with json response', () => {
 	};
   const serviceURL = `${serviceBaseUrl}/resetpassword/accept`;
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  UserService.resetPassword(options, true, headers);
+  userService.resetPassword(options, true, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', undefined, headers);
 });
 
@@ -156,7 +175,7 @@ test('getDeduplicationDetails', () => {
 	};
   const serviceURL = `${serviceBaseUrl}/deduplication/info/${options.trackId}`;
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  UserService.getDeduplicationDetails(options, headers);
+  userService.getDeduplicationDetails(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'GET', undefined, headers);
 });
 
@@ -167,7 +186,7 @@ test('deduplicationLogin', () => {
 		sub: 'sub'
 	};
   const serviceURL = `${serviceBaseUrl}/deduplication/login/redirection?trackId=${options.trackId}&requestId=${options.requestId}&sub=${options.sub}`;
-  UserService.deduplicationLogin(options);
+  userService.deduplicationLogin(options);
 	expect(createFormSpy).toHaveBeenCalledWith(serviceURL, {});
 	expect(submitFormSpy).toHaveBeenCalled();
 });
@@ -178,7 +197,7 @@ test('registerDeduplication', () => {
 	};
   const serviceURL = `${serviceBaseUrl}/deduplication/register/${options.trackId}`;
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  UserService.registerDeduplication(options, headers);
+  userService.registerDeduplication(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, undefined, 'POST', undefined, headers);
 });
 
@@ -192,7 +211,7 @@ test('changePassword', () => {
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/changepassword`;
-  UserService.changePassword(options, accessToken);
+  userService.changePassword(options, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 });
 
@@ -207,7 +226,7 @@ test('updateProfile', () => {
   const accessToken = 'accessToken';
   const sub = 'sub';
   const serviceURL = `${serviceBaseUrl}/user/profile/${sub}`;
-  UserService.updateProfile(options, accessToken, sub);
+  userService.updateProfile(options, sub, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'PUT', accessToken);
 });
 
@@ -219,7 +238,7 @@ test('initiateLinkAccount', () => {
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/user/link/initiate`;
-  UserService.initiateLinkAccount(options, accessToken);
+  userService.initiateLinkAccount(options, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 });
 
@@ -230,7 +249,7 @@ test('completeLinkAccount', () => {
   };
   const accessToken = 'accessToken';
   const serviceURL = `${serviceBaseUrl}/user/link/complete`;
-  UserService.completeLinkAccount(options, accessToken);
+  userService.completeLinkAccount(options, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
 });
 
@@ -238,7 +257,7 @@ test('getLinkedUsers', () => {
   const accessToken = 'accessToken';
   const sub = 'sub';
   const serviceURL = `${serviceBaseUrl}/userinfo/social/${sub}`;
-  UserService.getLinkedUsers(accessToken, sub);
+  userService.getLinkedUsers(sub, accessToken);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'GET', accessToken);
 });
 
@@ -246,7 +265,7 @@ test('unlinkAccount', () => {
   const accessToken = 'accessToken';
   const identityId = 'identityId';
   const serviceURL = `${serviceBaseUrl}/user/unlink/${identityId}`;
-  UserService.unlinkAccount(accessToken, identityId);
+  userService.unlinkAccount(accessToken, identityId);
   expect(httpSpy).toHaveBeenCalledWith(undefined, serviceURL, false, 'POST', accessToken);
 });
 
@@ -256,7 +275,7 @@ test('deleteUserAccount', () => {
     sub: 'sub'
   };
   const serviceURL = `${serviceBaseUrl}/user/unregister/scheduler/schedule/${options.sub}`;
-  UserService.deleteUserAccount(options);
+  userService.deleteUserAccount(options);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', options.access_token);
 });
 
@@ -272,6 +291,59 @@ test('userCheckExists', () => {
   const queryParameter = `?webfinger=${options.webfinger}&rememberMe=${options.rememberMe}`
   const serviceURL = `${authority}/useractions-srv/userexistence/${options.requestId}${queryParameter}`;
   const headers = {requestId: 'requestId', lat: 'lat value', lon: 'lon value'}
-  UserService.userCheckExists(options, headers);
+  userService.userCheckExists(options, headers);
   expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', undefined, headers);
+});
+
+test('getUserActivities', () => {
+  const options: GetUserActivitiesRequest = {
+    sub: '',
+    dateFilter: {
+      from_date: '',
+      to_date: ''
+    }
+  };
+  const accessToken = 'accessToken';
+  const serviceURL = `${authority}/activity-streams-srv/user-activities`;
+  userService.getUserActivities(options, accessToken);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST', accessToken);
+});
+
+test('updateProfileImage', () => {
+  const options: UpdateProfileImageRequest = {
+    image_key: 'imageKey',
+    photo: new Blob(),
+    filename: 'filename'
+  };
+  const accessToken = 'accessToken';
+  const serviceURL = `${authority}/image-srv/profile/upload`;
+
+  const form = document.createElement('form');
+  form.action = serviceURL;
+  form.method = 'POST';
+  const image_key = document.createElement('input');
+  image_key.setAttribute('type', 'hidden');
+  image_key.setAttribute('name', 'image_key');
+  form.appendChild(image_key);
+  const photo = document.createElement('input');
+  photo.setAttribute('type', 'file');
+  photo.setAttribute('hidden', 'true');
+  photo.setAttribute("name", "photo");
+  form.appendChild(photo);
+  const formdata = new FormData(form);
+  formdata.set('image_key', options.image_key);
+  formdata.set('photo', options.photo, options.filename);
+
+  userService.updateProfileImage(options, accessToken);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, undefined, 'POST', accessToken, null, formdata);
+});
+
+test('userActionOnEnrollment', () => {
+  const options: UserActionOnEnrollmentRequest = {
+    action: 'action'
+  };
+  const trackId = 'trackId';
+  const serviceURL = `${authority}/auth-actions-srv/validation/${trackId}`;
+  userService.userActionOnEnrollment(options, trackId);
+  expect(httpSpy).toHaveBeenCalledWith(options, serviceURL, false, 'POST');
 });

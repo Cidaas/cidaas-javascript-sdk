@@ -13,9 +13,8 @@ export interface InitiateAccountVerificationRequest {
   verificationMedium?: string;
   /**
    * can be either CODE, LINK, or GENERAL
-   * BREAKING TODO: change type to ProcessingType only in next major version
-   * */
-  processingType?: ProcessingType | string;
+   */
+  processingType?: ProcessingType;
   /** Request id returned from the authorization call */
   requestId?: string;
   /** Unique identifier of client app, can be found in app setting under admin ui */
@@ -53,12 +52,12 @@ export interface GetMFAListRequest {
   /** 
    * Masked sub (id of user)
    * Either sub or q have to be provided, depends on what is given from the query parameter. 
-   * */
+   */
   sub?: string;
   /** 
    * Masked sub (id of user)
    * Either sub or q have to be provided, depends on what is given from the query parameter. 
-   * */
+   */
   q?: string;
 }
 

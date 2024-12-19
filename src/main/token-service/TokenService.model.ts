@@ -50,12 +50,6 @@ export interface TokenClaim {
     ua_hash?: string,
     /** List of unaccepted consents */
     consents?: Consent[],
-    /** DEPRECATED: replaced with aud claim */
-    clientid?: string,
-    /** DEPRECATED: replaced with scopes claim */
-    scope?: string,
-    /** DEPRECATED: replaced with roles claim */
-    role?: string
 }
 
 export interface Group {
@@ -76,18 +70,6 @@ export interface Consent {
     creation_time: string
 }
 
-export interface RenewTokenRequest {
-  /** One time valid code that is used for issuing a new token */
-  refresh_token: string;
-  /** Unique identifier of client app, can be found in app setting under admin ui */
-  client_id?: string;
-  /** 
-   * Type of grant used in token request 
-   * BREAKING TODO: change type to GrantType only in next major version
-  */
-  grant_type?: GrantType | string;
-}
-
 /** Type of grant used in token request */
 export enum GrantType {
   AuthorizationCode = 'authorization_code',
@@ -99,7 +81,7 @@ export enum GrantType {
   DeviceCode = 'urn:ietf:params:oauth:grant-type:device_code'
 }
 
-export interface GetAccessTokenRequest {
+export interface GenerateTokenFromCodeRequest {
   /** The code which you receive while using authorization code flow */
   code: string;
   /** When we choose PKCE method to generate token, we need to pass code_verifier which is a cryptographically random string */
@@ -108,36 +90,10 @@ export interface GetAccessTokenRequest {
   client_id?: string;
   /** 
    * Type of grant used in token request 
-   * BREAKING TODO: change type to GrantType only in next major version
-   * */
-  grant_type?: GrantType | string;
+   */
+  grant_type?: GrantType;
   /** Specify the url where the user needs to be redirected after successful login */
   redirect_uri?: string;
-}
-
-export class TokenIntrospectionRequest {
-  /** access token to be inspected */
-  token: string;
-  /** 
-   * Optional hint about the type of the submitted token. 
-   * BREAKING TODO: change type to TokenTypeHint only in next major version
-   * */
-  token_type_hint?: TokenTypeHint | string;
-  /** List of roles to match */
-  roles?: string[];
-  /** List of scopes to match */
-  scopes?: string[];
-  /** List of groups to match */
-  groups?: GroupAllowed[];
-
-  /** If true, all roles have to be included. If false, only 1 role from the list is needed */
-  strictRoleValidation?: boolean = false;
-  /** If true, all group have to be included. If false, only 1 group from the list is needed */
-  strictGroupValidation?: boolean = false;
-  /** If true, all scopes have to be included. If false, only 1 scope from the list is needed */
-  strictScopeValidation?: boolean = false;
-  /** If true, all defined roles and/or groups and/or scopes validation has to be succesful. If false, only 1 of them is needed */
-  strictValidation?: boolean = false;
 }
 
 /** Optional hint about the type of the submitted token. */

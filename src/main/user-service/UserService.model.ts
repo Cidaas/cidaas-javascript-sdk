@@ -2,8 +2,15 @@ import { ProcessingType } from "../common/Common.model";
 import { CidaasUser } from "../common/User.model";
 
 export interface GetUserProfileRequest {
-    /** Access token needed to authorized api call */
-    access_token: string
+    /** Access token needed to authorized api call. If not provided, access token from UserStorage will be used. */
+    access_token?: string
+}
+
+export interface GetRegistrationSetupRequest {
+    /** Request id returned from the authorization call */
+    requestId: string;
+    /** Response language, which is configured in cidaas admin ui */
+    acceptlanguage?: string;
 }
 
 export interface RegisterRequest extends CidaasUser {
@@ -18,7 +25,7 @@ export interface GetInviteUserDetailsRequest {
     callLatestAPI?: boolean
 }
 
-export interface getCommunicationStatusRequest {
+export interface GetCommunicationStatusRequest {
     /** Subject (User) identifier */
     sub: string
 }
@@ -26,14 +33,12 @@ export interface getCommunicationStatusRequest {
 export interface InitiateResetPasswordRequest {
     /** 
      * Type of medium to be used to reset password 
-     * BREAKING TODO: change type to ResetMedium only in next major version
-     * */
-    resetMedium: ResetMedium | string;
+     */
+    resetMedium: ResetMedium;
     /** 
      * defines whether the password can be resetted via email link or whether the user needs to enter a code to complete the reset password process.
-     * BREAKING TODO: change type to ProcessingType only in next major version
-     * */
-    processingType: ProcessingType | string;
+     */
+    processingType: ProcessingType;
     /** Email of the user */
     email?: string;
     /** Mobile number of the user */
@@ -118,10 +123,10 @@ export interface InitiateLinkAccountRequest {
 }
 
 export interface DeleteUserAccountRequest {
-    /** Access token needed to authorized api call */
-    access_token?: string;
     /** Subject (User) identifier */
     sub: string;
+    /** Access token needed to authorized api call. If not provided, access token from UserStorage will be used. */
+    access_token?: string;
 }
 
 export interface CompleteLinkAccountRequest {
@@ -147,9 +152,44 @@ export interface UserCheckExistsRequest {
     /** If filled, will be sent as query parameter */
     webfinger?: string;
 }
+
+export interface GetUserActivitiesRequest {
+    /** sub of user to get its activities */
+    sub: string;
+    /** limits activities number to be shown */
+    size?: number;
+    /** shows activities starting from the 'from' number. Default is 0 */
+    from?: number;
+    /** if true, the activites will be sorted with the latest one at start */
+    descending?: boolean;
+    /** activities are shown based on the dateFilter */
+    dateFilter?: DateFilter;
+}
+
+export interface UserActionOnEnrollmentRequest {
+    /** action to be executed */
+    action: string;
+}
+
+export interface UpdateProfileImageRequest {
+    /** id for the image */
+    image_key: string;
+    /** name of the image */
+    filename: string;
+    /** image file */
+    photo: Blob;
+}
+
+export interface DateFilter {
+    /** earliest time to show activities */
+    from_date: string;
+    /** latest time to show activities */
+    to_date: string;
+}
+
 /** Type of medium to be used to reset password */
 export enum ResetMedium {
-    'SMS',
-    'EMAIL',
-    'IVR'
+    Sms = 'SMS',
+    Email = 'EMAIL',
+    Ivr = 'IVR'
 }

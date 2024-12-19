@@ -6,12 +6,12 @@ export interface GetConsentDetailsRequest {
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
 }
 
@@ -25,12 +25,12 @@ export interface AcceptConsentRequest {
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
     /** Scopes are list of functional definition. Required to be passed on scope consent (Ex: email, profile, openid) */
     scopes?: string[];
@@ -57,51 +57,49 @@ export interface AcceptConsentRequest {
     consentid: string;
     /** Response language, which is configured in cidaas admin ui */
     locale?: string;
-    /** DEPRECATED: Access Token is not needed for Getting ConsentVersionDetailsRequest in the current cidaas service. It will be removed in the next Major release */
-    access_token?: string;
   }
 
   export interface AcceptScopeConsentRequest {
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;
+    /** List of scopes, which is included in the scope consent to be accepted */
+    scopes: string[];
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
-    /** List of scopes, which is included in the scope consent to be accepted */
-    scopes: string[];
   }
 
   export interface AcceptClaimConsentRequest {
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;
+    /** List of claims, which is included in the claim consent to be accepted */
+    accepted_claims: string[];
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
-    /** List of claims, which is included in the claim consent to be accepted */
-    accepted_claims: string[];
   }
   
   export interface RevokeClaimConsentRequest {
-    /** Access token needed to authorized api call */
-    access_token: string;
     /** Unique identifier of client app, can be found in app setting under admin ui */
     client_id: string;
     /** sub (id of user), who will revoke the consent */
     sub: string;
     /** List of claims, which is included in the claim consent to be revoked */
     revoked_claims: string[];
+    /** Access token needed to authorized api call. If not provided, access token from UserStorage will be used. */
+    access_token?: string;
   }
