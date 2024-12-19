@@ -35,7 +35,7 @@ export class AuthenticationService {
 	 * Afterwards you will be redirected to the hosted registration page.
 	 * @example
 	 * ```js
-	 * cidaas.registerWithBrowser();
+	 * cidaasAuthenticationService.registerWithBrowser();
 	 * ```
 	 * @param {LoginRedirectOptions} options to over-ride the client config for redirect login
 	 */
@@ -48,7 +48,7 @@ export class AuthenticationService {
 	 * Once login successful, it will automatically redirects you to the redirect url, which is configured in cidaas config.
 	 * @example
 	 * ```js
-	 * cidaas.loginWithBrowser();
+	 * cidaasAuthenticationService.loginWithBrowser();
 	 * ```
 	 * @param {LoginRedirectOptions} options to over-ride the client config for redirect login
 	 */
@@ -61,7 +61,7 @@ export class AuthenticationService {
 	 * On successful sign in, authenticated user is returned.
 	 * @example
 	 * ```js
-	 * cidaas.popupSignIn().then(function (response) {
+	 * cidaasAuthenticationService.popupSignIn().then(function (response) {
 	 *   // the response will give you user details after finishing loginCallback().
 	 * }).catch(function(ex) {
 	 *  // your failure code here
@@ -79,7 +79,7 @@ export class AuthenticationService {
 	 * 
 	 * @example
 	 * ```js
-	 * cidaas.loginCallback().then(function (response: User) {
+	 * cidaasAuthenticationService.loginCallback().then(function (response: User) {
 	 *   // the response will give you login details.
 	 * }).catch(function(ex) {
 	 *  // your failure code here
@@ -95,7 +95,7 @@ export class AuthenticationService {
 	 * To end user session, call **logout()**. You need set the redirect url, if not it will automatically redirect to the login page
 	 * @example
 	 * ```js
-	 * cidaas.logout();
+	 * cidaasAuthenticationService.logout();
 	 * ```
 	 * @param {LogoutRedirectOptions} options optional logout options to override cidaas configuration
 	 */
@@ -107,7 +107,7 @@ export class AuthenticationService {
 	 * To open the hosted logout page in pop up window, call **popupSignOut()**.
 	 * @example
 	 * ```js
-	 * cidaas.popupSignOut().then(function() {
+	 * cidaasAuthenticationService.popupSignOut().then(function() {
 	 *   // success callback in main application window after finishing popupSignOutCallback().
 	 * }).catch(function(ex) {
 	 *   // your failure code here
@@ -125,7 +125,7 @@ export class AuthenticationService {
 	 * Get the logout call state from the url provided, if none is provided current window url is used.
 	 * @example
 	 * ```js
-	 * cidaas.logoutCallback().then(function (response: LogoutResponse) {
+	 * cidaasAuthenticationService.logoutCallback().then(function (response: LogoutResponse) {
 	 *   // the response will give you userState details.
 	 * }).catch(function(ex) {
 	 *  // your failure code here
@@ -144,7 +144,7 @@ export class AuthenticationService {
 	 * 
 	 * @example
 	 * ```js
-	 * cidaas.renewToken().then(function (response) {
+	 * cidaasAuthenticationService.renewToken().then(function (response) {
 	 *   // the response will give you user details.
 	 * }).catch(function(ex) {
 	 *  // your failure code here
@@ -164,7 +164,7 @@ export class AuthenticationService {
 	 * To get the generated login url, call **getLoginURL()**. This will call authz service and generate login url to be used.
 	 * @example
 	 * ```js
-	 * cidaas.getLoginURL().then(function (response) {
+	 * cidaasAuthenticationService.getLoginURL().then(function (response) {
 	 *   // the response will give you login url.
 	 * }).catch(function(ex) {
 	 *   // your failure code here
@@ -192,7 +192,7 @@ export class AuthenticationService {
 	 * 
 	 * @example
 	 * ```js
-	 * cidaas.getUserInfoFromStorage().then(function (response) {
+	 * cidaasAuthenticationService.getUserInfoFromStorage().then(function (response) {
 	 *   // the response will give you profile details.
 	 * }).catch(function(ex) {
 	 *   // your failure code here

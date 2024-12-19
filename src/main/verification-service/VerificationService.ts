@@ -18,7 +18,7 @@ export class VerificationService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/cgans5erj5alg-init-account-verification for more details.
 	 * @example
 	 * ```js
-	 * cidaas.initiateAccountVerification({
+	 * cidaasVerificationService.initiateAccountVerification({
 	 *   verificationMedium: 'email',
 	 *   requestId: 'your requestId',
 	 *   processingType: ProcessingType.Code, 
@@ -46,7 +46,7 @@ export class VerificationService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/r8h9mvavvw2e6-verify-account for more details.
 	 * @example
 	 * ```js
-	 * cidaas.verifyAccount({
+	 * cidaasVerificationService.verifyAccount({
 	 *   accvid: 'your accvid', // which you will get on initiate account verification response
 	 *   code: 'your code in email or sms or ivr'
 	 * }).then(function (response) {
@@ -72,7 +72,7 @@ export class VerificationService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/ee688a9c52b63-list-of-configured-verification-methods for more details.
 	 * @example
 	 * ```js
-	 * cidaas.getMFAList({
+	 * cidaasVerificationService.getMFAList({
 	 *   request_id: 'your request id',
 	 *   email: 'your email'
 	 * }).then(function (response) {
@@ -91,7 +91,7 @@ export class VerificationService {
 	 * to cancel mfa process, call **cancelMFA()**. 
 	 * @example
 	 * ```js
-	 * cidaas.cancelMFA({
+	 * cidaasVerificationService.cancelMFA({
 	 *   exchange_id: 'exchange id from initiateMFA() response',
 	 *   reason: 'reason of mfa cancelation',
 	 *   type: 'authentication type e.g. email'
@@ -111,7 +111,7 @@ export class VerificationService {
 	 * To get list of all verification type configured, call **getAllVerificationList()**. access_token must be passed as function parameter.
 	 * @example
 	 * ```js
-	 * cidaas.getAllVerificationList()
+	 * cidaasVerificationService.getAllVerificationList()
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -143,7 +143,7 @@ export class VerificationService {
 	 *  }
 	 * }
 	 * 
-	 * cidaas.initiateEnrollment(options)
+	 * cidaasVerificationService.initiateEnrollment(options)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -167,7 +167,7 @@ export class VerificationService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/branches/master/b06447d02d8e0-get-status-of-physical-verification-setup-configuration for more details.
 	 * @example
 	 * ```js
-	 * cidaas.getEnrollmentStatus('statusId from initiateEnrollment()')
+	 * cidaasVerificationService.getEnrollmentStatus('statusId from initiateEnrollment()')
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -200,7 +200,7 @@ export class VerificationService {
 	 *     fidoRequestId: 'fidoRequestId from initiateEnrollment',
 	 *   }
 	 * }
-	 * cidaas.enrollVerification(fidoPayload)
+	 * cidaasVerificationService.enrollVerification(fidoPayload)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -218,7 +218,7 @@ export class VerificationService {
 	 * to see details of configured verification type, call **checkVerificationTypeConfigured()**.
 	 * @example
 	 * ```js
-	 * cidaas.checkVerificationTypeConfigured({
+	 * cidaasVerificationService.checkVerificationTypeConfigured({
 	 *   request_id: 'your request id',
 	 *   email: 'your email',
 	 *   verification_type: 'email'
@@ -248,7 +248,7 @@ export class VerificationService {
 	 *  }
 	 * }
 	 * 
-	 * cidaas.initiateMFA(options)
+	 * cidaasVerificationService.initiateMFA(options)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -267,7 +267,7 @@ export class VerificationService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/1aa38936252d6-perform-the-authentication-method for more details.
 	 * @example
 	 * ```js
-	 * cidaas.authenticateMFA({
+	 * cidaasVerificationService.authenticateMFA({
 	 *   type: 'email',
 	 *   client_id: 'your client id',
 	 *   exchange_id: exchange id from initiateMFA(),
@@ -297,7 +297,7 @@ export class VerificationService {
 	 * const trackId = 'your track id'
 	 * const method = 'email'
 	 * 
-	 * cidaas.initiateVerification(options, trackId, method)
+	 * cidaasVerificationService.initiateVerification(options, trackId, method)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -324,7 +324,7 @@ export class VerificationService {
 	 * }
 	 * const method = 'email'
 	 * 
-	 * cidaas.initiateVerification(options, method)
+	 * cidaasVerificationService.initiateVerification(options, method)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -351,7 +351,7 @@ export class VerificationService {
 	 * const trackId = 'your track id'
 	 * const method = 'email'
 	 * 
-	 * cidaas.configureFriendlyName(options, trackId, method)
+	 * cidaasVerificationService.configureFriendlyName(options, trackId, method)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })

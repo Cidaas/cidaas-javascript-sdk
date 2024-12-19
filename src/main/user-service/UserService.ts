@@ -19,7 +19,7 @@ export class UserService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2zfvjx3vtq6g6-get-user-info for more details.
 	 * @example
 	 * ```js
-	 * cidaas.getUserProfile()
+	 * cidaasUserService.getUserProfile()
 	 * .then(function () {
 	 *   // the response will give you user profile information.
 	 * }).catch(function (ex) {
@@ -42,7 +42,7 @@ export class UserService {
    * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/4eae72956f65a-registration-field-setup for more details.
    * @example
    * ```js
-   * cidaas.getRegistrationSetup({
+   * cidaasUserService.getRegistrationSetup({
    *   requestId: 'your requestId',
    *   acceptlanguage: 'your locale' // optional example: de-de, en-US
    * }).then(function (resp) {
@@ -70,7 +70,7 @@ export class UserService {
 	 *   bot_captcha_response: 'bot_captcha_response'
 	 * };
 	 * 
-	 * cidaas.register({ 
+	 * cidaasUserService.register({ 
 	 *   email: 'xxx123@xxx.com',  
 	 *   given_name: 'xxxxx', 
 	 *   family_name: 'yyyyy', 
@@ -103,7 +103,7 @@ export class UserService {
 	 *   invite_id: 'id of user invitation'
 	 *   callLatestAPI: 'true' // call latest api if parameter is given. By default, the older api will be called
 	 * }
-	 * cidaas.getInviteUserDetails(options)
+	 * cidaasUserService.getInviteUserDetails(options)
 	 * .then(function () {
 	 *   // the response will give you information about the invitation.
 	 * }).catch(function (ex) {
@@ -125,7 +125,7 @@ export class UserService {
 	 * Once registration successful, verify the account based on the flow. To get the details, call **getCommunicationStatus()**.
 	 * @example
 	 * ```js
-	 * cidaas.getCommunicationStatus({
+	 * cidaasUserService.getCommunicationStatus({
 	 *   sub: 'your sub', // which you will get on the registration response
 	 * }).then(function (response) {
 	 *   // the response will give you account details once its verified.
@@ -144,7 +144,7 @@ export class UserService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/6b29bac6002f4-initiate-password-reset for more details.
 	 * @example
 	 * ```js
-	 * cidaas.initiateResetPassword({
+	 * cidaasUserService.initiateResetPassword({
 	 *   email: 'xxxxxx@xxx.com',
 	 *   processingType: ProcessingType.Code,
 	 *   requestId: 'your requestId',
@@ -167,7 +167,7 @@ export class UserService {
 	 * @example
 	 * ```js
 	 * const handleResponseAsJson = 'true if the response need to be handled the old way (as json). In the current handling, the response information will be given as query parameter in redirect url.';
-	 * cidaas.handleResetPassword({
+	 * cidaasUserService.handleResetPassword({
 	 *   code: 'your code in email or sms or ivr',
 	 *   resetRequestId: 'your resetRequestId' // which you will get on initiate reset password response
 	 * }, handleResponseAsJson).then(function (response) {
@@ -200,7 +200,7 @@ export class UserService {
 	 * @example
 	 * ```js
 	 * const handleResponseAsJson = 'true if the response need to be handled the old way (as json). In the current handling, user will be redirected to success page after successful reset password.';
-	 * cidaas.resetPassword({        
+	 * cidaasUserService.resetPassword({        
 	 *   password: '123456',
 	 *   confirmPassword: '123456',
 	 *   exchangeId: 'your exchangeId', // which you will get on handle reset password response
@@ -233,7 +233,7 @@ export class UserService {
 	 * To get the list of existing users in deduplication, call **getDeduplicationDetails()**.
 	 * @example
 	 * ```js
-	 * this.cidaas.getDeduplicationDetails({
+	 * cidaasUserService.getDeduplicationDetails({
 	 *   track_id: 'your track id'
 	 * }).then((response) => {
 	 *   // the response will give you deduplication details of users.
@@ -251,7 +251,7 @@ export class UserService {
 	 * To use the existing users in deduplication, you need to call **deduplicationLogin()**.
 	 * @example
 	 * ```js
-	 * this.cidaas.deduplicationLogin({
+	 * cidaasUserService.deduplicationLogin({
 	 *   sub: 'your sub',
 	 *   requestId: 'request id from deduplication initialisation after register',
 	 *   trackId: 'track id from deduplication initialisation after register'
@@ -273,7 +273,7 @@ export class UserService {
 	 * To register new user in deduplication, call **registerDeduplication()**.
 	 * @example
 	 * ```js
-	 * this.cidaas.registerDeduplication({
+	 * cidaasUserService.registerDeduplication({
 	 *   track_id: 'track id from deduplication initialisation after register',
 	 * }).then((response) => {
 	 *   // the response will give you new registered deduplication user. 
@@ -292,7 +292,7 @@ export class UserService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/8221883241464-change-password for more details.
 	 * @example
 	 * ```js
-	 * cidaas.changePassword({
+	 * cidaasUserService.changePassword({
 	 *   old_password: 'your old password',
 	 *   new_password: 'your new password',
 	 *   confirm_password: 'your new password',
@@ -323,7 +323,7 @@ export class UserService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/i3uqnxcpxr19r-update-user-profile for more details.
 	 * @example
 	 * ```js
-	 * cidaas.updateProfile({
+	 * cidaasUserService.updateProfile({
 	 *   family_name: 'Doe',
 	 *   given_name: 'John',
 	 *   provider: 'self',
@@ -354,7 +354,7 @@ export class UserService {
 	 *   user_name_to_link: 'username of the user which should get linked',
 	 *   user_name_type: 'type of user name to link. E.g. email'
 	 * }
-	 * this.cidaas.initiateLinkAccount(options).then((response) => {
+	 * cidaasUserService.initiateLinkAccount(options).then((response) => {
 	 *   // your success code
 	 * }).catch((err) => {
 	 *   // your failure code here 
@@ -380,7 +380,7 @@ export class UserService {
 	 *   code: 'code which is sent to account to be linked',
 	 *   link_request_id: 'comes from initiateLinkAccount'
 	 * }
-	 * this.cidaas.completeLinkAccount(options).then((response) => {
+	 * cidaasUserService.completeLinkAccount(options).then((response) => {
 	 *   // your success code
 	 * }).catch((err) => {
 	 *   // your failure code here 
@@ -403,7 +403,7 @@ export class UserService {
 	 * ```js
 	 * const sub = 'your sub';
 	 * 
-	 * cidaas.getLinkedUsers(sub)
+	 * cidaasUserService.getLinkedUsers(sub)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -428,7 +428,7 @@ export class UserService {
 	 * ```js
 	 * const identityId = "comes from getLinkedUsers";
 	 * 
-	 * cidaas.unlinkAccount(undefined, identityId)
+	 * cidaasUserService.unlinkAccount(undefined, identityId)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -459,7 +459,7 @@ export class UserService {
 	 *   sub: "your sub"
 	 * }
 	 * 
-	 * cidaas.deleteUserAccount(options).then(function (response) {
+	 * cidaasUserService.deleteUserAccount(options).then(function (response) {
 	 *   // your success code
 	 * }).catch(function(ex) {
 	 *   // your failure code here
@@ -486,7 +486,7 @@ export class UserService {
 	 *   email: "your email"
 	 * }
 	 * 
-	 * cidaas.userCheckExists(options).then(function (response) {
+	 * cidaasUserService.userCheckExists(options).then(function (response) {
 	 *   // your success code
 	 * }).catch(function(ex) {
 	 *   // your failure code here
@@ -522,7 +522,7 @@ export class UserService {
    *     to:date: 'date in UTC format'
    *   }
    * };
-   * cidaas.getUserActivities(options).then(function (resp) {
+   * cidaasUserService.getUserActivities(options).then(function (resp) {
    *   // your success code
    * }).catch(function(ex) {
    *   // your failure code
@@ -548,7 +548,7 @@ export class UserService {
 	*   photo: yourImageFile,
 	*   filename: 'name of your image file'
 	* };
-	* cidaas.updateProfileImage(options).then(function (resp) {
+	* cidaasUserService.updateProfileImage(options).then(function (resp) {
 	*   // your success code
 	* }).catch(function(ex) {
 	*   // your failure code
@@ -595,7 +595,7 @@ export class UserService {
 	 * const options = {
 	 *   action: 'predefined action'
 	 * };
-	 * cidaas.userActionOnEnrollment(options, 'trackId');
+	 * cidaasUserService.userActionOnEnrollment(options, 'trackId');
 	 */
 	userActionOnEnrollment(options: UserActionOnEnrollmentRequest, trackId: string) {
 		const serviceURL = this.config.authority + '/auth-actions-srv/validation/' + trackId;

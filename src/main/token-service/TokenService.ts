@@ -23,7 +23,7 @@ export class TokenService {
 	 *   code: "your code to be exchanged with the token(s)",
 	 * }
 	 * 
-	 * cidaas.generateTokenFromCode(options)
+	 * cidaasTokenService.generateTokenFromCode(options)
 	 *   .then(function (response) {
 	 *     // type your code here
 	 *   })
@@ -56,7 +56,7 @@ export class TokenService {
 	 *   track_id: "your track id from login",
 	 * }
 	 * 
-	 * cidaas.loginPrecheck(options)
+	 * cidaasTokenService.loginPrecheck(options)
 	 * .then(function (response) {
 	 *   // type your code here
 	 * })
@@ -76,7 +76,7 @@ export class TokenService {
 	 * @example
 	 * ```js
 	 * const trackId = "your track id from login";
-	 * cidaas.getMissingFields(trackId)
+	 * cidaasTokenService.getMissingFields(trackId)
 	 *   .then(function (response) {
 	 *     // type your code here
 	 * })
@@ -96,7 +96,7 @@ export class TokenService {
 	 * @example 
 	 * ```js
 	 * const clientId = "your client id";
-	 * cidaas.initiateDeviceCode(clientId)
+	 * cidaasTokenService.initiateDeviceCode(clientId)
 	 *   .then(function (response) {
 	 *     // type your code here
 	 * })
@@ -116,7 +116,7 @@ export class TokenService {
 	 * @example 
 	 * ```js
 	 * const code = "your code which has been send after initiateDeviceCode()";
-	 * cidaas.deviceCodeVerify(code)
+	 * cidaasTokenService.deviceCodeVerify(code)
 	 *   .then(function (response) {
 	 *     // type your code here
 	 * })
@@ -144,7 +144,7 @@ export class TokenService {
 	 * To check access token without having to call cidaas api, call **offlineTokenCheck()**. THe function will return true if the token is valid & false if the token is invalid.
 	 * @example
 	 * ```js
-	 * cidaas.offlineTokenCheck('your access token');
+	 * cidaasTokenService.offlineTokenCheck('your access token');
 	 * ```
 	 */
 	offlineTokenCheck(accessToken: string) {

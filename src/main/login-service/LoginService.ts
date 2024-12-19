@@ -17,7 +17,7 @@ export class LoginService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/5gphdk6vapp56-classic-login#call-login-api for more details.
 	 * @example
 	 * ```js
-	 * cidaas.loginWithCredentials({
+	 * cidaasLoginService.loginWithCredentials({
 	 *   username: 'xxxx@gmail.com',
 	 *   username_type: 'email',
 	 *   password: '123456',
@@ -41,7 +41,7 @@ export class LoginService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9mi5uqxhqlsm5-social-login#call-social-login-api for more details
 	 * @example
 	 * ```js
-	 * cidaas.loginWithSocial({
+	 * cidaasLoginService.loginWithSocial({
 	 *   provider: 'facebook',
 	 *   requestId: 'your requestId',
 	 * });
@@ -68,7 +68,7 @@ export class LoginService {
 	 *   dc: 'dc',
 	 *   device_fp: 'device_fp'
 	 * }
-	 * cidaas.registerWithSocial({
+	 * cidaasLoginService.registerWithSocial({
 	 *   provider: 'facebook',
 	 *   requestId: 'your requestId',
 	 * }, queryParams);
@@ -91,7 +91,7 @@ export class LoginService {
 	* Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/k1lwsraxk0rjc-login-passwordless-request for more details.
 	* @example
 	* ```js
-	* cidaas.passwordlessLogin({
+	* cidaasLoginService.passwordlessLogin({
 	*   requestId: 'your requestId',
 	*   sub: 'your user sub',
 	*   statusId: 'status id from authenticateMFA()'
@@ -114,7 +114,7 @@ export class LoginService {
 	* To continue after Consent acceptance, call **consentContinue()**.
 	* @example
 	* ```js
-	* cidaas.consentContinue({
+	* cidaasLoginService.consentContinue({
 	*   track_id: 'your track id'
 	* });
 	* ```
@@ -135,7 +135,7 @@ export class LoginService {
 	 * 
 	 * @example
 	 * ```js
-	 * cidaas.mfaContinue({
+	 * cidaasLoginService.mfaContinue({
 	 *   track_id: 'your track id'
 	 * });
 	 * ```
@@ -156,7 +156,7 @@ export class LoginService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/fd8f478d96f58-continue-authentication-flow-after-prechecks for more details.
 	 * @example
 	 * ```js
-	 * cidaas.firstTimeChangePassword({
+	 * cidaasLoginService.firstTimeChangePassword({
 	 *   old_password: 'your old password',
 	 *   new_password: 'your new password',
 	 *   confirm_password: 'your new password'
@@ -187,7 +187,7 @@ export class LoginService {
 	 *   requestId: 'request id of the session',
 	 *   acceptlanguage: 'your locale/browser locale (OPTIONAL)',
 	 * }
-	 * cidaas.progressiveRegistration(options, headers)
+	 * cidaasLoginService.progressiveRegistration(options, headers)
 	 * .then(function(response) {
 	 *   // type your code here
 	 * })
@@ -206,7 +206,7 @@ export class LoginService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/qwwamc2f378wi-auto-login-after-register for more details.
 	 * @example
 	 * ```js
-	 * cidaas.loginAfterRegister({
+	 * cidaasLoginService.loginAfterRegister({
 	 *   device_id: 'your device id',
 	 *   dc: 'device capacity'
 	 *   rememberMe: false,
@@ -231,7 +231,7 @@ export class LoginService {
 	 * Please refer to https://docs.cidaas.com/docs/cidaas-iam/95fd8492a64fe-guest-login for more details
 	 * @example
 	 * ```js
-	 * cidaas.actionGuestLogin('your request id');
+	 * cidaasLoginService.actionGuestLogin('your request id');
 	 * ```
 	 */
 	actionGuestLogin(requestId: string) {

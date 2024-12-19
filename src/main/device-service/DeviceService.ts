@@ -17,7 +17,7 @@ export class DeviceService {
      * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/2a2feed70303c-get-device-by-user for more details.
      * @example
      * ```js
-     * cidaas.getDevicesInfo().then(function (resp) {
+     * cidaasDeviceService.getDevicesInfo().then(function (resp) {
      *   // the response will give you devices informations.
      * }).catch(function(ex) {
      *   // your failure code here
@@ -42,7 +42,7 @@ export class DeviceService {
      * const options = {
      *   device_id: 'id of device associated to the client.' // call **getDevicesInfo()** to get List of device ids and its details.
      * };
-     * cidaas.deleteDevice(options).then(function (resp) {
+     * cidaasDeviceService.deleteDevice(options).then(function (resp) {
      *   // your success code
      * }).catch(function(ex) {
      *   // your failure code
@@ -66,7 +66,7 @@ export class DeviceService {
      * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9b5a892afaf0b-create-device-info for more details.
      * @example
      * ```js
-     * cidaas.createDeviceInfo().then(function (resp) {
+     * cidaasDeviceService.createDeviceInfo().then(function (resp) {
      *   // your success code
      * }).catch(function(ex) {
      *   // your failure code

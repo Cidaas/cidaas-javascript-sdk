@@ -15,7 +15,7 @@ export class PublicService {
      * @example
      * ```js
      * // To get requestId using default configured settings, run the function without parameter
-     * cidaas.getRequestId().then(function (response) {
+     * cidaasPublicService.getRequestId().then(function (response) {
      *   // the response will give you request id.
      * }).catch(function(ex) {
      *   // your failure code here
@@ -26,7 +26,7 @@ export class PublicService {
      *   'client_id': 'your client id',
      *   'redirect_uri': 'your redirect url',  
      * }
-     * cidaas.getRequestId(option).then(function (response) {
+     * cidaasPublicService.getRequestId(option).then(function (response) {
      *   // the response will give you request id.
      * }).catch(function(ex) {
      *   // your failure code here
@@ -52,7 +52,7 @@ export class PublicService {
      * To get the tenant basic information, call **getTenantInfo()**. This will return the basic tenant details such as tenant name and allowed login with types (Email, Mobile, Username).
      * @example
      * ```js
-     * cidaas.getTenantInfo().then(function (response) {
+     * cidaasPublicService.getTenantInfo().then(function (response) {
      *   // the response will give you tenant details
      * }).catch(function(ex) {
      *   // your failure code here
@@ -69,7 +69,7 @@ export class PublicService {
      * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/dc8a6cfb28abb-public-page-information for more details.
      * @example
      * ```js
-     * cidaas.getClientInfo({
+     * cidaasPublicService.getClientInfo({
      *   requestId: 'your requestId',
      * }).then(function (resp) {
      *   // the response will give you client info.

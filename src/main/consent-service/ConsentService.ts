@@ -18,7 +18,7 @@ export class ConsentService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/858fbeb51c62b-find-consent-info for more details.
 	 * @example
 	 * ```js
-	 * this.cidaas.getConsentDetails({
+	 * cidaasConsentService.getConsentDetails({
 	 *   consent_id: 'consent id',
 	 *   consent_version_id: 'consent version id',
 	 *   sub: 'masked sub'
@@ -40,7 +40,7 @@ export class ConsentService {
 	 * To accept consent, call **acceptConsent()**.
 	 * @example
 	 * ```js
-	 * this.cidaas.acceptConsent({
+	 * cidaasConsentService.acceptConsent({
 	 *   client_id: 'your client id',
 	 *   consent_id: 'consent id',
 	 *   consent_version: 'consent version id',
@@ -62,7 +62,7 @@ export class ConsentService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/7e24ac2113315-get-consent-version-details for more details.
 	 * @example
 	 * ```js
-	 * this.cidaas.getConsentVersionDetails({
+	 * cidaasConsentService.getConsentVersionDetails({
 	 *   consentid: 'your consent id',
 	 *   locale: 'browser accept language or custom language',
 	 * }).then((response) => {
@@ -84,7 +84,7 @@ export class ConsentService {
 	 * To accept scope consent, call **acceptScopeConsent()**.
 	 * @example
 	 * ```js
-	 * this.cidaas.acceptScopeConsent({
+	 * cidaasConsentService.acceptScopeConsent({
 	 *   client_id: 'your client id',
 	 *   sub: 'masked sub',
 	 *   scopes: [your scope consents]
@@ -100,7 +100,7 @@ export class ConsentService {
 	 * To accept claim consent, call **acceptClaimConsent()**.
 	 * @example
 	 * ```js
-	 * this.cidaas.acceptClaimConsent({
+	 * cidaasConsentService.acceptClaimConsent({
 	 *   client_id: 'your client id',
 	 *   sub: 'masked sub',
 	 *   accepted_claims: [your claim consents]
@@ -117,7 +117,7 @@ export class ConsentService {
 	 * Please refer to the api document https://docs.cidaas.com/docs/cidaas-iam/9ae62e98842fe-revoke-user-consent-claim for more details.
 	 * @example
 	 * ```js
-	 * this.cidaas.revokeClaimConsent({
+	 * cidaasConsentService.revokeClaimConsent({
 	 *    client_id: 'your client id',
 	 *    sub: 'masked sub'
 	 *    revoked_claims: [your claim consents]
