@@ -6,12 +6,12 @@ export interface GetConsentDetailsRequest {
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
 }
 
@@ -25,12 +25,12 @@ export interface AcceptConsentRequest {
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
     /** Scopes are list of functional definition. Required to be passed on scope consent (Ex: email, profile, openid) */
     scopes?: string[];
@@ -69,12 +69,12 @@ export interface AcceptConsentRequest {
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
   }
 
@@ -86,12 +86,12 @@ export interface AcceptConsentRequest {
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user), who will accept the consent. 
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
   }
   

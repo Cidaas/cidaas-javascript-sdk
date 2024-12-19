@@ -1,3 +1,5 @@
+import { OidcManager } from "../authentication-service/AuthenticationService.model";
+
 export class Helper {
   /**
    * create form
@@ -81,16 +83,24 @@ export class Helper {
     });
   }
 
-  static getAccessTokenFromUserStorage(): Promise<string> {
+  static getAccessTokenFromUserStorage(userManager: OidcManager): Promise<string> {
     return new Promise((resolve, reject) => {
       try {
-        window.usermanager.getUser().then( user => {
+        userManager.getUser().then( (user: { access_token: string | PromiseLike<string>; }) => {
           resolve(user?.access_token);
         });
       } catch (ex) {
         reject(ex);
       }
     });
+  }
+
+  /**
+   * To set accept language
+   * @param acceptLanguage 
+   */
+  static setAcceptLanguageHeader(acceptLanguage: string) {
+    window.localeSettings = acceptLanguage;
   }
 }
 

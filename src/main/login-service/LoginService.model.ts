@@ -10,7 +10,7 @@ export interface LoginWithCredentialsRequest {
     /** 
      * Type of username used in login 
      * BREAKING TODO: change type to UsernameType only in next major version
-     * */
+     */
     username_type?: UsernameType | string;
     /** Field identifier to tell service, where to look for in case of custom username type */
     field_key?: string;
@@ -68,17 +68,17 @@ export interface PasswordlessLoginRequest {
     /** 
      * Type of verification to be used to authenticate user
      * BREAKING TODO: change type to VerificationType only in next major version
-     * */
+     */
     verificationType: VerificationType | string;
     /** 
      * Masked sub (id of user)
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     sub?: string;
     /** 
      * Masked sub (id of user)
      * Either sub or q have to be provided, depends on what is given from the query parameter. 
-     * */
+     */
     q?: string;
 }
 

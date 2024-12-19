@@ -23,3 +23,9 @@ test('Helper.CreatePromise', () => {
 
 });
 
+test('setAcceptLanguageHeader', () => {
+    const locale = 'en-gb'
+    Helper.setAcceptLanguageHeader(locale);
+    expect(window.localeSettings).toBe(locale);
+});
+

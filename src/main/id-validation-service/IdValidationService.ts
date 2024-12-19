@@ -1,13 +1,15 @@
-import { OidcSettings } from "../authentication/Authentication.model";
-import ConfigProvider from "../common/ConfigProvider";
+import { OidcManager, OidcSettings } from "../authentication-service/AuthenticationService.model";
+import ConfigUserProvider from "../common/ConfigUserProvider";
 import { Helper } from "../common/Helper";
 import { InvokeIdValidationCaseRequest } from "./IdValidationService.model";
 
 export class IdValidationService { 
     private config: OidcSettings;
+    private userManager: OidcManager;
 
-    constructor(configProvider: ConfigProvider) {
-        this.config = configProvider.getConfig();
+    constructor(configUserProvider: ConfigUserProvider) {
+        this.config = configUserProvider.getConfig();
+        this.userManager = configUserProvider.getUserManager();
     }
 
     /**
@@ -36,7 +38,7 @@ export class IdValidationService {
             callIdValidationAPI(options, serviceURL, access_token);
             return;
         }
-        Helper.getAccessTokenFromUserStorage().then((accessToken) => {
+        Helper.getAccessTokenFromUserStorage(this.userManager).then((accessToken) => {
             callIdValidationAPI(options, serviceURL, accessToken);
         });
     }

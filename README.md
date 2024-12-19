@@ -125,9 +125,59 @@ const options = {
 
 ### Initialise the cidaas sdk using the configured options mentioned above:
 
+Cidaas ConfigUserProvider have to be initialise to be added to each of the modules as dependencies:
+
+Example of Cidaas Service:
 ```js
-const cidaas = new CidaasSDK.WebAuth(options);
+export class CidaasService {
+    cidaasConfigUserProvider: ConfigUserProvider;
+    authentication: Authentication;
+    verificationService: VerificationService;
+    options: OidcSettings = { ... };
+
+    constructor() {
+        // init ConfigUserProvider
+        this.cidaasConfigUserProvider = new ConfigUserProvider(this.options);
+        // init authentication module
+        this.authentication = new Authentication(this.cidaasConfigUserProvider);
+        // init verification module
+        this.verificationService = new VerificationService(this.cidaasConfigUserProvider);
+    }
+
+    // get authentication module
+    getAuthentication() {
+        return this.authentication;
+    }
+
+    // get verification module
+    getVerificationService() {
+        return this.verificationService
+    }
+}
 ```
+
+Usage in Component:
+ ```js
+ // inject cidaas service
+constructor(private cidaasService: CidaasService, ...) {}
+
+...
+
+// init each of cidaas modules which are needed in the component
+this.cidaasAuthentication = this.cidaasService.getAuthentication();
+this.cidaasVerificationService = this.cidaasService.getVerificationService();
+
+...
+
+// call functions from each of the modules
+this.cidaasAuthentication.loginCallback();
+...
+this.cidaasVerificationService.getMFAList(getMFAListOptions);
+...
+
+```
+
+Each of the functions and its module can be looked in the doc.
 
 ### Usage
 
