@@ -15,7 +15,7 @@
     "build": "tsc && webpack --config webpack.prod.js",
     "test": "jest --transformIgnorePatterns \"node_modules/(?!@toolz/allow)/\" --env=jsdom",
     "test:coverage": "jest --coverage --env=jsdom",
-    "typedoc": "typedoc"
+    "typedoc": "typedoc --out generated-docs"
   },
   "files": [
     "dist",
