@@ -15,7 +15,7 @@
 
 This cidaas Javascript SDK library is built on the top of [OIDC client typescript library](https://github.com/authts/oidc-client-ts). 
 
-Please check the [Changelog](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/docs/CHANGELOG.md) for more information about the latest release.
+Please check the [Changelog](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/CHANGELOG.md) for more information about the latest release.
 
 ## Table of Contents
 
