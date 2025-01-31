@@ -15,7 +15,7 @@
 
 This cidaas Javascript SDK library is built on the top of [OIDC client typescript library](https://github.com/authts/oidc-client-ts). 
 
-Please check the [Changelog](https://github.com/Cidaas/cidaas-sdk-javascript-v2/blob/master/CHANGELOG.md) for more information about the latest release.
+Please check the [Changelog](https://github.com/Cidaas/cidaas-javascript-sdk/blob/master/CHANGELOG.md) for more information about the latest release.
 
 ## Table of Contents
 
@@ -117,7 +117,7 @@ const options = {
 
 ### Initialise the cidaas sdk using the configured options mentioned above:
 
-Cidaas ConfigUserProvider have to be initialise to be added to each of the modules as dependencies:
+Cidaas ConfigUserProvider have to be initialised to be added to each of the modules as dependencies:
 
 Example of Cidaas Service:
 ```js
@@ -137,7 +137,7 @@ export class CidaasService {
     }
 
     // get authentication module
-    getAuthentication() {
+    getAuthenticationService() {
         return this.authenticationService;
     }
 
@@ -168,8 +168,6 @@ this.cidaasVerificationService.getMFAList(getMFAListOptions);
 ...
 
 ```
-
-Each of the functions and its module can be looked in the doc.
 
 ### Usage
 

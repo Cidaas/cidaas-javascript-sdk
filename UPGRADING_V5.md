@@ -3,13 +3,13 @@ This document described how to handle breaking changes from upgrading Cidaas Jav
 
 ## 1. call functions from its own module
 
-Previously all of javascript sdk function is called from webauth. Now the functions will be called its modules. Cidaas ConfigUserProvider have to be initialise to be added to each of the modules as dependencies:
+Previously all of javascript sdk functions are called from webauth. Now the functions will be called from its modules. Cidaas ConfigUserProvider have to be initialised to be added to each of the modules as dependencies.
 
 Example of Cidaas Service:
 ```js
 export class CidaasService {
     cidaasConfigUserProvider: ConfigUserProvider;
-    authentication: Authentication;
+    authenticationService: AuthenticationService;
     verificationService: VerificationService;
     options: OidcSettings = { ... };
 
@@ -17,14 +17,14 @@ export class CidaasService {
         // init ConfigUserProvider
         this.cidaasConfigUserProvider = new ConfigUserProvider(this.options);
         // init authentication module
-        this.authentication = new Authentication(this.cidaasConfigUserProvider);
+        this.authenticationService = new AuthenticationService(this.cidaasConfigUserProvider);
         // init verification module
         this.verificationService = new VerificationService(this.cidaasConfigUserProvider);
     }
 
     // get authentication module
-    getAuthentication() {
-        return this.authentication;
+    getAuthenticationService() {
+        return this.authenticationService;
     }
 
     // get verification module
@@ -42,13 +42,13 @@ constructor(private cidaasService: CidaasService, ...) {}
 ...
 
 // init each of cidaas modules which are needed in the component
-this.cidaasAuthentication = this.cidaasService.getAuthentication();
+this.cidaasAuthenticationService = this.cidaasService.getAuthenticationService();
 this.cidaasVerificationService = this.cidaasService.getVerificationService();
 
 ...
 
 // call functions from each of the modules
-this.cidaasAuthentication.loginCallback();
+this.cidaasAuthenticationService.loginCallback();
 ...
 this.cidaasVerificationService.getMFAList(getMFAListOptions);
 ...
@@ -78,7 +78,7 @@ There are changes in the function names. The old & new function name can be foun
 | getUserInfo                                       | getUserInfoFromStorage                      |
 | getAccessToken                                    | generateTokenFromCode                       |
 
-If you used setAcceptLanguageHeader() function, it is now moved to Helper class and can be called with static call Helper.setAcceptLanguageHeader();
+If you used setAcceptLanguageHeader() function, it is now moved to Helper class and can be called with static call Helper.setAcceptLanguageHeader().
 
 There are changes in enums. If you used UPPERCASE to call enum member previously, now they have been standardize to use PascalCase instead.
 
